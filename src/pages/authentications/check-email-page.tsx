@@ -11,23 +11,23 @@ const CheckEmailPage = () => {
         <AuthLayout>
             <div className='flex min-h-screen'>
                 <div className='flex-1 flex items-center justify-center h-screen overflow-auto'>
-                    <div className='w-full max-w-130 h-full grid place-content-center'>
-                        <div className='w-[448px] text-center'>
+                    <div className='w-full  h-full grid place-content-center'>
+                        <div className=' text-left max-w-[446px]'>
                             <h2 className='text-[32px] font-semibold leading-[100%] tracking-[1%] mb-3.5 text-[#0A0A0C]'>
                                 Check your email
                             </h2>
-                            <p className='text-[#414143] text-sm leading-[140%] tracking-[0%] mb-12.5 px-8'>
+                            <p className='text-[#414143]  text-base leading-[140%] tracking-[0%] mb-12.5 '>
                                 We've sent an email to{' '}
                                 <span className='font-semibold'>{email}</span>{' '}
-                                with a link to reset your password.
+                                with a link <br /> to activate your account
                             </p>
 
-                            <div className='flex items-center justify-center gap-6 mb-40'>
+                            <div className='flex  items-center justify-start gap-6 mb-40'>
                                 <a
                                     href='https://mail.google.com'
                                     target='_blank'
                                     rel='noopener noreferrer'
-                                    className='flex items-center gap-2.5  rounded-lg px-4 py-2  text-[#143DF2] underline'>
+                                    className='flex items-center gap-2.5  rounded-lg  py-2  text-[#143DF2] underline'>
                                     <img
                                         src={gmail}
                                         alt='Gmail-icon'
@@ -53,13 +53,13 @@ const CheckEmailPage = () => {
                                 </a>
                             </div>
 
-                            <p className='text-sm text-[#414143] mb-2'>
+                            <p className='text-xl text-[#0A0A0C] mb-2 font-semibold'>
                                 Didn't get an email? Check your spam folder!
                             </p>
                             <Link
                                 to='/auth/forgot-password'
-                                className='text-[#12AA5B] hover:underline text-sm font-medium'>
-                                Try again with another email address
+                                className='text-[#026451] underline text-base font-normal text-left'>
+                                Re-enter your email and try again
                             </Link>
                         </div>
                     </div>

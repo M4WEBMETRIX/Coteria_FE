@@ -1,19 +1,41 @@
-import { useState } from 'react';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { Label } from '@/components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import AuthLayout from './auth-layout';
+import { useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import * as z from 'zod';
+import {
+    Field,
+    FieldLabel,
+    FieldContent,
+    FieldError,
+} from '@/components/ui/field';
+
+const forgotPasswordSchema = z.object({
+    email: z.string().email('Please enter a valid organization email address'),
+});
+
+type ForgotPasswordValues = z.infer<typeof forgotPasswordSchema>;
 
 const ForgotPasswordPage = () => {
-    const [email, setEmail] = useState('');
     const navigate = useNavigate();
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        console.log({ email });
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isValid },
+    } = useForm<ForgotPasswordValues>({
+        mode: 'onChange',
+        resolver: zodResolver(forgotPasswordSchema),
+        defaultValues: {
+            email: '',
+        },
+    });
+
+    const onSubmit = (data: ForgotPasswordValues) => {
+        console.log(data);
         // After sending the link, navigate to the check-email page
-        // For demonstration purposes, we'll just navigate
         navigate('/auth/check-email');
     };
 
@@ -32,28 +54,31 @@ const ForgotPasswordPage = () => {
                                 reset your password.
                             </p>
 
-                            <form onSubmit={handleSubmit} className='space-y-6'>
+                            <form
+                                onSubmit={handleSubmit(onSubmit)}
+                                className='space-y-6'>
                                 {/* Email */}
-                                <div>
-                                    <Label
+                                <Field>
+                                    <FieldLabel
                                         htmlFor='email'
                                         className='text-base font-medium leading-5.5 tracking-[0%] text-[#414143]'>
-                                        Enter your organization email address
-                                    </Label>
-                                    <Input
-                                        id='email'
-                                        type='email'
-                                        placeholder='you@organization.org'
-                                        value={email}
-                                        onChange={(e) =>
-                                            setEmail(e.target.value)
-                                        }
-                                        className='mt-2 h-12 bg-[#F6F6F6] px-2.5 py-5 border-0 rounded-lg'
-                                    />
-                                </div>
+                                        Use your organization email address
+                                    </FieldLabel>
+                                    <FieldContent>
+                                        <Input
+                                            id='email'
+                                            type='email'
+                                            placeholder='you@organization.org'
+                                            {...register('email')}
+                                            className='mt-2 h-12 bg-[#F6F6F6] px-2.5 py-5 border-0 rounded-lg'
+                                        />
+                                        <FieldError errors={[errors.email]} />
+                                    </FieldContent>
+                                </Field>
 
                                 {/* Submit Button */}
                                 <Button
+                                    disabled={!isValid}
                                     type='submit'
                                     className='w-full bg-[#12AA5B] hover:bg-green-600 text-white font-semibold py-6 rounded-full text-lg'>
                                     Send Reset Link
