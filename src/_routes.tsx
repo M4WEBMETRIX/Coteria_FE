@@ -5,6 +5,12 @@ import LoginPage from './pages/authentications/login-page';
 import ForgotPasswordPage from './pages/authentications/forgot-password-page';
 import CheckEmailPage from './pages/authentications/check-email-page';
 import ResetPasswordPage from './pages/authentications/reset-password-page';
+import DashboardPage from './pages/dashboard/dashboard-page';
+import CommunityPage from './pages/dashboard/community-page';
+import CampaignsPage from './pages/dashboard/campaigns-page';
+import InsightsPage from './pages/dashboard/insights-page';
+import DonorsPage from './pages/dashboard/donors-page';
+import SettingsPage from './pages/dashboard/settings-page';
 
 const AllRoutes = () => {
     return (
@@ -20,7 +26,12 @@ const AllRoutes = () => {
 
             {/* Protected routes */}
             <Route element={<ProtectedRoute />}>
-                <Route path='dashboard' element={<>Dashboard Page</>} />
+                <Route path='dashboard' element={<DashboardPage />} />
+                <Route path='community' element={<CommunityPage />} />
+                <Route path='campaigns' element={<CampaignsPage />} />
+                <Route path='insights' element={<InsightsPage />} />
+                <Route path='donors' element={<DonorsPage />} />
+                <Route path='settings' element={<SettingsPage />} />
             </Route>
         </Routes>
     );

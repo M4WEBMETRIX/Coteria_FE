@@ -1,16 +1,21 @@
-import { Navigate, Outlet } from 'react-router-dom'
+import { Navigate, Outlet } from 'react-router-dom';
+import DashboardLayout from '@/components/layout/dashboard-layout';
 
 const isAuthenticated = () => {
-  return true
-  //   return !!localStorage.getItem('token')
-}
+    return true;
+    //   return !!localStorage.getItem('token')
+};
 
 const ProtectedRoute = () => {
-  if (!isAuthenticated()) {
-    return <Navigate to='/auth/login' replace />
-  }
+    if (!isAuthenticated()) {
+        return <Navigate to='/auth/login' replace />;
+    }
 
-  return <Outlet />
-}
+    return (
+        <DashboardLayout>
+            <Outlet />
+        </DashboardLayout>
+    );
+};
 
-export default ProtectedRoute
+export default ProtectedRoute;
