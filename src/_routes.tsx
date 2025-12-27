@@ -1,51 +1,27 @@
-import { Route, Routes } from 'react-router-dom';
-import { lazy, Suspense } from 'react';
-
-// Lazy load all page components
-const SignupPage = lazy(() => import('./pages/authentications/signup-page'));
-const ProtectedRoute = lazy(
-    () => import('./pages/authentications/protect-route')
-);
-const LoginPage = lazy(() => import('./pages/authentications/login-page'));
-const ForgotPasswordPage = lazy(
-    () => import('./pages/authentications/forgot-password-page')
-);
-const CheckEmailPage = lazy(
-    () => import('./pages/authentications/check-email-page')
-);
-const ResetPasswordPage = lazy(
-    () => import('./pages/authentications/reset-password-page')
-);
-const DashboardPage = lazy(() => import('./pages/dashboard/dashboard-page'));
-const CommunityPage = lazy(() => import('./pages/dashboard/community-page'));
-const CampaignsPage = lazy(() => import('./pages/dashboard/campaigns-page'));
-const InsightsPage = lazy(() => import('./pages/dashboard/insights-page'));
-const DonorsPage = lazy(() => import('./pages/dashboard/donors-page'));
-const SettingsPage = lazy(() => import('./pages/dashboard/settings-page'));
+import { Route, Routes } from 'react-router-dom'
+import SignupPage from './pages/authentications/signup-page'
+import ProtectedRoute from './pages/authentications/protect-route'
+import LoginPage from './pages/authentications/login-page'
+import ForgotPasswordPage from './pages/authentications/forgot-password-page'
+import CheckEmailPage from './pages/authentications/check-email-page'
+import ResetPasswordPage from './pages/authentications/reset-password-page'
+import SetupAccountPage from './pages/authentications/setup-account'
+import DashboardPage from './pages/dashboard/dashboard-page';
+import CommunityPage from './pages/dashboard/community-page';
+import CampaignsPage from './pages/dashboard/campaigns-page';
+import InsightsPage from './pages/dashboard/insights-page';
+import DonorsPage from './pages/dashboard/donors-page';
+import SettingsPage from './pages/dashboard/settings-page';
 
 const AllRoutes = () => {
-    return (
-        <Suspense
-            fallback={
-                <div className='min-h-screen flex items-center justify-center'>
-                    <div className='flex flex-col items-center gap-4'>
-                        <div className='w-12 h-12 border-4 border-[#12AA5B] border-t-transparent rounded-full animate-spin' />
-                        <p className='text-sm text-gray-500'>Loading...</p>
-                    </div>
-                </div>
-            }>
-            <Routes>
-                <Route path='auth/signup' element={<SignupPage />} />
-                <Route path='auth/login' element={<LoginPage />} />
-                <Route
-                    path='auth/forgot-password'
-                    element={<ForgotPasswordPage />}
-                />
-                <Route path='auth/check-email' element={<CheckEmailPage />} />
-                <Route
-                    path='auth/reset-password'
-                    element={<ResetPasswordPage />}
-                />
+  return (
+    <Routes>
+      <Route path='auth/signup' element={<SignupPage />} />
+      <Route path='auth/setup-account' element={<SetupAccountPage />} />
+      <Route path='auth/login' element={<LoginPage />} />
+      <Route path='auth/forgot-password' element={<ForgotPasswordPage />} />
+      <Route path='auth/check-email' element={<CheckEmailPage />} />
+      <Route path='auth/reset-password' element={<ResetPasswordPage />} />
 
                 {/* Protected routes */}
                 <Route element={<ProtectedRoute />}>
@@ -61,4 +37,4 @@ const AllRoutes = () => {
     );
 };
 
-export default AllRoutes;
+export default AllRoutes
