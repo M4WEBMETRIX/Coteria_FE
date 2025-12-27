@@ -1,5 +1,4 @@
-import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { Search, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
@@ -20,9 +19,11 @@ const Navbar = () => {
         <nav className=' h-24 w-full bg-white  flex items-center px-8 justify-between sticky top-0 z-50'>
             {/* Logo */}
             <div className='flex items-center gap-2'>
-                <h1 className='text-3xl font-bold tracking-tight text-[#0A0A0C] font-serif'>
+                <Link
+                    to='/dashboard'
+                    className='text-3xl font-bold tracking-tight text-[#0A0A0C] font-serif'>
                     <img src={Logo} alt='Logo' className='w-[155px] h-[37px]' />
-                </h1>
+                </Link>
             </div>
 
             {/* Navigation Links */}
@@ -36,7 +37,7 @@ const Navbar = () => {
                                 'px-6 py-3 rounded-full text-base font-medium transition-colors',
                                 isActive
                                     ? 'bg-[#F7F7F7] text-[#1E1F24]'
-                                    : 'text-[#1E1F24] hover:text-[#1E1F24]'
+                                    : 'text-[#1E1F24]/70 hover:text-[#1E1F24]'
                             )
                         }>
                         {item.name}
@@ -63,7 +64,7 @@ const Navbar = () => {
 
                 {/* User Profile */}
                 <Avatar className='w-12 h-12'>
-                    <AvatarImage src={ProfilePIC} className='  object-cover ' />
+                    <AvatarImage src={ProfilePIC} className='object-cover ' />
                     <AvatarFallback>CN</AvatarFallback>
                 </Avatar>
             </div>

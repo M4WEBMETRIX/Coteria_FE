@@ -3,7 +3,7 @@ import Navbar from '../navbar';
 
 const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
     return (
-        <div className='min-h-screen bg-[#FDFDFD]'>
+        <div className='min-h-screen bg-white'>
             <Navbar />
             <main className='p-8'>{children}</main>
         </div>
