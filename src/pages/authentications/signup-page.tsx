@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { Eye, EyeOff, HelpCircle } from 'lucide-react'
 import { Input } from '@/components/ui/input'
 import { Button } from '@/components/ui/button'
@@ -8,60 +8,14 @@ import { CheckCircle } from '@phosphor-icons/react'
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group'
 import LOGO from '/public/logo/coterie.svg'
 import BOTTOM_PATTERN from '/public/miscellaneous/bottom_left.svg'
+import TOP_PATTERN from '/public/miscellaneous/top_right.svg'
 import TestimonialCarousel from './testimonial-carousel'
-
-// const SignupPage = () => {
-//   return (
-//     <main className='flex h-screen w-full'>
-//       <aside className='max-w-145 w-145 bg-[#026451] h-screen'>hsh</aside>
-//       <aside>signup-page</aside>
-//     </main>
-//   )
-// }
 
 const SignupPage = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [showConfirmPassword, setShowConfirmPassword] = useState(false)
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
-  const [currentSlide, setCurrentSlide] = useState(0)
-
-  const testimonials = [
-    {
-      name: 'Eliska Trabalska',
-      role: 'BOARD',
-      avatar: 'ET',
-      quote:
-        '"With Brattleeo we have seen able move to another country in a a few breather"',
-      date: '8:35 PM • Jan 4, 2022',
-      rating: 5,
-    },
-    {
-      name: 'James Wilson',
-      role: 'CEO',
-      avatar: 'JW',
-      quote:
-        'The support and platform have been phenomenal for our organization',
-      date: '3:22 PM • Feb 15, 2022',
-      rating: 5,
-    },
-    {
-      name: 'Sarah Chen',
-      role: 'Director',
-      avatar: 'SC',
-      quote:
-        'Incredible impact on our donor retention and community engagement',
-      date: '11:45 AM • Mar 8, 2022',
-      rating: 5,
-    },
-  ]
-
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % testimonials.length)
-    }, 5000)
-    return () => clearInterval(timer)
-  }, [])
 
   const passwordRequirements = [
     { text: 'One lowercase character', met: /[a-z]/.test(password) },
@@ -83,6 +37,11 @@ const SignupPage = () => {
     <div className='flex min-h-screen'>
       {/* Left Panel */}
       <div className='hidden lg:overflow-hidden lg:relative lg:flex lg:w-145 lg:max-w-145 bg-linear-to-br from-green-500 to-green-600 flex-col justify-between text-white'>
+        <img
+          src={TOP_PATTERN}
+          className='absolute -top-1.5 -right-10 w-23 h-28.25'
+          alt='bottom_pattern'
+        />
         <div>
           <div className='p-12.5'>
             <div className='bg-white px-7.5 py-4.5 w-max rounded-full flex items-center justify-center mb-16'>
@@ -112,7 +71,7 @@ const SignupPage = () => {
         <img
           src={BOTTOM_PATTERN}
           className='absolute -bottom-24 w-72.5 h-55.75'
-          alt='coterie_logo'
+          alt='bottom_pattern'
         />
       </div>
 
