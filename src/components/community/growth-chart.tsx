@@ -1,6 +1,5 @@
 import { LineChart, Line, XAxis, CartesianGrid, YAxis } from 'recharts';
-import { Card, CardContent } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
+
 import {
     ChartContainer,
     ChartTooltip,

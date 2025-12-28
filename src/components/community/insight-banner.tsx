@@ -1,5 +1,5 @@
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Sparkle, SparklesIcon, Stars } from '@hugeicons/core-free-icons';
+import { SparklesIcon } from '@hugeicons/core-free-icons';
 
 const InsightBanner = () => {
     return (

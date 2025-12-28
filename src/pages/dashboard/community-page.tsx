@@ -4,26 +4,16 @@ import InsightBanner from '@/components/community/insight-banner';
 import RecommendationsPanel from '@/components/community/recommendations-panel';
 import CommunityHealthCard from '@/components/community/community-health-card';
 import RetentionOutlookCard from '@/components/community/retention-outlook-card';
-import { ChartBarHorizontalIcon, PlusIcon } from '@phosphor-icons/react';
+import { PlusIcon } from '@phosphor-icons/react';
 import { Dot } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import CreateCommunityDialog from '@/components/community/create-community-dialog';
 import { Button } from '@/components/ui/button';
-import { ChartBubble01Icon, Plus } from '@hugeicons/core-free-icons';
+import { ChartBubble01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
 const CommunityPage = () => {
     // Sample data matching the mockup
-    const communityInfo = {
-        name: 'Women Empowerment - Toronto',
-        membersConfig: {
-            count: 1284,
-            status: 'Active',
-            created: 'Mar 2025',
-        },
-        description:
-            'Track how your community grows, engages, and amplifies your campaigns over time.',
-    };
 
     const stats = {
         newMembersPercentage: 54,

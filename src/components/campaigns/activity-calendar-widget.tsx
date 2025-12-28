@@ -1,10 +1,6 @@
 import { Badge } from '@/components/ui/badge';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import {
-    ArrowRight01Icon,
-    ArrowRight02Icon,
-    Vynil01Icon,
-} from '@hugeicons/core-free-icons';
+import { ArrowRight02Icon, Vynil01Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 
 const weekDays = [

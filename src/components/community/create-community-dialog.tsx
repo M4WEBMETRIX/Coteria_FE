@@ -15,7 +15,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/components/ui/select';
-import { Plus, PlusIcon } from 'lucide-react';
+import { PlusIcon } from 'lucide-react';
 import {
     Field,
     FieldContent,

@@ -1,5 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import { UserGroup03Icon, Alert02Icon } from '@hugeicons/core-free-icons';
+import { UserGroup03Icon } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
     Select,
@@ -10,15 +10,15 @@ import {
 } from '@/components/ui/select';
 import Analytics from '@/assets/icons/Analytics.svg';
 
-const data = [
-    { value: 40 },
-    { value: 30 },
-    { value: 45 },
-    { value: 35 },
-    { value: 55 },
-    { value: 45 },
-    { value: 60 },
-];
+// const data = [
+//     { value: 40 },
+//     { value: 30 },
+//     { value: 45 },
+//     { value: 35 },
+//     { value: 55 },
+//     { value: 45 },
+//     { value: 60 },
+// ];
 
 const campaigns = [
     { id: 1, name: 'Campaign Name 1', performance: 98 },

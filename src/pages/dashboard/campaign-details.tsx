@@ -1,15 +1,9 @@
-import React from 'react';
 import { Button } from '@/components/ui/button';
 
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
-    Clock01Icon,
-    ChartHistogramIcon,
-    ChartLineData01Icon,
     CovariateFreeIcons,
-    ChartColumn,
     TimeHalfPassFreeIcons,
-    ChartColumnStacked,
     ChartColumnIcon,
 } from '@hugeicons/core-free-icons';
 

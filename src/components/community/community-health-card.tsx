@@ -1,6 +1,5 @@
 import { Stars } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
-import { Sparkles } from 'lucide-react';
 
 interface CommunityHealthCardProps {
     score: number;

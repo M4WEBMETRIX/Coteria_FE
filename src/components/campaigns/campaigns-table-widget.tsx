@@ -4,9 +4,7 @@ import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
     PlusSignIcon,
     MoreVerticalIcon,
-    UserGroupIcon,
     UserListFreeIcons,
-    UserListIcon,
 } from '@hugeicons/core-free-icons';
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
