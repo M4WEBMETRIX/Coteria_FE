@@ -32,7 +32,7 @@ const chartConfig = {
 const GrowthChart = () => {
     return (
         <section className='p-4  shadow-none flex flex-row justify-start items-center'>
-            <div className='flex flex-col items-start gap-8 mt-4'>
+            <div className='flex flex-col items-start gap-8 mt-4 '>
                 <div className='space-y-1'>
                     <h4 className='text-sm font-semibold text-[#0A0A0C]'>
                         This Month
@@ -52,14 +52,14 @@ const GrowthChart = () => {
                     </div>
                 </div>
             </div>
-            <div className='p-0 w-full'>
+            <div className='p-0 w-full '>
                 <ChartContainer
                     config={chartConfig}
-                    className='min-h-[250px] w-[480px]'>
+                    className='min-h-[250px] w-full'>
                     <LineChart
                         accessibilityLayer
                         data={chartData}
-                        margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                        margin={{ top: 0, right: 10, left: 10, bottom: 0 }}>
                         <CartesianGrid
                             strokeDasharray='3 3'
                             vertical={true}

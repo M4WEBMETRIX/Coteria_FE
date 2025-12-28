@@ -1,3 +1,5 @@
+import { Stars } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 import { Sparkles } from 'lucide-react';
 
 interface CommunityHealthCardProps {
@@ -9,7 +11,7 @@ const CommunityHealthCard = ({ score }: CommunityHealthCardProps) => {
         <div className='border-0 p-4  bg-[#12AA5B] rounded-[16px] text-white overflow-hidden relative  flex flex-col justify-start'>
             <div className='flex flex-col justify-between items-start h-full '>
                 <div className='flex items-center gap-2 mb-4'>
-                    <Sparkles className='w-5 h-5 opacity-90' />
+                    <HugeiconsIcon icon={Stars} />
                     <span className='font-medium text-lg'>
                         Community Health Score
                     </span>

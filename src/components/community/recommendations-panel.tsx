@@ -1,20 +1,25 @@
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
 import { Sparkles } from 'lucide-react';
+import { HugeiconsIcon } from '@hugeicons/react';
+import { CheckmarkCircle03FreeIcons } from '@hugeicons/core-free-icons';
 
 const RecommendationsPanel = () => {
     return (
         <div className='border-0 shadow-none  w-full '>
             <div className=' p-6'>
                 <div className='flex items-center gap-4'>
-                    <div className='w-6 h-6 rounded-full border border-[#E5E5E5] flex items-center justify-center'>
-                        <span className='text-xs'>✓</span>
+                    <div className='w-6 h-6 rounded-full  flex items-center justify-center'>
+                        <span className='text-xs'>
+                            {' '}
+                            <HugeiconsIcon icon={CheckmarkCircle03FreeIcons} />
+                        </span>
                     </div>
                     <p className='text-xl font-medium leading-7 tracking-[-3%] text-[#1E1F24] '>
                         Recommendations Panel
                     </p>
                 </div>
-                <p className='text-sm font-medium tracking-[-1%] leading-5  text-[#1E1F24] mt-2 '>
+                <p className='text-sm font-medium tracking-[-1%] leading-5  text-[#1E1F24]/75 mt-2 '>
                     Find the best actions to improve workforce performance with
                     AI-driven analysis.
                 </p>

@@ -4,11 +4,13 @@ import InsightBanner from '@/components/community/insight-banner';
 import RecommendationsPanel from '@/components/community/recommendations-panel';
 import CommunityHealthCard from '@/components/community/community-health-card';
 import RetentionOutlookCard from '@/components/community/retention-outlook-card';
-import { ChartBarHorizontalIcon } from '@phosphor-icons/react';
-import { Dot, Plus } from 'lucide-react';
+import { ChartBarHorizontalIcon, PlusIcon } from '@phosphor-icons/react';
+import { Dot } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import CreateCommunityDialog from '@/components/community/create-community-dialog';
 import { Button } from '@/components/ui/button';
+import { ChartBubble01Icon, Plus } from '@hugeicons/core-free-icons';
+import { HugeiconsIcon } from '@hugeicons/react';
 
 const CommunityPage = () => {
     // Sample data matching the mockup
@@ -31,44 +33,31 @@ const CommunityPage = () => {
     };
 
     return (
-        <div className='space-y-8 max-w-[1400px] mx-auto w-full'>
-            {/* Header Section */}
-
-            {/* Actions */}
-            {/* <div className='flex items-center gap-3'>
-                <CreateCommunityDialog />
-                <Button
-                    variant='outline'
-                    className='rounded-full border-[#E5E5E5] text-[#0A0A0C] font-medium px-4 h-12'>
-                    <Plus className='w-4 h-4 mr-2' />
-                    Invite Members
-                </Button>
-            </div> */}
-            {/* Main Content Grid */}
+        <div className='space-y-8  mx-auto w-full font-inter'>
             <div className='grid grid-cols-2 gap-6 '>
                 <div>
                     <div className='flex gap-4 justify-start   items-center'>
                         <div className='mr-4'>
                             <div className='w-12 h-12 bg-[#EFF0F3] rounded-[12px] grid place-content-center'>
-                                <ChartBarHorizontalIcon className='w-6 h-6 text-[#12AA5B]' />
+                                <HugeiconsIcon icon={ChartBubble01Icon} />
                             </div>
                         </div>
                         <div>
-                            <p className='text-[#0A0A0C] font-medium'>
+                            <p className='text-[#1E1F24] font-bold text-2xl'>
                                 Women Empowerment - Toronto{' '}
                             </p>
-                            <div className='flex justify-start items-center'>
-                                <p>1284</p> <Dot />
+                            <div className='text-[#1E1F24]/50 flex justify-start items-center text-sm font-medium leading-[25px] tracking-[-1%] font-inter'>
+                                <p>1,284 members</p> <Dot size={15} />
                                 <p>Active</p>
-                                <Dot />
+                                <Dot size={15} />
                                 <p>Created Mar 2025</p>
                             </div>
                         </div>{' '}
                     </div>
 
                     <div className='rounded-4xl bg-[#FCFCFD]'>
-                        <div className='mb-6 space-y-4'>
-                            <p className='text-sm text-[#414143] leading-relaxed'>
+                        <div className='mb-6 space-y-4 mt-2'>
+                            <p className='text-sm text-[#1E1F24]/75 font-medium leading-[20px] tracking-[-1%]'>
                                 Track how your community grows, engages, and
                                 amplifies your campaigns over time.
                             </p>
@@ -100,8 +89,10 @@ const CommunityPage = () => {
                     <div className='flex justify-end items-center gap-6 mb-4'>
                         {' '}
                         <CreateCommunityDialog />
-                        <Button variant='ghost'>
-                            <Plus />
+                        <Button
+                            variant='ghost'
+                            className='border-b cursor-pointer hover:bg-transparent rounded-b-none border-[#8B8D98]'>
+                            <PlusIcon size={10} />
                             Invite members
                         </Button>
                     </div>

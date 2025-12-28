@@ -1,8 +1,24 @@
+import ActiveCampaignsWidget from '@/components/campaigns/active-campaigns-widget';
+import ActivityCalendarWidget from '@/components/campaigns/activity-calendar-widget';
+import CampaignsTableWidget from '@/components/campaigns/campaigns-table-widget';
+
 const CampaignsPage = () => {
     return (
-        <div className='space-y-6'>
-            <h1 className='text-2xl font-semibold text-[#0A0A0C]'>Campaigns</h1>
-            <div className=''>Campaigns Content Goes Here</div>
+        <div className=' mx-auto w-full font-inter space-y-5'>
+            {/* Top Row: 40% - 60% split */}
+            <div className='grid grid-cols-12 gap-8'>
+                <div className='col-span-4'>
+                    <ActiveCampaignsWidget />
+                </div>
+                <div className='col-span-8'>
+                    <ActivityCalendarWidget />
+                </div>
+            </div>
+
+            {/* Bottom Row: Full Width */}
+            <div className='w-full'>
+                <CampaignsTableWidget />
+            </div>
         </div>
     );
 };

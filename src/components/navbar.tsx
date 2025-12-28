@@ -1,8 +1,7 @@
 import { Link, NavLink } from 'react-router-dom';
 import { Search, Bell } from 'lucide-react';
 import { cn } from '@/lib/utils';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import ProfilePIC from '@/assets/images/image-2.png';
+import UserProfileMenu from '@/components/user-profile-menu';
 import Logo from '@/assets/icons/coterie.svg';
 
 const navItems = [
@@ -63,10 +62,7 @@ const Navbar = () => {
                 </button>
 
                 {/* User Profile */}
-                <Avatar className='w-12 h-12'>
-                    <AvatarImage src={ProfilePIC} className='object-cover ' />
-                    <AvatarFallback>CN</AvatarFallback>
-                </Avatar>
+                <UserProfileMenu />
             </div>
         </nav>
     );

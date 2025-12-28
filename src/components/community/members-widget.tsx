@@ -1,6 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
-import { Users } from 'lucide-react';
+
+import { HugeiconsIcon } from '@hugeicons/react';
+import { GraduateFemaleIcon } from '@hugeicons/core-free-icons';
 
 interface MembersWidgetProps {
     newMembersPercentage: number;
@@ -16,7 +17,7 @@ const MembersWidget = ({
             <div className='pb-4'>
                 <div className='flex items-center gap-3'>
                     <div className='w-12 h-12 rounded-[12px] bg-[#EFF0F3] flex items-center justify-center'>
-                        <Users className='w-7 h-7 text-[#1E1F24]' />
+                        <HugeiconsIcon icon={GraduateFemaleIcon} />
                     </div>
                     <p className='text-xl font-medium text-[#1E1F24] leading-7 tracking-[-3%]'>
                         Total Community Members
@@ -33,11 +34,11 @@ const MembersWidget = ({
                 {/* Visual Bars with gaps */}
                 <div className='flex gap-2 h-3'>
                     <div
-                        className='bg-[#12AA5B] rounded h-full'
+                        className='bg-[#47D198] rounded h-full'
                         style={{ width: `${newMembersPercentage}%` }}
                     />
                     <div
-                        className='bg-[#4ADE80] rounded h-full'
+                        className='bg-[#12AA5B] rounded h-full'
                         style={{ width: `${returningMembersPercentage}%` }}
                     />
                 </div>
@@ -46,7 +47,7 @@ const MembersWidget = ({
                 <div className='space-y-3'>
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center gap-2'>
-                            <div className='w-1.5 h-4 bg-[#12AA5B] rounded-sm' />
+                            <div className='w-3 h-6 bg-[#47D198] rounded-sm' />
                             <span className='text-lg font-medium text-[#0A0A0C]'>
                                 {newMembersPercentage}%
                             </span>
@@ -61,7 +62,7 @@ const MembersWidget = ({
 
                     <div className='flex items-center justify-between'>
                         <div className='flex items-center gap-2'>
-                            <div className='w-1.5 h-4 bg-[#12AA5B] rounded-sm' />
+                            <div className='w-3 h-6 bg-[#12AA5B] rounded-sm' />
                             <span className='text-lg font-medium text-[#0A0A0C]'>
                                 {returningMembersPercentage}%
                             </span>

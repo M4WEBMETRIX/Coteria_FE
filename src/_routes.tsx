@@ -22,6 +22,9 @@ const SetupAccountPage = lazy(
 const DashboardPage = lazy(() => import('./pages/dashboard/dashboard-page'));
 const CommunityPage = lazy(() => import('./pages/dashboard/community-page'));
 const CampaignsPage = lazy(() => import('./pages/dashboard/campaigns-page'));
+const CampaignsPageDetail = lazy(
+    () => import('./pages/dashboard/campaign-details')
+);
 const InsightsPage = lazy(() => import('./pages/dashboard/insights-page'));
 const DonorsPage = lazy(() => import('./pages/dashboard/donors-page'));
 const SettingsPage = lazy(() => import('./pages/dashboard/settings-page'));
@@ -59,6 +62,10 @@ const AllRoutes = () => {
                     <Route path='dashboard' element={<DashboardPage />} />
                     <Route path='community' element={<CommunityPage />} />
                     <Route path='campaigns' element={<CampaignsPage />} />
+                    <Route
+                        path='campaigns/:id'
+                        element={<CampaignsPageDetail />}
+                    />
                     <Route path='insights' element={<InsightsPage />} />
                     <Route path='donors' element={<DonorsPage />} />
                     <Route path='settings' element={<SettingsPage />} />
