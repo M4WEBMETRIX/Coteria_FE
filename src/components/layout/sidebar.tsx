@@ -22,7 +22,7 @@ const Sidebar = () => {
     return (
         <aside
             className={cn(
-                'min-h-screen bg-[#F6F8FA] border-r border-gray-100 flex flex-col transition-all duration-300 relative z-50 ',
+                'min-h-screen font-inter bg-[#F6F8FA] border-r border-gray-100 flex flex-col transition-all duration-300 relative z-50 ',
                 isSidebarOpen ? 'w-64' : 'w-16'
             )}>
             {/* Logo */}
@@ -81,7 +81,7 @@ const Sidebar = () => {
                                     <>
                                         {link.name !== 'Main' && (
                                             <p
-                                                className='text-xs font-semibold text-[#676E7E] mb-1 flex items-center justify-between p-2 cursor-pointer uppercase hover:text-black select-none'
+                                                className='text-sm leading-[150%] tracking-[2%] font-semibold text-[#A4ACB9] mb-1 flex items-center justify-between p-2 cursor-pointer uppercase hover:text-black select-none'
                                                 // onClick={() =>
                                                 //     handleSectionClick(
                                                 //         link.name
