@@ -41,7 +41,7 @@ function SelectTrigger({
             {...props}>
             {children}
             <SelectPrimitive.Icon asChild>
-                <ChevronDownIcon className='size-4 opacity-50 text-white' />
+                <ChevronDownIcon className='size-4 opacity-50 text-[#818898]' />
             </SelectPrimitive.Icon>
         </SelectPrimitive.Trigger>
     );

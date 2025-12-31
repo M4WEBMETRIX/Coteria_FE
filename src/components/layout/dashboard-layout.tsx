@@ -27,7 +27,9 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
                 {/* Main Content */}
                 <div className='flex-1 flex flex-col px-8'>
                     <Navbar breadcrumbs={breadcrumbComponent} />
-                    <main className='flex-1 p-8 bg-white'>{children}</main>
+                    <main className='flex-1 p-8 bg-white h-[calc(100vh-150px)] min-w-0'>
+                        {children}
+                    </main>
                     {/* Removed redundant Outlet */}
                 </div>
             </div>
