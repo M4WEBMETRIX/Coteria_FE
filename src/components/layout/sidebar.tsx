@@ -1,4 +1,10 @@
 import { Link, NavLink, useLocation } from 'react-router-dom';
+import {
+    Tooltip,
+    TooltipContent,
+    TooltipProvider,
+    TooltipTrigger,
+} from '@/components/ui/tooltip';
 import { cn } from '@/lib/utils';
 import Logo from '@/assets/icons/coterie.svg';
 import {
@@ -52,19 +58,21 @@ const Sidebar = () => {
             </div>
 
             {/* Profile Completion Banner - Only show when open */}
-            {isSidebarOpen && (
-                <div className=' px-4 py-5 shrink-0'>
-                    <div className='text-sm font-medium text-[#FF6B9D] mb-1'>
-                        Profile 50% complete
-                    </div>
-                </div>
-            )}
 
             <nav
                 className={cn(
                     'p-2 overflow-y-auto shrink-0 flex-1',
                     isSidebarOpen ? 'tiny-scrollbar' : 'no-scrollbar'
                 )}>
+                {isSidebarOpen && (
+                    <div
+                        className='mt-5 px-4 py-2 rounded-[8px]  h-[40px] bg-[#FFF0F3]'
+                        style={{ boxShadow: '0px 1px 2px 0px #E4E5E73D' }}>
+                        <p className='text-base leading-[150%] tracking-[2%] font-medium text-[#DF1C41] mb-1'>
+                            Profile 50% complete
+                        </p>
+                    </div>
+                )}
                 <ul
                     className={cn(
                         'flex w-full flex-col gap-2',
@@ -120,63 +128,77 @@ const Sidebar = () => {
                                 When sidebar is OPEN, we respect the collapsible state.
                              */}
 
-                                {isSidebarOpen && (
-                                    <div className=''>
-                                        <ul className='flex flex-col items-center w-full gap-1'>
-                                            {link.subLinks.map(
-                                                (subLink, subIndex: number) => (
+                                <TooltipProvider delayDuration={0}>
+                                    <ul className='flex flex-col items-center w-full gap-1'>
+                                        {link.subLinks.map(
+                                            (subLink, subIndex: number) => {
+                                                const LinkContent = (
+                                                    <NavLink
+                                                        to={subLink.path}
+                                                        className={({
+                                                            isActive,
+                                                        }) =>
+                                                            cn(
+                                                                'w-full flex border border-transparent px-3 py-[10px] items-center gap-2 text-sm text-[#99A0AE] cursor-pointer rounded-md group transition-all duration-200',
+                                                                isActive
+                                                                    ? 'bg-white text-primary600 font-medium  text-[#717171]'
+                                                                    : 'hover:bg-white  hover:text-[#717171]',
+                                                                isSidebarOpen
+                                                                    ? 'justify-start'
+                                                                    : 'justify-center'
+                                                            )
+                                                        }>
+                                                        <span
+                                                            className={cn(
+                                                                'shrink-0',
+                                                                location.pathname.includes(
+                                                                    subLink.path
+                                                                )
+                                                                    ? 'text-[#0A0A0C]'
+                                                                    : 'text-gray-500 group-hover:text-[#0A0A0C]'
+                                                            )}>
+                                                            {subLink.icon}
+                                                        </span>
+
+                                                        {isSidebarOpen && (
+                                                            <span className='truncate'>
+                                                                {t(
+                                                                    subLink.name
+                                                                )}
+                                                            </span>
+                                                        )}
+                                                    </NavLink>
+                                                );
+
+                                                return (
                                                     <li
                                                         className='w-full relative'
                                                         key={subIndex}>
-                                                        <NavLink
-                                                            to={subLink.path}
-                                                            className={({
-                                                                isActive,
-                                                            }) =>
-                                                                cn(
-                                                                    'w-full flex border border-transparent px-3 py-[10px] items-center gap-2 text-sm text-[#99A0AE] cursor-pointer rounded-md group transition-all duration-200',
-                                                                    isActive
-                                                                        ? 'bg-white text-primary600 font-medium  text-[#717171]'
-                                                                        : 'hover:bg-white  hover:text-[#717171]',
-                                                                    isSidebarOpen
-                                                                        ? 'justify-start'
-                                                                        : 'justify-center'
-                                                                )
-                                                            }>
-                                                            <span
-                                                                className={cn(
-                                                                    'shrink-0',
-                                                                    location.pathname.includes(
-                                                                        subLink.path
-                                                                    )
-                                                                        ? 'text-[#0A0A0C]'
-                                                                        : 'text-gray-500 group-hover:text-[#0A0A0C]'
-                                                                )}>
-                                                                {subLink.icon}
-                                                            </span>
-
-                                                            {isSidebarOpen && (
-                                                                <span className='truncate'>
+                                                        {isSidebarOpen ? (
+                                                            LinkContent
+                                                        ) : (
+                                                            <Tooltip>
+                                                                <TooltipTrigger
+                                                                    asChild>
+                                                                    {
+                                                                        LinkContent
+                                                                    }
+                                                                </TooltipTrigger>
+                                                                <TooltipContent
+                                                                    side='right'
+                                                                    className='font-medium bg-black text-white border-black ml-2'>
                                                                     {t(
                                                                         subLink.name
                                                                     )}
-                                                                </span>
-                                                            )}
-
-                                                            {!isSidebarOpen && (
-                                                                <span className='absolute left-[calc(100%+8px)] top-1/2 -translate-y-1/2 text-xs hidden group-hover:block w-max p-2 font-medium rounded-md bg-white border border-[#e1e4ea] shadow-md z-[90] text-gray-700'>
-                                                                    {t(
-                                                                        subLink.name
-                                                                    )}
-                                                                </span>
-                                                            )}
-                                                        </NavLink>
+                                                                </TooltipContent>
+                                                            </Tooltip>
+                                                        )}
                                                     </li>
-                                                )
-                                            )}
-                                        </ul>
-                                    </div>
-                                )}
+                                                );
+                                            }
+                                        )}
+                                    </ul>
+                                </TooltipProvider>
                             </li>
                         );
                     })}
