@@ -1,10 +1,18 @@
 import ActiveCampaignsWidget from '@/components/campaigns/active-campaigns-widget';
 import ActivityCalendarWidget from '@/components/campaigns/activity-calendar-widget';
 import CampaignsTableWidget from '@/components/campaigns/campaigns-table-widget';
+import { useBreadcrumb } from '@/components/breadcrumb-navigation';
 
 const CampaignsPage = () => {
+    useBreadcrumb({
+        items: [
+            { label: 'Dashboard', href: '/dashboard' },
+            { label: 'Campaigns', href: '/campaigns', isCurrentPage: true },
+        ],
+    });
+
     return (
-        <div className=' mx-auto w-full font-inter space-y-5'>
+        <div className='flex flex-col gap-6'>
             {/* Top Row: 40% - 60% split */}
             <div className='grid grid-cols-12 gap-8'>
                 <div className='col-span-4'>

@@ -1,4 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { useParams } from 'react-router-dom';
+import { useBreadcrumb } from '@/components/breadcrumb-navigation';
 
 import { HugeiconsIcon } from '@hugeicons/react';
 import {
@@ -8,6 +10,15 @@ import {
 } from '@hugeicons/core-free-icons';
 
 const Campaigndetails = () => {
+    const { id } = useParams();
+    useBreadcrumb({
+        items: [
+            { label: 'Dashboard', href: '/dashboard' },
+            { label: 'Campaigns', href: '/campaigns' },
+            { label: id || 'Details', isCurrentPage: true },
+        ],
+    });
+
     return (
         <div className='max-w-[600px] w-full font-inter'>
             <div className='rounded-[24px] p-2 bg-[#FCFCFD]'>

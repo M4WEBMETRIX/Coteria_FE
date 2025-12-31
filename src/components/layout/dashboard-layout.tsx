@@ -1,12 +1,37 @@
-import React from 'react';
+import React, { useState, type ReactNode, createContext } from 'react';
 import Navbar from '../navbar';
+import Sidebar from './sidebar';
+import { Outlet } from 'react-router-dom';
 
-const DashboardLayout = ({ children }: { children: React.ReactNode }) => {
+export interface LayoutContextType {
+    setBreadcrumbComponent: (component: ReactNode | null) => void;
+}
+
+export const LayoutContext = createContext<LayoutContextType | undefined>(
+    undefined
+);
+
+interface DashboardLayoutProps {
+    children: React.ReactNode;
+}
+
+const DashboardLayout = ({ children }: DashboardLayoutProps) => {
+    const [breadcrumbComponent, setBreadcrumbComponent] =
+        useState<ReactNode | null>(null);
     return (
-        <div className='min-h-screen bg-white'>
-            <Navbar />
-            <main className='p-8'>{children}</main>
-        </div>
+        <LayoutContext.Provider value={{ setBreadcrumbComponent }}>
+            <div className='min-h-screen bg-white flex'>
+                {/* Sidebar */}
+                <Sidebar />
+
+                {/* Main Content */}
+                <div className='flex-1 flex flex-col px-8'>
+                    <Navbar breadcrumbs={breadcrumbComponent} />
+                    <main className='flex-1 p-8 bg-white'>{children}</main>
+                    {/* Removed redundant Outlet */}
+                </div>
+            </div>
+        </LayoutContext.Provider>
     );
 };
 

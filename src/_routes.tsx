@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { lazy, Suspense } from 'react';
+import Home from './pages/home';
 
 // Lazy load all page components
 const SignupPage = lazy(() => import('./pages/authentications/signup-page'));
@@ -28,19 +29,28 @@ const CampaignsPageDetail = lazy(
 const InsightsPage = lazy(() => import('./pages/dashboard/insights-page'));
 const DonorsPage = lazy(() => import('./pages/dashboard/donors-page'));
 const SettingsPage = lazy(() => import('./pages/dashboard/settings-page'));
-
+const DonationsPage = lazy(() => import('./pages/dashboard/donations-page'));
+const TeamPage = lazy(() => import('./pages/dashboard/team-page'));
+const MessagesPage = lazy(() => import('./pages/dashboard/messages-page'));
+const ReportsPage = lazy(() => import('./pages/dashboard/reports-page'));
+import Logo from '@/assets/icons/coterie.svg';
 const AllRoutes = () => {
     return (
         <Suspense
             fallback={
                 <div className='min-h-screen flex items-center justify-center'>
-                    <div className='flex flex-col items-center gap-4'>
-                        <div className='w-12 h-12 border-4 border-[#12AA5B] border-t-transparent rounded-full animate-spin' />
-                        <p className='text-sm text-gray-500'>Loading...</p>
+                    <div className='relative flex flex-col items-center gap-4'>
+                        <div className=' w-48 h-48 border-4 border-[#12AA5B] border-t-transparent rounded-full animate-spin' />{' '}
+                        <img
+                            src={Logo}
+                            alt='Coterie'
+                            className='w-[120px] h-auto animate-pulse absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2'
+                        />
                     </div>
                 </div>
             }>
             <Routes>
+                <Route path='/' element={<Home />} />
                 <Route path='auth/signup' element={<SignupPage />} />
                 <Route
                     path='auth/setup-account'
@@ -68,6 +78,10 @@ const AllRoutes = () => {
                     />
                     <Route path='insights' element={<InsightsPage />} />
                     <Route path='donors' element={<DonorsPage />} />
+                    <Route path='donations' element={<DonationsPage />} />
+                    <Route path='team' element={<TeamPage />} />
+                    <Route path='messages' element={<MessagesPage />} />
+                    <Route path='reports' element={<ReportsPage />} />
                     <Route path='settings' element={<SettingsPage />} />
                 </Route>
             </Routes>
