@@ -1,495 +1,428 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef } from "react";
 import {
-    Dialog,
-    DialogContent,
-    DialogHeader,
-    DialogTitle,
-    DialogTrigger,
-} from '@/components/ui/dialog';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from '@/components/ui/select';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Switch } from '@/components/ui/switch';
-import { Plus } from 'lucide-react';
-import { HugeiconsIcon } from '@hugeicons/react';
-import { Cancel01Icon, Image01Icon } from '@hugeicons/core-free-icons';
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Switch } from "@/components/ui/switch";
+import { Plus } from "lucide-react";
+import { HugeiconsIcon } from "@hugeicons/react";
+import { Cancel01Icon, Image01Icon } from "@hugeicons/core-free-icons";
 
 interface CreateCampaignModalProps {
-    children?: React.ReactNode;
-    setCampaignsData: (data: any) => void;
-    setJustCreated: (data: any) => void;
+  children?: React.ReactNode;
+  setCampaignsData: (data: any) => void;
+  setJustCreated: (data: any) => void;
 }
 
 const CreateCampaignModal = ({
-    children,
-    setCampaignsData,
-    setJustCreated,
+  children,
+  setCampaignsData,
+  setJustCreated,
 }: CreateCampaignModalProps) => {
-    const [open, setOpen] = useState(false);
-    const [step, setStep] = useState(1);
-    const [formData, setFormData] = useState({
-        title: '',
-        description: '',
-        goal: '',
-        category: '',
-        thumbnail: null as File | null,
-        campaignType: '',
-        participation: [] as string[],
-        startDate: '',
-        endDate: '',
-        isOngoing: false,
-        visibility: '',
+  const [open, setOpen] = useState(false);
+  const [step, setStep] = useState(1);
+  const [formData, setFormData] = useState({
+    title: "",
+    description: "",
+    goal: "",
+    category: "",
+    thumbnail: null as File | null,
+    campaignType: "",
+    participation: [] as string[],
+    startDate: "",
+    endDate: "",
+    isOngoing: false,
+    visibility: "",
+  });
+
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      setFormData({ ...formData, thumbnail: e.target.files[0] });
+    }
+  };
+
+  const handleNext = () => setStep(2);
+  const handleBack = () => setStep(1);
+  const handleSubmit = () => {
+    // Handle submission logic here
+    console.log("Submitting campaign:", formData);
+    setOpen(false);
+    setStep(1);
+    setFormData({
+      title: "",
+      description: "",
+      goal: "",
+      category: "",
+      thumbnail: null,
+      campaignType: "",
+      participation: [],
+      startDate: "",
+      endDate: "",
+      isOngoing: false,
+      visibility: "",
     });
+    setCampaignsData([
+      {
+        title: "",
+        description: "",
+        goal: "",
+        category: "",
+        thumbnail: null,
+        campaignType: "",
+        participation: [],
+        startDate: "",
+        endDate: "",
+        isOngoing: false,
+        visibility: "",
+      },
+    ]);
+    setJustCreated(true);
+  };
 
-    const fileInputRef = useRef<HTMLInputElement>(null);
+  const handleParticipationChange = (value: string) => {
+    setFormData((prev) => ({
+      ...prev,
+      participation: prev.participation.includes(value)
+        ? prev.participation.filter((item) => item !== value)
+        : [...prev.participation, value],
+    }));
+  };
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        if (e.target.files && e.target.files[0]) {
-            setFormData({ ...formData, thumbnail: e.target.files[0] });
-        }
-    };
+  return (
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
+        <Button className="max-w-[257px] px-[51px] py-3" variant={"outline"}>
+          {" "}
+          <Plus />
+          Create campaign
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="w-full min-w-[700px] gap-0 overflow-hidden bg-white p-0">
+        <DialogHeader className="border-b border-gray-100 p-6">
+          <DialogTitle className="text-xl font-bold text-[#0A0A0C]">Campaign Details</DialogTitle>
+        </DialogHeader>
 
-    const handleNext = () => setStep(2);
-    const handleBack = () => setStep(1);
-    const handleSubmit = () => {
-        // Handle submission logic here
-        console.log('Submitting campaign:', formData);
-        setOpen(false);
-        setStep(1);
-        setFormData({
-            title: '',
-            description: '',
-            goal: '',
-            category: '',
-            thumbnail: null,
-            campaignType: '',
-            participation: [],
-            startDate: '',
-            endDate: '',
-            isOngoing: false,
-            visibility: '',
-        });
-        setCampaignsData([
-            {
-                title: '',
-                description: '',
-                goal: '',
-                category: '',
-                thumbnail: null,
-                campaignType: '',
-                participation: [],
-                startDate: '',
-                endDate: '',
-                isOngoing: false,
-                visibility: '',
-            },
-        ]);
-        setJustCreated(true);
-    };
+        <div className="max-h-[80vh] overflow-y-auto p-6">
+          {step === 1 ? (
+            <div className="space-y-6">
+              {/* Title */}
+              <div className="space-y-2">
+                <Label htmlFor="title" className="text-sm font-medium text-[#344054]">
+                  Title <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="title"
+                  placeholder="Strength in Unity: Cancer Patient Support Program"
+                  value={formData.title}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      title: e.target.value,
+                    })
+                  }
+                />
+              </div>
 
-    const handleParticipationChange = (value: string) => {
-        setFormData((prev) => ({
-            ...prev,
-            participation: prev.participation.includes(value)
-                ? prev.participation.filter((item) => item !== value)
-                : [...prev.participation, value],
-        }));
-    };
-
-    return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                <Button
-                    className=' max-w-[257px] py-3 px-[51px]'
-                    variant={'outline'}>
-                    {' '}
-                    <Plus />
-                    Create campaign
-                </Button>
-            </DialogTrigger>
-            <DialogContent className='min-w-[700px] w-full p-0 gap-0 overflow-hidden bg-white'>
-                <DialogHeader className='p-6 border-b border-gray-100'>
-                    <DialogTitle className='text-xl font-bold text-[#0A0A0C]'>
-                        Campaign Details
-                    </DialogTitle>
-                </DialogHeader>
-
-                <div className='p-6 max-h-[80vh] overflow-y-auto'>
-                    {step === 1 ? (
-                        <div className='space-y-6'>
-                            {/* Title */}
-                            <div className='space-y-2'>
-                                <Label
-                                    htmlFor='title'
-                                    className='text-sm font-medium text-[#344054]'>
-                                    Title{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <Input
-                                    id='title'
-                                    placeholder='Strength in Unity: Cancer Patient Support Program'
-                                    value={formData.title}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            title: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-
-                            {/* Description */}
-                            <div className='space-y-2'>
-                                <Label
-                                    htmlFor='description'
-                                    className='text-sm font-medium text-[#344054]'>
-                                    Description{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <div className='relative'>
-                                    <Textarea
-                                        id='description'
-                                        placeholder='Lorem Ipsum is simply dummy text...'
-                                        className='min-h-[120px] resize-none pb-8'
-                                        value={formData.description}
-                                        onChange={(e) =>
-                                            setFormData({
-                                                ...formData,
-                                                description: e.target.value,
-                                            })
-                                        }
-                                    />
-                                    <div className='absolute bottom-2 right-2 text-xs text-gray-400'>
-                                        {formData.description.length}/200
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Goals */}
-                            <div className='space-y-2'>
-                                <Label
-                                    htmlFor='goal'
-                                    className='text-sm font-medium text-[#344054]'>
-                                    Goals{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <Input
-                                    id='goal'
-                                    placeholder='$1,500.00'
-                                    type='text' // Keep text for currency formatting flexibility
-                                    value={formData.goal}
-                                    onChange={(e) =>
-                                        setFormData({
-                                            ...formData,
-                                            goal: e.target.value,
-                                        })
-                                    }
-                                />
-                            </div>
-
-                            {/* Category */}
-                            <div className='space-y-2'>
-                                <Label
-                                    htmlFor='category'
-                                    className='text-sm font-medium text-[#344054]'>
-                                    Category{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <Select
-                                    value={formData.category}
-                                    onValueChange={(value) =>
-                                        setFormData({
-                                            ...formData,
-                                            category: value,
-                                        })
-                                    }>
-                                    <SelectTrigger>
-                                        <SelectValue placeholder='Select category' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value='medical'>
-                                            Medical
-                                        </SelectItem>
-                                        <SelectItem value='education'>
-                                            Education
-                                        </SelectItem>
-                                        <SelectItem value='emergency'>
-                                            Emergency
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Thumbnail */}
-                            <div className='space-y-2'>
-                                <Label className='text-sm font-medium text-[#344054]'>
-                                    Thumbnail{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                {formData.thumbnail ? (
-                                    <div className='relative w-full h-32 rounded-lg overflow-hidden group'>
-                                        <img
-                                            src={URL.createObjectURL(
-                                                formData.thumbnail
-                                            )}
-                                            alt='Thumbnail'
-                                            className='w-full h-full object-cover'
-                                        />
-                                        <button
-                                            onClick={() =>
-                                                setFormData({
-                                                    ...formData,
-                                                    thumbnail: null,
-                                                })
-                                            }
-                                            className='absolute top-2 right-2 w-6 h-6 bg-white/80 rounded-full flex items-center justify-center hover:bg-white transition-colors cursor-pointer'>
-                                            <HugeiconsIcon
-                                                icon={Cancel01Icon}
-                                                size={14}
-                                                className='text-gray-700'
-                                            />
-                                        </button>
-                                        <div className='absolute bottom-2 right-3 text-xs text-white font-medium bg-black/40 px-2 py-0.5 rounded'>
-                                            {(
-                                                formData.thumbnail.size /
-                                                1024 /
-                                                1024
-                                            ).toFixed(1)}{' '}
-                                            MB
-                                        </div>
-                                    </div>
-                                ) : (
-                                    <div
-                                        onClick={() =>
-                                            fileInputRef.current?.click()
-                                        }
-                                        className='w-full h-32 border-2 border-dashed border-gray-200 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:bg-gray-50 transition-colors'>
-                                        <HugeiconsIcon
-                                            icon={Image01Icon}
-                                            size={24}
-                                            className='text-gray-400 mb-2'
-                                        />
-                                        <span className='text-sm text-gray-500'>
-                                            Click to upload thumbnail
-                                        </span>
-                                    </div>
-                                )}
-                                <input
-                                    type='file'
-                                    ref={fileInputRef}
-                                    className='hidden'
-                                    accept='image/*'
-                                    onChange={handleFileChange}
-                                />
-                            </div>
-                        </div>
-                    ) : (
-                        <div className='space-y-6'>
-                            {/* Campaign Type */}
-                            <div className='space-y-2'>
-                                <Label
-                                    htmlFor='type'
-                                    className='text-sm font-medium text-[#344054]'>
-                                    Campaign Type{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <Select
-                                    value={formData.campaignType}
-                                    onValueChange={(value) =>
-                                        setFormData({
-                                            ...formData,
-                                            campaignType: value,
-                                        })
-                                    }>
-                                    <SelectTrigger className='w-full'>
-                                        <SelectValue placeholder='Select type' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value='fundraising'>
-                                            Fundraising
-                                        </SelectItem>
-                                        <SelectItem value='awareness'>
-                                            Awareness / Advocacy
-                                        </SelectItem>
-                                        <SelectItem value='community'>
-                                            Community Support
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-
-                            {/* Participation */}
-                            <div className='space-y-2'>
-                                <Label className='text-sm font-medium text-[#344054]'>
-                                    How can people participate?{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <div className='border rounded-lg p-4 space-y-3'>
-                                    {[
-                                        'Donate',
-                                        'Share with others',
-                                        'Invite friends',
-                                        'Respond / Vote',
-                                        'Attend an event',
-                                    ].map((item) => (
-                                        <div
-                                            key={item}
-                                            className='flex items-center space-x-2'>
-                                            <Checkbox
-                                                id={item}
-                                                checked={formData.participation.includes(
-                                                    item
-                                                )}
-                                                onCheckedChange={() =>
-                                                    handleParticipationChange(
-                                                        item
-                                                    )
-                                                }
-                                            />
-                                            <label
-                                                htmlFor={item}
-                                                className='text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer text-gray-700'>
-                                                {item}
-                                            </label>
-                                        </div>
-                                    ))}
-                                </div>
-                            </div>
-
-                            {/* Duration */}
-                            <div className='space-y-2'>
-                                <Label className='text-sm font-medium text-[#344054]'>
-                                    Campaign Duration{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <div className='border rounded-lg p-3 flex flex-col gap-4'>
-                                    <div className='flex items-center gap-2'>
-                                        <Input
-                                            type='date'
-                                            placeholder='Start date'
-                                            value={formData.startDate}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    startDate: e.target.value,
-                                                })
-                                            }
-                                            className='flex-1'
-                                        />
-                                        <span className='text-gray-400'>/</span>
-                                        <Input
-                                            type='date'
-                                            placeholder='End date (optional)'
-                                            value={formData.endDate}
-                                            onChange={(e) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    endDate: e.target.value,
-                                                })
-                                            }
-                                            disabled={formData.isOngoing}
-                                            className='flex-1'
-                                        />
-                                    </div>
-                                    <div className='flex items-center gap-2'>
-                                        <Switch
-                                            id='ongoing'
-                                            checked={formData.isOngoing}
-                                            onCheckedChange={(checked) =>
-                                                setFormData({
-                                                    ...formData,
-                                                    isOngoing: checked,
-                                                })
-                                            }
-                                        />
-                                        <Label
-                                            htmlFor='ongoing'
-                                            className='text-sm text-gray-600 font-normal cursor-pointer'>
-                                            Toggle: Ongoing campaign
-                                        </Label>
-                                    </div>
-                                </div>
-                            </div>
-
-                            {/* Visibility */}
-                            <div className='space-y-2'>
-                                <Label
-                                    htmlFor='visibility'
-                                    className='text-sm font-medium text-[#344054]'>
-                                    Campaign Visibility{' '}
-                                    <span className='text-red-500'>*</span>
-                                </Label>
-                                <Select
-                                    value={formData.visibility}
-                                    onValueChange={(value) =>
-                                        setFormData({
-                                            ...formData,
-                                            visibility: value,
-                                        })
-                                    }>
-                                    <SelectTrigger className='w-full'>
-                                        <SelectValue placeholder='Select visibility' />
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        <SelectItem value='public'>
-                                            Public (shareable)
-                                        </SelectItem>
-                                        <SelectItem value='community'>
-                                            Community only
-                                        </SelectItem>
-                                        <SelectItem value='invite'>
-                                            Invite-only
-                                        </SelectItem>
-                                    </SelectContent>
-                                </Select>
-                            </div>
-                        </div>
-                    )}
+              {/* Description */}
+              <div className="space-y-2">
+                <Label htmlFor="description" className="text-sm font-medium text-[#344054]">
+                  Description <span className="text-red-500">*</span>
+                </Label>
+                <div className="relative">
+                  <Textarea
+                    id="description"
+                    placeholder="Lorem Ipsum is simply dummy text..."
+                    className="min-h-[120px] resize-none pb-8"
+                    value={formData.description}
+                    onChange={(e) =>
+                      setFormData({
+                        ...formData,
+                        description: e.target.value,
+                      })
+                    }
+                  />
+                  <div className="absolute right-2 bottom-2 text-xs text-gray-400">
+                    {formData.description.length}/200
+                  </div>
                 </div>
+              </div>
 
-                <div className='p-6 border-t border-gray-100 flex justify-end gap-3 bg-gray-50/50'>
-                    {step === 1 ? (
-                        <>
-                            <Button
-                                variant='outline'
-                                onClick={() => setOpen(false)}
-                                className='px-6'>
-                                Cancel
-                            </Button>
-                            <Button
-                                onClick={handleNext}
-                                className='px-6 bg-[#079455] hover:bg-[#0E8A4A] text-white'>
-                                Next
-                            </Button>
-                        </>
-                    ) : (
-                        <>
-                            <Button
-                                variant='outline'
-                                onClick={handleBack}
-                                className='px-6'>
-                                Back
-                            </Button>
-                            <Button
-                                onClick={handleSubmit}
-                                className='px-6 bg-[#079455] hover:bg-[#0E8A4A] text-white'>
-                                Submit
-                            </Button>
-                        </>
-                    )}
+              {/* Goals */}
+              <div className="space-y-2">
+                <Label htmlFor="goal" className="text-sm font-medium text-[#344054]">
+                  Goals <span className="text-red-500">*</span>
+                </Label>
+                <Input
+                  id="goal"
+                  placeholder="$1,500.00"
+                  type="text" // Keep text for currency formatting flexibility
+                  value={formData.goal}
+                  onChange={(e) =>
+                    setFormData({
+                      ...formData,
+                      goal: e.target.value,
+                    })
+                  }
+                />
+              </div>
+
+              {/* Category */}
+              <div className="space-y-2">
+                <Label htmlFor="category" className="text-sm font-medium text-[#344054]">
+                  Category <span className="text-red-500">*</span>
+                </Label>
+                <Select
+                  value={formData.category}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      category: value,
+                    })
+                  }
+                >
+                  <SelectTrigger>
+                    <SelectValue placeholder="Select category" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="medical">Medical</SelectItem>
+                    <SelectItem value="education">Education</SelectItem>
+                    <SelectItem value="emergency">Emergency</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Thumbnail */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-[#344054]">
+                  Thumbnail <span className="text-red-500">*</span>
+                </Label>
+                {formData.thumbnail ? (
+                  <div className="group relative h-32 w-full overflow-hidden rounded-lg">
+                    <img
+                      src={URL.createObjectURL(formData.thumbnail)}
+                      alt="Thumbnail"
+                      className="h-full w-full object-cover"
+                    />
+                    <button
+                      onClick={() =>
+                        setFormData({
+                          ...formData,
+                          thumbnail: null,
+                        })
+                      }
+                      className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
+                    >
+                      <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
+                    </button>
+                    <div className="absolute right-3 bottom-2 rounded bg-black/40 px-2 py-0.5 text-xs font-medium text-white">
+                      {(formData.thumbnail.size / 1024 / 1024).toFixed(1)} MB
+                    </div>
+                  </div>
+                ) : (
+                  <div
+                    onClick={() => fileInputRef.current?.click()}
+                    className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 transition-colors hover:bg-gray-50"
+                  >
+                    <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" />
+                    <span className="text-sm text-gray-500">Click to upload thumbnail</span>
+                  </div>
+                )}
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  className="hidden"
+                  accept="image/*"
+                  onChange={handleFileChange}
+                />
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-6">
+              {/* Campaign Type */}
+              <div className="space-y-2">
+                <Label htmlFor="type" className="text-sm font-medium text-[#344054]">
+                  Campaign Type <span className="text-red-500">*</span>
+                </Label>
+                <Select
+                  value={formData.campaignType}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      campaignType: value,
+                    })
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select type" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="fundraising">Fundraising</SelectItem>
+                    <SelectItem value="awareness">Awareness / Advocacy</SelectItem>
+                    <SelectItem value="community">Community Support</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Participation */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-[#344054]">
+                  How can people participate? <span className="text-red-500">*</span>
+                </Label>
+                <div className="space-y-3 rounded-lg border p-4">
+                  {[
+                    "Donate",
+                    "Share with others",
+                    "Invite friends",
+                    "Respond / Vote",
+                    "Attend an event",
+                  ].map((item) => (
+                    <div key={item} className="flex items-center space-x-2">
+                      <Checkbox
+                        id={item}
+                        checked={formData.participation.includes(item)}
+                        onCheckedChange={() => handleParticipationChange(item)}
+                      />
+                      <label
+                        htmlFor={item}
+                        className="cursor-pointer text-sm leading-none font-medium text-gray-700 peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        {item}
+                      </label>
+                    </div>
+                  ))}
                 </div>
-            </DialogContent>
-        </Dialog>
-    );
+              </div>
+
+              {/* Duration */}
+              <div className="space-y-2">
+                <Label className="text-sm font-medium text-[#344054]">
+                  Campaign Duration <span className="text-red-500">*</span>
+                </Label>
+                <div className="flex flex-col gap-4 rounded-lg border p-3">
+                  <div className="flex items-center gap-2">
+                    <Input
+                      type="date"
+                      placeholder="Start date"
+                      value={formData.startDate}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          startDate: e.target.value,
+                        })
+                      }
+                      className="flex-1"
+                    />
+                    <span className="text-gray-400">/</span>
+                    <Input
+                      type="date"
+                      placeholder="End date (optional)"
+                      value={formData.endDate}
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          endDate: e.target.value,
+                        })
+                      }
+                      disabled={formData.isOngoing}
+                      className="flex-1"
+                    />
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="ongoing"
+                      checked={formData.isOngoing}
+                      onCheckedChange={(checked) =>
+                        setFormData({
+                          ...formData,
+                          isOngoing: checked,
+                        })
+                      }
+                    />
+                    <Label
+                      htmlFor="ongoing"
+                      className="cursor-pointer text-sm font-normal text-gray-600"
+                    >
+                      Toggle: Ongoing campaign
+                    </Label>
+                  </div>
+                </div>
+              </div>
+
+              {/* Visibility */}
+              <div className="space-y-2">
+                <Label htmlFor="visibility" className="text-sm font-medium text-[#344054]">
+                  Campaign Visibility <span className="text-red-500">*</span>
+                </Label>
+                <Select
+                  value={formData.visibility}
+                  onValueChange={(value) =>
+                    setFormData({
+                      ...formData,
+                      visibility: value,
+                    })
+                  }
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select visibility" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="public">Public (shareable)</SelectItem>
+                    <SelectItem value="community">Community only</SelectItem>
+                    <SelectItem value="invite">Invite-only</SelectItem>
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
+        </div>
+
+        <div className="flex justify-end gap-3 border-t border-gray-100 bg-gray-50/50 p-6">
+          {step === 1 ? (
+            <>
+              <Button variant="outline" onClick={() => setOpen(false)} className="px-6">
+                Cancel
+              </Button>
+              <Button
+                onClick={handleNext}
+                className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
+              >
+                Next
+              </Button>
+            </>
+          ) : (
+            <>
+              <Button variant="outline" onClick={handleBack} className="px-6">
+                Back
+              </Button>
+              <Button
+                onClick={handleSubmit}
+                className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
+              >
+                Submit
+              </Button>
+            </>
+          )}
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
 };
 
 export default CreateCampaignModal;

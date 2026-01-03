@@ -1,7 +1,6 @@
 import React, { useState, type ReactNode, createContext } from "react";
 import Navbar from "../navbar";
 import Sidebar from "./sidebar";
-import { Outlet } from "react-router-dom";
 
 export interface LayoutContextType {
   setBreadcrumbComponent: (component: ReactNode | null) => void;
@@ -24,7 +23,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
         {/* Main Content */}
         <div className="flex flex-1 flex-col px-8">
           <Navbar breadcrumbs={breadcrumbComponent} />
-          <main className="no-scrollbar h-[calc(100vh-150px)] min-w-0 flex-1 overflow-auto bg-white">
+          <main className="no-scrollbar h-[calc(100vh-150px)] min-w-0 flex-1 overflow-auto bg-white py-4">
             {children}
           </main>
           {/* Removed redundant Outlet */}
