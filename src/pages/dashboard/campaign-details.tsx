@@ -1,19 +1,5 @@
-import { Button } from "@/components/ui/button";
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 
-import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon, Share01Icon } from "@hugeicons/core-free-icons";
-
-import PulseStatsWidget from "@/components/campaigns/details/pulse-stats-widget";
-import TodaysObjectivesWidget from "@/components/campaigns/details/todays-objectives-widget";
-import DriverAnalysisWidget from "@/components/campaigns/details/driver-analysis-widget";
-import CampaignMomentumTimeline from "@/components/campaigns/details/campaign-momentum-timeline";
-import {
-  WhatsHappeningWidget,
-  RequestParticipantsWidget,
-} from "@/components/campaigns/details/sidebar-widgets";
-import ActivityFeedWidget from "@/components/campaigns/details/activity-feed-widget";
-import AiInsightWidget from "@/components/campaigns/details/ai-insight-widget";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Story from "@/components/campaigns/details/story";
 import CommandCenter from "@/components/campaigns/details/command-center";

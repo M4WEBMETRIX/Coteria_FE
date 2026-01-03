@@ -1,10 +1,3 @@
-import {
-  Layers01Icon,
-  Money03Icon,
-  UserGroupIcon,
-  Activity01Icon,
-} from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { HandHeartIcon, MoneyIcon, PackageIcon, UsersFourIcon } from "@phosphor-icons/react";
 
 interface StatCardProps {
