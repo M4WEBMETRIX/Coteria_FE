@@ -25,9 +25,15 @@ import { Cancel01Icon, Image01Icon } from '@hugeicons/core-free-icons';
 
 interface CreateCampaignModalProps {
     children?: React.ReactNode;
+    setCampaignsData: (data: any) => void;
+    setJustCreated: (data: any) => void;
 }
 
-const CreateCampaignModal = ({ children }: CreateCampaignModalProps) => {
+const CreateCampaignModal = ({
+    children,
+    setCampaignsData,
+    setJustCreated,
+}: CreateCampaignModalProps) => {
     const [open, setOpen] = useState(false);
     const [step, setStep] = useState(1);
     const [formData, setFormData] = useState({
@@ -72,6 +78,22 @@ const CreateCampaignModal = ({ children }: CreateCampaignModalProps) => {
             isOngoing: false,
             visibility: '',
         });
+        setCampaignsData([
+            {
+                title: '',
+                description: '',
+                goal: '',
+                category: '',
+                thumbnail: null,
+                campaignType: '',
+                participation: [],
+                startDate: '',
+                endDate: '',
+                isOngoing: false,
+                visibility: '',
+            },
+        ]);
+        setJustCreated(true);
     };
 
     const handleParticipationChange = (value: string) => {

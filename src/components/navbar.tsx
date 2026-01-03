@@ -8,7 +8,7 @@ interface NavbarProps {
 
 const Navbar = ({ breadcrumbs }: NavbarProps) => {
     return (
-        <nav className='h-[72px] w-full bg-white border-b border-gray-100 flex items-center px-8 justify-between sticky top-0 z-50'>
+        <nav className='h-[72px] w-full bg-white border-b border-gray-100 flex items-center  justify-between sticky top-0 z-50'>
             {/* Breadcrumb */}
             <div className='flex items-center'>{breadcrumbs}</div>
 
