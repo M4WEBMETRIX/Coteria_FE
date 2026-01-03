@@ -60,10 +60,10 @@ const Sidebar = () => {
       >
         {isSidebarOpen && (
           <div
-            className="mt-5 h-[40px] rounded-[8px] bg-[#FFF0F3] px-4 py-2"
+            className="mt-5 h-[40px] rounded-[8px] bg-[#FFF0F3] px-4 py-2 transition-all delay-1000 duration-300"
             style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
           >
-            <p className="mb-1 text-base leading-[150%] font-medium tracking-[2%] text-[#DF1C41]">
+            <p className="mb-1 line-clamp-1 text-base leading-[150%] font-medium tracking-[2%] text-[#DF1C41]">
               Profile 50% complete
             </p>
           </div>
@@ -77,29 +77,8 @@ const Sidebar = () => {
                 {isSidebarOpen && (
                   <>
                     {link.name !== "Main" && (
-                      <p
-                        className="mb-1 flex cursor-pointer items-center justify-between p-2 text-sm leading-[150%] font-semibold tracking-[2%] text-[#A4ACB9] uppercase select-none hover:text-black"
-                        // onClick={() =>
-                        //     handleSectionClick(
-                        //         link.name
-                        //     )
-                        // }
-                      >
+                      <p className="mb-1 flex cursor-pointer items-center justify-between p-2 text-sm leading-[150%] font-medium tracking-[2%] text-[#A4ACB9] select-none hover:text-black">
                         {link.name}
-
-                        {/* {link.hasSubLinks && (
-                                                    <CaretDownIcon
-                                                        size={14}
-                                                        weight='bold'
-                                                        color='#64748B'
-                                                        className={cn(
-                                                            'text-[#99A0AE] transition-transform duration-300',
-                                                            isSectionOpen
-                                                                ? ''
-                                                                : '-rotate-90'
-                                                        )}
-                                                    />
-                                                )} */}
                       </p>
                     )}
                   </>
@@ -120,25 +99,24 @@ const Sidebar = () => {
                 <TooltipProvider delayDuration={0}>
                   <ul className="flex w-full flex-col items-center gap-1">
                     {link.subLinks.map((subLink, subIndex: number) => {
+                      const isActive = location.pathname.includes(subLink.path);
                       const LinkContent = (
                         <NavLink
                           to={subLink.path}
-                          className={({ isActive }) =>
-                            cn(
-                              "group flex w-full cursor-pointer items-center gap-2 rounded-md border border-transparent px-3 py-[10px] text-sm text-[#99A0AE] transition-all duration-200",
-                              isActive
-                                ? "text-primary600 bg-white font-medium text-[#717171]"
-                                : "hover:bg-white hover:text-[#717171]",
-                              isSidebarOpen ? "justify-start" : "justify-center"
-                            )
-                          }
+                          className={cn(
+                            "group flex w-full cursor-pointer items-center gap-2 rounded-md border border-transparent px-3 py-[10px] text-sm text-[#99A0AE] transition-all duration-200",
+                            isActive
+                              ? "border-[#DFE1E7] bg-white font-medium text-[#079455] shadow-[0px_1px_2px_0px_#E4E5E73D]"
+                              : "bg-transparent hover:bg-gray-100 hover:text-[#717171]",
+                            isSidebarOpen ? "justify-start" : "justify-center"
+                          )}
                         >
                           <span
                             className={cn(
                               "shrink-0",
                               location.pathname.includes(subLink.path)
-                                ? "text-[#0A0A0C]"
-                                : "text-gray-500 group-hover:text-[#0A0A0C]"
+                                ? "text-[#079455]"
+                                : "text-[#666D80] group-hover:text-[#0A0A0C]"
                             )}
                           >
                             {subLink.icon}
@@ -157,7 +135,7 @@ const Sidebar = () => {
                               <TooltipTrigger asChild>{LinkContent}</TooltipTrigger>
                               <TooltipContent
                                 side="right"
-                                className="ml-2 border-black bg-black font-medium text-white"
+                                className="ml-2 bg-[#079455] font-medium text-white"
                               >
                                 {t(subLink.name)}
                               </TooltipContent>

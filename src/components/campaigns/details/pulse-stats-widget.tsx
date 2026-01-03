@@ -1,122 +1,100 @@
-import { Card } from '@/components/ui/card';
+import { Chart01Icon, ChartHistogramIcon } from "@hugeicons/core-free-icons";
+import { HugeiconsIcon } from "@hugeicons/react";
 
-// Simplified version for the specific layout in screenshot
 const PulseStatsWidget = () => {
-    return (
-        <div className='grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4'>
-            <Card className='border-[#E0E1E6] shadow-sm bg-white rounded-xl p-4'>
-                <div className='flex justify-between mb-2'>
-                    <span className='text-sm text-[#5E606A] font-medium'>
-                        Awareness
-                    </span>
-                </div>
-                <div className='flex items-baseline gap-2 mb-1'>
-                    <span className='text-2xl font-bold text-[#1E1F24]'>
-                        3,542
-                    </span>
-                    <span className='text-xs font-semibold text-[#12AA5B] bg-[#E7F6EC] px-1.5 py-0.5 rounded'>
-                        +15.0
-                    </span>
-                    {/* Tiny chart icon substitute */}
-                    <svg
-                        width='20'
-                        height='10'
-                        viewBox='0 0 20 10'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'>
-                        <path
-                            d='M1 9L5 5L9 8L15 2L19 4'
-                            stroke='#12AA5B'
-                            strokeWidth='1.5'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                        />
-                    </svg>
-                </div>
-                <div className='flex items-center gap-4 text-[10px] text-[#8B8D98]'>
-                    <span>Impression</span>
-                    <span>vs Last 7 Days</span>
-                </div>
-            </Card>
+  const stats = [
+    {
+      title: "Awareness",
+      value: "3,542",
+      badge: "+16.0",
+      badgeRole: "positive", // green
+      hasChartIcon: true,
+      chartIcon: Chart01Icon,
+      chartIconColor: "text-[#12AA5B]",
+      footer: ["Impression", "vs Last 7 Days"],
+      footerColor: "text-[#31AB93]",
+    },
+    {
+      title: "Participation",
+      value: "429",
+      badge: "+10.0",
+      badgeRole: "positive",
+      hasChartIcon: true,
+      chartIcon: Chart01Icon,
+      chartIconColor: "text-[#12AA5B]",
+      footer: ["Participant", "Conversion rate"],
+      footerColor: "text-[#8B8D98]",
+    },
+    {
+      title: "Influence",
+      value: "33%",
+      badge: "+20.0",
+      badgeRole: "info", // blue
+      hasChartIcon: false,
+      footer: ["5 active influencers"],
+      footerColor: "text-[#8B8D98]",
+    },
+    {
+      title: "Momentum",
+      value: "Growing",
+      badge: null,
+      hasChartIcon: true,
+      chartIcon: ChartHistogramIcon,
+      chartIconColor: "text-[#2E90FA]",
+      footer: [],
+      footerColor: "",
+    },
+  ];
 
-            <Card className='border-[#E0E1E6] shadow-sm bg-white rounded-xl p-4'>
-                <div className='flex justify-between mb-2'>
-                    <span className='text-sm text-[#5E606A] font-medium'>
-                        Participation
-                    </span>
-                </div>
-                <div className='flex items-baseline gap-2 mb-1'>
-                    <span className='text-2xl font-bold text-[#1E1F24]'>
-                        429
-                    </span>
-                    <span className='text-xs font-semibold text-[#12AA5B] bg-[#E7F6EC] px-1.5 py-0.5 rounded'>
-                        +10.0
-                    </span>
-                    <svg
-                        width='20'
-                        height='10'
-                        viewBox='0 0 20 10'
-                        fill='none'
-                        xmlns='http://www.w3.org/2000/svg'>
-                        <path
-                            d='M1 9L5 5L9 8L15 2L19 4'
-                            stroke='#12AA5B'
-                            strokeWidth='1.5'
-                            strokeLinecap='round'
-                            strokeLinejoin='round'
-                        />
-                    </svg>
-                </div>
-                <div className='flex items-center gap-4 text-[10px] text-[#8B8D98]'>
-                    <span>Participant</span>
-                    <span>Conversion rate</span>
-                </div>
-            </Card>
+  return (
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      {stats.map((stat, index) => (
+        <div
+          key={index}
+          className="flex flex-col gap-[6px] rounded-[16px] border-[#DFE1E7] bg-white p-4 shadow-sm"
+        >
+          <div className="flex justify-between">
+            <span className="text-[12px] leading-[150%] font-normal tracking-[2%] text-[#666D80]">
+              {stat.title}
+            </span>
+          </div>
+          <div className="mb-1 flex items-center gap-2">
+            <span className="text-2xl leading-[150%] font-medium tracking-[0%] text-[#0D0D12]">
+              {stat.value}
+            </span>
 
-            <Card className='border-[#E0E1E6] shadow-sm bg-white rounded-xl p-4'>
-                <div className='flex justify-between mb-2'>
-                    <span className='text-sm text-[#5E606A] font-medium'>
-                        Influence
-                    </span>
-                </div>
-                <div className='flex items-baseline gap-2 mb-1'>
-                    <span className='text-2xl font-bold text-[#1E1F24]'>
-                        33%
-                    </span>
-                    <span className='text-xs font-semibold text-[#2E90FA] bg-[#F5FAFF] px-1.5 py-0.5 rounded text-[#175CD3]'>
-                        +20.0
-                    </span>
-                </div>
-                <div className='flex items-center gap-4 text-[10px] text-[#8B8D98]'>
-                    <span>5 active influencers</span>
-                </div>
-            </Card>
+            {stat.badge && (
+              <span
+                className={`rounded-full px-1.5 py-0.5 text-xs font-semibold ${
+                  stat.badgeRole === "info"
+                    ? "bg-[#EFF8FF] text-[#175CD3]"
+                    : "bg-[#E7F6EC] text-[#12AA5B]"
+                }`}
+              >
+                {stat.badge}
+              </span>
+            )}
 
-            <Card className='border-[#E0E1E6] shadow-sm bg-white rounded-xl p-4'>
-                <div className='flex justify-between mb-2'>
-                    <span className='text-sm text-[#5E606A] font-medium'>
-                        Momentum
-                    </span>
-                </div>
-                <div className='flex items-center justify-between mb-1'>
-                    <span className='text-2xl font-bold text-[#1E1F24]'>
-                        Growing
-                    </span>
-                    {/* Bar chart icon */}
-                    <div className='flex items-end gap-0.5 h-4'>
-                        <div className='w-1 h-2 bg-[#2E90FA] rounded-sm'></div>
-                        <div className='w-1 h-3 bg-[#2E90FA] rounded-sm'></div>
-                        <div className='w-1 h-4 bg-[#175CD3] rounded-sm'></div>
-                        <div className='w-1 h-3 bg-[#2E90FA] rounded-sm'></div>
-                    </div>
-                </div>
-                <div className='flex items-center gap-4 text-[10px] text-[#8B8D98]'>
-                    {/* Empty placeholder to match height */}
-                    <span>&nbsp;</span>
-                </div>
-            </Card>
+            {stat.hasChartIcon && stat.chartIcon && (
+              <div className={stat.chartIconColor}>
+                <HugeiconsIcon icon={stat.chartIcon} size={20} />
+              </div>
+            )}
+          </div>
+
+          {stat.footer.length > 0 && (
+            <div
+              className={`flex items-center gap-4 text-[10px] leading-[150%] tracking-[2%] ${stat.footerColor}`}
+            >
+              {stat.footer.map((label, idx) => (
+                <span key={idx}>{label}</span>
+              ))}
+            </div>
+          )}
         </div>
-    );
+      ))}
+    </div>
+  );
 };
 
 export default PulseStatsWidget;

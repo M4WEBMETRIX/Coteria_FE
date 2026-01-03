@@ -5,7 +5,6 @@ import {
   ArrowRight01Icon,
   Cancel01Icon,
   Checkmark,
-  CheckmarkBadge01FreeIcons,
   CheckmarkCircle01FreeIcons,
   Share01Icon,
 } from "@hugeicons/core-free-icons";
@@ -60,7 +59,7 @@ const CommandCenter = () => {
           <PulseStatsWidget />
 
           {/* Alert Banner */}
-          <div className="flex items-center justify-between rounded-lg border border-[#FFD2A8] bg-[#FFFCF5] p-3 text-xs font-semibold text-[#B96004]">
+          <div className="mt-8 flex items-center justify-between rounded-[12px] border border-[#FFBE4C] bg-[#FFF6E0] px-4 py-[5.5px] text-xs leading-[150%] font-normal tracking-[2%] text-[#0D0D12]">
             <div className="flex items-center gap-2">
               <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FDB022] text-[10px] text-white">
                 !
@@ -74,13 +73,13 @@ const CommandCenter = () => {
           </div>
 
           {/* Objectives & Driver Analysis Row */}
-          <div className="grid h-full grid-cols-12 gap-6">
+          <div className="mt-10 grid h-full grid-cols-12 gap-6">
             {/* Objectives (Larger) */}
-            <div className="col-span-12 lg:col-span-8">
+            <div className="col-span-12 flex-1 lg:col-span-9">
               <TodaysObjectivesWidget />
             </div>
             {/* Driver Analysis (Smaller) */}
-            <div className="col-span-12 h-full lg:col-span-4">
+            <div className="col-span-12 h-full lg:col-span-3">
               <DriverAnalysisWidget />
             </div>
           </div>
