@@ -31,7 +31,7 @@ const CampaignsPage = () => {
           {/* Success Banner */}
           {justCreated && (
             <div className="flex items-center justify-between rounded-xl border border-[#84CC16] bg-[#F7FEE7] px-6 py-3 text-[#1E1F24]">
-              <span className="text-lg leading-[140%] tracking-[0%] text-[#3F3F46]">
+              <span className="text-base leading-[140%] tracking-[0%] text-[#3F3F46]">
                 “{CampaignsData[0].title}” was created successfully
               </span>
               <div className="flex items-center gap-4">
@@ -54,10 +54,10 @@ const CampaignsPage = () => {
 
           {/* Section Header */}
           <div className="mt-4 flex items-end justify-between">
-            <h2 className="text-xl leading-[135%] font-bold text-[#0D0D12]">All Campaign</h2>
+            <h2 className="text-xl leading-[135%] font-semibold text-[#0D0D12]">All Campaign</h2>
             <Button
               variant="outline"
-              className="py-[]9.5px] border-[#E0E1E6] bg-white px-4 text-sm leading-[150%] font-bold text-[#0D0D12]"
+              className="border-[#E0E1E6] bg-white px-4 py-[9.5px] text-sm leading-[150%] font-semibold text-[#0D0D12]"
             >
               Generate Report
             </Button>

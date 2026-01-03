@@ -1,10 +1,12 @@
-import { Link, NavLink, useLocation } from "react-router-dom";
+import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/icons/coterie.svg";
 import {
   CaretLeftIcon,
   CaretRightIcon,
+  HeadsetIcon,
+  PowerIcon,
   // CaretDownIcon,
 } from "@phosphor-icons/react";
 import { HelpCircleIcon, Logout01Icon } from "hugeicons-react";
@@ -17,13 +19,17 @@ const t = (key: string) => key;
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-
+  const navigate = useNavigate();
   const location = useLocation();
+
+  function handleLogout() {
+    navigate("/login");
+  }
 
   return (
     <aside
       className={cn(
-        "font-inter relative z-50 flex h-screen flex-col border-r border-gray-100 bg-[#F6F8FA] transition-all duration-300",
+        "font-inter relative z-50 flex h-screen flex-col border-r border-[#DFE1E7] bg-[#F6F8FA] transition-all duration-300",
         isSidebarOpen ? "w-64" : "w-16"
       )}
     >
@@ -63,7 +69,7 @@ const Sidebar = () => {
             className="mt-5 h-[40px] rounded-[8px] bg-[#FFF0F3] px-4 py-2 transition-all delay-1000 duration-300"
             style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
           >
-            <p className="mb-1 line-clamp-1 text-base leading-[150%] font-medium tracking-[2%] text-[#DF1C41]">
+            <p className="mb-1 line-clamp-1 text-sm leading-[150%] font-medium tracking-[2%] text-[#DF1C41]">
               Profile 50% complete
             </p>
           </div>
@@ -77,7 +83,7 @@ const Sidebar = () => {
                 {isSidebarOpen && (
                   <>
                     {link.name !== "Main" && (
-                      <p className="mb-1 flex cursor-pointer items-center justify-between p-2 text-sm leading-[150%] font-medium tracking-[2%] text-[#A4ACB9] select-none hover:text-black">
+                      <p className="mb-1 flex cursor-pointer items-center justify-between p-2 text-sm leading-[150%] font-medium tracking-[2%] text-[#A4ACB9] select-none">
                         {link.name}
                       </p>
                     )}
@@ -161,7 +167,7 @@ const Sidebar = () => {
               isSidebarOpen ? "justify-start" : "justify-center"
             )}
           >
-            <HelpCircleIcon className="h-4 w-4 shrink-0 text-gray-500" />
+            <HeadsetIcon size={20} weight="duotone" color="#666D80" />
             {isSidebarOpen && <span>Help & Support</span>}
             {!isSidebarOpen && (
               <span className="absolute top-1/2 left-[calc(100%+8px)] z-[90] hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-gray-700 shadow-md group-hover:block">
@@ -170,12 +176,14 @@ const Sidebar = () => {
             )}
           </button>
           <button
+            onClick={handleLogout}
             className={cn(
               "group relative flex w-full items-center gap-2 rounded-lg p-2 text-sm font-medium text-[#FF4D4F] transition-colors hover:bg-red-50",
               isSidebarOpen ? "justify-start" : "justify-center"
             )}
           >
-            <Logout01Icon className="h-4 w-4 shrink-0" />
+            {/* <Logo ut01Icon className="h-4 w-4 shrink-0" /> */}
+            <PowerIcon size={20} className="rotate-90" color="#DF1C41" />
             {isSidebarOpen && <span>Logout</span>}
             {!isSidebarOpen && (
               <span className="absolute top-1/2 left-[calc(100%+8px)] z-[90] hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-red-600 shadow-md group-hover:block">
