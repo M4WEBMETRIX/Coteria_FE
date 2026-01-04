@@ -21,6 +21,7 @@ const DonationsPage = lazy(() => import("./pages/dashboard/donations-page"));
 const TeamPage = lazy(() => import("./pages/dashboard/team-page"));
 const MessagesPage = lazy(() => import("./pages/dashboard/messages-page"));
 const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
+const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
 const AllRoutes = () => {
   return (
@@ -61,6 +62,8 @@ const AllRoutes = () => {
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<SettingsPage />} />
         </Route>
+
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </Suspense>
   );

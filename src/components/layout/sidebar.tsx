@@ -23,7 +23,7 @@ const Sidebar = () => {
   const location = useLocation();
 
   function handleLogout() {
-    navigate("/login");
+    navigate("/auth/login");
   }
 
   return (
@@ -64,7 +64,7 @@ const Sidebar = () => {
           isSidebarOpen ? "tiny-scrollbar" : "no-scrollbar"
         )}
       >
-        {isSidebarOpen && (
+        {/* {isSidebarOpen && (
           <div
             className="mt-5 h-[40px] rounded-[8px] bg-[#FFF0F3] px-4 py-2 transition-all delay-1000 duration-300"
             style={{ boxShadow: "0px 1px 2px 0px #E4E5E73D" }}
@@ -73,7 +73,7 @@ const Sidebar = () => {
               Profile 50% complete
             </p>
           </div>
-        )}
+        )} */}
         <ul className={cn("flex w-full flex-col gap-2", isSidebarOpen ? "" : "items-center")}>
           {sidebarLinks.map((link, index) => {
             // const isSectionOpen = openSections[link.name];
