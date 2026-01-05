@@ -11,10 +11,10 @@ import MetricCard from '@/components/reusable/metric-card'
 const DashboardPage = () => {
   useBreadcrumb({
     items: [
-      { label: 'Home', href: '/dashboard', isCurrentPage: true },
-      { label: 'Dashboard', href: '/dashboard', isCurrentPage: true },
+      { label: "Home", href: "/dashboard" },
+      { label: "Dashboard", href: "/dashboard", isCurrentPage: true },
     ],
-  })
+  });
 
   const isOnboarded = true
 
