@@ -133,7 +133,11 @@ const SettingsPage = () => {
       case "notifications":
         return <NotificationsTab formData={formData} setFormData={setFormData} />;
       case "danger-zone":
-        return <DangerZoneTab formData={formData} setFormData={setFormData} />;
+        return (
+          <DangerZoneTab
+          //  formData={formData} setFormData={setFormData}
+          />
+        );
       default:
         return <OrganizationProfileTab formData={formData} setFormData={setFormData} />;
     }
@@ -157,7 +161,7 @@ const SettingsPage = () => {
       {/* Main Content */}
       <div className="flex">
         {/* Sidebar Navigation */}
-        <div className="w-[200px] shrink-0 rounded-l-[16px] border p-4" b>
+        <div className="w-[200px] shrink-0 rounded-l-[16px] border p-4">
           <nav className="space-y-3">
             {SETTINGS_TABS.map((tab) => (
               <button

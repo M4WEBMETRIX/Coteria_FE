@@ -30,7 +30,7 @@ interface CreateCampaignModalProps {
 }
 
 const CreateCampaignModal = ({
-  children,
+  // children,
   setCampaignsData,
   setJustCreated,
 }: CreateCampaignModalProps) => {

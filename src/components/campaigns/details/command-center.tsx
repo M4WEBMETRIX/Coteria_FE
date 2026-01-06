@@ -1,13 +1,7 @@
 import { Button } from "@/components/ui/button";
 
 import { HugeiconsIcon } from "@hugeicons/react";
-import {
-  ArrowRight01Icon,
-  Cancel01Icon,
-  Checkmark,
-  CheckmarkCircle01FreeIcons,
-  Share01Icon,
-} from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, Cancel01Icon, Checkmark, Share01Icon } from "@hugeicons/core-free-icons";
 
 import PulseStatsWidget from "@/components/campaigns/details/pulse-stats-widget";
 import TodaysObjectivesWidget from "@/components/campaigns/details/todays-objectives-widget";

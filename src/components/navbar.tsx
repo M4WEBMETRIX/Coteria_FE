@@ -1,7 +1,7 @@
 import { Search, Bell } from "lucide-react";
 import UserProfileMenu from "@/components/user-profile-menu";
 import { useRef, useState, type ReactNode } from "react";
-import { Separator } from "./ui/separator";
+
 import { cn } from "@/lib/utils";
 
 interface NavbarProps {

@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { ChevronDown, RefreshCcw } from "lucide-react";
+import { RefreshCcw } from "lucide-react";
 import {
   Select,
   SelectContent,

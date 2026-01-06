@@ -1,5 +1,4 @@
 import { SparkleIcon } from "@phosphor-icons/react";
-import { Sparkle } from "lucide-react";
 
 const StatRow = ({
   color,

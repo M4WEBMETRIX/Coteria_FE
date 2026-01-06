@@ -1,13 +1,11 @@
 import { RefreshCcw } from "lucide-react";
-import { AiChat02FreeIcons } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
 import { Button } from "@/components/ui/button";
 import AiInsightsModal from "@/components/community/ai-insights-modal";
 import { SparkleIcon } from "@phosphor-icons/react";
 import AIIMAGE from "@/assets/images/ai-con.png";
 import { ScrollArea } from "../ui/scroll-area";
 
-const InsightItem = ({ text, color }: { text: string; color: string }) => {
+const InsightItem = ({ text }: { text: string }) => {
   return (
     <div className="flex items-start gap-3 rounded-lg p-3">
       <div className="shrink-0 rounded-full bg-white p-1">
@@ -74,7 +72,11 @@ const CommunityAiInsightWidget = () => {
 
       <ScrollArea className="flex h-[200px] flex-1 flex-col gap-3 overflow-auto">
         {INSIGHTS.map((insight) => (
-          <InsightItem key={insight.id} text={insight.text} color={insight.color} />
+          <InsightItem
+            key={insight.id}
+            text={insight.text}
+            // color={insight.color}
+          />
         ))}
       </ScrollArea>
 

@@ -1,9 +1,8 @@
-import React from "react";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+
 import { CalendarDays, Image as ImageIcon, Link as LinkIcon, Share2 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
+import { AspectRatio } from "@radix-ui/react-aspect-ratio";
 
 const UPDATES = [
   {

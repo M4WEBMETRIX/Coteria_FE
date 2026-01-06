@@ -1,32 +1,31 @@
 import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from '@/components/ui/breadcrumb';
-import { LayoutContext } from '@/components/layout/dashboard-layout';
-import { useEffect, useMemo, useRef, useContext } from 'react';
-import { Link } from 'react-router-dom';
+  Breadcrumb,
+  BreadcrumbItem,
+  BreadcrumbList,
+  BreadcrumbPage,
+} from "@/components/ui/breadcrumb";
+import { LayoutContext } from "@/components/layout/dashboard-layout";
+import { useEffect, useMemo, useRef, useContext } from "react";
+import { Link } from "react-router-dom";
 
 // Mock/Stub for missing dependencies
 const useCurrentVerticalDetails = () => ({
-    agent_slug: 'default',
-    business_name: 'Coterie',
-    business_type: 'agency',
+  agent_slug: "default",
+  business_name: "Coterie",
+  business_type: "agency",
 });
 const getLocalizedPath = (path: string) => path;
 
 export interface BreadcrumbItem {
-    label: string;
-    href?: string;
-    isCurrentPage?: boolean;
+  label: string;
+  href?: string;
+  isCurrentPage?: boolean;
 }
 
 export interface BreadcrumbConfig {
-    items: BreadcrumbItem[];
-    className?: string;
-    translator?: (key: string) => string;
+  items: BreadcrumbItem[];
+  className?: string;
+  translator?: (key: string) => string;
 }
 /**
  * Custom hook for managing breadcrumb navigation in the layout
@@ -66,85 +65,75 @@ export interface BreadcrumbConfig {
  * });
  */
 export const useBreadcrumb = (config: BreadcrumbConfig) => {
-    const {
-        agent_slug,
-        business_name,
-        business_type: agency,
-    } = useCurrentVerticalDetails();
-    const context = useContext(LayoutContext);
+  const { business_type: agency } = useCurrentVerticalDetails();
+  const context = useContext(LayoutContext);
 
-    if (!context) {
-        throw new Error('useBreadcrumb must be used within a DashboardLayout');
+  if (!context) {
+    throw new Error("useBreadcrumb must be used within a DashboardLayout");
+  }
+
+  const { setBreadcrumbComponent } = context;
+  const prevConfigRef = useRef<BreadcrumbConfig | null>(null);
+  const prevElementRef = useRef<React.ReactNode>(null);
+
+  // Check if config actually changed (deep comparison)
+  const configChanged =
+    !prevConfigRef.current ||
+    JSON.stringify(prevConfigRef.current.items) !== JSON.stringify(config.items) ||
+    prevConfigRef.current.className !== config.className ||
+    prevConfigRef.current.translator !== config.translator;
+
+  // Memoize the breadcrumb element to prevent unnecessary re-renders
+  const breadcrumbElement = useMemo(() => {
+    // Only recreate element if config actually changed
+    if (!configChanged && prevElementRef.current) {
+      return prevElementRef.current;
     }
 
-    const { setBreadcrumbComponent } = context;
-    const prevConfigRef = useRef<BreadcrumbConfig | null>(null);
-    const prevElementRef = useRef<React.ReactNode>(null);
+    const element = (
+      <Breadcrumb className={config.className || ""}>
+        <BreadcrumbList>
+          {config.items.map((item, index) => {
+            const isLast = index === config.items.length - 1;
+            const isCurrentPage = item.isCurrentPage ?? isLast;
 
-    // Check if config actually changed (deep comparison)
-    const configChanged =
-        !prevConfigRef.current ||
-        JSON.stringify(prevConfigRef.current.items) !==
-            JSON.stringify(config.items) ||
-        prevConfigRef.current.className !== config.className ||
-        prevConfigRef.current.translator !== config.translator;
+            return (
+              <div key={index} className="flex items-center gap-2">
+                <BreadcrumbItem>
+                  {isCurrentPage ? (
+                    <BreadcrumbPage className="text-sm font-medium text-[#1D2433] first-letter:uppercase">
+                      {item.label}
+                    </BreadcrumbPage>
+                  ) : (
+                    <Link
+                      to={getLocalizedPath(item.href || "#")}
+                      className={"text-[#99A0AE] capitalize"}
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </BreadcrumbItem>
+                {!isLast && <div>/</div>}
+              </div>
+            );
+          })}
+        </BreadcrumbList>
+      </Breadcrumb>
+    );
 
-    // Memoize the breadcrumb element to prevent unnecessary re-renders
-    const breadcrumbElement = useMemo(() => {
-        // Only recreate element if config actually changed
-        if (!configChanged && prevElementRef.current) {
-            return prevElementRef.current;
-        }
+    // Store for next comparison
+    prevElementRef.current = element;
+    prevConfigRef.current = config;
+    return element;
+  }, [config, configChanged]);
 
-        const element = (
-            <Breadcrumb className={config.className || ''}>
-                <BreadcrumbList>
-                    {config.items.map((item, index) => {
-                        const isLast = index === config.items.length - 1;
-                        const isCurrentPage = item.isCurrentPage ?? isLast;
+  useEffect(() => {
+    setBreadcrumbComponent(breadcrumbElement);
 
-                        return (
-                            <div
-                                key={index}
-                                className='flex items-center gap-2'>
-                                <BreadcrumbItem>
-                                    {isCurrentPage ? (
-                                        <BreadcrumbPage className='first-letter:uppercase text-sm text-[#1D2433] font-medium'>
-                                            {item.label}
-                                        </BreadcrumbPage>
-                                    ) : (
-                                        <Link
-                                            to={getLocalizedPath(
-                                                item.href || '#'
-                                            )}
-                                            className={
-                                                'text-[#99A0AE] capitalize'
-                                            }>
-                                            {item.label}
-                                        </Link>
-                                    )}
-                                </BreadcrumbItem>
-                                {!isLast && <div>/</div>}
-                            </div>
-                        );
-                    })}
-                </BreadcrumbList>
-            </Breadcrumb>
-        );
-
-        // Store for next comparison
-        prevElementRef.current = element;
-        prevConfigRef.current = config;
-        return element;
-    }, [config, configChanged]);
-
-    useEffect(() => {
-        setBreadcrumbComponent(breadcrumbElement);
-
-        // Cleanup when component unmounts
-        return () => setBreadcrumbComponent(null);
-        // Only run when agency changes or when breadcrumbElement actually changes content
-    }, [setBreadcrumbComponent, agency, config]);
+    // Cleanup when component unmounts
+    return () => setBreadcrumbComponent(null);
+    // Only run when agency changes or when breadcrumbElement actually changes content
+  }, [setBreadcrumbComponent, agency, config]);
 };
 
 // Simple usage

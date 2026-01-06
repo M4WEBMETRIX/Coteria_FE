@@ -9,7 +9,7 @@ import {
   PowerIcon,
   // CaretDownIcon,
 } from "@phosphor-icons/react";
-import { HelpCircleIcon, Logout01Icon } from "hugeicons-react";
+
 import { useState } from "react";
 import LogoutModal from "@/components/layout/logout-modal";
 import { sidebarLinks } from "@/constants/nav-links";
