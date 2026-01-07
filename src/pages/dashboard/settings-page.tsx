@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useQueryState, parseAsString } from "nuqs";
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -29,7 +30,10 @@ const SETTINGS_TABS = [
 ];
 
 const SettingsPage = () => {
-  const [activeTab, setActiveTab] = useState("organization-profile");
+  const [activeTab, setActiveTab] = useQueryState(
+    "tab",
+    parseAsString.withDefault("organization-profile")
+  );
 
   // Centralized form state for all tabs
   const [formData, setFormData] = useState({

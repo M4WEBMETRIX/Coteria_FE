@@ -6,7 +6,7 @@ import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
 import { Send, X, Image as ImageIcon, ThumbsUp, ThumbsDown, Copy, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Sparkle, SparkleIcon } from "@phosphor-icons/react";
+import { CaretDoubleUp, Sparkle, SparkleIcon } from "@phosphor-icons/react";
 
 // Types
 interface Message {
@@ -69,26 +69,36 @@ const Story = () => {
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-ubuntu h-full">
       <div className="flex items-center justify-between">
-        <h2 className="text-lg font-bold text-[#1E1F24]">Campaign Story</h2>
-        <Button>Story preview</Button>
+        <h2 className="text-lg leading-[135%] font-normal tracking-[-2%] text-[#1E1F24]">
+          Campaign Story
+        </h2>
+        <Button
+          variant="outline"
+          className="text-sm leading-[150%] font-normal tracking-[2%] text-[#666D80]"
+          onClick={() => setIsPreviewOpen(true)}
+        >
+          Story preview
+        </Button>
       </div>
-      <div className="flex items-start justify-start gap-6">
+      <div className="mt-6 flex h-full items-start justify-start gap-6">
         {/* Main Chat Area */}
-        <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-[#B2B2B2] bg-white shadow-sm">
+        <div className="flex flex-1 flex-col overflow-hidden rounded-xl border border-[#DFE1E7] bg-white shadow-sm">
           {/* Chat Content */}
-          <div className="relative flex-1 bg-[#F9FAFB]">
+          <div className="relative flex-1">
             {messages.length === 0 ? (
               // Empty State
               <div className="mx-auto flex h-full w-[424px] flex-col items-center justify-center p-8 text-center">
                 <div className="mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-[#12AA5B]">
                   <SparkleIcon className="text-white" size={36} weight="fill" />
                 </div>
-                <h3 className="mb-2 text-xl font-bold text-[#1E1F24]">Welcome, Akbar! 👋</h3>
-                <p className="mb-8 max-w-md text-sm text-[#666D80]">
-                  I am here to help you with answers, ideas, or anything you need. Just start
-                  typing!
+                <h3 className="mb-2 text-lg leading-[150%] font-medium tracking-[-2%] text-[#1E1F24]">
+                  Welcome, Akbar! 👋
+                </h3>
+                <p className="mb-8 text-sm leading-[20px] tracking-[-1%] text-[#8B8D98]">
+                  I’m here to help you with answers, ideas, or anything you need. Just start typing
+                  below!
                 </p>
 
                 <div className="flex w-full max-w-lg flex-col gap-3">
@@ -138,7 +148,7 @@ const Story = () => {
                     <button
                       key={suggestion}
                       onClick={() => handleSendMessage(suggestion)}
-                      className="w-full rounded-full bg-[#EFF0F3] px-4 py-2 text-center text-sm leading-[20px] font-normal tracking-[-1%] text-[#0D0D12] transition-colors hover:bg-gray-50"
+                      className="w-full cursor-pointer rounded-full bg-[#EFF0F3] px-4 py-2 text-center text-sm leading-[20px] font-normal tracking-[-1%] text-[#0D0D12] transition-colors"
                     >
                       {suggestion}
                     </button>
@@ -162,7 +172,7 @@ const Story = () => {
                   >
                     {msg.role === "ai" && (
                       <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full bg-[#12AA5B] text-white">
-                        <Sparkles size={16} />
+                        <SparkleIcon size={16} />
                       </div>
                     )}
 
@@ -213,21 +223,21 @@ const Story = () => {
             )}
           </div>
           {/* Input Area */}
-          <div className="border-t border-[#E0E1E6] bg-white p-4">
+          <div className="p-4">
             <div className="relative flex items-center">
-              <SparkleIcon className="absolute left-3 h-5 w-5 text-[#8B8D98]" />
+              <SparkleIcon className="absolute left-3 h-5 w-5 text-[#8B8D98]" weight="fill" />
               <Input
                 value={inputValue}
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && handleSendMessage(inputValue)}
-                placeholder="Ask anything awesome..."
-                className="h-12 w-full rounded-full border-[#E0E1E6] bg-[#F9FAFB] pr-12 pl-10 text-sm focus-visible:ring-1 focus-visible:ring-[#12AA5B]"
+                placeholder="Ask anything to sense AI..."
+                className="h-12 w-full rounded-full border-[#E0E1E6] bg-[#EFF0F3] pr-12 pl-10 text-sm focus-visible:ring-1 focus-visible:ring-[#12AA5B]"
               />
               <button
                 onClick={() => handleSendMessage(inputValue)}
                 className="absolute right-2 flex h-8 w-8 items-center justify-center rounded-full bg-[#12AA5B] text-white transition-colors hover:bg-[#0E904B]"
               >
-                <Send size={16} />
+                <CaretDoubleUp size={16} />
               </button>
             </div>
           </div>
@@ -252,14 +262,14 @@ const Story = () => {
                   className="space-y-1 rounded-lg border border-[#E0E1E6] bg-white p-3"
                 >
                   <div className="flex items-center justify-between">
-                    <span className="text-sm font-medium text-[#12AA5B]">{update.type}</span>
-                    <span className="text-xs text-[#8B8D98]">{update.time}</span>
+                    <span className="text-sm leading-[150%] font-normal text-[#079455]">
+                      {update.type}
+                    </span>
+                    <span className="text-xs leading-[150%] tracking-[2%] text-[#818898]">
+                      {update.time}
+                    </span>
                   </div>
-                  <p className="text-sm leading-relaxed text-[#666D80]">
-                    {update.desc}
-                    <br />
-                    <span className="text-[#666D80]">printing and typesetting industry</span>
-                  </p>
+                  <p className="text-sm leading-[150%] font-normal text-[#666D80]">{update.desc}</p>
                 </div>
               ))}
             </div>
