@@ -33,15 +33,19 @@ const Campaigndetails = () => {
   return (
     <div className="font-inter mx-auto flex w-full max-w-[1600px] flex-col gap-6">
       {/* Header / Tabs */}
-      <Tabs defaultValue="command-center">
-        <TabsList className="">
+      <Tabs defaultValue="command-center" className="">
+        <TabsList className="flex gap-2 bg-transparent">
           {tabs.map((tab) => (
-            <TabsTrigger key={tab.value} value={tab.value}>
+            <TabsTrigger
+              key={tab.value}
+              value={tab.value}
+              className="h-[34px] rounded-[5px] border border-[#DFE1E7] px-[9.5px] py-2.5"
+            >
               {tab.label}
             </TabsTrigger>
           ))}
         </TabsList>
-        <div className="-mt-2 w-full border-b border-[#DFE1E7]"></div>
+        {/* <div className="-mt-2 w-full border-b border-[#DFE1E7]"></div> */}
         {tabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value} className="pt-[40px]">
             {tab.component}
