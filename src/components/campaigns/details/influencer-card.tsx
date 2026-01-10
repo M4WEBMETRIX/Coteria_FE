@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { Star, CaretRight, Info } from "@phosphor-icons/react";
+import { Star, CaretRight } from "@phosphor-icons/react";
 import InfluencerAiInsightsModal from "./InfluencerAiInsightsModal";
 import { useState } from "react";
 

@@ -99,7 +99,7 @@ const ActivateInfluencer = () => {
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <h3 className="text-base font-medium text-[#4A4C54]">List of Influencers</h3>
-            <div className="flex cursor-pointer items-center gap-1 text-sm text-[10px] font-medium text-[#9B9BA6] text-[#667085]">
+            <div className="flex cursor-pointer items-center gap-1 text-sm text-[10px] font-medium text-[#9B9BA6]">
               See More <CaretRight size={16} />
             </div>
           </div>
