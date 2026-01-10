@@ -191,7 +191,7 @@ const Story = () => {
                         className={cn(
                           "rounded-xl p-4 text-sm leading-relaxed",
                           msg.role === "user"
-                            ? "bg-[#1E1F24] text-white"
+                            ? "bg-primary text-white"
                             : "border border-[#E0E1E6] bg-white text-[#4A4C54]"
                         )}
                       >
@@ -279,23 +279,22 @@ const Story = () => {
 
       {/* Preview Modal */}
       <Dialog open={isPreviewOpen} onOpenChange={setIsPreviewOpen}>
-        <DialogContent className="max-w-md gap-0 overflow-hidden border-none bg-transparent p-0 shadow-none">
-          <div className="relative max-h-[90vh] overflow-hidden overflow-y-auto rounded-2xl bg-white shadow-xl">
-            <button
-              onClick={() => setIsPreviewOpen(false)}
-              className="absolute top-4 right-4 z-10 rounded-full bg-black/20 p-1 text-white backdrop-blur-sm hover:bg-black/40"
-            >
-              <X size={16} />
-            </button>
-
+        <DialogContent className="max-h-[85vh] max-w-md gap-0 overflow-auto border-none bg-white p-5 shadow-none">
+          <h3 className="text-2xl font-medium text-[#4A4C54]">Preview story</h3>
+          <div className="overflow-hidden overflow-y-auto rounded-2xl bg-white">
             <div className="w-full bg-[#E1E4EA]">
               {/* Campaign Image Placeholder */}
-              <div className="flex aspect-4/3 w-full items-center justify-center bg-gray-200">
+              {/* <div className="flex aspect-4/3 w-full items-center justify-center bg-gray-200">
                 <ImageIcon className="h-12 w-12 text-gray-400" />
-              </div>
+              </div> */}
+              <img
+                src="https://images.unsplash.com/photo-1598885159329-9377168ac375?ixid=M3w4MjcwNjd8MHwxfHNlYXJjaHw1fHxjYW5jZXJ8ZW58MHx8fHwxNzY4MDM0NzM4fDA&ixlib=rb-4.1.0&fit=max&q=80"
+                alt=""
+                className="h-[400px] w-[688px] rounded-[16px]"
+              />
             </div>
 
-            <div className="space-y-4 p-6">
+            <div className="mt-5 space-y-4">
               <h3 className="text-xl leading-tight font-bold text-[#1E1F24]">
                 Strength in Unity: Cancer Patient Support Program
               </h3>
@@ -309,19 +308,27 @@ const Story = () => {
               </div>
 
               <div className="space-y-3 pt-2">
-                <p className="text-sm leading-relaxed text-[#525866]">
-                  Lorem ipsum is simply dummy text of the printing and typesetting industry. Lorem
-                  Ipsum has been the industry's standard dummy text ever since the 1500s.
+                <p className="text-sm leading-[150%] font-normal text-[#666D80]">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                  Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+                  unknown printer took a galley of type and scrambled it to make a type specimen
+                  book. It has survived not only five centuries, but also the leap into electronic
+                  typesetting, remaining essentially unchanged. It was popularized in the 1960s with
+                  the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+                  with desktop publishing software like Aldus PageMaker including versions of Lorem
+                  Ipsum.{" "}
                 </p>
-                <p className="text-sm leading-relaxed text-[#525866]">
-                  When an unknown printer took a galley of type and scrambled it to make a type
-                  specimen book.
+                <p className="text-sm leading-[150%] font-normal text-[#666D80]">
+                  Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
+                  Ipsum has been the industry's standard dummy text ever since the 1500s, when an
+                  unknown printer took a galley of type and scrambled it to make a type specimen
+                  book. It has survived not only five centuries, but also the leap into electronic
+                  typesetting, remaining essentially unchanged. It was popularized in the 1960s with
+                  the release of Letraset sheets containing Lorem Ipsum passages, and more recently
+                  with desktop publishing software like Aldus PageMaker including versions of Lorem
+                  Ipsum.
                 </p>
               </div>
-            </div>
-
-            <div className="border-t border-[#E1E4EA] bg-[#F9FAFB] p-6">
-              <Button className="w-full bg-[#12AA5B] hover:bg-[#0E904B]">Back this campaign</Button>
             </div>
           </div>
         </DialogContent>

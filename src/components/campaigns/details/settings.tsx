@@ -12,6 +12,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { cn } from "@/lib/utils";
+import { Separator } from "@/components/ui/separator";
+import { useQueryState } from "nuqs";
 
 const CAMPAIGN_SETTINGS_TABS = [
   { id: "basic-setting", label: "Basic setting" },
@@ -22,7 +24,7 @@ const CAMPAIGN_SETTINGS_TABS = [
 ];
 
 const Settings = () => {
-  const [activeTab, setActiveTab] = useState("basic-setting");
+  const [activeTab, setActiveTab] = useQueryState("tab", { defaultValue: "basic-setting" });
   const [formData, setFormData] = useState({
     // Basic
     campaignName: "John Doe",
@@ -63,10 +65,11 @@ const Settings = () => {
         <p className="text-sm text-[#525866]">Control how this campaign behaves</p>
       </div>
       <div className="flex-1 space-y-6">
-        <div className="flex justify-end">
-          <div className="flex items-center gap-1.5 rounded-full border border-[#B2DDFF] bg-[#EFF8FF] px-2.5 py-0.5 text-[#175CD3]">
-            <div className="h-1.5 w-1.5 rounded-full bg-[#175CD3]" />
-            <span className="text-xs font-medium">Active</span>
+        <div className="flex w-full justify-between">
+          <p className="text-sm font-medium text-[#1E1F24]">Status</p>
+          <div className="flex items-center gap-1.5 rounded-full border border-[#D2FFF6] bg-[#E7FFFA] px-2.5 py-0.5 text-[#175CD3]">
+            <div className="h-1.5 w-1.5 rounded-full bg-[#0E8A72]" />
+            <span className="text-xs font-medium text-[#0E8A72]">Active</span>
           </div>
         </div>
 
@@ -214,72 +217,83 @@ const Settings = () => {
     formData: any;
     handleChange: (field: string, value: any) => void;
   }) => (
-    <div className="flex gap-8">
-      <div className="w-[300px] shrink-0">
-        <h3 className="text-base font-semibold text-[#0A0A0C]">Update reminder</h3>
-        <p className="text-sm text-[#525866]">Helps keep donors engaged with regular updates</p>
-      </div>
-      <div className="flex-1 space-y-8">
-        <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm font-medium text-[#344054]">Campaign update reminder</p>
-              <p className="text-xs text-[#525866]">
-                Sent automatically to the customer after they place their order.
-              </p>
+    <div>
+      <div className="flex gap-8">
+        <div className="w-[300px] shrink-0">
+          <h3 className="text-base font-semibold text-[#0A0A0C]">Update reminder</h3>
+          <p className="text-sm leading-[150%] tracking-[2%] text-[#666D80]">
+            Helps keep donors engaged with regular updates
+          </p>
+        </div>
+        <div className="flex-1 space-y-8">
+          <div className="space-y-6">
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm font-medium text-[#344054]">Campaign update reminder</p>
+                <p className="text-xs text-[#525866]">
+                  Sent automatically to the customer after they place their order.
+                </p>
+              </div>
+              <Switch
+                checked={formData.campaignUpdateReminder}
+                onCheckedChange={(c) => handleChange("campaignUpdateReminder", c)}
+              />
             </div>
-            <Switch
-              checked={formData.campaignUpdateReminder}
-              onCheckedChange={(c) => handleChange("campaignUpdateReminder", c)}
-            />
-          </div>
-          <div className="space-y-1.5">
-            <Label className="text-xs font-medium text-[#525866]">Option</Label>
-            <Select
-              value={formData.reminderFrequency}
-              onValueChange={(v) => handleChange("reminderFrequency", v)}
-            >
-              <SelectTrigger className="w-full bg-white">
-                <SelectValue placeholder="Select frequency" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="7">every 7 days</SelectItem>
-                <SelectItem value="14">every 14 days (recommended)</SelectItem>
-                <SelectItem value="30">every 30 days</SelectItem>
-              </SelectContent>
-            </Select>
+            <div className="space-y-1.5">
+              <Label className="text-xs font-medium text-[#525866]">Option</Label>
+              <Select
+                value={formData.reminderFrequency}
+                onValueChange={(v) => handleChange("reminderFrequency", v)}
+              >
+                <SelectTrigger className="w-full bg-white">
+                  <SelectValue placeholder="Select frequency" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="7">every 7 days</SelectItem>
+                  <SelectItem value="14">every 14 days (recommended)</SelectItem>
+                  <SelectItem value="30">every 30 days</SelectItem>
+                </SelectContent>
+              </Select>
+            </div>
           </div>
         </div>
-
-        <div className="space-y-4 border-t border-[#E1E4EA] pt-8">
-          <div className="-mt-8 mb-4">
-            <h3 className="text-base font-semibold text-[#0A0A0C]">Donor notification</h3>
-            <p className="text-sm text-[#525866]">Select what donors should be notified about</p>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-[#344054]">Campaign update reminder</p>
-            <Checkbox
-              checked={formData.notifyOnUpdate}
-              onCheckedChange={(c) => handleChange("notifyOnUpdate", !!c)}
-              className="data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-[#344054]">Major milestones reached</p>
-            <Checkbox
-              checked={formData.notifyOnMilestone}
-              onCheckedChange={(c) => handleChange("notifyOnMilestone", !!c)}
-              className="data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
-            />
-          </div>
-          <div className="flex items-center justify-between">
-            <p className="text-sm font-medium text-[#344054]">campaign ending soon</p>
-            <Checkbox
-              checked={formData.notifyOnEnding}
-              onCheckedChange={(c) => handleChange("notifyOnEnding", !!c)}
-              className="data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
-            />
+      </div>{" "}
+      <Separator className="my-6" />
+      <div className="flex gap-8">
+        <div className="w-[300px] shrink-0">
+          <h3 className="text-base font-semibold text-[#0A0A0C]">Donor notification</h3>
+          <p className="text-sm leading-[150%] tracking-[2%] text-[#666D80]">
+            Select what donors should be notified about
+          </p>
+        </div>
+        <div className="flex-1 space-y-8">
+          <div className="">
+            <div className="space-y-8">
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium text-[#0D0D12]">Campaign update reminder</p>
+                <Checkbox
+                  checked={formData.notifyOnUpdate}
+                  onCheckedChange={(c) => handleChange("notifyOnUpdate", !!c)}
+                  className="data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium text-[#0D0D12]">Major milestones reached</p>
+                <Checkbox
+                  checked={formData.notifyOnMilestone}
+                  onCheckedChange={(c) => handleChange("notifyOnMilestone", !!c)}
+                  className="data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
+                />
+              </div>
+              <div className="flex items-center justify-between">
+                <p className="text-sm font-medium text-[#0D0D12]">campaign ending soon</p>
+                <Checkbox
+                  checked={formData.notifyOnEnding}
+                  onCheckedChange={(c) => handleChange("notifyOnEnding", !!c)}
+                  className="data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -297,21 +311,27 @@ const Settings = () => {
       <div className="flex-1 space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-[#344054]">Pause campaign</p>
-            <p className="text-xs text-[#525866]">Temporarily stop donations and engagement.</p>
+            <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+              Pause campaign
+            </p>
+            <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+              Temporarily stop donations and engagement.
+            </p>
           </div>
           <Button variant="outline">Pause</Button>
         </div>
         <div className="flex items-center justify-between">
           <div>
-            <p className="text-sm font-medium text-[#344054]">End campaign</p>
-            <p className="text-xs text-[#525866]">
+            <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+              End campaign
+            </p>
+            <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
               End this campaign permanently. No new donations.
             </p>
           </div>
           <Button
             variant="outline"
-            className="border-[#F3654A] text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
+            className="border-[#F3654A] px-5 text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
           >
             End
           </Button>

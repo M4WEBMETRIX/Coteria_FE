@@ -162,20 +162,24 @@ const Sidebar = () => {
       {/* Bottom Actions */}
       <div className="mt-auto shrink-0 border-t border-gray-100 p-2">
         <div className="flex flex-col gap-1">
-          <button
+          <Link
+            to="/help-support"
             className={cn(
               "group relative flex w-full items-center gap-2 rounded-lg p-2 text-sm font-medium text-gray-600 transition-colors hover:bg-gray-50 hover:text-[#0A0A0C]",
-              isSidebarOpen ? "justify-start" : "justify-center"
+              isSidebarOpen ? "justify-start" : "justify-center",
+              location.pathname.includes("/help-support")
+                ? "border border-[#DFE1E7] bg-white font-medium text-[#079455] shadow-[0px_1px_2px_0px_#E4E5E73D]"
+                : "text-[#666D80]"
             )}
           >
-            <HeadsetIcon size={20} weight="duotone" color="#666D80" />
+            <HeadsetIcon size={20} weight="duotone" />
             {isSidebarOpen && <span>Help & Support</span>}
             {!isSidebarOpen && (
               <span className="absolute top-1/2 left-[calc(100%+8px)] z-90 hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-gray-700 shadow-md group-hover:block">
                 Help & Support
               </span>
             )}
-          </button>
+          </Link>
           <button
             onClick={handleLogoutClick}
             className={cn(

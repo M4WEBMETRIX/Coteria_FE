@@ -1,19 +1,32 @@
-import { useBreadcrumb } from '@/components/breadcrumb-navigation';
+import { useBreadcrumb } from "@/components/breadcrumb-navigation";
+import { DonorsMainTable } from "@/components/donors/donors-main-table";
+import { Button } from "@/components/ui/button";
 
 const DonorsPage = () => {
-    useBreadcrumb({
-        items: [
-            { label: 'Dashboard', href: '/dashboard' },
-            { label: 'Donors', href: '/donors', isCurrentPage: true },
-        ],
-    });
+  useBreadcrumb({
+    items: [
+      { label: "Dashboard", href: "/dashboard" },
+      { label: "Donors", href: "/donors", isCurrentPage: true },
+    ],
+  });
 
-    return (
-        <div className='space-y-6'>
-            <h1 className='text-2xl font-semibold text-[#0A0A0C]'>Donors</h1>
-            <div className=''>Donors Content Goes Here</div>
-        </div>
-    );
+  return (
+    <div className="font-ubuntu flex flex-col gap-6">
+      <div className="flex items-center justify-between">
+        <h1 className="text-xl leading-[135%] font-medium tracking-[0%] text-[#0D0D12]">
+          All members
+        </h1>
+        <Button
+          className="bg-primary text-white hover:bg-[#059669]"
+          //   onClick={() => setIsAddUserOpen(true)}
+        >
+          Export CSV
+        </Button>
+      </div>
+
+      <DonorsMainTable />
+    </div>
+  );
 };
 
 export default DonorsPage;

@@ -21,8 +21,10 @@ const DonationsPage = lazy(() => import("./pages/dashboard/donations-page"));
 const TeamPage = lazy(() => import("./pages/dashboard/team-page"));
 const MessagesPage = lazy(() => import("./pages/dashboard/messages-page"));
 const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
+const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
+const HelpSupport = lazy(() => import("./pages/dashboard/help-support"));
 const AllRoutes = () => {
   return (
     <Suspense
@@ -57,10 +59,12 @@ const AllRoutes = () => {
           <Route path="insights" element={<InsightsPage />} />
           <Route path="donors" element={<DonorsPage />} />
           <Route path="donations" element={<DonationsPage />} />
+          <Route path="donors/:id" element={<DonationDetailsPage />} />
           <Route path="team" element={<TeamPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="reports" element={<ReportsPage />} />
           <Route path="settings" element={<SettingsPage />} />
+          <Route path="help-support" element={<HelpSupport />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

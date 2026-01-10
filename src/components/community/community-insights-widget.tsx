@@ -30,7 +30,7 @@ const StatRow = ({
 
 const CommunityInsightsWidget = () => {
   return (
-    <div className="font-ubuntu flex h-full w-full flex-col rounded-xl border border-[#DFE1E7] bg-[#FCFCFD] p-4 shadow-sm">
+    <div className="font-ubuntu flex h-fit w-full flex-col rounded-xl border border-[#DFE1E7] bg-[#FCFCFD] p-4 shadow-sm">
       <div className="mb-2">
         <h3 className="mb-2 text-base leading-[28px] font-medium tracking-[-3%] text-[#4A4C54]">
           Community Insights
