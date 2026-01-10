@@ -70,4 +70,4 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
   );
 };
 
-export default Navbar;
+export default Navbar
