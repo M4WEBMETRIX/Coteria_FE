@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Progress } from "@/components/ui/progress";
-import { Send, X, Image as ImageIcon, ThumbsUp, ThumbsDown, Copy, RefreshCw } from "lucide-react";
+import { ThumbsUp, ThumbsDown, Copy, RefreshCw } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { CaretDoubleUp, Sparkle, SparkleIcon } from "@phosphor-icons/react";
+import { CaretDoubleUp, SparkleIcon } from "@phosphor-icons/react";
 
 // Types
 interface Message {

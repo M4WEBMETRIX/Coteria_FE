@@ -11,11 +11,20 @@ import CoterieLogo from "./catorie-logo-svg-code";
 
 const GetStartedPage = () => {
   const [isCommunityOpen, setIsCommunityOpen] = useState<boolean>(false);
-  const [communityData, setCommunityData] = useState([]);
+  const [
+    // communityData,
+    setCommunityData,
+  ] = useState([]);
 
   const [isCampaignOpen, setIsCampaignOpen] = useState(false);
-  const [campaignsData, setCampaignsData] = useState([]);
-  const [justCreated, setJustCreated] = useState(true);
+  const [
+    // campaignsData,
+    setCampaignsData,
+  ] = useState([]);
+  const [
+    // justCreated,
+    setJustCreated,
+  ] = useState(true);
 
   const steps = [
     { id: 1, title: "Activate Your Community", completed: true },

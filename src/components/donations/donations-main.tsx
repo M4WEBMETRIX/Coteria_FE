@@ -28,7 +28,7 @@ const donationsData = Array.from({ length: 10 }).map((_, i) => ({
 export function DonationsMainTable() {
   const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(30);
+  const [totalPages] = useState(30);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 

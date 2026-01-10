@@ -13,7 +13,7 @@ import { DotsThree, Funnel, ArrowsDownUpIcon, MagnifyingGlassIcon } from "@phosp
 import { Input } from "@/components/ui/input";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ManagePagination from "@/components/Manage-pagination";
 import { useState } from "react";
 
@@ -27,9 +27,8 @@ const donorsData = Array.from({ length: 10 }).map((_, i) => ({
 }));
 
 export function DonorsMainTable() {
-  const navigate = useNavigate();
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(30);
+  const [totalPages] = useState(30);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 

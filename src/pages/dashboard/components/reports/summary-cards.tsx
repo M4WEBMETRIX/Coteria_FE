@@ -1,6 +1,4 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-import { Cube, UsersThree, ChartBar, HandHeartIcon, MoneyIcon } from "@phosphor-icons/react";
+import { Cube, HandHeartIcon, MoneyIcon } from "@phosphor-icons/react";
 
 interface SummaryCardProps {
   title: string;

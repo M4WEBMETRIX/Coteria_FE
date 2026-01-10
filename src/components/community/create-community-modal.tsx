@@ -18,7 +18,7 @@ import {
 } from "@/components/ui/select";
 import { Plus } from "lucide-react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon, Image01Icon } from "@hugeicons/core-free-icons";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -29,7 +29,7 @@ interface CreateCommunityModalProps {
   customOpen?: boolean;
   setCustomOpen?: (open?: boolean | any) => void;
   children?: React.ReactNode;
-  setCommunityData: (data: any) => void;
+  setCommunityData: any;
 }
 
 const communitySchema = z.object({

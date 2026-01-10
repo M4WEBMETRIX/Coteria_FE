@@ -9,13 +9,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  DotsThree,
-  MagnifyingGlass,
-  Funnel,
-  ArrowsDownUpIcon,
-  MagnifyingGlassIcon,
-} from "@phosphor-icons/react";
+import { DotsThree, Funnel, ArrowsDownUpIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 
 import ManagePagination from "../../../../components/Manage-pagination";
@@ -106,7 +100,10 @@ const teamData = [
 
 export function TeamTable() {
   const [currentPage, setCurrentPage] = useState(1);
-  const [totalPages, setTotalPages] = useState(30);
+  const [
+    totalPages,
+    // , setTotalPages
+  ] = useState(30);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
 

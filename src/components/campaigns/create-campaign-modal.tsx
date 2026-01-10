@@ -25,8 +25,8 @@ import { Cancel01Icon } from "@hugeicons/core-free-icons";
 
 interface CreateCampaignModalProps {
   children?: React.ReactNode;
-  setCampaignsData: (data: any) => void;
-  setJustCreated: (data: any) => void;
+  setCampaignsData: any;
+  setJustCreated: any;
   isCustom?: boolean;
   customOpen?: boolean;
   setCustomOpen?: (open: boolean) => void;

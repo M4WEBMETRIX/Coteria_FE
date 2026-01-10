@@ -3,14 +3,6 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { Input } from "@/components/ui/input";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -20,9 +12,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { ArrowsDownUpIcon, DotsThree, Funnel, MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { ArrowsDownUpIcon, DotsThree, Funnel } from "@phosphor-icons/react";
 import { useState } from "react";
-import { useParams } from "react-router-dom";
 
 // Mock data for the campaign history table
 const campaignHistory = [
@@ -61,7 +52,7 @@ const campaignHistory = [
 ];
 
 const DonationDetailsPage = () => {
-  const { id } = useParams();
+  // const { id } = useParams();
   useBreadcrumb({
     items: [
       { label: "Home", href: "/dashboard" },
