@@ -50,13 +50,13 @@ const GrowthTrendsCard = () => {
     { date: "", amount: 68000, donations: 24000 },
     { date: "", amount: 85000, donations: 22000 },
     { date: "", amount: 78000, donations: 23000 },
-    { date: "", amount: 72000, donations: 25000 },
+    { date: "", amount: 72000, donations: 55000 },
     { date: "", amount: 88000, donations: 24000 },
     { date: "", amount: 82000, donations: 26000 },
-    { date: "", amount: 75000, donations: 25000 },
+    { date: "", amount: 75000, donations: 50000 },
     { date: "", amount: 70000, donations: 23000 },
     { date: "", amount: 76000, donations: 24000 },
-    { date: "", amount: 85000, donations: 27000 },
+    { date: "", amount: 85000, donations: 67000 },
     { date: "", amount: 92000, donations: 28000 },
     { date: "", amount: 88000, donations: 26000 },
     { date: "", amount: 95000, donations: 29000 },
@@ -74,14 +74,14 @@ const GrowthTrendsCard = () => {
       {/* Header */}
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h3 className="text-lg font-semibold text-[#0D0D12]">Growth Trends</h3>
+          <h3 className="text-sm font-semibold text-[#0D0D12]">Growth Trends</h3>
           <div className="mt-2 flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <div className="h-2 w-4 rounded-sm bg-[#12AA5B]"></div>
+              <div className="h-2 w-2 rounded-sm bg-[#12AA5B]"></div>
               <span className="text-xs text-[#838880]">Amount Raised</span>
             </div>
             <div className="flex items-center gap-2">
-              <div className="h-2 w-4 rounded-sm bg-[#FFA500]"></div>
+              <div className="h-2 w-2 rounded-sm bg-[#FFA500]"></div>
               <span className="text-xs text-[#838880]">Donations Count</span>
             </div>
           </div>
@@ -115,41 +115,56 @@ const GrowthTrendsCard = () => {
           <AreaChart data={data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
             <defs>
               <linearGradient id="colorAmount" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#079455" stopOpacity={0.3} />
+                <stop offset="5%" stopColor="#079455" stopOpacity={0.2} />
                 <stop offset="95%" stopColor="#079455" stopOpacity={0} />
               </linearGradient>
               <linearGradient id="colorDonations" x1="0" y1="0" x2="0" y2="1">
-                <stop offset="5%" stopColor="#079455" stopOpacity={0.3} />
-                <stop offset="95%" stopColor="#079455" stopOpacity={0} />
+                {/* <stop offset="5%" stopColor="#079455" stopOpacity={0.1} /> */}
+                {/* <stop offset="95%" stopColor="#079455" stopOpacity={0} /> */}
               </linearGradient>
             </defs>
-            <CartesianGrid strokeDasharray="3 3" stroke="#EFF0F3" vertical={false} />
-            <XAxis
-              dataKey="date"
-              stroke="#838880"
-              style={{ fontSize: "12px" }}
-              tick={{ fill: "#838880" }}
+            <CartesianGrid
+              strokeDasharray="3 3"
+              stroke="#EFF0F3"
+              horizontal={false}
+              vertical={true}
             />
+            <XAxis dataKey="date" axisLine={false} tickLine={false} style={{ fontSize: "12px" }} />
+
             <YAxis
-              yAxisId="left"
-              stroke="#838880"
-              style={{ fontSize: "12px" }}
-              tick={{ fill: "#838880" }}
               tickFormatter={(value) => `$${value / 1000}K`}
+              axisLine={false}
+              tickLine={false}
+              style={{ fontSize: "12px" }}
             />
-            <YAxis
+            {/* <YAxis
               yAxisId="right"
               orientation="right"
               stroke="#838880"
               style={{ fontSize: "12px" }}
               tick={{ fill: "#838880" }}
-            />
+            /> */}
             <Tooltip content={<CustomTooltip />} cursor={{ fill: "rgba(18, 170, 91, 0.1)" }} />
             <Area
+              type="monotone"
+              dataKey="amount"
+              stroke="#FFA500"
+              strokeWidth={2}
+              fill="url(#colorAmount)"
+            />
+
+            <Area
+              type="monotone"
+              dataKey="donations"
+              stroke="#12AA5B"
+              strokeWidth={2}
+              fill="url(#colorDonations)"
+            />
+            {/* <Area
               yAxisId="left"
               type="monotone"
               dataKey="amount"
-              stroke="#12AA5B"
+              stroke="#FFA500"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorAmount)"
@@ -159,12 +174,12 @@ const GrowthTrendsCard = () => {
               yAxisId="right"
               type="monotone"
               dataKey="donations"
-              stroke="#FFA500"
+              stroke="#12AA5B"
               strokeWidth={2}
               fillOpacity={1}
               fill="url(#colorDonations)"
               isAnimationActive={true}
-            />
+            /> */}
           </AreaChart>
         </ResponsiveContainer>
       </div>

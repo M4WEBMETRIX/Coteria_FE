@@ -2,8 +2,9 @@ import React, { useState } from "react";
 import { Check } from "@phosphor-icons/react";
 import IMAGE_1 from "@/assets/images/dashboard-img-1.svg";
 import IMAGE_2 from "@/assets/images/dashboard-img-2.png";
-import IMAGE_3 from "@/assets/images/dashboard-img-3.jpg";
+import IMAGE_3 from "@/assets/images/dashboard-img-5.png";
 import IMAGE_4 from "@/assets/images/dashboard-img-4.png";
+import IMAGE_6 from "@/assets/images/dashboard-img-6.png";
 import CreateCampaignModal from "../campaigns/create-campaign-modal";
 import CreateCommunityModal from "../community/create-community-modal";
 import CoterieLogo from "./catorie-logo-svg-code";
@@ -61,7 +62,7 @@ const GetStartedPage = () => {
       description:
         "Automatically turn activity into clear, shareable impact stories that keep donors emotionally invested.",
       button: "Create Impact Story",
-      image: IMAGE_1,
+      image: IMAGE_6,
     },
   ];
 
