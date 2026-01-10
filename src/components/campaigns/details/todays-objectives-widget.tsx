@@ -12,7 +12,6 @@ import {
   ResponsiveContainer,
   Cell,
 } from "recharts";
-import { ArrowDown01Icon } from "lucide-react";
 
 const data = [
   { name: "2 days", value: 2000, active: false },

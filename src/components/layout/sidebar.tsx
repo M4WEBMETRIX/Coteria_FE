@@ -1,4 +1,4 @@
-import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import Logo from "@/assets/icons/coterie.svg";
@@ -9,8 +9,9 @@ import {
   PowerIcon,
   // CaretDownIcon,
 } from "@phosphor-icons/react";
-import { HelpCircleIcon, Logout01Icon } from "hugeicons-react";
+
 import { useState } from "react";
+import LogoutModal from "@/components/layout/logout-modal";
 import { sidebarLinks } from "@/constants/nav-links";
 import { Separator } from "@/components/ui/separator";
 
@@ -19,11 +20,11 @@ const t = (key: string) => key;
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
-  const navigate = useNavigate();
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const location = useLocation();
 
-  function handleLogout() {
-    navigate("/auth/login");
+  function handleLogoutClick() {
+    setIsLogoutModalOpen(true);
   }
 
   return (
@@ -170,13 +171,13 @@ const Sidebar = () => {
             <HeadsetIcon size={20} weight="duotone" color="#666D80" />
             {isSidebarOpen && <span>Help & Support</span>}
             {!isSidebarOpen && (
-              <span className="absolute top-1/2 left-[calc(100%+8px)] z-[90] hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-gray-700 shadow-md group-hover:block">
+              <span className="absolute top-1/2 left-[calc(100%+8px)] z-90 hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-gray-700 shadow-md group-hover:block">
                 Help & Support
               </span>
             )}
           </button>
           <button
-            onClick={handleLogout}
+            onClick={handleLogoutClick}
             className={cn(
               "group relative flex w-full items-center gap-2 rounded-lg p-2 text-sm font-medium text-[#FF4D4F] transition-colors hover:bg-red-50",
               isSidebarOpen ? "justify-start" : "justify-center"
@@ -186,13 +187,16 @@ const Sidebar = () => {
             <PowerIcon size={20} className="rotate-90" color="#DF1C41" />
             {isSidebarOpen && <span>Logout</span>}
             {!isSidebarOpen && (
-              <span className="absolute top-1/2 left-[calc(100%+8px)] z-[90] hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-red-600 shadow-md group-hover:block">
+              <span className="absolute top-1/2 left-[calc(100%+8px)] z-90 hidden w-max -translate-y-1/2 rounded-md border border-[#e1e4ea] bg-white p-2 text-xs font-medium text-red-600 shadow-md group-hover:block">
                 Logout
               </span>
             )}
           </button>
         </div>
       </div>
+
+      {/* Logout Confirmation Modal */}
+      <LogoutModal open={isLogoutModalOpen} onOpenChange={setIsLogoutModalOpen} />
     </aside>
   );
 };

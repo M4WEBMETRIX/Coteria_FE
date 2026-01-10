@@ -1,4 +1,3 @@
-import { HugeiconsIcon } from "@hugeicons/react";
 import {
   ArrowCircleUpIcon,
   CheckCircleIcon,
@@ -18,7 +17,7 @@ const StatsCard = ({
   title,
   value,
   icon,
-  iconColor = "#12AA5B",
+  // iconColor = "#12AA5B",
   iconBg = "#E7F6EC",
 }: StatsCardProps) => {
   return (

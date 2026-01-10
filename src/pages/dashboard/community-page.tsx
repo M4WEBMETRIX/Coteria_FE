@@ -18,7 +18,7 @@ const CommunityPage = () => {
     ],
   });
   const [community, setCommunity] = useState<any>([1]);
-  const [justCreated, setJustCreated] = useState<any>(true);
+  // const [justCreated, setJustCreated] = useState<any>(true);
   return (
     <>
       {community.length > 0 ? (

@@ -17,7 +17,7 @@ const StatCard = ({
   trendDirection,
   icon,
   iconBg,
-  iconColor,
+  // iconColor,
 }: StatCardProps) => {
   const isPositive = trendDirection === "up";
   return (

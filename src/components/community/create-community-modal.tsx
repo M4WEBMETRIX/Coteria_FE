@@ -25,13 +25,16 @@ import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
 
 interface CreateCommunityModalProps {
+  isCustom?: boolean;
+  customOpen?: boolean;
+  setCustomOpen?: (open?: boolean | any) => void;
   children?: React.ReactNode;
   setCommunityData: (data: any) => void;
 }
 
 const communitySchema = z.object({
   title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required").max(2000, "Max 2000 characters"),
+  description: z.string().min(1, "Description is required").max(200, "Max 200 characters"),
   visibility: z.string().min(1, "Visibility is required"),
   management: z.string().min(1, "Management preference is required"),
   logo: z
@@ -43,7 +46,13 @@ const communitySchema = z.object({
 
 type CommunityFormValues = z.infer<typeof communitySchema>;
 
-const CreateCommunityModal = ({ children, setCommunityData }: CreateCommunityModalProps) => {
+const CreateCommunityModal = ({
+  children,
+  setCommunityData,
+  isCustom,
+  customOpen,
+  setCustomOpen,
+}: CreateCommunityModalProps) => {
   const [open, setOpen] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -90,24 +99,31 @@ const CreateCommunityModal = ({ children, setCommunityData }: CreateCommunityMod
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isCustom ? customOpen : open} onOpenChange={isCustom ? setCustomOpen : setOpen}>
       <DialogTrigger asChild>
-        {children || (
-          <Button className="flex items-center gap-2 border border-[#E0E1E6] bg-white text-[#1E1F24] hover:bg-gray-50">
-            <Plus className="h-4 w-4" />
-            Create New Community
-          </Button>
+        {isCustom ? null : (
+          <>
+            {children || (
+              <Button className="flex items-center gap-2 border border-[#E0E1E6] bg-white text-[#1E1F24] hover:bg-gray-50">
+                <Plus className="h-4 w-4" />
+                Create New Community
+              </Button>
+            )}
+          </>
         )}
       </DialogTrigger>
-      <DialogContent className="w-[700px] gap-0 overflow-hidden border-none bg-white p-0">
-        <DialogHeader className="border-b border-gray-100 p-6">
+      <DialogContent
+        showCloseButton={false}
+        className="max-h-[95vh] w-[700px] min-w-[700px] gap-0 overflow-hidden border-none bg-white p-0"
+      >
+        <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-lg leading-[135%] font-semibold tracking-[0.01em] text-[#0D0D12]">
             Create a Community
           </DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="max-h-[80vh] overflow-y-auto p-6">
+          <div className="no-scrollbar max-h-[70vh] overflow-y-auto p-6">
             <div className="space-y-6">
               {/* Title */}
               <Field className="flex items-center gap-2">
@@ -138,11 +154,11 @@ const CreateCommunityModal = ({ children, setCommunityData }: CreateCommunityMod
                     <Textarea
                       id="description"
                       placeholder="Placeholder"
-                      className="min-h-[100px] resize-none border-[#D0D5DD] pb-8"
+                      className="h-[151px] max-h-[151px] resize-none border-[#D0D5DD] pb-8"
                       {...register("description")}
                     />
-                    <div className="absolute right-2 bottom-2 text-xs text-gray-400">
-                      {watch("description")?.length || 0}/2000
+                    <div className="absolute bottom-2 left-2 text-xs text-gray-400">
+                      {watch("description")?.length || 0}/200
                     </div>
                   </div>
                   <FieldError errors={[errors.description]} />
@@ -226,9 +242,9 @@ const CreateCommunityModal = ({ children, setCommunityData }: CreateCommunityMod
                   ) : (
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-dashed border-[#D0D5DD] transition-colors hover:bg-gray-50"
+                      className="flex h-25 w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-[#DFE1E7] transition-colors hover:bg-gray-50"
                     >
-                      <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" />
+                      {/* <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" /> */}
                       <span className="text-sm text-gray-500">
                         Drag & Drop your files or <span className="text-[#12AA5B]">Browse</span>
                       </span>
@@ -247,7 +263,7 @@ const CreateCommunityModal = ({ children, setCommunityData }: CreateCommunityMod
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 border-t border-gray-100 bg-white p-6">
+          <div className="flex justify-end gap-3 border-t border-[#DFE1E7] bg-white px-6 py-5">
             <Button type="button" variant="outline" onClick={() => setOpen(false)} className="px-6">
               Cancel
             </Button>

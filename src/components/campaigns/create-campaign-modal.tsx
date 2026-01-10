@@ -21,18 +21,24 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { HugeiconsIcon } from "@hugeicons/react";
-import { Cancel01Icon, Image01Icon } from "@hugeicons/core-free-icons";
+import { Cancel01Icon } from "@hugeicons/core-free-icons";
 
 interface CreateCampaignModalProps {
   children?: React.ReactNode;
   setCampaignsData: (data: any) => void;
   setJustCreated: (data: any) => void;
+  isCustom?: boolean;
+  customOpen?: boolean;
+  setCustomOpen?: (open: boolean) => void;
 }
 
 const CreateCampaignModal = ({
-  children,
+  // children,
   setCampaignsData,
   setJustCreated,
+  isCustom,
+  customOpen,
+  setCustomOpen,
 }: CreateCampaignModalProps) => {
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -106,20 +112,25 @@ const CreateCampaignModal = ({
   };
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={isCustom ? customOpen : open} onOpenChange={isCustom ? setCustomOpen : setOpen}>
       <DialogTrigger asChild>
-        <Button className="max-w-[257px] px-[51px] py-3" variant={"outline"}>
-          {" "}
-          <Plus />
-          Create campaign
-        </Button>
+        {isCustom ? null : (
+          <Button className="max-w-[257px] px-[51px] py-3" variant={"outline"}>
+            {" "}
+            <Plus />
+            Create campaign
+          </Button>
+        )}
       </DialogTrigger>
-      <DialogContent className="w-full min-w-[700px] gap-0 overflow-hidden bg-white p-0">
-        <DialogHeader className="border-b border-gray-100 p-6">
+      <DialogContent
+        showCloseButton={false}
+        className="max-h-[95vh] w-full min-w-[700px] gap-0 overflow-hidden bg-white p-0"
+      >
+        <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-xl font-bold text-[#0A0A0C]">Campaign Details</DialogTitle>
         </DialogHeader>
 
-        <div className="max-h-[80vh] overflow-y-auto p-6">
+        <div className="no-scrollbar max-h-[70vh] overflow-y-auto p-6">
           {step === 1 ? (
             <div className="space-y-6">
               {/* Title */}
@@ -184,7 +195,7 @@ const CreateCampaignModal = ({
               </div>
 
               {/* Category */}
-              <div className="space-y-2">
+              <div className="w-full space-y-2">
                 <Label htmlFor="category" className="text-sm font-medium text-[#344054]">
                   Category <span className="text-red-500">*</span>
                 </Label>
@@ -197,10 +208,10 @@ const CreateCampaignModal = ({
                     })
                   }
                 >
-                  <SelectTrigger>
+                  <SelectTrigger className="w-full">
                     <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
+                  <SelectContent className="w-full">
                     <SelectItem value="medical">Medical</SelectItem>
                     <SelectItem value="education">Education</SelectItem>
                     <SelectItem value="emergency">Emergency</SelectItem>
@@ -238,9 +249,9 @@ const CreateCampaignModal = ({
                 ) : (
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex h-32 w-full cursor-pointer flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-200 transition-colors hover:bg-gray-50"
+                    className="flex h-25 w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-[#DFE1E7] transition-colors hover:bg-gray-50"
                   >
-                    <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" />
+                    {/* <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" /> */}
                     <span className="text-sm text-gray-500">Click to upload thumbnail</span>
                   </div>
                 )}
@@ -393,7 +404,7 @@ const CreateCampaignModal = ({
           )}
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-gray-100 bg-gray-50/50 p-6">
+        <div className="flex justify-end gap-3 border-t border-[#DFE1E7] px-6 py-5">
           {step === 1 ? (
             <>
               <Button variant="outline" onClick={() => setOpen(false)} className="px-6">
