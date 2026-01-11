@@ -31,29 +31,30 @@ export const sidebarLinks: NavLinkSection[] = [
     isDropdownActive: true,
     subLinks: [
       {
-        name: "Dashboard",
-        icon: (
-          //   <HugeiconsIcon
-          //     primaryColor="#079455"
-          //     icon={Home04FreeIcons}
-          //     size={20}
-          //     strokeWidth={1.5}
-          //   />
-          <HouseSimple size={20} weight="duotone" />
-        ),
-        path: "/dashboard",
+        name: "Community",
+        icon: <BuildingApartmentIcon size={20} weight="duotone" />,
+        path: "/community",
       },
+      // {
+      //   name: "Dashboard",
+      //   icon: (
+      //     //   <HugeiconsIcon
+      //     //     primaryColor="#079455"
+      //     //     icon={Home04FreeIcons}
+      //     //     size={20}
+      //     //     strokeWidth={1.5}
+      //     //   />
+      //     <HouseSimple size={20} weight="duotone" />
+      //   ),
+      //   path: "/dashboard",
+      // },
 
       {
         name: "Donors",
         icon: <UserIcon size={20} weight="duotone" />,
         path: "/donors",
       },
-      {
-        name: "Community",
-        icon: <BuildingApartmentIcon size={20} weight="duotone" />,
-        path: "/community",
-      },
+
       {
         name: "Campaigns",
         icon: <PackageIcon size={20} weight="duotone" />,

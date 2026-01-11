@@ -4,6 +4,8 @@ import CommunityInsightsCard from "@/components/dashboard/community-insights-car
 import GrowthTrendsCard from "@/components/dashboard/growth-trends-card";
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import MetricCard from "@/components/reusable/metric-card";
+import CommunityInsightsWidget from "@/components/community/community-insights-widget";
+import CommunityPage from "./community-page";
 
 const DashboardPage = () => {
   useBreadcrumb({
@@ -12,40 +14,44 @@ const DashboardPage = () => {
       { label: "Dashboard", href: "/dashboard", isCurrentPage: true },
     ],
   });
-
+  const community = true;
   return (
     <>
-      <main className="w-full">
-        <h1 className="text-[20px] leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
-          Dashboard
-        </h1>
-        <div className="mt-6 flex w-full items-center gap-5">
-          {mockMetric?.map((content) => (
-            <MetricCard
-              title={content?.name}
-              value={content?.amount}
-              percentage={content?.percent}
-            />
-          ))}
-        </div>
-        <div className="mt-6 flex w-full items-start gap-6.25">
-          <div className="w-[60%]">
-            <GrowthTrendsCard />
+      {community ? (
+        <CommunityPage />
+      ) : (
+        <main className="w-full">
+          <h1 className="text-[20px] leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
+            Dashboard
+          </h1>
+          <div className="mt-6 flex w-full items-center gap-5">
+            {mockMetric?.map((content) => (
+              <MetricCard
+                title={content?.name}
+                value={content?.amount}
+                percentage={content?.percent}
+              />
+            ))}
           </div>
-          <div className="w-[40%]">
-            <InsightsCard />
+          <div className="mt-6 flex w-full items-start gap-6.25">
+            <div className="w-[60%]">
+              <GrowthTrendsCard />
+            </div>
+            <div className="w-[40%]">
+              <InsightsCard />
+            </div>
           </div>
-        </div>
 
-        <div className="mt-8.5 flex w-full items-start gap-3.5 space-y-6">
-          <div className="w-[40%]">
-            <ActivitySummaryCard />
+          <div className="mt-8.5 flex w-full items-start gap-3.5 space-y-6">
+            <div className="w-[40%]">
+              <ActivitySummaryCard />
+            </div>
+            <div className="w-[60%]">
+              {/* <CommunityInsightsCard /> */}
+              <CommunityInsightsWidget />
+            </div>
           </div>
-          <div className="w-[60%]">
-            <CommunityInsightsCard />
-          </div>
-        </div>
-        {/* <section className='w-[60%]'>
+          {/* <section className='w-[60%]'>
                         <OverviewCard />
                         <div className='flex items-start gap-6 mt-6 w-full'>
                             <InsightsCard />
@@ -59,7 +65,8 @@ const DashboardPage = () => {
                             <ActivityCalendarPanel />
                         )}
                     </section> */}
-      </main>
+        </main>
+      )}
     </>
   );
 };

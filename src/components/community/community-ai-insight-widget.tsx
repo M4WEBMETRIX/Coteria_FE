@@ -81,7 +81,7 @@ const CommunityAiInsightWidget = () => {
       </ScrollArea>
 
       <AiInsightsModal>
-        <Button className="mt-4 w-full gap-2 bg-[#12AA5B] text-white hover:bg-[#0E904B]">
+        <Button className="mt-4 w-full cursor-pointer gap-2 bg-[#12AA5B] text-white hover:bg-[#0E904B]">
           Get More Insight
           {/* Sparkle Icon */}
           <SparkleIcon size={28} />
