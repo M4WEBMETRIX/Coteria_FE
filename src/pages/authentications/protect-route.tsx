@@ -1,7 +1,7 @@
 import { Navigate, Outlet } from "react-router-dom";
 import DashboardLayout from "@/components/layout/dashboard-layout";
-import GetStartedPage from "@/components/dashboard/get-started";
-import { useQueryState } from "nuqs";
+// import GetStartedPage from "@/components/dashboard/get-started";
+// import { useQueryState } from "nuqs";
 
 const isAuthenticated = () => {
   return true;
@@ -9,9 +9,9 @@ const isAuthenticated = () => {
 };
 
 const ProtectedRoute = () => {
-  const [isSetupCompleted] = useQueryState("isSetupCompleted", {
-    defaultValue: "false",
-  });
+  // const [isSetupCompleted] = useQueryState("isSetupCompleted", {
+  //   defaultValue: "false",
+  // });
 
   // useEffect(() => {
   //   setIsSetupCompleted("true");
