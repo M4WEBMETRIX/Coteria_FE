@@ -1,29 +1,7 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { ChevronRight } from "lucide-react";
+
 import { CaretRightIcon } from "@phosphor-icons/react";
 import { Separator } from "@/components/ui/separator";
-
-const activities = [
-  {
-    id: 1,
-    user: "Sarah M",
-    action: "shared campaign",
-    icon: "https://github.com/shadcn.png",
-  },
-  {
-    id: 2,
-    user: "Michelle R",
-    action: "joined campaign",
-    icon: "https://github.com/shadcn.png",
-  },
-  {
-    id: 3,
-    user: "Rebecca A",
-    action: "sent an application invite",
-    icon: "https://github.com/shadcn.png",
-  },
-];
 
 const ActivityFeedWidget = () => {
   return (

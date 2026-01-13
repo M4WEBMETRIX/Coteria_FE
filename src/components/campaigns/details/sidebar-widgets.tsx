@@ -1,6 +1,5 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { ChevronRight } from "lucide-react";
+
 import { Separator } from "@/components/ui/separator";
 import { CaretRightIcon, CheckIcon } from "@phosphor-icons/react";
 
