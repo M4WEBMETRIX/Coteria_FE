@@ -28,7 +28,7 @@ export function ChatView({ conversation }: ChatViewProps) {
   return (
     <div className="relative flex h-full flex-col rounded-xl bg-white">
       {/* Messages Area */}
-      <ScrollArea className="flex-1" ref={scrollRef}>
+      <ScrollArea className="flex-1 overflow-hidden" ref={scrollRef}>
         <div className="flex flex-col gap-6 pb-4">
           {conversation.messages.length === 0 ? (
             <div className="flex h-[400px] items-center justify-center text-gray-400">

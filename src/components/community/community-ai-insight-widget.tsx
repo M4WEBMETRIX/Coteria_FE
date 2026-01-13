@@ -7,7 +7,7 @@ import { ScrollArea } from "../ui/scroll-area";
 
 const InsightItem = ({ text }: { text: string }) => {
   return (
-    <div className="flex items-start gap-3 rounded-lg p-3">
+    <div className="flex items-start gap-3 overflow-hidden rounded-lg p-3">
       <div className="shrink-0 rounded-full bg-white p-1">
         <img src={AIIMAGE} alt="ai-icon" className="h-[41px] w-[32px] object-cover" />
       </div>
@@ -53,7 +53,7 @@ const INSIGHTS = [
 
 const CommunityAiInsightWidget = () => {
   return (
-    <div className="flex w-full flex-col rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
+    <div className="flex max-h-[351px] w-full flex-col overflow-hidden rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
       <div className="mb-4 flex items-center justify-between">
         <div className="flex items-center gap-2">
           {/* Sparkle Icon */}
