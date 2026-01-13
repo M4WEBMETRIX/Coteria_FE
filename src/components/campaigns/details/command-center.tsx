@@ -67,19 +67,18 @@ const CommandCenter = () => {
           </div>
 
           {/* Objectives & Driver Analysis Row */}
-          <div className="mt-10 grid h-full grid-cols-12 gap-6">
+          <div className="mt-10 grid grid-cols-12 gap-6">
             {/* Objectives (Larger) */}
-            <div className="col-span-12 flex-1 lg:col-span-9">
+            <div className="col-span-12 flex-1 space-y-5 lg:col-span-9">
               <TodaysObjectivesWidget />
+              {/* Momentum Timeline */}
+              <CampaignMomentumTimeline />
             </div>
             {/* Driver Analysis (Smaller) */}
             <div className="col-span-12 h-full lg:col-span-3">
               <DriverAnalysisWidget />
             </div>
           </div>
-
-          {/* Momentum Timeline */}
-          <CampaignMomentumTimeline />
         </div>
 
         {/* Sidebar Column (Right - 4 cols) */}

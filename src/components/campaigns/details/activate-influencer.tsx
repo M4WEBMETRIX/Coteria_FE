@@ -148,7 +148,7 @@ const ActivateInfluencer = () => {
             <h3 className="text-sm font-semibold text-[#4A4C5q4]">Request from Participants</h3>
             <CaretRight size={16} className="text-[#98A2B3]" />
           </div>
-          <Separator className="my-2.5" />
+          <Separator className="my-[9px]" />
           <p className="mb-4 text-[10px] leading-relaxed text-[#838880]">
             100+ participants in "Housing Support Drive" request for a new campaign
           </p>

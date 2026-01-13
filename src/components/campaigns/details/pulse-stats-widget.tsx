@@ -51,7 +51,7 @@ const PulseStatsWidget = () => {
       {stats.map((stat, index) => (
         <div
           key={index}
-          className="flex flex-col gap-[6px] rounded-[16px] border-[#DFE1E7] bg-white p-4 shadow-sm"
+          className="flex flex-col gap-[6px] rounded-[16px] border border-[#DFE1E7] bg-white p-4"
         >
           <div className="flex justify-between">
             <span className="text-[12px] leading-[150%] font-normal tracking-[2%] text-[#666D80]">
