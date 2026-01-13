@@ -21,9 +21,9 @@ const ProtectedRoute = () => {
     return <Navigate to="/auth/login" replace />;
   }
 
-  if (isSetupCompleted === "false") {
-    return <GetStartedPage />;
-  }
+  // if (isSetupCompleted == "false") {
+  //   return <GetStartedPage />;
+  // }
 
   return (
     <>
