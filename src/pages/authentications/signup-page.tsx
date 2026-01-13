@@ -80,7 +80,7 @@ const SignupPage = () => {
 
   return (
     <AuthLayout>
-      <ScrollArea className="flex h-[95vh] flex-1 items-center justify-center overflow-auto py-5">
+      <ScrollArea className="flex max-h-[95vh] min-h-0 flex-1 items-center justify-center overflow-auto py-5">
         <div className="grid h-full w-full place-content-center">
           <div className="">
             <h2 className="mb-3.5 text-center text-[32px] leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
