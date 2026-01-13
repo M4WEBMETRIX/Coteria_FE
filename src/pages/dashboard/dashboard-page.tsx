@@ -1,6 +1,6 @@
 import InsightsCard from "@/components/dashboard/insights-card";
 import ActivitySummaryCard from "@/components/dashboard/activity-summary-card";
-import CommunityInsightsCard from "@/components/dashboard/community-insights-card";
+// import CommunityInsightsCard from "@/components/dashboard/community-insights-card";
 import GrowthTrendsCard from "@/components/dashboard/growth-trends-card";
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import MetricCard from "@/components/reusable/metric-card";

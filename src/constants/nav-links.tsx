@@ -4,7 +4,6 @@ import {
   ChatCircleDotsIcon,
   GearIcon,
   HandHeartIcon,
-  HouseSimple,
   PackageIcon,
   UserCircleIcon,
   UserIcon,
