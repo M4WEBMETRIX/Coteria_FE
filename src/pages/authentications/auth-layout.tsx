@@ -1,5 +1,5 @@
 import TestimonialCarousel from "@/pages/authentications/testimonial-carousel";
-import LOGO from "@/assets/icons/coterie.svg";
+import LOGO from "@/assets/icons/coterie-black.svg";
 import BOTTOM_PATTERN from "@/assets/icons/bottom_left.svg";
 import TOP_PATTERN from "@/assets/icons/top_right.svg";
 
@@ -7,7 +7,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
   return (
     <div className="flex min-h-screen">
       {/* Left Panel */}
-      <div className="hidden flex-col justify-between bg-linear-to-br from-green-500 to-green-600 text-white lg:relative lg:flex lg:w-145 lg:max-w-145 lg:overflow-hidden">
+      <div className="hidden flex-col justify-center bg-linear-to-br from-green-500 to-green-600 text-white lg:relative lg:flex lg:w-145 lg:max-w-145 lg:overflow-hidden">
         <img
           src={TOP_PATTERN}
           className="absolute -top-1.5 -right-10 h-28.25 w-23"
