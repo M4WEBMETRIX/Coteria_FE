@@ -8,7 +8,7 @@ const isAuthenticated = () => {
 };
 
 const isSetupCompleted = () => {
-  return true;
+  return false;
 };
 
 const ProtectedRoute = () => {

@@ -18,6 +18,7 @@ const CommunityPage = () => {
     ],
   });
   const [community, setCommunity] = useState<any>([1]);
+  const [communityModal, setCommunityModal] = useState<boolean>(false);
   // const [justCreated, setJustCreated] = useState<any>(true);
   return (
     <>
@@ -28,12 +29,7 @@ const CommunityPage = () => {
             {/* Header */}
             <div className="flex items-center justify-between">
               <h1 className="text-xl font-bold text-[#1E1F24]">Overview</h1>
-              <CreateCommunityModal setCommunityData={setCommunity}>
-                <Button className="flex items-center gap-2 border border-[#E0E1E6] bg-white text-[#1E1F24] hover:bg-gray-50">
-                  <PlusIcon className="h-4 w-4" />
-                  Create New Community
-                </Button>
-              </CreateCommunityModal>
+              <CreateCommunityModal setCommunityData={setCommunity} />
             </div>
 
             {/* Stats Grid */}

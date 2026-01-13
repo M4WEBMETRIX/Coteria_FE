@@ -100,18 +100,19 @@ const CreateCommunityModal = ({
 
   return (
     <Dialog open={isCustom ? customOpen : open} onOpenChange={isCustom ? setCustomOpen : setOpen}>
-      <DialogTrigger asChild>
-        {isCustom ? null : (
-          <>
-            {children || (
-              <Button className="flex items-center gap-2 border border-[#E0E1E6] bg-white text-[#1E1F24] hover:bg-gray-50">
+      {isCustom ? null : (
+        <>
+          {children || (
+            <DialogTrigger asChild>
+              <Button className="flex cursor-pointer items-center gap-2 border border-[#E0E1E6] bg-white text-[#1E1F24] hover:bg-gray-50">
                 <Plus className="h-4 w-4" />
                 Create New Community
               </Button>
-            )}
-          </>
-        )}
-      </DialogTrigger>
+            </DialogTrigger>
+          )}
+        </>
+      )}
+
       <DialogContent
         showCloseButton={false}
         className="max-h-[95vh] w-[700px] min-w-[700px] gap-0 overflow-hidden border-none bg-white p-0"
