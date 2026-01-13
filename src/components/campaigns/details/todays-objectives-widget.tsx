@@ -12,22 +12,19 @@ const data = [
   { name: "May", green: 55000, yellow: 55000 },
   { name: "Jun", green: 55000, yellow: 90000 },
   { name: "Jul", green: 75000, yellow: 85000 },
+  { name: "Aug", green: 95000, yellow: 205000 },
 ];
 
 const TodaysObjectivesWidget = () => {
   return (
-    <div className="flex h-[250px] w-full flex-col space-y-4">
+    <div className="flex h-[260px] w-full flex-col space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-base leading-[100%] font-semibold tracking-[0%] text-[#68686F]">
           Today's Objectives
         </h3>
-        <div className="flex gap-2">
-          {/* <div className="flex h-full items-center gap-1 rounded-md border-[#E0E1E6] bg-white px-2 py-1">
-          </div> */}
-        </div>
       </div>
 
-      <div className="flex gap-2">
+      <div className="flex max-h-[38px] gap-2">
         <Button
           variant="outline"
           className="h-8 gap-2 border-[#E0E1E6] bg-white text-xs text-[#9D9FA6]"
@@ -58,12 +55,12 @@ const TodaysObjectivesWidget = () => {
         </div>
       </div>
 
-      <Card className="relative h-full flex-1 rounded-xl border-[#E0E1E6] bg-white shadow-sm">
-        <CardContent className="h-full p-4">
-          <div className="absolute top-4 left-4 z-10">
-            <span className="text-xs text-[#8B8D98]">[od 8.2pr]</span>
-          </div>
+      <div className="h-[213px] flex-1 rounded-xl border border-[#E0E1E6] pt-4">
+        {/* <span className="absolute top-2 left-2 text-xs text-[#8B8D98]">[od 8.2pr]</span> */}
+        <div className="h-full">
+          {/* <div className="z-10"> */}
 
+          {/* </div> */}
           {/* Floating Stats Card inside Chart */}
           {/* <div className="absolute top-4 left-1/2 z-10 w-[240px] -translate-x-1/2 rounded-xl border border-[#E0E1E6] bg-white p-3 shadow-lg">
             <div className="mb-2 flex items-start justify-between">
@@ -88,7 +85,7 @@ const TodaysObjectivesWidget = () => {
             </div>
           </div> */}
 
-          <ResponsiveContainer width="100%" height="100%">
+          <ResponsiveContainer width="100%" height="100%" className={""}>
             <BarChart data={data}>
               <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E1E6" />
               <XAxis
@@ -109,8 +106,8 @@ const TodaysObjectivesWidget = () => {
               <Bar dataKey="yellow" fill="#FDB022" radius={[4, 4, 0, 0]} barSize={12} />
             </BarChart>
           </ResponsiveContainer>
-        </CardContent>
-      </Card>
+        </div>
+      </div>
     </div>
   );
 };

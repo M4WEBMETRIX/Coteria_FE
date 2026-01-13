@@ -20,7 +20,7 @@ const DriverAnalysisWidget = () => {
             Share Application Invite
           </Button>
         </div>
-        <p className="mt-[14px] text-[10px] font-normal text-[#838880]">
+        <p className="my-[14px] text-[10px] font-normal text-[#838880]">
           Champions will receive a personalized invitation to join your community{" "}
         </p>
       </div>

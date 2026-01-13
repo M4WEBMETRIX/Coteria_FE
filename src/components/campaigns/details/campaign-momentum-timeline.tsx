@@ -1,20 +1,28 @@
-import { AreaChart, Area, ResponsiveContainer, Tooltip, XAxis } from "recharts";
+import {
+  AreaChart,
+  Area,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+} from "recharts";
 
 const data = [
-  { name: "2 April", awareness: 65, interest: 45, participants: 30, influencer: 25 },
-  { name: "2 April", awareness: 55, interest: 55, participants: 45, influencer: 20 },
-  { name: "2 April", awareness: 40, interest: 65, participants: 70, influencer: 15 },
-  { name: "3 April", awareness: 38, interest: 45, participants: 60, influencer: 18 },
-  { name: "3 April", awareness: 55, interest: 35, participants: 35, influencer: 45 },
-  { name: "3 April", awareness: 78, interest: 50, participants: 45, influencer: 25 },
-  { name: "4 April", awareness: 60, interest: 60, participants: 30, influencer: 35 },
-  { name: "4 April", awareness: 50, interest: 45, participants: 55, influencer: 20 },
-  { name: "5 April", awareness: 45, interest: 35, participants: 45, influencer: 55 },
-  { name: "5 April", awareness: 65, interest: 55, participants: 30, influencer: 60 },
-  { name: "5 April", awareness: 80, interest: 65, participants: 40, influencer: 45 },
-  { name: "5 April", awareness: 70, interest: 50, participants: 65, influencer: 35 },
-  { name: "5 April", awareness: 55, interest: 40, participants: 50, influencer: 25 },
-  { name: "5 April", awareness: 85, interest: 60, participants: 35, influencer: 40 },
+  { name: "2 April", awareness: 16500, interest: 14500, participants: 13000, influencer: 12500 },
+  { name: "2 April", awareness: 15500, interest: 15500, participants: 14500, influencer: 12000 },
+  { name: "2 April", awareness: 14000, interest: 16500, participants: 17000, influencer: 11500 },
+  { name: "3 April", awareness: 13800, interest: 14500, participants: 16000, influencer: 11800 },
+  { name: "3 April", awareness: 15500, interest: 13500, participants: 13500, influencer: 14500 },
+  { name: "3 April", awareness: 17800, interest: 15000, participants: 14500, influencer: 12500 },
+  { name: "4 April", awareness: 16000, interest: 16000, participants: 13000, influencer: 13500 },
+  { name: "4 April", awareness: 15000, interest: 14500, participants: 15500, influencer: 12000 },
+  { name: "5 April", awareness: 14500, interest: 13500, participants: 14500, influencer: 15500 },
+  { name: "5 April", awareness: 16500, interest: 15500, participants: 13000, influencer: 16000 },
+  { name: "5 April", awareness: 18000, interest: 16500, participants: 14000, influencer: 14500 },
+  { name: "5 April", awareness: 17000, interest: 15000, participants: 16500, influencer: 13500 },
+  { name: "5 April", awareness: 15500, interest: 14000, participants: 15000, influencer: 12500 },
+  { name: "5 April", awareness: 18500, interest: 16000, participants: 13500, influencer: 14000 },
 ];
 
 const CampaignMomentumTimeline = () => {
@@ -50,13 +58,14 @@ const CampaignMomentumTimeline = () => {
           </div>
           <div className="h-[200px] w-full">
             <ResponsiveContainer width="100%" height="100%">
-              <AreaChart data={data} margin={{ top: 10, right: 0, left: 0, bottom: 0 }}>
+              <AreaChart data={data} margin={{ top: 10, right: 10, left: 10, bottom: 0 }}>
                 <defs>
                   <linearGradient id="colorAwareness" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="5%" stopColor="#12AA5B" stopOpacity={0.1} />
                     <stop offset="95%" stopColor="#12AA5B" stopOpacity={0} />
                   </linearGradient>
                 </defs>
+                <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="#E0E1E6" />
                 <Tooltip />
                 <XAxis
                   dataKey="name"
@@ -64,7 +73,16 @@ const CampaignMomentumTimeline = () => {
                   tickLine={false}
                   tick={{ fontSize: 10, fill: "#8B8D98" }}
                   dy={10}
-                  interval={2} // Show fewer labels to avoid clutter with dense data
+                  interval={2}
+                />
+                <YAxis
+                  axisLine={false}
+                  tickLine={false}
+                  tick={{ fontSize: 10, fill: "#8B8D98" }}
+                  tickFormatter={(value) => `${value / 1000}K`}
+                  //   domain={[8000, "auto"]}
+                  //   ticks={[10000]}
+                  width={30}
                 />
                 <Area
                   type="monotone"

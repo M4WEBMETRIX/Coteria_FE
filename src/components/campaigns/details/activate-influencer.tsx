@@ -118,6 +118,7 @@ const ActivateInfluencer = () => {
             <h3 className="text-sm font-semibold text-[#4A4C5q4]">Recommended Today</h3>
             <CaretRight size={16} className="text-[#98A2B3]" />
           </div>
+          <Separator className="my-[9px]" />
           <div className="space-y-4">
             <div className="flex items-start gap-3">
               <div className="mt-0.5 h-2 w-2 shrink-0 rounded-full bg-[#12AA5B]" />

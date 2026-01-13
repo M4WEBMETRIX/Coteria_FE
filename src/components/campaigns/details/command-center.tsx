@@ -19,9 +19,9 @@ const CommandCenter = () => {
     <div>
       {" "}
       {/* Content Grid */}
-      <div className="grid grid-cols-12 gap-6">
+      <div className="flex gap-6">
         {/* Main Column (Left - 8 cols) */}
-        <div className="col-span-12 flex flex-col xl:col-span-9">
+        <div className="flex w-full flex-1 flex-col">
           {/* Live Campaign Pulse Header */}
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm leading-[100%] font-semibold text-[#696A70]">
@@ -82,12 +82,12 @@ const CommandCenter = () => {
         </div>
 
         {/* Sidebar Column (Right - 4 cols) */}
-        <div className="col-span-12 flex flex-col gap-4 xl:col-span-3">
+        <aside className="flex w-[256px] flex-col gap-4">
           <WhatsHappeningWidget />
           <RequestParticipantsWidget />
           <ActivityFeedWidget />
           <AiInsightWidget />
-        </div>
+        </aside>
       </div>
     </div>
   );
