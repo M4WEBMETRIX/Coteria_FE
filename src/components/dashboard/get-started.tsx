@@ -12,7 +12,7 @@ import { Button } from "../ui/button";
 import { useQueryState } from "nuqs";
 
 const GetStartedPage = () => {
-  const [isSetupCompleted, setIsSetupCompleted] = useQueryState("isSetupCompleted", {
+  const [_, setIsSetupCompleted] = useQueryState("isSetupCompleted", {
     defaultValue: "false",
   });
   const [isCommunityOpen, setIsCommunityOpen] = useState<boolean>(false);

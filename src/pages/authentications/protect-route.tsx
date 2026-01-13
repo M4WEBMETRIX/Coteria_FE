@@ -1,4 +1,3 @@
-import { useEffect, useState } from "react";
 import { Navigate, Outlet } from "react-router-dom";
 import DashboardLayout from "@/components/layout/dashboard-layout";
 import GetStartedPage from "@/components/dashboard/get-started";
@@ -10,7 +9,7 @@ const isAuthenticated = () => {
 };
 
 const ProtectedRoute = () => {
-  const [isSetupCompleted, setIsSetupCompleted] = useQueryState("isSetupCompleted", {
+  const [isSetupCompleted] = useQueryState("isSetupCompleted", {
     defaultValue: "false",
   });
 
