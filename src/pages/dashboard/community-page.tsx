@@ -5,7 +5,7 @@ import GrowthTrendsWidget from "@/components/community/growth-trends-widget";
 import CommunityAiInsightWidget from "@/components/community/community-ai-insight-widget";
 import ActivitySummaryWidget from "@/components/community/activity-summary-widget";
 import CommunityInsightsWidget from "@/components/community/community-insights-widget";
-import { PlusIcon } from "lucide-react";
+
 import EmptyCampaigns from "../../assets/icons/empty-campaigns.svg";
 import { useState } from "react";
 import CreateCommunityModal from "@/components/community/create-community-modal";
@@ -18,7 +18,7 @@ const CommunityPage = () => {
     ],
   });
   const [community, setCommunity] = useState<any>([1]);
-  const [communityModal, setCommunityModal] = useState<boolean>(false);
+
   // const [justCreated, setJustCreated] = useState<any>(true);
   return (
     <>
