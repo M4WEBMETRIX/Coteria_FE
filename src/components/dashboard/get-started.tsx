@@ -8,8 +8,13 @@ import IMAGE_6 from "@/assets/images/dashboard-img-6.png";
 import CreateCampaignModal from "../campaigns/create-campaign-modal";
 import CreateCommunityModal from "../community/create-community-modal";
 import CoterieLogo from "./catorie-logo-svg-code";
+import { Button } from "../ui/button";
+import { useQueryState } from "nuqs";
 
 const GetStartedPage = () => {
+  const [isSetupCompleted, setIsSetupCompleted] = useQueryState("isSetupCompleted", {
+    defaultValue: "false",
+  });
   const [isCommunityOpen, setIsCommunityOpen] = useState<boolean>(false);
   const [
     // communityData,
@@ -173,6 +178,10 @@ const GetStartedPage = () => {
               })}
             </div>
           </div>
+        </div>
+
+        <div className="flex items-center justify-center">
+          <Button onClick={() => setIsSetupCompleted("true")}>Complete</Button>
         </div>
       </div>
     </>
