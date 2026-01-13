@@ -80,13 +80,13 @@ const SignupPage = () => {
 
   return (
     <AuthLayout>
-      <ScrollArea className="flex h-[95vh] flex-1 items-center justify-center overflow-auto">
+      <ScrollArea className="flex h-[95vh] flex-1 items-center justify-center overflow-auto py-5">
         <div className="grid h-full w-full place-content-center">
           <div className="">
             <h2 className="mb-3.5 text-center text-[32px] leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
               Create your Organization account
             </h2>
-            <p className="mb-12.5 text-center leading-[100%] tracking-[0%] text-[#414143]">
+            <p className="mb-8 text-center leading-[100%] tracking-[0%] text-[#414143]">
               Get started with a free trial. No credit card required.
             </p>
 

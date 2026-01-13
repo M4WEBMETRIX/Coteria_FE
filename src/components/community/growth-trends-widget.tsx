@@ -81,12 +81,12 @@ const GrowthTrendsWidget = () => {
           </div>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex h-full items-center gap-2">
           <Select defaultValue="December">
             <SelectTrigger className="h-8 w-[120px] rounded-lg border-[#E0E1E6] text-xs font-medium text-[#5E606A]">
               <SelectValue placeholder="Select month" />
             </SelectTrigger>
-            <SelectContent className="h-[200px]">
+            <SelectContent className="">
               {MONTHS?.map((month) => (
                 <SelectItem key={month} value={month}>
                   {month}
