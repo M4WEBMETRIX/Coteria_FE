@@ -3,6 +3,7 @@ import { Toaster } from "sonner";
 import AllRoutes from "./_routes";
 import RouteErrorBoundary from "./pages/authentications/error-boundary";
 import AccessProtection from "./components/auth/access-protection";
+import { ReloadPrompt } from "./components/ReloadPrompt";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         </Route>
       </Routes>
       <Toaster position="top-center" richColors />
+      <ReloadPrompt />
     </>
   );
 }
