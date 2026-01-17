@@ -4,9 +4,9 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { EyeOff } from "lucide-react";
 
-import UserAuthLayout from "./layout";
 import { Eye } from "@phosphor-icons/react";
 import { Link } from "react-router-dom";
+import UserAuthLayout from "@/end-user-app/layout/layout";
 
 const UserSignIn = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -40,7 +40,7 @@ const UserSignIn = () => {
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               required
-              className="h-15.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+              className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
             />
           </div>
 
@@ -60,7 +60,7 @@ const UserSignIn = () => {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
-                className="h-15.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 pr-10 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+                className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 pr-10 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
               />
               {formData.password && (
                 <button
@@ -88,7 +88,7 @@ const UserSignIn = () => {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="h-16 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
+            className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
           >
             Log in
           </Button>

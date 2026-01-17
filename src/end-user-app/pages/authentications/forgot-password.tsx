@@ -22,7 +22,7 @@ const EmailStep: React.FC<{ onNext: (email: string) => void }> = ({ onNext }) =>
           Email<span className="text-red-500">*</span>
         </Label>
         <Input
-          className="h-15.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+          className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter your email"
@@ -31,7 +31,7 @@ const EmailStep: React.FC<{ onNext: (email: string) => void }> = ({ onNext }) =>
 
       <Button
         onClick={() => onNext(email)}
-        className="h-16 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
+        className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
       >
         Verify
       </Button>
@@ -116,7 +116,7 @@ const CodeStep: React.FC<{ email: string; onNext: () => void; onBack: () => void
 
       <Button
         onClick={onNext}
-        className="h-16 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
+        className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
       >
         Verify Code
       </Button>
@@ -159,7 +159,7 @@ const PasswordStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
           value={pw}
           onChange={(e) => setPw(e.target.value)}
           placeholder="Enter your password"
-          className="h-15.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+          className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
         />
       </div>
       <div className="mb-7.5 text-left">
@@ -171,13 +171,13 @@ const PasswordStep: React.FC<{ onNext: () => void }> = ({ onNext }) => {
           value={confirm}
           onChange={(e) => setConfirm(e.target.value)}
           placeholder="Enter your password"
-          className="h-15.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+          className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
         />
       </div>
 
       <Button
         onClick={onNext}
-        className="h-16 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
+        className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
       >
         Create Password
       </Button>
@@ -214,7 +214,7 @@ const SuccessStep: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
       </div>
       <Button
         onClick={onLogin}
-        className="h-16 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
+        className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
       >
         Log In
       </Button>
