@@ -12,7 +12,7 @@ const UserAuthLayout = ({
 }) => {
   return (
     <main className="flex h-screen w-screen">
-      <aside className="w-full max-w-151.5 p-4">
+      <aside className="no-scrollbar w-full max-w-151.5 overflow-y-auto p-4">
         <div className="p-7.5">
           <LogoSvgCode className="mt-7.5" />
           <div className="mt-12.5">

@@ -1,22 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-// Lazy load all page components
-
 const ProtectedRoute = lazy(() => import("./pages/authentications/protect-route"));
-
-const DashboardPage = lazy(() => import("./pages/dashboard/dashboard-page"));
-const CommunityPage = lazy(() => import("./pages/dashboard/community-page"));
-const CampaignsPage = lazy(() => import("./pages/dashboard/campaigns-page"));
-const CampaignsPageDetail = lazy(() => import("./pages/dashboard/campaign-details"));
-const InsightsPage = lazy(() => import("./pages/dashboard/insights-page"));
-const DonorsPage = lazy(() => import("./pages/dashboard/donors-page"));
-const SettingsPage = lazy(() => import("./pages/dashboard/settings-page"));
-const DonationsPage = lazy(() => import("./pages/dashboard/donations-page"));
-const TeamPage = lazy(() => import("./pages/dashboard/team-page"));
-const MessagesPage = lazy(() => import("./pages/dashboard/messages-page"));
-const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
-const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
 import UserHome from "./end-user-app/pages/home";
@@ -25,7 +10,6 @@ import UbuntuLayout from "./end-user-app/constants/ubuntu-style-wrapper";
 import UserSignUp from "./end-user-app/pages/authentications/sign-up";
 import UserForgotPassword from "./end-user-app/pages/authentications/forgot-password";
 
-const HelpSupport = lazy(() => import("./pages/dashboard/help-support"));
 const EndUserRoutes = () => {
   return (
     <Suspense
@@ -48,26 +32,11 @@ const EndUserRoutes = () => {
           <Route path="signup" element={<UserSignUp />} />
           <Route path="login" element={<UserSignIn />} />
           <Route path="forgot-password" element={<UserForgotPassword />} />
-
-          {/* <Route path="check-email" element={<CheckEmailPage />} /> */}
-          {/* <Route path="reset-password" element={<ResetPasswordPage />} /> */}
         </Route>
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
-          <Route path="dashboard" element={<DashboardPage />} />
-          <Route path="community" element={<CommunityPage />} />
-          <Route path="campaigns" element={<CampaignsPage />} />
-          <Route path="campaigns/:id" element={<CampaignsPageDetail />} />
-          <Route path="insights" element={<InsightsPage />} />
-          <Route path="donors" element={<DonorsPage />} />
-          <Route path="donations" element={<DonationsPage />} />
-          <Route path="donors/:id" element={<DonationDetailsPage />} />
-          <Route path="team" element={<TeamPage />} />
-          <Route path="messages" element={<MessagesPage />} />
-          <Route path="reports" element={<ReportsPage />} />
-          <Route path="settings" element={<SettingsPage />} />
-          <Route path="help-support" element={<HelpSupport />} />
+          <Route path="dashboard" element={<>User dashboard here</>} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
