@@ -130,16 +130,16 @@ function Card({
   role,
   image,
   text,
-  time,
-  rating,
+  // time,
+  // rating,
   isActive,
 }: {
   name: string;
   role: string;
   image: string;
   text: string | ReactElement;
-  time: string;
-  rating: number;
+  time?: string;
+  rating?: number;
   isActive?: boolean;
 }) {
   return (
