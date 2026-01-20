@@ -1,5 +1,9 @@
 import { motion } from "framer-motion";
-import { useState, useEffect } from "react";
+import { useState, useEffect, type ReactElement } from "react";
+
+import TESTIMONIAL_IMAGE_1 from "@/assets/images/testimonial-img-1.jpg";
+import TESTIMONIAL_IMAGE_2 from "@/assets/images/testimonial-img-2.jpg";
+import TESTIMONIAL_IMAGE_3 from "@/assets/images/testimonial-img-3.jpg";
 
 const ACTIVE_WIDTH = 341;
 const SIDE_WIDTH = 227;
@@ -7,27 +11,34 @@ const GAP = 14;
 
 const testimonials = [
   {
-    name: "Eliska Trebalska",
-    role: "Mother",
-    image: "https://i.pravatar.cc/100?img=47",
-    text: "With Realitoo we have been able move to another country in a 4 weeks. Incredible!",
-    time: "8:35 PM - Jan 4, 2022",
+    name: "Community Member",
+    role: "Toronto, Canada",
+    image: TESTIMONIAL_IMAGE_1,
+    text: (
+      <>
+        I’ve donated to causes before, but Coterie is the first place where I actually{" "}
+        <span className="italic">feel part of something</span>. I can see how my actions matter, who
+        I’m connected to, and how the community grows. It doesn’t feel transactional. It feels
+        human.
+      </>
+    ),
+    time: "12:15 PM - Jan 4, 2025",
     rating: 5,
   },
   {
-    name: "Jurek Jalio",
-    role: "Father",
-    image: "https://i.pravatar.cc/100?img=12",
-    text: "First touch with Realito was great. Their team really did help our family dream living abroad.",
-    time: "8:35 PM - Jan 6, 2022",
+    name: "Donor & Volunteer",
+    role: "Global Citizen",
+    image: TESTIMONIAL_IMAGE_2,
+    text: "What surprised me most is how often I come back. Not because I’m asked to donate again, but because something is always happening. A vote, a new person joining, an update that shows progress. It feels alive",
+    time: "9:30 PM - Jan 6, 2025",
     rating: 5,
   },
   {
-    name: "Anna Novak",
-    role: "Designer",
-    image: "https://i.pravatar.cc/100?img=32",
-    text: "Professional, fast and friendly service. Highly recommended.",
-    time: "8:35 PM - Jan 9, 2022",
+    name: "Executive Director",
+    role: "UK Nonprofit Organization",
+    image: TESTIMONIAL_IMAGE_3,
+    text: "Before Coterie, we were running campaigns blindly. We had numbers, but no clarity. Now we actually understand what’s driving engagement and who our real champions are.",
+    time: "7:45 PM - Jan 9, 2025",
     rating: 5,
   },
 ];
@@ -126,7 +137,7 @@ function Card({
   name: string;
   role: string;
   image: string;
-  text: string;
+  text: string | ReactElement;
   time: string;
   rating: number;
   isActive?: boolean;
@@ -134,7 +145,7 @@ function Card({
   return (
     <div
       className="relative flex h-full w-full flex-col justify-between overflow-hidden rounded-2xl bg-white shadow-lg"
-      style={{ padding: isActive ? "24px" : "16px" }}
+      style={{ padding: isActive ? "16px" : "12px" }}
     >
       <div className="relative z-10">
         {/* Header */}
@@ -142,20 +153,20 @@ function Card({
           <img
             src={image}
             alt={name}
-            className="rounded-full object-cover"
+            className="rounded-full bg-gray-200 object-cover"
             style={{
-              width: isActive ? "48px" : "32px",
-              height: isActive ? "48px" : "32px",
+              width: isActive ? "38px" : "22px",
+              height: isActive ? "38px" : "22px",
             }}
           />
           <div>
             <p
               className="font-semibold text-[#1A1A1A]"
-              style={{ fontSize: isActive ? "16px" : "12px" }}
+              style={{ fontSize: isActive ? "14px" : "10px" }}
             >
               {name}
             </p>
-            <p className="text-gray-400" style={{ fontSize: isActive ? "14px" : "10px" }}>
+            <p className="text-gray-400" style={{ fontSize: isActive ? "12px" : "10px" }}>
               {role}
             </p>
           </div>
@@ -163,14 +174,14 @@ function Card({
 
         {/* Text */}
         <p
-          className="mt-3 leading-relaxed text-gray-600"
-          style={{ fontSize: isActive ? "14px" : "11px" }}
+          className="mt-3 line-clamp-5 leading-relaxed text-gray-600"
+          style={{ fontSize: isActive ? "12px" : "10px" }}
         >
           "{text}"
         </p>
 
         {/* Footer */}
-        {isActive && (
+        {/* {isActive && (
           <div className="mt-4 flex items-center justify-between">
             <span className="text-gray-400" style={{ fontSize: isActive ? "12px" : "9px" }}>
               {time}
@@ -187,7 +198,7 @@ function Card({
               ))}
             </div>
           </div>
-        )}
+        )} */}
       </div>
     </div>
   );

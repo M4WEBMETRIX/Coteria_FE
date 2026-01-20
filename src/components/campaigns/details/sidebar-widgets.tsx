@@ -46,7 +46,7 @@ export const RequestParticipantsWidget = () => {
       <p className="mb-4 text-[10px] leading-relaxed text-[#838880]">
         100+ participants in "Housing Support Drive" request for a new campaign
       </p>
-      <Button className="w-full bg-[#12B76A] text-sm hover:bg-[#039855]">Share our campaign</Button>
+      <Button className="w-full bg-[#12B76A] text-sm hover:bg-[#039855]">Review Request</Button>
     </div>
   );
 };

@@ -1,7 +1,10 @@
 import { Button } from "@/components/ui/button";
 import IMAGE from "@/assets/images/Image-22.png";
+import { useQueryState } from "nuqs";
 
 const DriverAnalysisWidget = () => {
+  const [, setTab] = useQueryState("view");
+
   return (
     <div className="rounded-xl border border-[#E0E1E6]">
       <div>
@@ -15,9 +18,11 @@ const DriverAnalysisWidget = () => {
           </p>
         </div>
         <div className="mt-4 space-y-3">
-          <Button className="bg-primary w-full">Share our campaign</Button>
+          <Button onClick={() => setTab("activate-influencer")} className="bg-primary w-full">
+            Invite an Influncer
+          </Button>
           <Button className="w-full border border-[#F2F2F2] bg-[#F6F6F6] text-sm leading-[100%] text-[#4A4C54]">
-            Share Application Invite
+            Contact an Influencer
           </Button>
         </div>
         <p className="my-[14px] text-[10px] font-normal text-[#838880]">
