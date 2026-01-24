@@ -15,10 +15,11 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 import { Separator } from "@/components/ui/separator";
 
-const INFLUENCERS_DATA: Influencer[] = [
+export const INFLUENCERS_DATA: Influencer[] = [
   {
     id: 1,
-    name: "Title Name",
+    name: "Wale Abba",
+    email: "wale@coterie.com",
     avatar: "https://i.pravatar.cc/150?u=1",
     confidenceLabel: "High-Confidence influencer",
     responsiveness: "High",
@@ -29,7 +30,8 @@ const INFLUENCERS_DATA: Influencer[] = [
   },
   {
     id: 2,
-    name: "Title Name",
+    name: "Joseph Scott Milan",
+    email: "scott.joseph@oursolution.com",
     avatar: "https://i.pravatar.cc/150?u=2",
     confidenceLabel: "High-Confidence influencer",
     responsiveness: "High",
@@ -40,7 +42,8 @@ const INFLUENCERS_DATA: Influencer[] = [
   },
   {
     id: 3,
-    name: "Title Name",
+    name: "Oluwatosin Ayowole",
+    email: "ayowole@example.com",
     avatar: "https://i.pravatar.cc/150?u=3",
     confidenceLabel: "High-Confidence influencer",
     responsiveness: "High",

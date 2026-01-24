@@ -4,10 +4,13 @@ import { Badge } from "@/components/ui/badge";
 import { Star, CaretRight } from "@phosphor-icons/react";
 import InfluencerAiInsightsModal from "./InfluencerAiInsightsModal";
 import { useState } from "react";
+import { cn } from "@/lib/utils";
+import ContactInfluencerModal from "./contact-influencer-modal";
 
 export interface Influencer {
   id: number;
   name: string;
+  email?: string;
   avatar: string;
   confidenceLabel: string;
   responsiveness: "High" | "Medium" | "Low";
@@ -17,8 +20,10 @@ export interface Influencer {
   matchPercentage: number;
 }
 
-export const InfluencerCard = ({ user }: { user: Influencer }) => {
+export const InfluencerCard = ({ user, isInvite }: { user: Influencer; isInvite?: boolean }) => {
   const [showModal, setShowModal] = useState<number | null>(null);
+  const [selectedInfluencer, setSelectedInfluencer] = useState<Influencer | null | undefined>(null);
+  const [isInflucencerClicked, setIsInflucencerClicked] = useState<boolean>(false);
   return (
     <>
       <InfluencerAiInsightsModal showModal={showModal} setShowModal={setShowModal} />
@@ -108,17 +113,35 @@ export const InfluencerCard = ({ user }: { user: Influencer }) => {
 
           <div className="ml-auto justify-end space-y-[14px]">
             <p className="mt-1 text-[10px] text-[#ACADB3]">Matches your campaign goals</p>
-            <Button
-              onClick={() => setShowModal(user.id)}
-              variant="outline"
-              className="font-regular h-9 gap-2 border-[#DFE1E7] text-sm text-[#4A4C54]"
-            >
-              View more insight
-              <CaretRight size={16} />
-            </Button>
+            <div className={cn(isInvite && "ml-auto flex justify-end")}>
+              <Button
+                onClick={() => {
+                  if (isInvite) {
+                    setSelectedInfluencer(user);
+                    setIsInflucencerClicked(true);
+                  } else {
+                    setShowModal(user.id);
+                  }
+                }}
+                variant="outline"
+                className={cn(
+                  "font-regular h-9 gap-2 border-[#DFE1E7] text-sm text-[#4A4C54]",
+                  isInvite && "w-30.75"
+                )}
+              >
+                {isInvite ? "Invite" : "View more insight"}
+                <CaretRight size={16} />
+              </Button>
+            </div>
           </div>
         </div>
       </div>
+
+      <ContactInfluencerModal
+        influencer={selectedInfluencer}
+        open={isInflucencerClicked}
+        setOpen={() => setIsInflucencerClicked(false)}
+      />
     </>
   );
 };
