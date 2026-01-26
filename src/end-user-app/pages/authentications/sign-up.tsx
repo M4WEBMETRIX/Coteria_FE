@@ -35,7 +35,11 @@ const UserSignUp = () => {
   };
 
   return (
-    <UserAuthLayout isReferrer={isReferrer ? true : false}>
+    <UserAuthLayout
+      title="Your world is just beginning"
+      subTitle="A place where people gather, participate, and build trust together."
+      isReferrer={isReferrer ? true : false}
+    >
       <div className="">
         {isReferrer && (
           <div className="mt-2.5 mb-7.5 flex items-center justify-between">

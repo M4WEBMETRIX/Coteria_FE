@@ -1,7 +1,9 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
 
-const ProtectedRoute = lazy(() => import("./pages/authentications/protect-route"));
+const UserProtectedRoute = lazy(
+  () => import("./end-user-app/pages/authentications/user-protected-route")
+);
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
 import UserHome from "./end-user-app/pages/home";
@@ -35,7 +37,7 @@ const EndUserRoutes = () => {
         </Route>
 
         {/* Protected routes */}
-        <Route element={<ProtectedRoute />}>
+        <Route element={<UserProtectedRoute />}>
           <Route path="dashboard" element={<>User dashboard here</>} />
         </Route>
 

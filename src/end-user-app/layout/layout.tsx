@@ -7,9 +7,13 @@ import LogoSvgCode from "../pages/logo-svg-code";
 const UserAuthLayout = ({
   children,
   isReferrer = false,
+  title,
+  subTitle,
 }: {
   children: React.ReactNode;
   isReferrer?: boolean;
+  title: string;
+  subTitle: string;
 }) => {
   return (
     <main className="flex h-screen">
@@ -22,12 +26,10 @@ const UserAuthLayout = ({
           <div className="p-7.5">
             <div className="mt-10">
               <p className="text-4xl leading-[120%] font-bold tracking-[-2%]">
-                {isReferrer ? "Invitation" : "Level Up Your Learning Journey"}
+                {isReferrer ? "You’ve been invited" : title}
               </p>
               <p className="mt-3 text-sm leading-[160%] tracking-[0%] text-[#6F6F6F]">
-                {isReferrer
-                  ? "You are referred by:"
-                  : "Sign Up and start your journey. Get 50% off discount for a fullset workshop"}
+                {isReferrer ? "Someone you know thought you should be part of this." : subTitle}
               </p>
             </div>
 

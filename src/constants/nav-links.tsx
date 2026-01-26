@@ -1,10 +1,18 @@
 import {
+  BookIcon,
   BuildingApartmentIcon,
+  CalendarDotsIcon,
+  ChartBarIcon,
   ChartPieSliceIcon,
   ChatCircleDotsIcon,
+  ChatsCircleIcon,
+  DoorIcon,
   GearIcon,
   HandHeartIcon,
   PackageIcon,
+  QuestionIcon,
+  ReceiptIcon,
+  SquaresFourIcon,
   UserCircleIcon,
   UserIcon,
 } from "@phosphor-icons/react";
@@ -17,7 +25,7 @@ export interface SubLink {
 }
 
 export interface NavLinkSection {
-  name: string;
+  name?: string;
   hasSubLinks: boolean;
   isDropdownActive: boolean;
   subLinks: SubLink[];
@@ -90,6 +98,62 @@ export const sidebarLinks: NavLinkSection[] = [
         name: "Settings",
         icon: <GearIcon size={20} weight="duotone" />,
         path: "/settings",
+      },
+    ],
+  },
+];
+
+export const userSidebarLinks: NavLinkSection[] = [
+  {
+    // name: "Manage your community",
+    hasSubLinks: true,
+    isDropdownActive: true,
+    subLinks: [
+      {
+        name: "World",
+        icon: <SquaresFourIcon size={20} weight="regular" />,
+        path: "/user/dashboard",
+      },
+      {
+        name: "My Communities",
+        icon: <BookIcon size={20} weight="regular" />,
+        path: "/user/communities",
+      },
+
+      {
+        name: "Campaign",
+        icon: <CalendarDotsIcon size={20} weight="regular" />,
+        path: "/user/campaign",
+      },
+      {
+        name: "rooms",
+        icon: <DoorIcon size={20} weight="regular" />,
+        path: "/user/rooms",
+      },
+      {
+        name: "Events",
+        icon: <ChartBarIcon size={20} weight="regular" />,
+        path: "/user/events",
+      },
+      {
+        name: "Messages",
+        icon: <ChatsCircleIcon size={20} weight="regular" />,
+        path: "/user/messages",
+      },
+      {
+        name: "Receipt  & taxes",
+        icon: <ReceiptIcon size={20} weight="regular" />,
+        path: "/user/receipt-taxes",
+      },
+      {
+        name: "Account & settings ",
+        icon: <GearIcon size={20} weight="regular" />,
+        path: "/user/account-settings",
+      },
+      {
+        name: "Help & transparency",
+        icon: <QuestionIcon size={20} weight="regular" />,
+        path: "/user/help-transparency",
       },
     ],
   },
