@@ -4,7 +4,7 @@ import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
+  // DialogTitle,
   DialogClose,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
@@ -13,6 +13,7 @@ import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Switch } from "@/components/ui/switch";
 import { ArrowsClockwiseIcon, CaretRightIcon } from "@phosphor-icons/react";
+import { cn } from "@/lib/utils";
 
 const InviteMembersModal = ({
   open,
@@ -76,7 +77,7 @@ const InviteMembersModal = ({
 
           {/* Invite Link Section */}
           <div className="space-y-2">
-            <Label className="text-base leading-[100%] tracking-[0%] text-[#64646E]">
+            <Label className="text-base leading-[100%] font-light! tracking-[0%] text-[#64646E]">
               Invite link
             </Label>
             <div className="relative flex gap-2">
@@ -86,7 +87,10 @@ const InviteMembersModal = ({
                 readOnly
                 className="h-12 flex-1 border border-[#F0EEF4] bg-[#F7F5F9] text-[#7C7C8B]"
               />
-              <Button onClick={handleCopyLink} className="absolute right-0 h-12 w-[156px] gap-2">
+              <Button
+                onClick={handleCopyLink}
+                className="absolute right-0 h-12 w-[156px] gap-2 rounded-[6px]!"
+              >
                 <div className="flex w-full items-center justify-between">
                   <div className="flex items-center gap-3">
                     {copied ? <Check size={18} /> : <Copy size={18} />}
@@ -96,35 +100,44 @@ const InviteMembersModal = ({
                 </div>
               </Button>
             </div>
-            <p className="mt-1.5 text-base leading-[100%] tracking-[0%] text-[#878691]">
+            <p className="mt-1.5 text-base leading-[100%] font-light tracking-[0%] text-[#878691]">
               Anyone with this link can join based on your settings below.
             </p>
           </div>
 
           {/* What should this link do? */}
           <div className="space-y-3">
-            <Label className="text-base leading-[100%] !font-normal tracking-[0%] text-[#61616C]">
+            <Label className="text-base leading-[100%] font-light! tracking-[0%] text-[#61616C]">
               What should this link do?
             </Label>
             <div className="flex">
               <Button
                 variant={selectedAction === "join" ? "default" : "secondary"}
                 onClick={() => setSelectedAction("join")}
-                className="h-12 w-1/3 rounded-r-[0px] px-5 py-2.5 text-base leading-[100%] font-normal! tracking-[0%]"
+                className={cn(
+                  "h-12 w-1/3 rounded-r-[0px] px-5 py-2.5 text-base leading-[100%] font-light! tracking-[0%]",
+                  selectedAction !== "join" && "text-[#737381]"
+                )}
               >
                 Join Community
               </Button>
               <Button
                 variant={selectedAction === "donate" ? "default" : "secondary"}
                 onClick={() => setSelectedAction("donate")}
-                className="h-12 w-1/3 rounded-[0px] px-5 py-2.5 text-base leading-[100%] font-normal! tracking-[0%]"
+                className={cn(
+                  "h-12 w-1/3 rounded-[0px] px-5 py-2.5 text-base leading-[100%] font-light! tracking-[0%]",
+                  selectedAction !== "donate" && "text-[#737381]"
+                )}
               >
                 Donate to Campaign
               </Button>
               <Button
                 variant={selectedAction === "both" ? "default" : "secondary"}
                 onClick={() => setSelectedAction("both")}
-                className="h-12 w-1/3 rounded-l-[0px] px-5 py-2.5 text-base leading-[100%] font-normal! tracking-[0%]"
+                className={cn(
+                  "h-12 w-1/3 rounded-l-[0px] px-5 py-2.5 text-base leading-[100%] font-light! tracking-[0%]",
+                  selectedAction !== "both" && "text-[#737381]"
+                )}
               >
                 Join + Donate
               </Button>
@@ -147,7 +160,7 @@ const InviteMembersModal = ({
                 <Label htmlFor="anyone" className="flex-1 cursor-pointer">
                   <div className="flex items-center gap-2 text-base leading-[100%] font-normal tracking-[0%] text-[#555560]">
                     <span className="">Anyone</span>
-                    <span className="text-[#797884]">(Public link)</span>
+                    <span className="font-light text-[#797884]">(Public link)</span>
                   </div>
                 </Label>
               </div>
@@ -158,7 +171,7 @@ const InviteMembersModal = ({
                 <Label htmlFor="restricted" className="flex-1 cursor-pointer">
                   <div className="flex items-center gap-2 text-base leading-[100%] font-normal tracking-[0%] text-[#555560]">
                     <span className="">Restricted</span>
-                    <span className="text-[#797884]">(Email domain / list)</span>
+                    <span className="font-light text-[#797884]">(Email domain / list)</span>
                   </div>
                 </Label>
               </div>
@@ -171,7 +184,7 @@ const InviteMembersModal = ({
                   className="flex flex-1 cursor-pointer items-center gap-2 text-base leading-[100%] font-normal tracking-[0%] text-[#555560]"
                 >
                   <span className="">Invite-only</span>
-                  <span className="text-[#797884]">(Approval required)</span>
+                  <span className="font-light text-[#797884]">(Approval required)</span>
                 </Label>
               </div>
 
@@ -194,11 +207,15 @@ const InviteMembersModal = ({
             <p className="pr-8 text-base leading-[100%] font-normal tracking-[0%] text-[#6E6C77]">
               Join our community on Coterie to support this cause and stay involved.
               <br />
-              <div className="mt-1 text-[#6E6C77]">Here's the link:</div>
+              <div className="mt-1 text-[#989AAA]">Here's the link:</div>
               <div className="mt-1 text-[#7588B0]">{inviteLink}</div>
             </p>
-            <button className="text-gray-400 hover:text-gray-600">
-              <Copy size={24} />
+            <button
+              onClick={handleCopyLink}
+              className="cursor-pointer text-gray-400 hover:text-gray-600"
+            >
+              {copied ? <Check size={24} /> : <Copy size={24} />}
+              {/* <Copy size={24} /> */}
             </button>
           </div>
         </div>

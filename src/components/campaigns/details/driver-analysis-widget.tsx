@@ -23,7 +23,14 @@ const DriverAnalysisWidget = () => {
               Help families access sate and stable housing through community support.
             </p>
           </div>
-          <div className="mt-4 space-y-3">
+
+          <Button onClick={() => setIsInfluencerInvited(true)} className="bg-primary mb-6.5 w-full">
+            Post Announcement
+          </Button>
+
+          {/* COMMENTED OUT FOR MVC  */}
+
+          {/* <div className="mt-4 space-y-3">
             <Button onClick={() => setIsInfluencerInvited(true)} className="bg-primary w-full">
               Invite an Influncer
             </Button>
@@ -36,7 +43,7 @@ const DriverAnalysisWidget = () => {
           </div>
           <p className="my-[14px] text-[10px] font-normal text-[#838880]">
             Champions will receive a personalized invitation to join your community{" "}
-          </p>
+          </p> */}
         </div>
       </div>
       <ContactInfluencerModal

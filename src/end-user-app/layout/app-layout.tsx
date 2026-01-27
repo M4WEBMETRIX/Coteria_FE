@@ -14,7 +14,7 @@ interface DashboardLayoutProps {
 }
 
 const AppLayout = ({ children }: DashboardLayoutProps) => {
-  const [breadcrumbComponent, setBreadcrumbComponent] = useState<ReactNode | null>(null);
+  const [, setBreadcrumbComponent] = useState<ReactNode | null>(null);
   return (
     <LayoutContext.Provider value={{ setBreadcrumbComponent }}>
       <div className="flex h-screen bg-white">

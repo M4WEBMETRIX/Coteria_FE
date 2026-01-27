@@ -4,9 +4,10 @@ import { useQueryState, parseAsString } from "nuqs";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Story from "@/components/campaigns/details/story";
 import CommandCenter from "@/components/campaigns/details/command-center";
-import ActivateInfluencer from "@/components/campaigns/details/activate-influencer";
+// import ActivateInfluencer from "@/components/campaigns/details/activate-influencer";
 import Settings from "@/components/campaigns/details/settings";
 import { cn } from "@/lib/utils";
+import CampaignsEvents from "@/components/campaigns/campaign-events";
 
 const Campaigndetails = () => {
   // const { id } = useParams(); // Unused for now as we hardcode the view
@@ -30,12 +31,23 @@ const Campaigndetails = () => {
       label: "Command center",
       component: <CommandCenter />,
     },
+    //COMMENTED OUT FOR MVC
+    // {
+    //   value: "activate-influencer",
+    //   label: "Activate influencer",
+    //   component: <ActivateInfluencer />,
+    // },
+    // { value: "story", label: "Story", component: <Story /> },
+
+    //
+    //BROUGHT IN FOR MVC
     {
-      value: "activate-influencer",
-      label: "Activate influencer",
-      component: <ActivateInfluencer />,
+      value: "events",
+      label: "Events",
+      component: <CampaignsEvents />,
     },
-    { value: "story", label: "Story", component: <Story /> },
+    { value: "resources", label: "Resources", component: <Story /> },
+
     { value: "settings", label: "Settings", component: <Settings /> },
   ];
 

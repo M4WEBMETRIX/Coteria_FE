@@ -6,10 +6,10 @@ import { ArrowRight01Icon, Cancel01Icon, Checkmark, Share01Icon } from "@hugeico
 import PulseStatsWidget from "@/components/campaigns/details/pulse-stats-widget";
 import TodaysObjectivesWidget from "@/components/campaigns/details/todays-objectives-widget";
 import DriverAnalysisWidget from "@/components/campaigns/details/driver-analysis-widget";
-import CampaignMomentumTimeline from "@/components/campaigns/details/campaign-momentum-timeline";
+// import CampaignMomentumTimeline from "@/components/campaigns/details/campaign-momentum-timeline";
 import {
   WhatsHappeningWidget,
-  RequestParticipantsWidget,
+  // RequestParticipantsWidget,
 } from "@/components/campaigns/details/sidebar-widgets";
 import ActivityFeedWidget from "@/components/campaigns/details/activity-feed-widget";
 import AiInsightWidget from "@/components/campaigns/details/ai-insight-widget";
@@ -71,8 +71,10 @@ const CommandCenter = () => {
             {/* Objectives (Larger) */}
             <div className="col-span-12 flex-1 space-y-5 lg:col-span-9">
               <TodaysObjectivesWidget />
+
+              {/* COMMENTED OUT FOR MVC  */}
               {/* Momentum Timeline */}
-              <CampaignMomentumTimeline />
+              {/* <CampaignMomentumTimeline /> */}
             </div>
             {/* Driver Analysis (Smaller) */}
             <div className="col-span-12 h-full lg:col-span-3">
@@ -84,7 +86,9 @@ const CommandCenter = () => {
         {/* Sidebar Column (Right - 4 cols) */}
         <aside className="flex w-[256px] flex-col gap-4">
           <WhatsHappeningWidget />
-          <RequestParticipantsWidget />
+
+          {/* COMMENTED OUT FOR MVC  */}
+          {/* <RequestParticipantsWidget /> */}
           <ActivityFeedWidget />
           <AiInsightWidget />
         </aside>

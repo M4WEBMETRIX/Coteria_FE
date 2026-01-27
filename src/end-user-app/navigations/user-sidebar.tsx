@@ -5,7 +5,7 @@ import Logo from "@/assets/icons/coterie.svg";
 import {
   CaretLeftIcon,
   CaretRightIcon,
-  HeadsetIcon,
+  // HeadsetIcon,
   PowerIcon,
   // CaretDownIcon,
 } from "@phosphor-icons/react";
