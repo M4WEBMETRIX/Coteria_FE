@@ -1,9 +1,11 @@
 import { z } from "zod";
 
-export enum EventType {
-  ONLINE = "online",
-  VENUE = "venue",
-}
+export const EventType = {
+  ONLINE: "online",
+  VENUE: "venue",
+} as const;
+
+export type EventType = (typeof EventType)[keyof typeof EventType];
 
 export const eventFormSchema = z.object({
   // Step 1: Event Type
@@ -28,15 +30,15 @@ export const eventFormSchema = z.object({
   venueAddress: z.string().optional(),
 
   // Step 4: Date & Time
-  isRecurring: z.boolean().default(false),
+  isRecurring: z.boolean(),
   startDate: z.string().min(1, "Start date is required"),
   startTime: z.string().min(1, "Start time is required"),
   endDate: z.string().min(1, "End date is required"),
   endTime: z.string().min(1, "End time is required"),
   timezone: z.string().min(1, "Timezone is required"),
-  displayStartTime: z.boolean().default(true),
-  displayEndTime: z.boolean().default(true),
-  displayTimezone: z.boolean().default(false),
+  displayStartTime: z.boolean(),
+  displayEndTime: z.boolean(),
+  displayTimezone: z.boolean(),
 
   // Step 5: Details
   heroImage: z.any().optional(), // File or string URL
