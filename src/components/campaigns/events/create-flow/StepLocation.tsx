@@ -18,17 +18,24 @@ export function StepLocation() {
   if (eventType === EventType.VENUE) {
     return (
       <div className="space-y-6">
-        <div className="space-y-2">
-          <h2 className="text-xl font-semibold">Venue event setup</h2>
-          <p className="text-muted-foreground text-sm">
+        <div className="space-y-4">
+          <h2 className="text-base leading-[24px] font-normal text-[#1E1E1E]">Venue event setup</h2>
+          <p className="text-base leading-[24px] font-normal text-[#6B6B6B]">
             Tell us where you'll be hosting your in-person event
           </p>
         </div>
+
         <div className="space-y-4">
-          <div className="space-y-2">
-            <Label htmlFor="venueAddress">Venue Address *</Label>
+          <div className="space-y-3">
+            <Label
+              htmlFor="venueAddress"
+              className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+            >
+              Venue Address *
+            </Label>
             <Input
               id="venueAddress"
+              className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
               placeholder="Enter the physical address of the venue"
               {...register("venueAddress")}
             />
@@ -40,52 +47,79 @@ export function StepLocation() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold">Online event setup</h2>
-        <p className="text-muted-foreground text-sm">
+      <div className="space-y-4">
+        <h2 className="text-base leading-[24px] font-normal text-[#1E1E1E]">Online event setup</h2>
+        <p className="text-base leading-[24px] font-normal text-[#6B6B6B]">
           Tell us how you'll be hosting your online event
         </p>
       </div>
 
       <div className="space-y-6">
         <div className="space-y-3">
-          <Label>Where will you host this event? *</Label>
+          <Label className="mb-4 text-sm leading-[14px] font-medium text-[#1E1E1E]">
+            Where will you host this event? *
+          </Label>
           <RadioGroup
             defaultValue={watch("platform")}
             onValueChange={(val) => setValue("platform", val)}
-            className="flex flex-col space-y-1"
+            className="flex flex-col space-y-6"
           >
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="zoom" id="zoom" />
-              <Label htmlFor="zoom">Zoom</Label>
+              <Label className="text-sm leading-[14px] font-normal text-[#1E1E1E]" htmlFor="zoom">
+                Zoom
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="google_meet" id="google_meet" />
-              <Label htmlFor="google_meet">Google Meet</Label>
+              <Label
+                className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+                htmlFor="google_meet"
+              >
+                Google Meet
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="teams" id="teams" />
-              <Label htmlFor="teams">Microsoft Teams</Label>
+              <Label className="text-sm leading-[14px] font-normal text-[#1E1E1E]" htmlFor="teams">
+                Microsoft Teams
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="youtube" id="youtube" />
-              <Label htmlFor="youtube">YouTube Live</Label>
+              <Label
+                className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+                htmlFor="youtube"
+              >
+                YouTube Live
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="custom" id="custom" />
-              <Label htmlFor="custom">Custom streaming platform</Label>
+              <Label className="text-sm leading-[14px] font-normal text-[#1E1E1E]" htmlFor="custom">
+                Custom streaming platform
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
               <RadioGroupItem value="tba" id="tba" />
-              <Label htmlFor="tba">To be announced</Label>
+              <Label className="text-sm leading-[14px] font-normal text-[#1E1E1E]" htmlFor="tba">
+                To be announced
+              </Label>
             </div>
           </RadioGroup>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="eventLink">Event link</Label>
-          <Input id="eventLink" placeholder="https://zoom.us/j/..." {...register("eventLink")} />
-          <p className="text-muted-foreground text-xs">
+        <div className="space-y-3">
+          <Label htmlFor="eventLink" className="text-sm leading-[14px] font-medium text-[#1E1E1E]">
+            Event link
+          </Label>
+          <Input
+            className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
+            id="eventLink"
+            placeholder="https://zoom.us/j/..."
+            {...register("eventLink")}
+          />
+          <p className="text-sm leading-[20px] font-normal text-[#6B6B6B]">
             This will be shared with attendees after registration
           </p>
           {errors.eventLink && (
@@ -96,27 +130,46 @@ export function StepLocation() {
         <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <Switch id="share-link" />
-            <Label htmlFor="share-link">Share link immediately</Label>
+            <Label
+              className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+              htmlFor="share-link"
+            >
+              Share link immediately
+            </Label>
           </div>
-          <p className="text-muted-foreground -mt-3 ml-12 text-xs">
+          <p className="ml-12 text-sm leading-[20px] font-normal !text-[#6B6B6B]">
             Link will be shared 1 hour before event
           </p>
         </div>
 
-        <div className="space-y-3">
-          <Label>What do attendees need?</Label>
-          <div className="space-y-2">
+        <div className="space-y-4">
+          <Label className="text-sm leading-[14px] font-medium text-[#1E1E1E]">
+            What do attendees need?
+          </Label>
+          <div className="space-y-4">
             <div className="flex items-center space-x-2">
-              <Checkbox id="webcam" />
-              <Label htmlFor="webcam">Webcam</Label>
+              <Checkbox className="!h-4 !w-4 border border-[#E8EAED]" id="webcam" />
+              <Label className="text-sm leading-[14px] font-normal text-[#1E1E1E]" htmlFor="webcam">
+                Webcam
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="microphone" />
-              <Label htmlFor="microphone">Microphone</Label>
+              <Checkbox className="!h-4 !w-4 border border-[#E8EAED]" id="microphone" />
+              <Label
+                className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+                htmlFor="microphone"
+              >
+                Microphone
+              </Label>
             </div>
             <div className="flex items-center space-x-2">
-              <Checkbox id="software" />
-              <Label htmlFor="software">Specific software</Label>
+              <Checkbox className="!h-4 !w-4 border border-[#E8EAED]" id="software" />
+              <Label
+                className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+                htmlFor="software"
+              >
+                Specific software
+              </Label>
             </div>
           </div>
         </div>

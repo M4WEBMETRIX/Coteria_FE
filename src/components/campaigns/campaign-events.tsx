@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { ArrowDownIcon, ArrowsDownUpIcon, ArrowUpIcon, FunnelIcon } from "@phosphor-icons/react";
-// import { useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const campaignsData = [
   {
@@ -95,13 +95,13 @@ const StatusBadge = ({ status }: { status: string }) => {
 };
 
 const CampaignsEvents = () => {
-  // const { id } = useParams();
+  const { id } = useParams();
   const navigate = useNavigate();
 
   return (
     <div className="font-ubuntu">
       <div className="flex items-center justify-end">
-        <Button onClick={() => navigate(`/campaigns/create-event`)} className="mb-2 h-9 w-50">
+        <Button onClick={() => navigate(`/campaigns/${id}/create-event`)} className="mb-2 h-9 w-50">
           Create Event
         </Button>
       </div>

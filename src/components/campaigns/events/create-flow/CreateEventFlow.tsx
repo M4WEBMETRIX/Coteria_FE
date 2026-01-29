@@ -2,8 +2,8 @@ import { useState } from "react";
 import { useForm, FormProvider } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
-import { Progress } from "@/components/ui/progress";
-import { ArrowLeft, Check } from "lucide-react";
+// import { Progress } from "@/components/ui/progress";
+import { ArrowLeft } from "lucide-react";
 import { eventFormSchema, defaultValues, type EventFormValues } from "./types";
 import { StepEventType } from "./StepEventType";
 import { StepBasicInfo } from "./StepBasicInfo";
@@ -11,6 +11,15 @@ import { StepLocation } from "./StepLocation";
 import { StepDateTime } from "./StepDateTime";
 import { StepDetails } from "./StepDetails";
 import { cn } from "@/lib/utils";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import StepTicket from "./step-ticket";
+import StepPublish from "./StepPublish";
 
 const STEPS = [
   { id: 1, title: "Event Type", component: StepEventType },
@@ -18,6 +27,8 @@ const STEPS = [
   { id: 3, title: "Location", component: StepLocation },
   { id: 4, title: "Date & Time", component: StepDateTime },
   { id: 5, title: "Details", component: StepDetails },
+  { id: 6, title: "Add tickets", component: StepTicket },
+  { id: 7, title: "Publish", component: StepPublish },
 ];
 
 export default function CreateEventFlow() {
@@ -50,6 +61,9 @@ export default function CreateEventFlow() {
       case 5:
         isValid = await trigger(["description"]);
         break;
+      case 6:
+        isValid = await trigger(["isTicketType", "tickets"]);
+        break;
       default:
         isValid = true;
     }
@@ -70,16 +84,16 @@ export default function CreateEventFlow() {
   };
 
   const CurrentStepComponent = STEPS[currentStep - 1].component;
-  const progress = (currentStep / STEPS.length) * 100;
+  // const progress = (currentStep / STEPS.length) * 100;
 
   return (
-    <div className="flex h-screen bg-gray-50">
+    <div className="flex h-screen">
       {/* Sidebar / Progress */}
-      <div className="hidden w-64 border-r bg-white p-6 md:block">
+      <div className="hidden w-100 border-x bg-white p-6 md:block">
         <div className="mb-8">
           <Button
             variant="ghost"
-            className="hover:text-primary pl-0 hover:bg-transparent"
+            className="hover:text-primary pl-0 text-sm leading-[20px] font-normal text-[#6B6B6B] hover:bg-transparent"
             onClick={() => window.history.back()}
           >
             <ArrowLeft className="mr-2 h-4 w-4" />
@@ -88,63 +102,65 @@ export default function CreateEventFlow() {
         </div>
 
         <div className="mb-8">
-          <div className="mb-4 flex h-40 w-full items-center justify-center rounded-lg bg-red-500 font-medium text-white">
+          <div className="mb-5 flex h-35 w-full items-center justify-center rounded-lg bg-gradient-to-r from-[#FF5A5F] to-[#E04E53] font-medium text-white">
             Event Image
           </div>
-          <h2 className="text-lg font-semibold text-gray-900">Untitled Event</h2>
-          <div className="mt-2 inline-flex items-center rounded-full bg-gray-100 px-2.5 py-0.5 text-xs font-medium text-gray-800">
-            Draft
-          </div>
+          <h2 className="mb-3 text-lg leading-[100%] font-medium text-[#1E1E1E]/50">
+            Untitled Event
+          </h2>
+          <Select
+            // onValueChange={(val) => setValue("save_option", val)}
+            defaultValue={"draft"}
+          >
+            <SelectTrigger className="!h-9 w-full rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]">
+              <SelectValue placeholder="Save option" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="draft">Draft</SelectItem>
+              {/* <SelectItem value="workshop">Workshop</SelectItem> */}
+            </SelectContent>
+          </Select>
         </div>
 
         <div className="relative space-y-0">
-          <div className="absolute top-2 bottom-2 left-[15px] w-0.5 bg-gray-200" />
-
           {STEPS.map((step, index) => {
             const isCompleted = index + 1 < currentStep;
             const isCurrent = index + 1 === currentStep;
 
             return (
               <div key={step.id} className="relative mb-6 flex items-start last:mb-0">
-                <div
-                  className={cn(
-                    "relative z-10 flex h-8 w-8 items-center justify-center rounded-full border-2 transition-colors",
-                    isCompleted
-                      ? "bg-primary border-primary text-white"
-                      : isCurrent
-                        ? "border-primary bg-white"
-                        : "border-gray-200 bg-white"
-                  )}
-                >
-                  {isCompleted ? (
-                    <Check className="h-4 w-4" />
-                  ) : (
-                    <div
-                      className={cn(
-                        "h-2.5 w-2.5 rounded-full",
-                        isCurrent ? "bg-primary" : "bg-gray-300"
+                <div>
+                  <div className="flex items-start gap-3">
+                    <div className="flex flex-col items-center gap-2">
+                      <p
+                        className={cn(
+                          "h-3 w-3 rounded-full",
+                          isCompleted
+                            ? "bg-primary border-primary text-white"
+                            : isCurrent
+                              ? "bg-primary/50"
+                              : "bg-[#E8EAED]"
+                        )}
+                      />
+                      {step.id !== 7 && <p className="h-12 w-0.5 bg-[#E8EAED]" />}
+                    </div>
+                    <div>
+                      <p className="-mt-0.5 text-sm leading-[20px] font-normal text-[#1E1E1E]">
+                        {step?.title}
+                      </p>
+                      {(isCompleted || isCurrent) && (
+                        <p className="mt-1 text-xs leading-[19.5px] font-normal text-[#6B6B6B]">
+                          {step.id === 1 && "Host virtual events via streaming or video conference"}
+                          {step.id === 2 &&
+                            "Let's start with the basics to help people understand what your event is about"}
+                          {step.id === 3 && "Tell us how you'll be hosting your online event"}
+                          {step.id === 4 && "Set up the date and time for your event"}
+                          {step.id === 5 && "Tell people about your event"}
+                          {step.id === 6 && "Set up your tickets"}
+                        </p>
                       )}
-                    />
-                  )}
-                </div>
-                <div className="ml-4 pt-1">
-                  <p
-                    className={cn(
-                      "text-sm font-medium",
-                      isCurrent ? "text-gray-900" : "text-gray-500"
-                    )}
-                  >
-                    {step.title}
-                  </p>
-                  {isCurrent && (
-                    <p className="text-muted-foreground mt-1 text-xs">
-                      {step.id === 1 && "Choose event type"}
-                      {step.id === 2 && "Add basic details"}
-                      {step.id === 3 && "Set location"}
-                      {step.id === 4 && "Set date & time"}
-                      {step.id === 5 && "Add description"}
-                    </p>
-                  )}
+                    </div>
+                  </div>
                 </div>
               </div>
             );
@@ -153,15 +169,15 @@ export default function CreateEventFlow() {
       </div>
 
       {/* Main Content */}
-      <div className="flex flex-1 flex-col overflow-hidden">
-        <div className="flex-1 overflow-y-auto p-8 md:p-12">
-          <div className="mx-auto max-w-3xl">
-            <div className="mb-8">
+      <div className="w-full overflow-auto">
+        <div className="flex-1 px-8 md:px-12">
+          <div className="mx-auto">
+            {/* <div className="mb-8">
               <p className="text-muted-foreground mb-2 text-sm">
                 Step {currentStep} of {STEPS.length}
               </p>
               <Progress value={progress} className="h-2" />
-            </div>
+            </div> */}
 
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)}>
@@ -172,10 +188,14 @@ export default function CreateEventFlow() {
         </div>
 
         {/* Footer Actions */}
-        <div className="border-t bg-white p-6">
-          <div className="mx-auto flex max-w-3xl items-center justify-between">
+        <div className="mt-12 px-8 md:px-12">
+          <div className="mx-auto flex items-center justify-between">
             {currentStep > 1 ? (
-              <Button variant="outline" onClick={prevStep}>
+              <Button
+                className="h-12 w-25 rounded-[8px] border border-[#E8EAED]"
+                variant="outline"
+                onClick={prevStep}
+              >
                 Back
               </Button>
             ) : (
@@ -183,7 +203,10 @@ export default function CreateEventFlow() {
             )}
 
             {currentStep < STEPS.length ? (
-              <Button onClick={nextStep} className="bg-green-500 text-white hover:bg-green-600">
+              <Button
+                onClick={nextStep}
+                className="h-12 w-[125px] rounded-[6px] bg-green-500 text-white hover:bg-green-600"
+              >
                 Continue
               </Button>
             ) : (

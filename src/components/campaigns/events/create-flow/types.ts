@@ -43,6 +43,31 @@ export const eventFormSchema = z.object({
   // Step 5: Details
   heroImage: z.any().optional(), // File or string URL
   description: z.string().min(1, "Description is required"),
+  highlights: z.array(z.string()).optional(),
+  faqs: z
+    .array(
+      z.object({
+        question: z.string().min(1, "Question is required"),
+        answer: z.string().min(1, "Answer is required"),
+      })
+    )
+    .optional(),
+
+  //Step 6:
+  isTicketType: z.boolean(),
+  tickets: z
+    .array(
+      z.object({
+        name: z.string().min(1, "Ticket name is required"),
+        price: z.number().min(0, "Price must be 0 or greater"),
+        quantity: z.number().min(1, "Quantity must be at least 1"),
+        description: z.string().optional(),
+        salesStart: z.string().optional(),
+        salesEnd: z.string().optional(),
+      })
+    )
+    .optional(),
+  addOptionalDonation: z.boolean().default(false),
 });
 
 export type EventFormValues = z.infer<typeof eventFormSchema>;

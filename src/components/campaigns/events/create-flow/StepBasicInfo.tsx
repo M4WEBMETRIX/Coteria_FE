@@ -41,34 +41,41 @@ export function StepBasicInfo() {
 
   return (
     <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold">Tell us about your event</h2>
-        <p className="text-muted-foreground text-sm">
+      <div className="space-y-4">
+        <h2 className="text-base leading-[24px] font-normal text-[#1E1E1E]">
+          Tell us about your event
+        </h2>
+        <p className="text-base leading-[24px] font-normal text-[#6B6B6B]">
           Let's start with the basics to help people understand what your event is about
         </p>
       </div>
 
-      <div className="space-y-4">
-        <div className="space-y-2">
-          <Label htmlFor="title">Event title *</Label>
+      <div className="space-y-8">
+        <div className="space-y-3">
+          <Label htmlFor="title" className="text-sm leading-[14px] font-normal text-[#1E1E1E]">
+            Event title *
+          </Label>
           <Input
             id="title"
+            className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
             placeholder="Give your event a memorable title"
             {...register("title")}
           />
           {errors.title && <p className="text-sm text-red-500">{errors.title.message as string}</p>}
-          <div className="text-muted-foreground text-right text-xs">
+          <div className="text-right text-sm leading-[20px] font-normal text-[#6B6B6B]">
             {watch("title")?.length || 0}/100
           </div>
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="category">Event type *</Label>
+        <div className="space-y-3">
+          <Label htmlFor="category" className="text-sm leading-[14px] font-normal text-[#1E1E1E]">
+            Event type *
+          </Label>
           <Select
             onValueChange={(val) => setValue("category", val)}
             defaultValue={watch("category")}
           >
-            <SelectTrigger>
+            <SelectTrigger className="!h-12 w-full rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]">
               <SelectValue placeholder="Select a category" />
             </SelectTrigger>
             <SelectContent>
@@ -84,15 +91,17 @@ export function StepBasicInfo() {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="summary">Event summary *</Label>
+        <div className="space-y-3">
+          <Label htmlFor="summary" className="text-sm leading-[14px] font-normal text-[#1E1E1E]">
+            Event summary *
+          </Label>
           <Textarea
             id="summary"
             placeholder="Write a short description that captures the essence of your event"
-            className="resize-none"
+            className="w-full resize-none rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
             {...register("summary")}
           />
-          <div className="text-muted-foreground flex justify-between text-xs">
+          <div className="flex justify-between text-sm leading-[20px] font-normal text-[#6B6B6B]">
             <span>This appears in search results and previews</span>
             <span>{watch("summary")?.length || 0}/140</span>
           </div>
@@ -101,16 +110,21 @@ export function StepBasicInfo() {
           )}
         </div>
 
-        <div className="space-y-2">
-          <Label htmlFor="tags">Tags (optional)</Label>
+        <div className="space-y-3">
+          <Label htmlFor="tags" className="text-sm leading-[14px] font-normal text-[#1E1E1E]">
+            Tags (optional)
+          </Label>
           <Input
             id="tags"
+            className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
             placeholder="Add relevant tags (press Enter)"
             value={tagInput}
             onChange={(e) => setTagInput(e.target.value)}
             onKeyDown={handleAddTag}
           />
-          <p className="text-muted-foreground text-xs">Help people discover your event</p>
+          <p className="text-sm leading-[20px] font-normal text-[#6B6B6B]">
+            Help people discover your event
+          </p>
 
           <div className="mt-2 flex flex-wrap gap-2">
             {tags.map((tag: string) => (

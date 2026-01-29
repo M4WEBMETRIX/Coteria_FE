@@ -16,14 +16,14 @@ export function StepEventType() {
     <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
       <Card
         className={cn(
-          "hover:border-primary/50 cursor-pointer transition-all",
-          eventType === EventType.ONLINE ? "border-primary ring-primary/20 ring-2" : ""
+          "hover:border-primary/50 h-[228px] cursor-pointer rounded-[8px] transition-all",
+          eventType === EventType.ONLINE ? "border-primary" : "border border-[#E8EAED]"
         )}
         onClick={() => handleSelect(EventType.ONLINE)}
       >
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div className="rounded-lg bg-blue-100 p-3 text-blue-600">
+        <CardHeader className="flex h-full w-full flex-col justify-between">
+          <div className="flex w-full items-start justify-between">
+            <div className="rounded-[8px] bg-[#DBEAFE] p-3 text-[#155DFC]">
               <Monitor className="h-6 w-6" />
             </div>
             <div
@@ -35,21 +35,23 @@ export function StepEventType() {
               {eventType === EventType.ONLINE && <div className="h-2 w-2 rounded-full bg-white" />}
             </div>
           </div>
-          <CardTitle className="mt-4">Online Event</CardTitle>
-          <CardDescription>Host virtual events via streaming or video conference</CardDescription>
+          <CardTitle className="mt-4 text-base font-normal text-[#1E1E1E]">Online Event</CardTitle>
+          <CardDescription className="max-w-[320px] text-base text-[#6B6B6B]">
+            Host virtual events via streaming or video conference
+          </CardDescription>
         </CardHeader>
       </Card>
 
       <Card
         className={cn(
-          "hover:border-primary/50 cursor-pointer transition-all",
-          eventType === EventType.VENUE ? "border-primary ring-primary/20 ring-2" : ""
+          "hover:border-primary/50 h-[228px] cursor-pointer rounded-[8px] transition-all",
+          eventType === EventType.VENUE ? "border-primary" : "border border-[#E8EAED]"
         )}
         onClick={() => handleSelect(EventType.VENUE)}
       >
-        <CardHeader>
-          <div className="flex items-start justify-between">
-            <div className="rounded-lg bg-green-100 p-3 text-green-600">
+        <CardHeader className="flex h-full w-full flex-col justify-between">
+          <div className="flex w-full items-start justify-between">
+            <div className="rounded-[8px] bg-[#DCFCE7] p-3 text-[#00A63E]">
               <MapPin className="h-6 w-6" />
             </div>
             <div
@@ -61,8 +63,10 @@ export function StepEventType() {
               {eventType === EventType.VENUE && <div className="h-2 w-2 rounded-full bg-white" />}
             </div>
           </div>
-          <CardTitle className="mt-4">Venue Event</CardTitle>
-          <CardDescription>Host in-person events at a physical location</CardDescription>
+          <CardTitle className="mt-4 text-base font-normal text-[#1E1E1E]">Venue Event</CardTitle>
+          <CardDescription className="mb-4 max-w-[320px] text-base text-[#6B6B6B]">
+            Host in-person events at a physical location
+          </CardDescription>
         </CardHeader>
       </Card>
     </div>

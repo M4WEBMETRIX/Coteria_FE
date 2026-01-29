@@ -23,25 +23,29 @@ export function StepDateTime() {
   const isRecurring = watch("isRecurring");
 
   return (
-    <div className="space-y-6">
-      <div className="space-y-2">
-        <h2 className="text-xl font-semibold">When is your event?</h2>
-        <p className="text-muted-foreground text-sm">Set up the date and time for your event</p>
+    <div className="space-y-8">
+      <div className="space-y-4">
+        <h2 className="text-base leading-[24px] font-normal text-[#1E1E1E]">When is your event?</h2>
+        <p className="text-base leading-[24px] font-normal text-[#6B6B6B]">
+          Set up the date and time for your event
+        </p>
       </div>
 
-      <div className="space-y-4">
-        <Label>Event occurrence *</Label>
+      <div className="mt-12 space-y-4">
+        <Label className="text-sm leading-[14px] font-medium text-[#1E1E1E]">
+          Event occurrence *
+        </Label>
         <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
           <Card
             className={cn(
-              "hover:border-primary/50 cursor-pointer transition-all",
-              !isRecurring ? "border-primary bg-green-50/50" : ""
+              "hover:border-primary/50 h-[160px] cursor-pointer transition-all",
+              !isRecurring ? "border-[#12AA5B] bg-[#ECF5F0]" : ""
             )}
             onClick={() => setValue("isRecurring", false)}
           >
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="rounded-lg bg-blue-100 p-2 text-blue-600">
+            <CardHeader className="flex h-full w-full flex-col justify-between">
+              <div className="flex w-full items-center justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#DBEAFE] p-2 text-[#155DFC]">
                   <Calendar className="h-5 w-5" />
                 </div>
                 <div
@@ -53,25 +57,27 @@ export function StepDateTime() {
                   {!isRecurring && <div className="h-1.5 w-1.5 rounded-full bg-white" />}
                 </div>
               </div>
-              <CardTitle className="mt-2 text-base">Single event</CardTitle>
-              <CardDescription className="text-xs">For events that happen once</CardDescription>
+              <CardTitle className="text-base font-medium text-[#1E1E1E]">Single event</CardTitle>
+              <CardDescription className="max-w-[320px] text-base text-[#6B6B6B]">
+                For events that happen once
+              </CardDescription>
             </CardHeader>
           </Card>
 
           <Card
             className={cn(
-              "hover:border-primary/50 cursor-pointer transition-all",
-              isRecurring ? "border-primary bg-green-50/50" : ""
+              "hover:border-primary/50 h-[160px] cursor-pointer transition-all",
+              isRecurring ? "border-[#12AA5B] bg-[#ECF5F0]" : ""
             )}
             onClick={() => setValue("isRecurring", true)}
           >
-            <CardHeader>
-              <div className="flex items-start justify-between">
-                <div className="rounded-lg bg-purple-100 p-2 text-purple-600">
+            <CardHeader className="flex h-full w-full flex-col justify-between">
+              <div className="flex w-full items-center justify-between">
+                <div className="flex h-10 w-10 items-center justify-center rounded-[8px] bg-[#C7F3D1] p-2 text-[#00A63E]">
                   <Clock className="h-5 w-5" />
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="rounded bg-green-100 px-1.5 py-0.5 text-[10px] font-bold text-green-700">
+                  <span className="rounded-[6px] bg-[#DCFCE7] px-2 py-1 text-xs font-medium text-[#008236]">
                     NEW
                   </span>
                   <div
@@ -84,8 +90,10 @@ export function StepDateTime() {
                   </div>
                 </div>
               </div>
-              <CardTitle className="mt-2 text-base">Recurring event</CardTitle>
-              <CardDescription className="text-xs">
+              <CardTitle className="text-[#1E1E1E]base text-base font-medium">
+                Recurring event
+              </CardTitle>
+              <CardDescription className="max-w-[320px] text-base text-[#6B6B6B]">
                 For timed entry and multiple days
               </CardDescription>
             </CardHeader>
@@ -95,10 +103,20 @@ export function StepDateTime() {
 
       <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
         <div className="space-y-4">
-          <Label>Start date & time *</Label>
+          <Label className="text-sm leading-[14px] font-medium text-[#1E1E1E]">
+            Start date & time *
+          </Label>
           <div className="flex gap-2">
-            <Input type="date" {...register("startDate")} />
-            <Input type="time" {...register("startTime")} />
+            <Input
+              className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
+              type="date"
+              {...register("startDate")}
+            />
+            <Input
+              className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
+              type="time"
+              {...register("startTime")}
+            />
           </div>
           {(errors.startDate || errors.startTime) && (
             <p className="text-sm text-red-500">Start date and time are required</p>
@@ -106,10 +124,20 @@ export function StepDateTime() {
         </div>
 
         <div className="space-y-4">
-          <Label>End date & time *</Label>
+          <Label className="text-sm leading-[14px] font-medium text-[#1E1E1E]">
+            End date & time *
+          </Label>
           <div className="flex gap-2">
-            <Input type="date" {...register("endDate")} />
-            <Input type="time" {...register("endTime")} />
+            <Input
+              className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
+              type="date"
+              {...register("endDate")}
+            />
+            <Input
+              className="h-12 rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]"
+              type="time"
+              {...register("endTime")}
+            />
           </div>
           {(errors.endDate || errors.endTime) && (
             <p className="text-sm text-red-500">End date and time are required</p>
@@ -117,10 +145,10 @@ export function StepDateTime() {
         </div>
       </div>
 
-      <div className="space-y-2">
-        <Label>Timezone</Label>
+      <div className="space-y-3">
+        <Label className="text-sm leading-[14px] font-medium text-[#1E1E1E]">Timezone</Label>
         <Select onValueChange={(val) => setValue("timezone", val)} defaultValue={watch("timezone")}>
-          <SelectTrigger>
+          <SelectTrigger className="!h-12 w-full rounded-[6px] border border-[#000000]/0 bg-[#F8F9FA] text-[#6B6B6B]">
             <SelectValue placeholder="Select timezone" />
           </SelectTrigger>
           <SelectContent>
@@ -132,32 +160,50 @@ export function StepDateTime() {
         </Select>
       </div>
 
-      <div className="space-y-3 border-t pt-4">
-        <Label>Display options</Label>
-        <div className="space-y-2">
+      <div className="space-y-4">
+        <Label className="text-sm leading-[14px] font-medium text-[#1E1E1E]">Display options</Label>
+        <div className="space-y-4">
           <div className="flex items-center space-x-2">
             <Checkbox
+              className="!h-4 !w-4 border border-[#E8EAED]"
               id="displayStartTime"
               checked={watch("displayStartTime")}
               onCheckedChange={(checked) => setValue("displayStartTime", checked)}
             />
-            <Label htmlFor="displayStartTime">Display start time</Label>
+            <Label
+              className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+              htmlFor="displayStartTime"
+            >
+              Display start time
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
+              className="!h-4 !w-4 border border-[#E8EAED]"
               id="displayEndTime"
               checked={watch("displayEndTime")}
               onCheckedChange={(checked) => setValue("displayEndTime", checked)}
             />
-            <Label htmlFor="displayEndTime">Display end time</Label>
+            <Label
+              className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+              htmlFor="displayEndTime"
+            >
+              Display end time
+            </Label>
           </div>
           <div className="flex items-center space-x-2">
             <Checkbox
+              className="!h-4 !w-4 border border-[#E8EAED]"
               id="displayTimezone"
               checked={watch("displayTimezone")}
               onCheckedChange={(checked) => setValue("displayTimezone", checked)}
             />
-            <Label htmlFor="displayTimezone">Display timezone to attendees</Label>
+            <Label
+              className="text-sm leading-[14px] font-normal text-[#1E1E1E]"
+              htmlFor="displayTimezone"
+            >
+              Display timezone to attendees
+            </Label>
           </div>
         </div>
       </div>
