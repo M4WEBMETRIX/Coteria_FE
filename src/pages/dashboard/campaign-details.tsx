@@ -2,7 +2,7 @@ import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import { useQueryState, parseAsString } from "nuqs";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import Story from "@/components/campaigns/details/story";
+// import Story from "@/components/campaigns/details/story";
 import CommandCenter from "@/components/campaigns/details/command-center";
 // import ActivateInfluencer from "@/components/campaigns/details/activate-influencer";
 import Settings from "@/components/campaigns/details/settings";
