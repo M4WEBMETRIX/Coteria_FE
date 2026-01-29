@@ -8,6 +8,7 @@ import CommandCenter from "@/components/campaigns/details/command-center";
 import Settings from "@/components/campaigns/details/settings";
 import { cn } from "@/lib/utils";
 import CampaignsEvents from "@/components/campaigns/campaign-events";
+import CampaignResources from "@/components/campaigns/campaign-resources";
 
 const Campaigndetails = () => {
   // const { id } = useParams(); // Unused for now as we hardcode the view
@@ -46,7 +47,7 @@ const Campaigndetails = () => {
       label: "Events",
       component: <CampaignsEvents />,
     },
-    { value: "resources", label: "Resources", component: <Story /> },
+    { value: "resources", label: "Resources", component: <CampaignResources /> },
 
     { value: "settings", label: "Settings", component: <Settings /> },
   ];

@@ -31,6 +31,27 @@ const STEPS = [
   { id: 7, title: "Publish", component: StepPublish },
 ];
 
+function getCurrentStep(title: string) {
+  switch (title) {
+    case "Basic Info":
+      return 1;
+      break;
+    case "Location":
+      return 2;
+      break;
+    case "Date & Time":
+      return 3;
+      break;
+    case "Details":
+      return 4;
+      break;
+    case "Add tickets":
+      return 5;
+      break;
+    default:
+      return null;
+  }
+}
 export default function CreateEventFlow() {
   const [currentStep, setCurrentStep] = useState(1);
   const methods = useForm<EventFormValues>({
@@ -181,6 +202,12 @@ export default function CreateEventFlow() {
 
             <FormProvider {...methods}>
               <form onSubmit={handleSubmit(onSubmit)}>
+                {getCurrentStep(STEPS[currentStep - 1].title) !== null && (
+                  <div className="mb-4 text-sm leading-[20px] font-normal text-[#6B6B6B]">
+                    Step {getCurrentStep(STEPS[currentStep - 1].title)} of 5
+                  </div>
+                )}
+
                 <CurrentStepComponent />
               </form>
             </FormProvider>
