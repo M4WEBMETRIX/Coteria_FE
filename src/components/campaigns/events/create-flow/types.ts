@@ -67,7 +67,7 @@ export const eventFormSchema = z.object({
       })
     )
     .optional(),
-  addOptionalDonation: z.boolean().default(false),
+  addOptionalDonation: z.boolean().optional(),
 });
 
 export type EventFormValues = z.infer<typeof eventFormSchema>;
@@ -81,4 +81,5 @@ export const defaultValues: Partial<EventFormValues> = {
   displayEndTime: true,
   displayTimezone: false,
   timezone: "GMT+1 (West Africa Time)", // Default from design
+  addOptionalDonation: false,
 };
