@@ -5,12 +5,16 @@ const UserProtectedRoute = lazy(
   () => import("./end-user-app/pages/authentications/user-protected-route")
 );
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
+const UserHome = lazy(() => import("./end-user-app/pages/home"));
+const UserSignIn = lazy(() => import("./end-user-app/pages/authentications/sign-in"));
+const UbuntuLayout = lazy(() => import("./end-user-app/constants/ubuntu-style-wrapper"));
+const UserSignUp = lazy(() => import("./end-user-app/pages/authentications/sign-up"));
+const UserForgotPassword = lazy(
+  () => import("./end-user-app/pages/authentications/forgot-password")
+);
+const DashboardIndex = lazy(() => import("./end-user-app/pages/dashboard"));
+
 import Logo from "@/assets/icons/coterie.svg";
-import UserHome from "./end-user-app/pages/home";
-import UserSignIn from "./end-user-app/pages/authentications/sign-in";
-import UbuntuLayout from "./end-user-app/constants/ubuntu-style-wrapper";
-import UserSignUp from "./end-user-app/pages/authentications/sign-up";
-import UserForgotPassword from "./end-user-app/pages/authentications/forgot-password";
 
 const EndUserRoutes = () => {
   return (
@@ -38,7 +42,7 @@ const EndUserRoutes = () => {
 
         {/* Protected routes */}
         <Route element={<UserProtectedRoute />}>
-          <Route path="dashboard" element={<>User dashboard here</>} />
+          <Route path="dashboard" element={<DashboardIndex />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

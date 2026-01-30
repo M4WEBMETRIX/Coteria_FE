@@ -1,18 +1,19 @@
 import {
-  BookIcon,
+  // BookIcon,
   BuildingApartmentIcon,
   CalendarDotsIcon,
-  ChartBarIcon,
+  // CalendarDotsIcon,
   // ChartPieSliceIcon,
   // ChatCircleDotsIcon,
-  ChatsCircleIcon,
-  DoorIcon,
-  GearIcon,
+  // ChatsCircleIcon,
+  // DoorIcon,
+  // GearIcon,
   // HandHeartIcon,
   PackageIcon,
-  QuestionIcon,
+  // QuestionIcon,
   ReceiptIcon,
   SquaresFourIcon,
+  UserIcon,
   // UserCircleIcon,
   // UserIcon,
 } from "@phosphor-icons/react";
@@ -115,30 +116,9 @@ export const userSidebarLinks: NavLinkSection[] = [
         path: "/user/dashboard",
       },
       {
-        name: "My Communities",
-        icon: <BookIcon size={20} weight="regular" />,
-        path: "/user/communities",
-      },
-
-      {
-        name: "Campaign",
-        icon: <CalendarDotsIcon size={20} weight="regular" />,
-        path: "/user/campaign",
-      },
-      {
-        name: "rooms",
-        icon: <DoorIcon size={20} weight="regular" />,
-        path: "/user/rooms",
-      },
-      {
         name: "Events",
-        icon: <ChartBarIcon size={20} weight="regular" />,
+        icon: <CalendarDotsIcon size={20} weight="regular" />,
         path: "/user/events",
-      },
-      {
-        name: "Messages",
-        icon: <ChatsCircleIcon size={20} weight="regular" />,
-        path: "/user/messages",
       },
       {
         name: "Receipt  & taxes",
@@ -147,14 +127,35 @@ export const userSidebarLinks: NavLinkSection[] = [
       },
       {
         name: "Account & settings ",
-        icon: <GearIcon size={20} weight="regular" />,
+        icon: <UserIcon size={20} weight="regular" />,
         path: "/user/account-settings",
       },
-      {
-        name: "Help & transparency",
-        icon: <QuestionIcon size={20} weight="regular" />,
-        path: "/user/help-transparency",
-      },
+      // {
+      //   name: "My Communities",
+      //   icon: <BookIcon size={20} weight="regular" />,
+      //   path: "/user/communities",
+      // },
+
+      // {
+      //   name: "Campaign",
+      //   icon: <CalendarDotsIcon size={20} weight="regular" />,
+      //   path: "/user/campaign",
+      // },
+      // {
+      //   name: "rooms",
+      //   icon: <DoorIcon size={20} weight="regular" />,
+      //   path: "/user/rooms",
+      // },
+      // {
+      //   name: "Messages",
+      //   icon: <ChatsCircleIcon size={20} weight="regular" />,
+      //   path: "/user/messages",
+      // },
+      // {
+      //   name: "Help & transparency",
+      //   icon: <QuestionIcon size={20} weight="regular" />,
+      //   path: "/user/help-transparency",
+      // },
     ],
   },
 ];
