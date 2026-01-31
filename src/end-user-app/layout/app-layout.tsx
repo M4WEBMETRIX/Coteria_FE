@@ -1,7 +1,9 @@
-import React, { useState, type ReactNode, createContext } from "react";
+import React, { useState, type ReactNode } from "react";
 import UserSidebar from "../navigations/user-sidebar";
 import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
+import UserNavbar from "../navigations/user-navbar";
+import { LayoutContext } from "@/components/layout/dashboard-layout";
 // import Navbar from "../navbar";
 // import Sidebar from "./sidebar";
 
@@ -9,14 +11,12 @@ export interface LayoutContextType {
   setBreadcrumbComponent: (component: ReactNode | null) => void;
 }
 
-export const LayoutContext = createContext<LayoutContextType | undefined>(undefined);
-
-interface DashboardLayoutProps {
+interface AppLayoutProps {
   children: React.ReactNode;
 }
 
-const AppLayout = ({ children }: DashboardLayoutProps) => {
-  const [, setBreadcrumbComponent] = useState<ReactNode | null>(null);
+const AppLayout = ({ children }: AppLayoutProps) => {
+  const [breadcrumbComponent, setBreadcrumbComponent] = useState<ReactNode | null>(null);
 
   const location = useLocation();
 
@@ -32,7 +32,7 @@ const AppLayout = ({ children }: DashboardLayoutProps) => {
         {/* Main Content */}
         <div className="flex flex-1 flex-col px-8">
           {/* <Navbar breadcrumbs={breadcrumbComponent} /> */}
-          {!showNavbar && <>Navbar</>}
+          {!showNavbar && <UserNavbar breadcrumbs={breadcrumbComponent} />}
 
           <main
             className={cn(

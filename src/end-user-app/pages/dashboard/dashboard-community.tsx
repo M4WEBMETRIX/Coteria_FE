@@ -15,6 +15,7 @@ import {
   CheckCircle,
   BookmarkSimple,
 } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 const communities = [
   {
@@ -80,6 +81,7 @@ const communities = [
 ];
 
 const DashboardCommunity = () => {
+  const navigate = useNavigate();
   return (
     <div className="w-full">
       <div className="">
@@ -134,7 +136,10 @@ const DashboardCommunity = () => {
                   {community.campaigns}
                 </TableCell>
                 <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
-                  <Button className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]">
+                  <Button
+                    onClick={() => navigate(`/user/dashboard/community/${community.id}`)}
+                    className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
+                  >
                     <div className="flex items-center">
                       Enter <CaretRightIcon size={14} weight="bold" className="text-white" />
                     </div>

@@ -14,6 +14,7 @@ import {
   UserIcon,
 } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
+import DashboardImpact from "./dashboard-impact";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
 
@@ -105,6 +106,7 @@ const DashboardIndex = () => {
         {activeTab === "community" && <DashboardCommunity />}
         {activeTab === "campaigns" && <DashboardCampaigns />}
         {activeTab === "resources" && <DashboardResources />}
+        {activeTab === "impact" && <DashboardImpact />}
         {activeTab === "member" && <DashboardMember />}
       </div>
 
@@ -113,7 +115,7 @@ const DashboardIndex = () => {
           <div className="mb-5 flex items-start gap-5">
             <div className="">
               <div className="flex h-[104.55px] w-[104.55px] items-center justify-center rounded-full bg-[#FDD8E1]">
-                <UserIcon size={64} color="rgba(111, 111, 111, 0.5)" />
+                <UserIcon size={64} color="#FFFFFF" />
               </div>
             </div>
 

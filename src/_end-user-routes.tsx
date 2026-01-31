@@ -13,6 +13,11 @@ const UserForgotPassword = lazy(
   () => import("./end-user-app/pages/authentications/forgot-password")
 );
 const DashboardIndex = lazy(() => import("./end-user-app/pages/dashboard"));
+const CommunityFeed = lazy(() => import("./end-user-app/pages/dashboard/community-feed"));
+const EventsIndex = lazy(() => import("./end-user-app/pages/events/events-index"));
+const ReceiptAndTaxesIndex = lazy(
+  () => import("./end-user-app/pages/receipt-and-taxes/receipt-and-taxes-index")
+);
 
 import Logo from "@/assets/icons/coterie.svg";
 
@@ -43,6 +48,9 @@ const EndUserRoutes = () => {
         {/* Protected routes */}
         <Route element={<UserProtectedRoute />}>
           <Route path="dashboard" element={<DashboardIndex />} />
+          <Route path="dashboard/community/:id" element={<CommunityFeed />} />
+          <Route path="events" element={<EventsIndex />} />
+          <Route path="receipt-taxes" element={<ReceiptAndTaxesIndex />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />
