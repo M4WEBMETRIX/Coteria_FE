@@ -2,27 +2,29 @@ import { Button } from "@/components/ui/button";
 import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
 import { CaretDown, CaretRightIcon } from "@phosphor-icons/react";
 import { useState } from "react";
+import ReceiptModal from "@/components/receipts/receipt-modal";
 
 const ReceiptAndTaxesIndex = () => {
   const [activeTab, setActiveTab] = useState<"receipts" | "faq">("receipts");
 
   // Mock year logic
   const [year] = useState("2023");
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const receipts = [
     {
       id: 1,
-      organization: "Toronto Housing Coalition",
-      receiptNo: "CC-2004-534564",
-      amount: 500,
-      date: "January 28th 2025",
+      organization: "Atlantic Salmon Museum",
+      receiptNo: "CC-2026-04512",
+      amount: "500.00",
+      date: "January 30, 2026",
     },
     {
       id: 2,
-      organization: "Women Empowerment",
-      receiptNo: "CC-2004-534564",
-      amount: 500,
-      date: "January 28th 2025",
+      organization: "Atlantic Salmon Museum",
+      receiptNo: "CC-2026-04512",
+      amount: "500.00",
+      date: "January 30, 2026",
     },
   ];
 
@@ -84,13 +86,18 @@ const ReceiptAndTaxesIndex = () => {
                   <p>{receipt.date}</p>
                 </div>
               </div>
-              <Button className="h-12 min-w-54.25 rounded-full bg-[#DCFFE3] px-7.5 py-4 text-base leading-[150%] font-medium tracking-[0%] text-[#02B128] hover:bg-[#d0fbe4]">
+              <Button
+                onClick={() => setIsModalOpen(true)}
+                className="h-12 min-w-54.25 rounded-full bg-[#DCFFE3] px-7.5 py-4 text-base leading-[150%] font-medium tracking-[0%] text-[#02B128] hover:bg-[#d0fbe4]"
+              >
                 Generate Receipt <CaretRightIcon className="ml-2 h-4 w-4" />
               </Button>
             </div>
           ))}
         </div>
       </div>
+
+      <ReceiptModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} />
     </div>
   );
 };

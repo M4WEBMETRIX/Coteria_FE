@@ -2,28 +2,32 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 // import { Progress } from "@/components/ui/progress";
 import { CaretRightIcon } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
+
+export const campaigns = [
+  {
+    id: 1,
+    name: "John Keith-King Collection",
+    raised: 2700,
+    target: 55000,
+    description:
+      'William ("Bill") B. Cushner was born in Alberta in 1914, the son of Russian immigrants from the Ukraine.',
+    image: "", // Placeholder
+    status: "active",
+  },
+];
 
 const DashboardCampaigns = () => {
+  const navigate = useNavigate();
   const [tab, setTab] = useState<"active" | "completed">("active");
-
-  const campaigns = [
-    {
-      id: 1,
-      name: "John Keith-King Collection",
-      raised: 2700,
-      target: 55000,
-      description:
-        'William ("Bill") B. Cushner was born in Alberta in 1914, the son of Russian immigrants from the Ukraine.',
-      image: "", // Placeholder
-      status: "active",
-    },
-    // Add more if needed matching the visual
-  ];
 
   return (
     <div className="w-full space-y-6">
       {/* Banner */}
-      <div className="relative h-51.75 w-full overflow-hidden rounded-[10px] bg-gray-200">
+      <div
+        onClick={() => navigate("/user/dashboard/campaign/287")}
+        className="relative h-51.75 w-full cursor-pointer overflow-hidden rounded-[10px] bg-gray-200"
+      >
         <img
           src="https://placehold.co/1000x200/png" // Placeholder
           alt="Campaign Banner"

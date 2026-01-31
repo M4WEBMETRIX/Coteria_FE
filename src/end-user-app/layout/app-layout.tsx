@@ -21,7 +21,9 @@ const AppLayout = ({ children }: AppLayoutProps) => {
   const location = useLocation();
 
   // Check if current path includes /user/dashboard
-  const showNavbar = location.pathname.includes("/user/dashboard");
+  const showNavbar =
+    location.pathname.includes("/user/dashboard") ||
+    location.pathname.includes("/user/account-settings/edit");
 
   return (
     <LayoutContext.Provider value={{ setBreadcrumbComponent }}>
@@ -32,7 +34,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         {/* Main Content */}
         <div className="flex flex-1 flex-col px-8">
           {/* <Navbar breadcrumbs={breadcrumbComponent} /> */}
-          {!showNavbar && <UserNavbar breadcrumbs={breadcrumbComponent} />}
+          {showNavbar ? null : <UserNavbar breadcrumbs={breadcrumbComponent} />}
 
           <main
             className={cn(

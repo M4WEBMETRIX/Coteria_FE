@@ -18,6 +18,11 @@ const EventsIndex = lazy(() => import("./end-user-app/pages/events/events-index"
 const ReceiptAndTaxesIndex = lazy(
   () => import("./end-user-app/pages/receipt-and-taxes/receipt-and-taxes-index")
 );
+const CampaignDetails = lazy(() => import("./end-user-app/pages/dashboard/campaign-details"));
+const AccountSettingsIndex = lazy(
+  () => import("./end-user-app/pages/account-and-settings/account-settings-index")
+);
+const EditProfile = lazy(() => import("./end-user-app/pages/account-and-settings/edit-profile"));
 
 import Logo from "@/assets/icons/coterie.svg";
 
@@ -49,8 +54,11 @@ const EndUserRoutes = () => {
         <Route element={<UserProtectedRoute />}>
           <Route path="dashboard" element={<DashboardIndex />} />
           <Route path="dashboard/community/:id" element={<CommunityFeed />} />
+          <Route path="dashboard/campaign/:id" element={<CampaignDetails />} />
           <Route path="events" element={<EventsIndex />} />
           <Route path="receipt-taxes" element={<ReceiptAndTaxesIndex />} />
+          <Route path="account-settings" element={<AccountSettingsIndex />} />
+          <Route path="account-settings/edit" element={<EditProfile />} />
         </Route>
 
         <Route path="*" element={<NotFoundPage />} />

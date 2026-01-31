@@ -66,25 +66,31 @@ const DashboardImpact = () => {
           {/* Referred Donations Card */}
           <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
             <div className="space-y-1">
-              <h3 className="text-4xl font-bold text-[#12AA5B]">$3,250</h3>
-              <p className="font-medium text-gray-500">Referred Donations</p>
+              <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">$3,250</h3>
+              <p className="text-2xl leading-[150%] font-normal text-[#888787]">
+                Referred Donations
+              </p>
             </div>
-            <Button className="h-14 w-full justify-between border border-[#d2fff6] bg-[#E7FFFA] text-base font-medium text-[#12AA5B] hover:bg-[#d0fbe4]">
-              <div className="flex items-center gap-2">
-                <Trophy size={20} weight="fill" />
+            <Button className="h-14 w-full max-w-102.75 justify-center rounded-[20px] border border-[#BDFFCA] bg-[#DCFFE3] text-lg leading-[150%] font-medium text-[#02B128] hover:bg-[#d0fbe4]">
+              <div className="flex items-center gap-4">
+                <Trophy size={24} weight="fill" />
                 Reach Milestones
+                <CaretRightIcon size={24} className="ml-2" />
               </div>
-              <CaretRightIcon size={16} />
             </Button>
-            <p className="text-sm text-gray-500">3 referrals away from a $100 boost</p>
+            <p className="text-2xl leading-[150%] font-normal text-[#888787]">
+              3 referrals away from a $100 boost
+            </p>
           </div>
 
           {/* People Referred Card */}
           <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
             <div className="space-y-1">
-              <div className="flex items-baseline gap-2">
-                <h3 className="text-4xl font-semibold text-[#000000]">30</h3>
-                <p className="font-medium text-gray-500">People Referred</p>
+              <div className="flex items-center gap-2">
+                <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">30</h3>
+                <p className="text-2xl leading-[150%] font-normal text-[#888787]">
+                  People Referred
+                </p>
               </div>
             </div>
             <div className="space-y-1">
@@ -92,13 +98,13 @@ const DashboardImpact = () => {
                 <div className="h-full w-[60%] rounded-full bg-[#12AA5B]" />
               </div>
             </div>
-            <div className="flex items-center justify-between text-sm text-gray-500">
-              <span>
+            <div className="flex items-center justify-between text-2xl leading-[150%] font-normal text-[#888787]">
+              <span className="flex items-center gap-6">
                 + $280 <span className="text-gray-400">Bonus Earned</span>
               </span>
               <span>45 Days</span>
             </div>
-            <Button className="h-12 w-full rounded-full bg-[#12AA5B] text-base font-medium text-white hover:bg-[#0da055]">
+            <Button className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]">
               Refer More Family <CaretRightIcon className="ml-2 h-4 w-4" />
             </Button>
           </div>
@@ -108,93 +114,96 @@ const DashboardImpact = () => {
           <h3 className="text-[30px] leading-[150%] font-medium tracking-[0%] text-[#000000]">
             Direct Referrals
           </h3>
-          <div className="space-y-4">
-            {directReferrals.map((referral) => (
-              <div
-                key={referral.id}
-                className={`flex items-center justify-between rounded-xl border border-[#ECEFF3] p-4 ${
-                  referral.id === 1 ? "border-[#FFF9EA] bg-[#FFF9EA]" : "bg-white"
-                }`}
-              >
-                <div className="flex items-start gap-4">
-                  <div
-                    className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
-                  >
-                    {referral.avatar ? (
-                      <img
-                        src={referral.avatar}
-                        alt={referral.name}
-                        className="h-full w-full object-cover"
-                      />
-                    ) : (
-                      <div className="h-full w-full bg-[#FFD3D8]" />
-                    )}
-                    {referral.id === 1 && (
-                      <div className="absolute -right-1 -bottom-1">
-                        {/* Status dot or icon if needed */}
-                      </div>
-                    )}
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <p className="text-base font-semibold text-[#1E1F24]">{referral.name}</p>
-                      {referral.location && (
-                        <div className="flex items-center gap-1 text-xs text-gray-500">
-                          <MapPin size={12} weight="fill" className="text-gray-400" />
-                          {referral.location}
+          <div className="rounded-[10px] border border-[#ECEFF3] bg-white">
+            <div className="p-6">
+              {directReferrals.map((referral) => (
+                <div
+                  key={referral.id}
+                  className={`flex items-center justify-between border-b py-6 last:border-b-0`}
+                >
+                  <div className="flex items-start gap-4">
+                    <div
+                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
+                    >
+                      {referral.avatar ? (
+                        <img
+                          src={referral.avatar}
+                          alt={referral.name}
+                          className="h-full w-full object-cover"
+                        />
+                      ) : (
+                        <div className="h-full w-full rounded-full bg-[#FFD3D8]" />
+                      )}
+                      {referral.id === 1 && (
+                        <div className="absolute -right-1 -bottom-1">
+                          {/* Status dot or icon if needed */}
                         </div>
                       )}
-                      {referral.status && (
-                        <span
-                          className={`textxs rounded px-2 py-0.5 font-medium ${referral.status.color}`}
-                        >
-                          {referral.status.label}
-                        </span>
-                      )}
                     </div>
-                    {referral.subText && (
-                      <div className="flex items-center gap-2 text-sm text-gray-500">
-                        {referral.referredUsers && (
-                          <div className="flex -space-x-2">
-                            {[1, 2, 3].map((i) => (
-                              <div
-                                key={i}
-                                className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
-                              />
-                            ))}
+                    <div className="space-y-1">
+                      <div className="flex items-center gap-2">
+                        <p className="text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
+                          {referral.name}
+                        </p>
+                        {referral.location && (
+                          <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
+                            <MapPin size={16} weight="fill" className="text-gray-400" />
+                            {referral.location}
                           </div>
                         )}
-                        <p>
-                          {referral.id === 1
-                            ? `${referral.boosts} Boosts D234`
-                            : referral.id === 3
-                              ? "$55 - +$85 referred"
-                              : "$120 referred"}
-                        </p>
+                        {referral.status && (
+                          <span
+                            className={`rounded px-2 py-0.5 text-xs font-normal ${referral.status.color}`}
+                          >
+                            {referral.status.label}
+                          </span>
+                        )}
                       </div>
-                    )}
+                      {referral.subText && (
+                        <div className="flex items-center gap-2 text-sm text-gray-500">
+                          {referral.referredUsers && (
+                            <div className="flex -space-x-2">
+                              {[1, 2, 3].map((i) => (
+                                <div
+                                  key={i}
+                                  className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
+                                />
+                              ))}
+                            </div>
+                          )}
+                          <p className="text-base leading-[150%] font-normal text-[#888787]">
+                            {referral.id === 1
+                              ? `${referral.boosts} Boosts D234`
+                              : referral.id === 3
+                                ? "$55 - +$85 referred"
+                                : "$120 referred"}
+                          </p>
+                        </div>
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="text-right">
+                    <p
+                      className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral.id === 1 || referral.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
+                    >
+                      ${referral.amount.toLocaleString()}
+                      {/* <CaretRightIcon size={14} color="#000000" /> */}
+                    </p>
+                    <p className="text-sm font-medium text-[#888787]">
+                      {referral.id === 1
+                        ? "3 Boosts"
+                        : referral.id === 3
+                          ? "+4 Friends Referred"
+                          : "Referred 5 Friends"}
+                    </p>
                   </div>
                 </div>
-
-                <div className="text-right">
-                  <p
-                    className={`text-lg font-bold ${referral.id === 1 || referral.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
-                  >
-                    ${referral.amount.toLocaleString()}
-                  </p>
-                  <p className="text-xs font-medium text-gray-400">
-                    {referral.id === 1
-                      ? "3 Boosts"
-                      : referral.id === 3
-                        ? "+4 Friends Referred"
-                        : "Referred 5 Friends"}
-                  </p>
-                </div>
-              </div>
-            ))}
+              ))}
+            </div>
 
             {/* Volunteer Highlight Card */}
-            <div className="space-y-4 rounded-xl bg-[#F0FDF4] p-6">
+            <div className="space-y-4 rounded-b-[10px] border-t border-t-[#F6F6F6] bg-[#EEFFF1] p-6">
               <div className="flex items-start gap-4">
                 <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-200">
                   <img
@@ -205,17 +214,25 @@ const DashboardImpact = () => {
                 </div>
                 <div>
                   <div className="flex items-center gap-2">
-                    <p className="text-lg font-semibold text-[#1E1F24]">Liz Jacob</p>
-                    <span className="text-gray-500">Volunteer</span>
+                    <p className="text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
+                      Liz Jacob
+                    </p>
+                    <span className="text-base leading-[150%] font-normal text-[#595959]">
+                      Volunteer
+                    </span>
                   </div>
-                  <p className="text-sm text-gray-500">24+ Referred</p>
+                  <p className="text-base leading-[150%] font-normal text-[#595959]">
+                    24+ Referred
+                  </p>
                 </div>
               </div>
-              <p className="text-[#475467] italic">
+              <p className="text-base leading-[150%] font-normal text-[#595959]">
                 "This community is making Toronto greener, one tree at a time. I'm so proud to be
                 part of it."
               </p>
-              <p className="text-sm font-medium text-gray-500">— Liz Jacob - Volunteer.</p>
+              <p className="text-base leading-[150%] font-normal text-[#595959]">
+                — Liz Jacob - Volunteer.
+              </p>
             </div>
           </div>
         </div>
