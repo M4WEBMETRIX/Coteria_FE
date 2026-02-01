@@ -15,6 +15,7 @@ import {
 } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 import DashboardImpact from "./dashboard-impact";
+import { getUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
 
@@ -31,6 +32,7 @@ const getAdjacentDays = (date?: Date | null) => {
 };
 
 const DashboardIndex = () => {
+  const user = getUserFromLocalStorage();
   const [activeTab] = useQueryState("tab", {
     defaultValue: "home",
   });
@@ -48,7 +50,7 @@ const DashboardIndex = () => {
               Good Morning,
             </p>
             <p className="text-[48px] leading-[120%] font-medium tracking-[-2%] text-[#000000]">
-              Wale Abba!
+              {user?.name}!
             </p>
           </div>
           <div className="flex items-center gap-3">

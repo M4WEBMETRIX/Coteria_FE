@@ -10,6 +10,7 @@ import {
   CaretRightIcon,
   Leaf,
   ChartBar,
+  UserIcon,
 } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
@@ -28,12 +29,14 @@ const AccountSettingsIndex = () => {
         <div className="w-[300px] shrink-0 space-y-6">
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6 text-center">
             <div className="flex items-center gap-3">
-              <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-                <img
+              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-200">
+                {/* <img
                   src="https://placehold.co/80x80/png"
                   alt="Profile"
                   className="h-full w-full object-cover"
-                />
+                /> */}
+
+                <UserIcon size={32} color="#FFFFFF" />
               </div>
               <div className="flex flex-col items-start">
                 <h3 className="line-clamp-1 text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">

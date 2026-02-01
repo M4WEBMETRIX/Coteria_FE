@@ -2,13 +2,15 @@ import { useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Logout01Icon } from "hugeicons-react";
+import { removeUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 
 interface LogoutModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  isUser?: boolean;
 }
 
-const LogoutModal = ({ open, onOpenChange }: LogoutModalProps) => {
+const LogoutModal = ({ open, onOpenChange, isUser }: LogoutModalProps) => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -17,7 +19,13 @@ const LogoutModal = ({ open, onOpenChange }: LogoutModalProps) => {
     // sessionStorage.clear();
 
     onOpenChange(false);
-    navigate("/auth/login");
+    if (isUser) {
+      navigate("/user/login");
+    } else {
+      navigate("/auth/login");
+    }
+
+    removeUserFromLocalStorage();
   };
 
   const handleCancel = () => {

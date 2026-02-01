@@ -1,7 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 // import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
-import { PencilSimple } from "@phosphor-icons/react";
+import { PencilSimple, UserIcon } from "@phosphor-icons/react";
 import {
   Select,
   SelectContent,
@@ -34,12 +34,13 @@ const EditProfile = () => {
             Change Avatar
           </h3>
           <div className="relative mx-auto h-42 w-42">
-            <div className="h-full w-full overflow-hidden rounded-full bg-pink-100">
-              <img
+            <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-pink-100">
+              {/* <img
                 src="https://placehold.co/128x128/png"
                 alt="Profile"
                 className="h-full w-full object-cover"
-              />
+              /> */}
+              <UserIcon size={64} color="#FFFFFF" />
             </div>
             <button className="absolute right-0 bottom-0 flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-50">
               <PencilSimple size={20} />

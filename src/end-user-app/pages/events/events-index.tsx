@@ -12,6 +12,10 @@ import {
 } from "@phosphor-icons/react";
 import { useState } from "react";
 
+import EVENT_IMAGE_1 from "@/assets/images/sample-event-image-1.png";
+import EVENT_IMAGE_2 from "@/assets/images/sample-event-image-2.png";
+import EVENT_VIDEO_1 from "@/assets/images/sample-event-video-1.png";
+
 const EventsIndex = () => {
   const [activeTab, setActiveTab] = useState<"upcoming" | "attended" | "past">("upcoming");
 
@@ -22,7 +26,7 @@ const EventsIndex = () => {
       community: "<Community Name>",
       date: "Sun Mar 12 at 5:00PM",
       going: 15,
-      image: "https://placehold.co/400x250/png",
+      image: EVENT_IMAGE_1,
     },
     {
       id: 2,
@@ -30,7 +34,7 @@ const EventsIndex = () => {
       community: "<Community Name>",
       date: "Sun Mar 12 at 5:00PM",
       going: 15,
-      image: "https://placehold.co/400x250/png",
+      image: EVENT_IMAGE_2,
     },
   ];
 
@@ -40,7 +44,7 @@ const EventsIndex = () => {
       title: "Learn budgeting and savings tips with community experts.",
       duration: "30 mins",
       date: "Sun Mar 12 at 5:00PM",
-      image: "https://placehold.co/300x180/png",
+      image: EVENT_VIDEO_1,
     },
   ];
 

@@ -155,7 +155,7 @@ const UserSidebar = () => {
           <button
             onClick={handleLogoutClick}
             className={cn(
-              "group relative flex w-full items-center gap-2 rounded-lg p-2 text-sm font-medium text-[#FF4D4F] transition-colors hover:bg-red-50",
+              "group relative flex w-full cursor-pointer items-center gap-2 rounded-lg p-2 text-sm font-medium text-[#FF4D4F] transition-colors hover:bg-red-50",
               isSidebarOpen ? "justify-start" : "justify-center"
             )}
           >
@@ -172,7 +172,7 @@ const UserSidebar = () => {
       </div>
 
       {/* Logout Confirmation Modal */}
-      <LogoutModal open={isLogoutModalOpen} onOpenChange={setIsLogoutModalOpen} />
+      <LogoutModal isUser={true} open={isLogoutModalOpen} onOpenChange={setIsLogoutModalOpen} />
     </aside>
   );
 };

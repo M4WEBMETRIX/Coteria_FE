@@ -82,4 +82,5 @@ export const defaultValues: Partial<EventFormValues> = {
   displayTimezone: false,
   timezone: "GMT+1 (West Africa Time)", // Default from design
   addOptionalDonation: false,
+  isTicketType: false,
 };

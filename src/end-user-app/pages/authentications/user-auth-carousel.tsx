@@ -5,17 +5,19 @@ const slides = [
     id: 1,
     image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600",
     quote:
-      "Finally, a space that gets it. No fluff, just real value and great conversations. Joining was the best decision I made this year.",
+      "A total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
   },
   {
     id: 2,
     image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1600",
-    quote: "It feels different here. Real people, real ideas, and meaningful connections.",
+    quote:
+      "It feels different here. A total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
   },
   {
     id: 3,
     image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600",
-    quote: "I didn’t expect much at first, but this community genuinely surprised me.",
+    quote:
+      "I didn’t expect a total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
   },
 ];
 
@@ -43,23 +45,22 @@ export default function UserAuthCarousel() {
           <img src={slide.image} alt="" className="h-full w-full object-cover" />
 
           {/* Bottom caption box */}
-          <div className="absolute right-0 bottom-0 left-0 h-[212px] bg-[#282828]/60 backdrop-blur-sm">
+          <div className="absolute right-0 bottom-0 left-0 h-[182px] bg-[#282828]/60 backdrop-blur-xs">
+            {/* Pagination dots */}
+            <div className="flex items-center justify-center gap-2 pt-4.5">
+              {slides.map((_, dotIndex) => (
+                <button
+                  key={dotIndex}
+                  onClick={() => setCurrent(dotIndex)}
+                  className={`h-2.5 w-2.5 rounded-full transition-all ${
+                    dotIndex === current ? "bg-white" : "bg-white/40 hover:bg-white/70"
+                  }`}
+                />
+              ))}
+            </div>
             <div className="flex h-full flex-col justify-between px-10 py-8 text-white">
               {/* Quote */}
-              <p className="max-w-xl text-lg leading-relaxed">“{slide.quote}”</p>
-
-              {/* Pagination dots */}
-              <div className="flex gap-2 self-end">
-                {slides.map((_, dotIndex) => (
-                  <button
-                    key={dotIndex}
-                    onClick={() => setCurrent(dotIndex)}
-                    className={`h-2.5 w-2.5 rounded-full transition-all ${
-                      dotIndex === current ? "bg-white" : "bg-white/40 hover:bg-white/70"
-                    }`}
-                  />
-                ))}
-              </div>
+              <p className="w-full text-lg leading-relaxed">“{slide.quote}”</p>
             </div>
           </div>
         </div>

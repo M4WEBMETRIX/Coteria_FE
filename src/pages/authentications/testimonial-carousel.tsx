@@ -9,35 +9,70 @@ const ACTIVE_WIDTH = 341;
 const SIDE_WIDTH = 227;
 const GAP = 14;
 
+// const testimonials = [
+//   {
+//     name: "Community Member",
+//     role: "Toronto, Canada",
+//     image: TESTIMONIAL_IMAGE_1,
+//     text: (
+//       <>
+//         I’ve donated to causes before, but Coterie is the first place where I actually{" "}
+//         <span className="italic">feel part of something</span>. I can see how my actions matter, who
+//         I’m connected to, and how the community grows. It doesn’t feel transactional. It feels
+//         human.
+//       </>
+//     ),
+//     time: "12:15 PM - Jan 4, 2025",
+//     rating: 5,
+//   },
+//   {
+//     name: "Donor & Volunteer",
+//     role: "Global Citizen",
+//     image: TESTIMONIAL_IMAGE_2,
+//     text: "What surprised me most is how often I come back. Not because I’m asked to donate again, but because something is always happening. A vote, a new person joining, an update that shows progress. It feels alive",
+//     time: "9:30 PM - Jan 6, 2025",
+//     rating: 5,
+//   },
+//   {
+//     name: "Executive Director",
+//     role: "UK Nonprofit Organization",
+//     image: TESTIMONIAL_IMAGE_3,
+//     text: "Before Coterie, we were running campaigns blindly. We had numbers, but no clarity. Now we actually understand what’s driving engagement and who our real champions are.",
+//     time: "7:45 PM - Jan 9, 2025",
+//     rating: 5,
+//   },
+// ];
+
+// MVP TESTIMONIALS
+
 const testimonials = [
   {
-    name: "Community Member",
+    name: "Campaign Manager",
     role: "Toronto, Canada",
     image: TESTIMONIAL_IMAGE_1,
     text: (
       <>
-        I’ve donated to causes before, but Coterie is the first place where I actually{" "}
-        <span className="italic">feel part of something</span>. I can see how my actions matter, who
-        I’m connected to, and how the community grows. It doesn’t feel transactional. It feels
-        human.
+        Coterie made us feel like strategists instead of underdogs. We don’t just launch campaigns
+        anymore. We build <span className="italic">momentum</span>, activate the right people, and
+        learn what works.
       </>
     ),
     time: "12:15 PM - Jan 4, 2025",
     rating: 5,
   },
   {
-    name: "Donor & Volunteer",
+    name: "Top Referrer",
     role: "Global Citizen",
     image: TESTIMONIAL_IMAGE_2,
-    text: "What surprised me most is how often I come back. Not because I’m asked to donate again, but because something is always happening. A vote, a new person joining, an update that shows progress. It feels alive",
+    text: "I’ve shared causes before, but this is the first time I could actually see the ripple effect. Who joined because of me, how far it spread, and what changed.",
     time: "9:30 PM - Jan 6, 2025",
     rating: 5,
   },
   {
-    name: "Executive Director",
-    role: "UK Nonprofit Organization",
+    name: "Founder",
+    role: "Community-Led Initiative",
     image: TESTIMONIAL_IMAGE_3,
-    text: "Before Coterie, we were running campaigns blindly. We had numbers, but no clarity. Now we actually understand what’s driving engagement and who our real champions are.",
+    text: "What we love is that fundraising is just one part of the experience. The community comes first. That trust translates naturally into support.",
     time: "7:45 PM - Jan 9, 2025",
     rating: 5,
   },

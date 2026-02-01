@@ -10,6 +10,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
+import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -40,6 +41,12 @@ const UserSignIn = () => {
     console.log(data);
     setLoading(true);
 
+    setUserToLocalStorage({
+      id: "123",
+      name: getNameFromEmail(data?.email),
+      email: data?.email,
+    });
+
     setTimeout(() => {
       setLoading(false);
       navigate("/user/dashboard");
@@ -51,7 +58,7 @@ const UserSignIn = () => {
       title="Welcome back"
       subTitle="Your communities have been active while you were away"
     >
-      <div className="">
+      <div className="w-full">
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
           {/* Name Field */}

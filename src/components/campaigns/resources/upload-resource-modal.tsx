@@ -33,7 +33,7 @@ export function UploadResourceModal({ isOpen, onClose, onUpload }: UploadResourc
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent showCloseButton={false} className="p-0 sm:max-w-[600px]">
+      <DialogContent showCloseButton={false} className="rounded-[16px] p-0 sm:max-w-[700px]">
         <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-xl font-bold text-[#0A0A0C]">Upload a Document</DialogTitle>
         </DialogHeader>

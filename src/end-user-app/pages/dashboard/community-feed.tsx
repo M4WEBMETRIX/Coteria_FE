@@ -18,6 +18,8 @@ import {
 import { CaretRightIcon, MapPinIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useNavigate } from "react-router-dom";
 
+import SAMPLE_FEED_IMAGE from "@/assets/images/sample-community-image.png";
+
 const CommunityFeed = () => {
   const navigate = useNavigate();
 
@@ -160,7 +162,7 @@ const CommunityFeed = () => {
               <div className="space-y-3">
                 <div className="h-[180px] w-full overflow-hidden rounded-xl bg-gray-100">
                   <img
-                    src="https://placehold.co/600x300/png"
+                    src={SAMPLE_FEED_IMAGE}
                     alt="Post Content"
                     className="h-full w-full object-cover"
                   />

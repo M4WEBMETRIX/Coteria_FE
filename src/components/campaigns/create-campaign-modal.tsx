@@ -22,6 +22,7 @@ import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import { useNavigate } from "react-router-dom";
 
 interface CreateCampaignModalProps {
   children?: React.ReactNode;
@@ -40,6 +41,7 @@ const CreateCampaignModal = ({
   customOpen,
   setCustomOpen,
 }: CreateCampaignModalProps) => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
@@ -100,6 +102,9 @@ const CreateCampaignModal = ({
       },
     ]);
     setJustCreated(true);
+
+    //MVP NAVIGATION FOR DEMO
+    navigate("/campaigns/sample-campaign-1xeydjtYWDB");
   };
 
   const handleParticipationChange = (value: string) => {

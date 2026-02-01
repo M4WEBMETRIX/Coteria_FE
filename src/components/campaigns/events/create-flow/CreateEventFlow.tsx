@@ -83,7 +83,7 @@ export default function CreateEventFlow() {
         isValid = await trigger(["description"]);
         break;
       case 6:
-        isValid = await trigger(["isTicketType", "tickets"]);
+        isValid = await trigger(["isTicketType"]);
         break;
       default:
         isValid = true;
@@ -239,7 +239,7 @@ export default function CreateEventFlow() {
             ) : (
               <Button
                 onClick={handleSubmit(onSubmit)}
-                className="bg-green-500 text-white hover:bg-green-600"
+                className="h-12 w-[140px] bg-green-500 text-white hover:bg-green-600"
               >
                 Save & Continue
               </Button>

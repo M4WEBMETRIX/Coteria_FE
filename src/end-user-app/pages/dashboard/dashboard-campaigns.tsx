@@ -3,6 +3,8 @@ import { Button } from "@/components/ui/button";
 // import { Progress } from "@/components/ui/progress";
 import { CaretRightIcon } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
+import CAMPAIGN_IMAGE from "@/assets/images/sample-campaign.png";
+import CAMPAIGN_IMAGE_1 from "@/assets/images/sample-campaign-image-1.png";
 
 export const campaigns = [
   {
@@ -29,7 +31,7 @@ const DashboardCampaigns = () => {
         className="relative h-51.75 w-full cursor-pointer overflow-hidden rounded-[10px] bg-gray-200"
       >
         <img
-          src="https://placehold.co/1000x200/png" // Placeholder
+          src={CAMPAIGN_IMAGE} // Placeholder
           alt="Campaign Banner"
           className="h-full w-full object-cover"
         />
@@ -124,7 +126,7 @@ const DashboardCampaigns = () => {
 
             <div className="h-26.5 w-full overflow-hidden rounded-[10px] bg-gray-100">
               <img
-                src="https://placehold.co/1000x150/png"
+                src={CAMPAIGN_IMAGE_1}
                 alt="Campaign Detail"
                 className="h-full w-full object-cover"
               />

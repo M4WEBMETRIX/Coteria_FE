@@ -18,12 +18,12 @@ const UserAuthLayout = ({
   return (
     <main className="flex h-screen">
       {/* left panel */}
-
+      {/* max-w-151.5 */}
       <div className="mx-auto w-full flex-1 overflow-y-auto p-4">
         {" "}
-        <aside className="no-scrollbar mx-auto grid w-full max-w-151.5 place-content-center">
+        <aside className="no-scrollbar mx-auto w-full max-w-[80%]">
           <LogoSvgCode className="pl-7.5" />
-          <div className="p-7.5">
+          <div className="mx-auto w-full p-7.5">
             <div className="mt-10">
               <p className="text-4xl leading-[120%] font-bold tracking-[-2%]">
                 {isReferrer ? "You’ve been invited" : title}

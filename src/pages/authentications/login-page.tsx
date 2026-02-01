@@ -8,6 +8,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
+import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -38,6 +39,12 @@ const LoginPage = () => {
   const onSubmit = (data: LoginFormValues) => {
     console.log(data);
     setLoading(true);
+
+    setUserToLocalStorage({
+      id: "123",
+      name: getNameFromEmail(data?.email),
+      email: data?.email,
+    });
 
     setTimeout(() => {
       setLoading(false);
