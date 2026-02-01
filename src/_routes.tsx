@@ -28,6 +28,8 @@ const CreateEventFlow = lazy(
   () => import("./components/campaigns/events/create-flow/CreateEventFlow")
 );
 const HelpSupport = lazy(() => import("./pages/dashboard/help-support"));
+const CommunityPublic = lazy(() => import("./pages/community/community-public"));
+const CampaignPublic = lazy(() => import("./pages/community/campaign-public"));
 const AllRoutes = () => {
   return (
     <Suspense
@@ -71,6 +73,10 @@ const AllRoutes = () => {
           <Route path="settings" element={<SettingsPage />} />
           <Route path="help-support" element={<HelpSupport />} />
         </Route>
+
+        {/* Public routes */}
+        <Route path="community/:slug" element={<CommunityPublic />} />
+        <Route path="community/:slug/campaign/:campaignId" element={<CampaignPublic />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

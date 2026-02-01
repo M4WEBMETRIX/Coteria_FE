@@ -79,7 +79,7 @@ const DashboardImpact = () => {
               </div>
             </Button>
             <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-              3 referrals away from a $100 boost
+              3 referrals away from reaching the next level
             </p>
           </div>
 
@@ -100,7 +100,8 @@ const DashboardImpact = () => {
             </div>
             <div className="flex items-center justify-between text-2xl leading-[150%] font-normal text-[#888787]">
               <span className="flex items-center gap-6">
-                + $280 <span className="text-gray-400">Bonus Earned</span>
+                Amplifier Badge Earned
+                {/* + $280 <span className="text-gray-400">Bonus Earned</span> */}
               </span>
               <span>45 Days</span>
             </div>

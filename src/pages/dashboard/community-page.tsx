@@ -63,7 +63,7 @@ const CommunityPage = () => {
                 </div>
 
                 <Link
-                  className="flex h-12 items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center"
+                  className="flex h-12 w-50 items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center"
                   to={"/campaigns"}
                 >
                   <div className="flex items-center gap-1.5">
@@ -102,7 +102,7 @@ const CommunityPage = () => {
                 </div>
 
                 <div
-                  className="mr-29.25 flex h-12 cursor-pointer items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center"
+                  className="flex h-12 w-50 cursor-pointer items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center"
                   onClick={() => setInviteOpen(true)}
                 >
                   <div className="flex items-center gap-1.5">

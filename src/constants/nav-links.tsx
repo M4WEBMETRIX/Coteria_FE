@@ -2,6 +2,8 @@ import {
   // BookIcon,
   BuildingApartmentIcon,
   CalendarDotsIcon,
+  GearIcon,
+  HandHeartIcon,
   // CalendarDotsIcon,
   // ChartPieSliceIcon,
   // ChatCircleDotsIcon,
@@ -68,40 +70,40 @@ export const sidebarLinks: NavLinkSection[] = [
         icon: <PackageIcon size={20} weight="duotone" />,
         path: "/campaigns",
       },
-      // {
-      //   name: "Donations",
-      //   icon: <HandHeartIcon size={20} weight="duotone" />,
-      //   path: "/donations",
-      // },
+      {
+        name: "Donations",
+        icon: <HandHeartIcon size={20} weight="duotone" />,
+        path: "/donations",
+      },
     ],
   },
-  // {
-  //   name: "Other",
-  //   hasSubLinks: true,
-  //   isDropdownActive: true, // Default open for now, logic will handle toggling
-  //   subLinks: [
-  //     {
-  //       name: "Team",
-  //       icon: <UserCircleIcon size={20} weight="duotone" />,
-  //       path: "/team",
-  //     },
-  //     {
-  //       name: "Messages",
-  //       icon: <ChatCircleDotsIcon size={20} weight="duotone" />,
-  //       path: "/messages",
-  //     },
-  //     {
-  //       name: "Reports",
-  //       icon: <ChartPieSliceIcon size={20} weight="duotone" />,
-  //       path: "/reports",
-  //     },
-  //     {
-  //       name: "Settings",
-  //       icon: <GearIcon size={20} weight="duotone" />,
-  //       path: "/settings",
-  //     },
-  //   ],
-  // },
+  {
+    name: "Other",
+    hasSubLinks: true,
+    isDropdownActive: true, // Default open for now, logic will handle toggling
+    subLinks: [
+      // {
+      //   name: "Team",
+      //   icon: <UserCircleIcon size={20} weight="duotone" />,
+      //   path: "/team",
+      // },
+      // {
+      //   name: "Messages",
+      //   icon: <ChatCircleDotsIcon size={20} weight="duotone" />,
+      //   path: "/messages",
+      // },
+      // {
+      //   name: "Reports",
+      //   icon: <ChartPieSliceIcon size={20} weight="duotone" />,
+      //   path: "/reports",
+      // },
+      {
+        name: "Settings",
+        icon: <GearIcon size={20} weight="duotone" />,
+        path: "/settings",
+      },
+    ],
+  },
 ];
 
 export const userSidebarLinks: NavLinkSection[] = [
