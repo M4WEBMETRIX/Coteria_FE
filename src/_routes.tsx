@@ -1,6 +1,6 @@
 import { Route, Routes } from "react-router-dom";
 import { lazy, Suspense } from "react";
-import Home from "./pages/home";
+const Home = lazy(() => import("./pages/home"));
 
 // Lazy load all page components
 const SignupPage = lazy(() => import("./pages/authentications/signup-page"));
@@ -24,7 +24,9 @@ const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
 const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
-import CreateEventFlow from "./components/campaigns/events/create-flow/CreateEventFlow";
+const CreateEventFlow = lazy(
+  () => import("./components/campaigns/events/create-flow/CreateEventFlow")
+);
 const HelpSupport = lazy(() => import("./pages/dashboard/help-support"));
 const AllRoutes = () => {
   return (
