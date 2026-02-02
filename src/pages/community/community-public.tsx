@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Progress } from "@/components/ui/progress";
-import { CaretRightIcon, CalendarIcon } from "@phosphor-icons/react";
+import { CaretRightIcon, CalendarIcon, UserIcon } from "@phosphor-icons/react";
 import { useNavigate, useParams } from "react-router-dom";
 import PUBLIC_COMMUNITY_IMAGE_1 from "@/assets/images/public-community-image-1.png";
 import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
@@ -85,12 +85,12 @@ const CommunityPublic = () => {
                 {communityData.description}
               </p>
               <div className="flex gap-4">
-                <Button className="h-12 rounded-lg bg-[#12AA5B] px-8 text-white hover:bg-[#0da055]">
+                <Button className="h-12 w-39.5 rounded-[10px] bg-[#12AA5B] px-8 text-white hover:bg-[#0da055]">
                   Donate <CaretRightIcon className="ml-2" />
                 </Button>
                 <Button
                   variant="outline"
-                  className="h-12 rounded-lg border-2 border-white bg-transparent px-8 text-white hover:bg-white/10"
+                  className="h-12 w-50 rounded-[10px] bg-white px-8 hover:bg-white/10"
                 >
                   Join Community <CaretRightIcon className="ml-2" />
                 </Button>
@@ -117,36 +117,47 @@ const CommunityPublic = () => {
                 <div
                   key={campaign.id}
                   onClick={() => navigate(`/community/${slug}/campaign/${campaign.id}`)}
-                  className="cursor-pointer space-y-4 rounded-xl border border-[#ECEFF3] bg-white p-5 transition-shadow hover:shadow-lg"
+                  className="cursor-pointer space-y-4 rounded-[10px] border border-[#ECEFF3] bg-white transition-shadow hover:shadow-lg"
                 >
-                  <div className="h-48 w-full overflow-hidden rounded-lg bg-gray-100">
+                  <div className="h-48 w-full overflow-hidden rounded-t-[10px] bg-gray-100">
                     <img
                       src={campaign.image}
                       alt={campaign.title}
                       className="h-full w-full object-cover"
                     />
                   </div>
-                  <div className="space-y-3">
-                    <h4 className="text-lg font-bold text-[#1E1F24]">{campaign.title}</h4>
-                    <p className="line-clamp-2 text-sm text-gray-500">{campaign.description}</p>
+                  <div className="space-y-3 p-5">
+                    <h4 className="text-lg leading-[100%] font-normal text-[#605A5C]">
+                      {campaign.title}
+                    </h4>
+                    <p className="line-clamp-2 text-[13px] leading-[100%] text-[#A19FA2]">
+                      {campaign.description}
+                    </p>
                     <div className="space-y-2">
+                      <Progress value={(campaign.raised / campaign.goal) * 100} className="h-2" />
                       <div className="flex items-center justify-between text-sm">
-                        <span className="font-bold text-[#12AA5B]">
-                          ${campaign.raised.toLocaleString()}
-                        </span>
-                        <span className="text-gray-500">
-                          ${campaign.goal.toLocaleString()} Goal
+                        <div className="flex items-center gap-1.5">
+                          <span className="text-[17px] leading-[100%] font-normal text-[#615D60]">
+                            ${campaign.raised.toLocaleString()}
+                          </span>
+                          <span className="text-[13px] leading-[100%] font-thin text-[#908F92]">
+                            ${campaign.goal.toLocaleString()} Goal
+                          </span>
+                        </div>
+
+                        <span className="text-[15px] leading-[100%] font-normal text-[#979498]">
+                          {campaign.donors} Donors
                         </span>
                       </div>
-                      <Progress value={(campaign.raised / campaign.goal) * 100} className="h-2" />
                     </div>
-                    <div className="flex items-center justify-between text-sm text-gray-500">
-                      <span>{campaign.donors} Donors</span>
-                      <span>{campaign.daysLeft} Days</span>
+                    <div className="mt-3 flex items-center justify-between">
+                      <Button className="w-31 rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]">
+                        Donate
+                      </Button>
+                      <span className="text-[13px] leading-[100%] font-normal text-[#89B994]">
+                        {campaign.daysLeft} Days
+                      </span>
                     </div>
-                    <Button className="w-full rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]">
-                      Donate
-                    </Button>
                   </div>
                 </div>
               ))}
@@ -156,37 +167,40 @@ const CommunityPublic = () => {
           {/* Right Sidebar */}
           <div className="w-[350px] shrink-0 space-y-6">
             {/* Volunteer Card */}
-            <div className="space-y-4 rounded-xl border border-[#ECEFF3] bg-white p-6">
+            <div className="space-y-4 bg-white p-6">
               <div className="flex items-center gap-3">
-                <div className="h-16 w-16 overflow-hidden rounded-full bg-gray-200">
-                  <img
+                <div className="flex h-16 w-16 items-center justify-center overflow-hidden rounded-full bg-gray-200">
+                  <UserIcon size={32} color="#FFFFFF" />
+                  {/* <img
                     src={communityData.volunteer.avatar}
                     alt={communityData.volunteer.name}
                     className="h-full w-full object-cover"
-                  />
+                  /> */}
                 </div>
                 <div>
-                  <h4 className="font-bold text-[#1E1F24]">{communityData.volunteer.name}</h4>
-                  <Badge className="mt-1 bg-gray-100 text-gray-600 hover:bg-gray-100">
+                  <h4 className="text-lg leading-[100%] font-normal text-[#666566]">
+                    {communityData.volunteer.name}
+                  </h4>
+                  <p className="mt-1 text-[13px] font-normal text-[#B1B3BA]">
                     {communityData.volunteer.role}
-                  </Badge>
+                  </p>
                 </div>
               </div>
-              <p className="text-sm leading-relaxed text-gray-600 italic">
+              <p className="text-base leading-relaxed font-normal text-[#646264]">
                 "{communityData.volunteer.quote}"
               </p>
             </div>
 
             {/* Upcoming Events */}
-            <div className="space-y-4 rounded-xl border border-[#ECEFF3] bg-white p-6">
+            <div className="space-y-4 bg-[#eaf4f6] p-6">
               <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-[#1E1F24]">Upcoming Events: Join Us</h3>
+                <h3 className="text-lg font-normal text-[#606266]">Upcoming Events: Join Us</h3>
               </div>
-              <div className="space-y-4">
+              <div className="flex flex-col items-center justify-center space-y-4">
                 {communityData.upcomingEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="cursor-pointer space-y-2 rounded-lg border border-[#ECEFF3] p-4 transition-colors hover:bg-gray-50"
+                    className="cursor-pointer space-y-2 rounded-lg border border-[#ECEFF3] bg-white p-4 transition-colors hover:bg-gray-50"
                   >
                     <div className="flex items-start gap-2">
                       <CalendarIcon
@@ -194,19 +208,19 @@ const CommunityPublic = () => {
                         className="mt-0.5 shrink-0 text-[#12AA5B]"
                         weight="fill"
                       />
-                      <h4 className="text-sm font-semibold text-[#1E1F24]">{event.title}</h4>
+                      <h4 className="text-base font-bold text-[#706D70]">{event.title}</h4>
                     </div>
-                    <p className="text-xs text-gray-500">{event.description}</p>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
+                    <p className="text-[13px] text-[#9C9A9D]">{event.description}</p>
+                    {/* <div className="flex items-center gap-2 text-xs text-gray-400">
                       <CalendarIcon size={14} />
                       <span>{event.date}</span>
-                    </div>
-                    <CaretRightIcon className="ml-auto text-gray-400" />
+                    </div> */}
+                    {/* <CaretRightIcon className="ml-auto text-gray-400" /> */}
                   </div>
                 ))}
                 <Button
                   variant="link"
-                  className="w-full justify-center text-[#12AA5B] hover:text-[#0da055]"
+                  className="w-[205px] justify-center bg-white text-[#A4A8B0] hover:text-[#A4A8B0]"
                 >
                   View All Events
                 </Button>

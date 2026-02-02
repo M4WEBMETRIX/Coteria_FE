@@ -88,8 +88,8 @@ const CampaignPublic = () => {
                 {/* <ArrowLeftIcon size={16} /> */}
                 Switch back
               </button>
-              <Button className="h-12 rounded-lg bg-[#12AA5B] px-8 text-white hover:bg-[#0da055]">
-                Donate <CaretRightIcon className="ml-2" />
+              <Button className="h-12 w-32 rounded-[10px] bg-[#307941] px-8 text-white hover:bg-[#0da055]">
+                Donate <CaretRightIcon className="ml-1.5" />
               </Button>
             </div>
           </div>
@@ -109,40 +109,46 @@ const CampaignPublic = () => {
           <div className="absolute right-0 bottom-0 m-8 w-100 rounded-xl bg-white p-6 shadow-xl">
             <div className="space-y-4">
               <div className="flex items-baseline justify-between">
-                <div>
-                  <span className="text-3xl font-bold text-[#1E1F24]">
+                <div className="flex items-center gap-1">
+                  <span className="leading-[] text-[25px] font-normal text-[#444243]">
                     ${campaignData.raised.toLocaleString()}
                   </span>
-                  <span className="ml-2 text-sm text-gray-500">raised</span>
+                  <span className="ml-2 text-[15px] text-[#868486]">raised</span>
                 </div>
                 <div>
-                  <span className="text-lg text-gray-500">
+                  <span className="text-[20px] leading-[100%] text-[#6B9671]">
                     ${campaignData.goal.toLocaleString()}
                   </span>
-                  <span className="ml-1 text-sm text-gray-400">goal</span>
+                  <span className="ml-1 text-base font-normal text-[#888688]">goal</span>
                 </div>
               </div>
 
               <div className="space-y-2">
-                <div className="flex items-center justify-between text-sm">
-                  <Badge className="bg-[#E7FDF3] text-[#12AA5B] hover:bg-[#E7FDF3]">
-                    625 Boost
-                  </Badge>
-                  <span className="text-gray-500">{campaignData.daysLeft} Days Left</span>
+                <div className="flex items-center justify-between">
+                  <p className="text-base text-[#80A384] hover:bg-[#E7FDF3]">+625 Boost</p>
+                  <span className="text-[15px] text-[#8D8A8C]">
+                    {campaignData.daysLeft} Days Left
+                  </span>
                 </div>
                 <Progress value={(campaignData.raised / campaignData.goal) * 100} className="h-2" />
               </div>
 
-              <div className="flex items-center justify-between border-t pt-4">
-                <span className="text-sm text-gray-600">{campaignData.supporters} Supporters</span>
-                <span className="text-sm text-gray-600">{campaignData.daysLeft} Days Left</span>
+              <div className="flex items-center justify-between pt-4">
+                <span className="text-[20px] leading-[100%] text-[#706E6F]">
+                  {campaignData.supporters} Supporters
+                </span>
+                <span className="text-[19px] leading-[100%] text-[#777577]">
+                  {campaignData.daysLeft} Days Left
+                </span>
               </div>
 
-              <Button className="h-12 w-full rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]">
+              <Button className="h-12 w-full rounded-lg bg-[#307941] text-white hover:bg-[#0da055]">
                 Donate Now <CaretRightIcon className="ml-2" />
               </Button>
 
-              <p className="text-center text-xs text-gray-400">RefCode: {campaignData.refCode}</p>
+              <p className="text-center text-[15px] text-[#8D8A8C]">
+                RefCode: {campaignData.refCode}
+              </p>
             </div>
           </div>
         </div>
@@ -154,10 +160,10 @@ const CampaignPublic = () => {
           {/* Left Column - Campaign Details */}
           <div className="flex-1 space-y-8">
             <div>
-              <h1 className="mb-6 text-4xl font-bold text-[#1E1F24]">{campaignData.title}</h1>
-              <div className="prose max-w-none">
+              <h1 className="mb-6 text-[26px] font-bold text-[#414041]">{campaignData.title}</h1>
+              <div className="prose max-w-none text-[19px] text-[#7C797B]">
                 {campaignData.description.split("\n\n").map((paragraph, index) => (
-                  <p key={index} className="mb-4 leading-relaxed text-gray-600">
+                  <p key={index} className="mb-4 leading-[26.73px]">
                     {paragraph}
                   </p>
                 ))}
@@ -165,29 +171,25 @@ const CampaignPublic = () => {
             </div>
 
             {/* Impact Highlights */}
-            <div className="rounded-xl border border-[#ECEFF3] bg-white p-6">
-              <h3 className="mb-6 text-xl font-bold text-[#1E1F24]">Impact Highlights</h3>
+            <div className="">
+              <h3 className="mb-6 text-[25px] font-normal text-[#424042]">Impact Highlights</h3>
               <div className="grid grid-cols-2 gap-6">
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E7FDF3]">
+                  <div className="">
                     <UsersIcon size={24} className="text-[#12AA5B]" weight="fill" />
                   </div>
-                  <div>
-                    <div className="text-2xl font-bold text-[#1E1F24]">
-                      {campaignData.impactHighlights.supporters}
-                    </div>
-                    <div className="text-sm text-gray-500">Supporters</div>
+                  <div className="flex items-center gap-2.25 text-[21px] font-normal text-[#676567]">
+                    <div className="">{campaignData.impactHighlights.supporters}</div>
+                    <div className="">Supporters</div>
                   </div>
                 </div>
                 <div className="flex items-center gap-4">
-                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-[#E7FDF3]">
+                  <div className="">
                     <ChartLineUpIcon size={24} className="text-[#12AA5B]" weight="fill" />
                   </div>
-                  <div>
-                    <div className="text-2xl font-bold text-[#1E1F24]">
-                      {campaignData.impactHighlights.actionsTaken}
-                    </div>
-                    <div className="text-sm text-gray-500">Actions Taken</div>
+                  <div className="flex items-center gap-2.25 text-[21px] font-normal text-[#676567]">
+                    <div className="">{campaignData.impactHighlights.actionsTaken}</div>
+                    <div className="">Actions Taken</div>
                   </div>
                 </div>
               </div>
@@ -197,42 +199,58 @@ const CampaignPublic = () => {
           {/* Right Sidebar */}
           <div className="w-[350px] shrink-0 space-y-6">
             {/* Community Updates */}
-            <div className="space-y-4 rounded-xl border border-[#ECEFF3] bg-white p-6">
-              <h3 className="text-lg font-bold text-[#1E1F24]">Community Updates: Stay Engaged</h3>
-              <div className="space-y-3">
+            <div className="w-full space-y-4 rounded-[10px] bg-[#12AA5B]/5 p-3">
+              <h3 className="text-[22px] leading-[27.16px] font-bold text-[#5A5C59]">
+                Community Updates: Stay Engaged
+              </h3>
+              <div className="w-full space-y-3">
                 {campaignData.updates.map((update) => (
                   <div
                     key={update.id}
-                    className="cursor-pointer space-y-2 rounded-lg border border-[#ECEFF3] p-4 transition-colors hover:bg-gray-50"
+                    className="w-full cursor-pointer space-y-2 rounded-[10px] bg-white p-4 text-[19px] font-normal text-[#7D7B7C] transition-colors hover:bg-gray-50"
                   >
-                    <h4 className="flex items-center justify-between text-sm font-semibold text-[#1E1F24]">
-                      {update.title}
-                      <CaretRightIcon size={16} className="text-gray-400" />
-                    </h4>
-                    <p className="text-xs text-gray-500">{update.description}</p>
+                    <div>
+                      <h4 className="flex items-center justify-between">
+                        <div className="flex items-start gap-2.5">
+                          <p className="mt-3 h-2.5 w-2.5 gap-2 rounded-full bg-[#12AA5B]" />
+                          <p className="w-57.25">{update.title}</p>
+                        </div>
+                        <CaretRightIcon size={16} className="text-gray-400" />
+                      </h4>
+                    </div>
+                    <div className="flex items-start gap-2.5">
+                      <p className="mt-3 h-2.5 w-2.5 gap-2 rounded-full bg-[#12AA5B]" />
+                      <p className="w-57.25">{update.description}</p>
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
             {/* Upcoming Events */}
-            <div className="space-y-4 rounded-xl border border-[#ECEFF3] bg-white p-6">
-              <h3 className="text-lg font-bold text-[#1E1F24]">Upcoming Events: Join In</h3>
+            <div className="w-full space-y-4 bg-[#12AA5B]/5 p-3">
+              <h3 className="text-[22px] leading-[27.16px] font-bold text-[#5A5C59]">
+                Upcoming Events: Join In
+              </h3>
               <div className="space-y-3">
                 {campaignData.upcomingEvents.map((event) => (
                   <div
                     key={event.id}
-                    className="cursor-pointer space-y-2 rounded-lg border border-[#ECEFF3] p-4 transition-colors hover:bg-gray-50"
+                    className="cursor-pointer space-y-2 rounded-[10px] bg-white p-4 transition-colors hover:bg-gray-50"
                   >
                     <div className="flex items-start justify-between">
-                      <h4 className="text-sm font-semibold text-[#1E1F24]">{event.title}</h4>
+                      <div className="flex items-center gap-2">
+                        <CalendarIcon size={18} color="#12AA5B" />
+                        <h4 className="text-[15px] font-bold text-[#676566]">{event.title}</h4>
+                      </div>
                       <CaretRightIcon size={16} className="text-gray-400" />
                     </div>
-                    <div className="flex items-center gap-2 text-xs text-gray-400">
-                      <CalendarIcon size={14} />
+                    <div className="text-[15px] font-semibold text-[#848284]">
                       <span>{event.date}</span>
                     </div>
-                    <p className="text-xs text-gray-500">{event.description}</p>
+                    <p className="text-sm leading-[21px] font-normal text-[#898689]">
+                      {event.description}
+                    </p>
                   </div>
                 ))}
               </div>

@@ -1,8 +1,10 @@
 import { Search, Bell } from "lucide-react";
-import UserProfileMenu from "@/components/user-profile-menu";
+// import UserProfileMenu from "@/components/user-profile-menu";
 import { useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
+import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import ProfilePIC from "@/assets/images/image-2.png";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
@@ -60,11 +62,24 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
           <div className="absolute top-2 right-3 h-3 w-3 rounded-full bg-[#DF1C41]" />
           <Bell className="h-5 w-5" />
         </button>
-
         <div className="h-[20px] w-[px] bg-[#DFE1E7]" />
-
+        <button className="flex items-center justify-start gap-2 outline-none">
+          <Avatar className="h-12 w-12 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+            <AvatarImage src={ProfilePIC} className="object-cover" />
+            <AvatarFallback>CN</AvatarFallback>
+          </Avatar>
+          <div className="flex flex-col items-start justify-start text-left">
+            <p className="text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
+              John Doe
+            </p>
+            <p className="text-left text-xs leading-[150%] font-normal tracking-[2%] text-[#666D80]">
+              Admin
+            </p>
+          </div>
+        </button>
         {/* User Profile */}
-        <UserProfileMenu />
+        {/* THE MODAL IS NO LONGER REQUIRED */}
+        {/* <UserProfileMenu /> */}
       </div>
     </nav>
   );
