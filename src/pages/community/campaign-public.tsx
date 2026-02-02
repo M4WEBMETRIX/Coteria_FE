@@ -83,7 +83,7 @@ const CampaignPublic = () => {
             <div className="flex items-center gap-2.5">
               <button
                 onClick={() => navigate(`/community/${slug}`)}
-                className="flex items-center gap-2 text-sm text-[#969294] hover:text-[#12AA5B]"
+                className="flex cursor-pointer items-center gap-2 text-sm text-[#969294] hover:text-[#12AA5B]"
               >
                 {/* <ArrowLeftIcon size={16} /> */}
                 Switch back
@@ -105,39 +105,45 @@ const CampaignPublic = () => {
         />
 
         {/* Floating Stats Card */}
-        <div className="absolute right-0 bottom-0 m-8 w-[400px] max-w-7xl rounded-xl bg-white p-6 shadow-xl">
-          <div className="space-y-4">
-            <div className="flex items-baseline justify-between">
-              <div>
-                <span className="text-3xl font-bold text-[#1E1F24]">
-                  ${campaignData.raised.toLocaleString()}
-                </span>
-                <span className="ml-2 text-sm text-gray-500">raised</span>
+        <div className="relative mx-auto w-full max-w-7xl px-8">
+          <div className="absolute right-0 bottom-0 m-8 w-100 rounded-xl bg-white p-6 shadow-xl">
+            <div className="space-y-4">
+              <div className="flex items-baseline justify-between">
+                <div>
+                  <span className="text-3xl font-bold text-[#1E1F24]">
+                    ${campaignData.raised.toLocaleString()}
+                  </span>
+                  <span className="ml-2 text-sm text-gray-500">raised</span>
+                </div>
+                <div>
+                  <span className="text-lg text-gray-500">
+                    ${campaignData.goal.toLocaleString()}
+                  </span>
+                  <span className="ml-1 text-sm text-gray-400">goal</span>
+                </div>
               </div>
-              <div>
-                <span className="text-lg text-gray-500">${campaignData.goal.toLocaleString()}</span>
-                <span className="ml-1 text-sm text-gray-400">goal</span>
+
+              <div className="space-y-2">
+                <div className="flex items-center justify-between text-sm">
+                  <Badge className="bg-[#E7FDF3] text-[#12AA5B] hover:bg-[#E7FDF3]">
+                    625 Boost
+                  </Badge>
+                  <span className="text-gray-500">{campaignData.daysLeft} Days Left</span>
+                </div>
+                <Progress value={(campaignData.raised / campaignData.goal) * 100} className="h-2" />
               </div>
-            </div>
 
-            <div className="space-y-2">
-              <div className="flex items-center justify-between text-sm">
-                <Badge className="bg-[#E7FDF3] text-[#12AA5B] hover:bg-[#E7FDF3]">625 Boost</Badge>
-                <span className="text-gray-500">{campaignData.daysLeft} Days Left</span>
+              <div className="flex items-center justify-between border-t pt-4">
+                <span className="text-sm text-gray-600">{campaignData.supporters} Supporters</span>
+                <span className="text-sm text-gray-600">{campaignData.daysLeft} Days Left</span>
               </div>
-              <Progress value={(campaignData.raised / campaignData.goal) * 100} className="h-2" />
+
+              <Button className="h-12 w-full rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]">
+                Donate Now <CaretRightIcon className="ml-2" />
+              </Button>
+
+              <p className="text-center text-xs text-gray-400">RefCode: {campaignData.refCode}</p>
             </div>
-
-            <div className="flex items-center justify-between border-t pt-4">
-              <span className="text-sm text-gray-600">{campaignData.supporters} Supporters</span>
-              <span className="text-sm text-gray-600">{campaignData.daysLeft} Days Left</span>
-            </div>
-
-            <Button className="h-12 w-full rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]">
-              Donate Now <CaretRightIcon className="ml-2" />
-            </Button>
-
-            <p className="text-center text-xs text-gray-400">RefCode: {campaignData.refCode}</p>
           </div>
         </div>
       </div>

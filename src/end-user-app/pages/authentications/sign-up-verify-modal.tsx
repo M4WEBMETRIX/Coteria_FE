@@ -4,6 +4,8 @@ import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Check, X } from "lucide-react";
 import { maskEmail } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
+import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 export default function EmailVerificationFlow({
   showVerification,
@@ -14,6 +16,8 @@ export default function EmailVerificationFlow({
   setShowVerification: (show: boolean) => void;
   email: string;
 }) {
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
@@ -45,6 +49,21 @@ export default function EmailVerificationFlow({
   const handleResend = () => {
     setCode(["", "", "", "", ""]);
     inputRefs.current[0]?.focus();
+  };
+
+  const handleClick = () => {
+    setLoading(true);
+
+    setUserToLocalStorage({
+      id: "123",
+      name: getNameFromEmail(email),
+      email: email,
+    });
+
+    setTimeout(() => {
+      setLoading(false);
+      navigate("/user/dashboard");
+    }, 2000);
   };
 
   return (
@@ -150,7 +169,11 @@ export default function EmailVerificationFlow({
             </p>
 
             {/* Log In Button */}
-            <Button className="w-full bg-[#45D884] py-6 text-white hover:bg-[#45D884]/90">
+            <Button
+              loading={loading}
+              onClick={handleClick}
+              className="w-full bg-[#45D884] py-6 text-white hover:bg-[#45D884]/90"
+            >
               Log In
             </Button>
           </div>

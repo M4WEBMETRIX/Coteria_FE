@@ -98,7 +98,7 @@ const DashboardIndex = () => {
             { label: "Campaigns", value: "campaigns" },
             { label: "Resources ", value: "resources" },
             { label: "Impact", value: "impact" },
-            { label: "Member", value: "member" },
+            // { label: "Member", value: "member" },
           ]}
           values={TAB_VALUES}
           defaultValue={TAB_VALUES[0]}
