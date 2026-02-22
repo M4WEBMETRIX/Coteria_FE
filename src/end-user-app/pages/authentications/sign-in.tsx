@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeOff } from "lucide-react";
@@ -10,7 +10,8 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
-import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
+// import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
+import { useLoginUser } from "@/services/users/user-auth";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -21,7 +22,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const UserSignIn = () => {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState<boolean>(false);
+  // const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
   const {
@@ -37,20 +38,26 @@ const UserSignIn = () => {
     },
   });
 
-  const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
-    setLoading(true);
+  const { mutate: userLoginMutate, isPending: loading, isSuccess, data } = useLoginUser();
 
-    setUserToLocalStorage({
-      id: "123",
-      name: getNameFromEmail(data?.email),
-      email: data?.email,
-    });
-
-    setTimeout(() => {
-      setLoading(false);
+  console.log(data);
+  useEffect(() => {
+    if (isSuccess) {
       navigate("/user/dashboard");
-    }, 2000);
+
+      // setUserToLocalStorage({
+      //   id: "123",
+      //   name: getNameFromEmail(data?.email),
+      //   email: data?.email,
+      // });
+    }
+  }, [isSuccess]);
+
+  const onSubmit = (data: LoginFormValues) => {
+    // console.log(data);
+    // setLoading(true);
+
+    userLoginMutate(data);
   };
 
   return (

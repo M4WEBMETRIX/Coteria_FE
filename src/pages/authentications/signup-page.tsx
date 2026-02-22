@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -12,9 +12,11 @@ import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useRegisterOrganisation } from "@/services/auth";
 
 const signupSchema = z
   .object({
+    name: z.string().nonempty("Please enter organization name"),
     email: z.string().email("Please enter a valid organization email address"),
     businessNumber: z.string().min(1, "Business number is required"),
     password: z
@@ -38,7 +40,7 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
   const {
     register,
@@ -46,10 +48,12 @@ const SignupPage = () => {
     watch,
     control,
     formState: { errors, isValid },
+    reset,
   } = useForm<SignupValues>({
     mode: "onChange",
     resolver: zodResolver(signupSchema),
     defaultValues: {
+      name: "",
       email: "",
       businessNumber: "",
       password: "",
@@ -57,6 +61,8 @@ const SignupPage = () => {
       newsletter: "default",
     },
   });
+
+  const { mutate: registerMutate, isPending: loading, isSuccess } = useRegisterOrganisation();
 
   const password = watch("password", "");
 
@@ -73,10 +79,26 @@ const SignupPage = () => {
 
   const onSubmit = (data: SignupValues) => {
     console.log(data, "Form");
-    setLoading(true);
-    setTimeout(() => setLoading(false), 3000);
-    navigate("/auth/setup-account");
+
+    const payload = {
+      name: data?.name,
+      businessNumber: data?.businessNumber,
+      adminEmail: data?.email,
+      adminPassword: data?.password,
+      optInProductUpdates: data?.newsletter === "default" ? true : false,
+    };
+
+    registerMutate(payload);
+    // setLoading(true);
+    // setTimeout(() => setLoading(false), 3000);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate("/auth/setup-account");
+      reset();
+    }
+  }, [isSuccess]);
 
   return (
     <AuthLayout>
@@ -91,6 +113,26 @@ const SignupPage = () => {
             </p>
 
             <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2">
+              {/* Email */}
+              <Field>
+                <FieldLabel
+                  htmlFor="name"
+                  className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
+                >
+                  Organisation Name
+                </FieldLabel>
+                <FieldContent>
+                  <Input
+                    id="name"
+                    type="text"
+                    placeholder="e.g, Coterie"
+                    {...register("name")}
+                    className="h-12 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5"
+                  />
+                  <FieldError errors={[errors.name]} />
+                </FieldContent>
+              </Field>
+
               {/* Email */}
               <Field>
                 <FieldLabel
@@ -224,7 +266,7 @@ const SignupPage = () => {
                   <RadioGroup
                     onValueChange={field.onChange}
                     value={field.value}
-                    defaultValue="comfortable"
+                    defaultValue="default"
                   >
                     <div className="flex items-center gap-3">
                       <RadioGroupItem

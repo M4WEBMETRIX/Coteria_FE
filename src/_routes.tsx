@@ -24,6 +24,7 @@ const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
 const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
+import OrgCommunityDetailPage from "./pages/dashboard/org-community-detail-page";
 const CreateEventFlow = lazy(
   () => import("./components/campaigns/events/create-flow/CreateEventFlow")
 );
@@ -59,6 +60,7 @@ const AllRoutes = () => {
         <Route element={<ProtectedRoute />}>
           <Route path="dashboard" element={<DashboardPage />} />
           <Route path="community" element={<CommunityPage />} />
+          <Route path="community/:id" element={<OrgCommunityDetailPage />} />
           <Route path="campaigns" element={<CampaignsPage />} />
           <Route path="campaigns/:id" element={<CampaignsPageDetail />} />
           <Route path="campaigns/:id/create-event" element={<CreateEventFlow />} />
@@ -75,8 +77,8 @@ const AllRoutes = () => {
         </Route>
 
         {/* Public routes */}
-        <Route path="community/:slug" element={<CommunityPublic />} />
-        <Route path="community/:slug/campaign/:campaignId" element={<CampaignPublic />} />
+        <Route path="community/public/:slug" element={<CommunityPublic />} />
+        <Route path="community/public/:slug/campaign/:campaignId" element={<CampaignPublic />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

@@ -1,10 +1,12 @@
 import { Search, Bell } from "lucide-react";
 // import UserProfileMenu from "@/components/user-profile-menu";
-import { useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import ProfilePIC from "@/assets/images/image-2.png";
+// import ProfilePIC from "@/assets/images/image-2.png";
+import { useGetOrganisationProfile } from "@/services/generics/hooks";
+import { setOrgUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
@@ -13,6 +15,12 @@ interface NavbarProps {
 const Navbar = ({ breadcrumbs }: NavbarProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { data: userData } = useGetOrganisationProfile();
+  // console.log("user data", userData?.data);
+
+  useEffect(() => {
+    setOrgUserToLocalStorage(userData?.data);
+  }, [userData]);
 
   return (
     <nav className="font-inter sticky top-0 z-50 flex h-[72px] w-full items-center justify-between border-b border-[#DFE1E7] bg-white">
@@ -65,12 +73,12 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
         <div className="h-[20px] w-[px] bg-[#DFE1E7]" />
         <button className="flex items-center justify-start gap-2 outline-none">
           <Avatar className="h-12 w-12 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
-            <AvatarImage src={ProfilePIC} className="object-cover" />
-            <AvatarFallback>CN</AvatarFallback>
+            <AvatarImage src={userData?.data?.photo || ""} className="object-cover" />
+            <AvatarFallback>{getNameAbbrev(userData?.data?.name)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start justify-start text-left">
-            <p className="text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
-              John Doe
+            <p className="truncate text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
+              {userData?.data?.name}
             </p>
             <p className="text-left text-xs leading-[150%] font-normal tracking-[2%] text-[#666D80]">
               Admin
@@ -86,3 +94,9 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
 };
 
 export default Navbar;
+
+function getNameAbbrev(name: string) {
+  if (!name) return;
+
+  return (name[0] + name[1]).toLocaleUpperCase();
+}

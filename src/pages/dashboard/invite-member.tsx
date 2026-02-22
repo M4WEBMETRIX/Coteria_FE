@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Copy, Check, X } from "lucide-react";
 import {
   Dialog,
@@ -10,10 +10,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { Switch } from "@/components/ui/switch";
+// import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
+// import { Switch } from "@/components/ui/switch";
 import { ArrowsClockwiseIcon, CaretRightIcon } from "@phosphor-icons/react";
-import { cn } from "@/lib/utils";
+import { useParams } from "react-router-dom";
+import { useCreateInviteToCommunity } from "@/services/generics/hooks";
+import { getBaseUrl } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 
 const InviteMembersModal = ({
   open,
@@ -22,11 +25,21 @@ const InviteMembersModal = ({
   open: boolean;
   onOpenChange: (open: boolean) => void;
 }) => {
-  const [selectedAction, setSelectedAction] = useState("join");
-  const [selectedAccess, setSelectedAccess] = useState("anyone");
-  const [autoApprove, setAutoApprove] = useState(false);
+  const { id } = useParams();
+  // const [selectedAction, setSelectedAction] = useState("join");
+  // const [selectedAccess, setSelectedAccess] = useState("anyone");
+  // const [autoApprove, setAutoApprove] = useState(false);
   const [copied, setCopied] = useState(false);
-  const inviteLink = "https://coterie.app/join/WomenEmpowermentTO?ref=ORG123";
+
+  const { mutate: generateReferral, isPending, data } = useCreateInviteToCommunity(id);
+  // const isPending = true;
+  useEffect(() => {
+    if (id) {
+      generateReferral({});
+    }
+  }, [id]);
+
+  const inviteLink = `${getBaseUrl()}/join-community?ref=${data?.data?.code}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(inviteLink);
@@ -80,13 +93,23 @@ const InviteMembersModal = ({
             <Label className="text-base leading-[100%] font-light! tracking-[0%] text-[#64646E]">
               Invite link
             </Label>
+            {/* {isPending ? (
+              <div className="relative flex gap-2">
+                <div className="h-12 flex-1 rounded bg-gray-200" />
+                <div className="h-12 w-[156px] rounded bg-gray-200" />
+              </div>
+            ) : ( */}
             <div className="relative flex gap-2">
-              <Input
-                type="text"
-                value={inviteLink}
-                readOnly
-                className="h-12 flex-1 border border-[#F0EEF4] bg-[#F7F5F9] text-[#7C7C8B]"
-              />
+              {isPending ? (
+                <div className="pointer-events-none h-12 flex-1 animate-pulse rounded bg-gray-200 opacity-70" />
+              ) : (
+                <Input
+                  type="text"
+                  value={inviteLink}
+                  readOnly
+                  className="h-12 flex-1 border border-[#F0EEF4] bg-[#F7F5F9] text-[#7C7C8B]"
+                />
+              )}
               <Button
                 onClick={handleCopyLink}
                 className="absolute right-0 h-12 w-[156px] gap-2 rounded-[6px]!"
@@ -100,13 +123,14 @@ const InviteMembersModal = ({
                 </div>
               </Button>
             </div>
+            {/* )} */}
             <p className="mt-1.5 text-base leading-[100%] font-light tracking-[0%] text-[#878691]">
-              Anyone with this link can join based on your settings below.
+              Anyone with this link can join the community.
             </p>
           </div>
 
           {/* What should this link do? */}
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
             <Label className="text-base leading-[100%] font-light! tracking-[0%] text-[#61616C]">
               What should this link do?
             </Label>
@@ -142,10 +166,10 @@ const InviteMembersModal = ({
                 Join + Donate
               </Button>
             </div>
-          </div>
+          </div> */}
 
           {/* Who can use this link? */}
-          <div className="space-y-3">
+          {/* <div className="space-y-3">
             <Label className="text-base leading-[100%] !font-normal tracking-[0%] text-[#61616C]">
               Who can use this link?
             </Label>
@@ -154,7 +178,7 @@ const InviteMembersModal = ({
               value={selectedAccess}
               onValueChange={setSelectedAccess}
             >
-              {/* Anyone Option */}
+              
               <div className="flex items-center gap-3 py-2">
                 <RadioGroupItem value="anyone" id="anyone" />
                 <Label htmlFor="anyone" className="flex-1 cursor-pointer">
@@ -165,7 +189,7 @@ const InviteMembersModal = ({
                 </Label>
               </div>
 
-              {/* Restricted Option */}
+              
               <div className="flex items-center gap-3 py-2">
                 <RadioGroupItem value="restricted" id="restricted" />
                 <Label htmlFor="restricted" className="flex-1 cursor-pointer">
@@ -176,7 +200,7 @@ const InviteMembersModal = ({
                 </Label>
               </div>
 
-              {/* Invite-only Option */}
+
               <div className="flex items-center gap-3 py-2">
                 <RadioGroupItem value="invite-only" id="invite-only" />
                 <Label
@@ -188,7 +212,7 @@ const InviteMembersModal = ({
                 </Label>
               </div>
 
-              {/* {selectedAccess === "anyone" && ( */}
+              
               <div className="flex items-center gap-2.5">
                 <Switch id="auto-approve" checked={autoApprove} onCheckedChange={setAutoApprove} />
                 <Label
@@ -198,9 +222,9 @@ const InviteMembersModal = ({
                   Auto-approve past donors
                 </Label>
               </div>
-              {/* )} */}
+              
             </RadioGroup>
-          </div>
+          </div> */}
 
           {/* Message Box */}
           <div className="flex items-center justify-between rounded-[10px] border border-[#E9E7F0] bg-[#F7F6FA] p-4">
@@ -208,9 +232,14 @@ const InviteMembersModal = ({
               Join our community on Coterie to support this cause and stay involved.
               <br />
               <div className="mt-1 text-[#989AAA]">Here's the link:</div>
-              <div className="mt-1 text-[#7588B0]">{inviteLink}</div>
+              {isPending ? (
+                <div className="pointer-events-none mt-2 h-8 w-80 animate-pulse rounded bg-gray-200 opacity-70" />
+              ) : (
+                <div className="mt-1 text-[#7588B0]">{inviteLink}</div>
+              )}
             </p>
             <button
+              disabled={isPending}
               onClick={handleCopyLink}
               className="cursor-pointer text-gray-400 hover:text-gray-600"
             >
@@ -258,9 +287,9 @@ const InviteMembersModal = ({
               </svg>
               Share via Email
             </Button>
-            <Button className="flex h-10 items-center gap-2">
+            <Button onClick={() => generateReferral({})} className="flex h-10 items-center gap-2">
               <ArrowsClockwiseIcon size={20} />
-              <span className="text-[#B3C6E5]">Create link</span>
+              <span className="text-[#B3C6E5]">{isPending ? "Generating..." : "Create link"}</span>
             </Button>
           </div>
         </div>

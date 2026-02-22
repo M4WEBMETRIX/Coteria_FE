@@ -2,13 +2,14 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import AuthLayout from "./auth-layout";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
-import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
+// import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
+import { useLoginOrganisation } from "@/services/auth";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -17,11 +18,17 @@ const loginSchema = z.object({
 
 type LoginFormValues = z.infer<typeof loginSchema>;
 
+const isAuthenticated = () => {
+  return !!localStorage.getItem("accessToken");
+};
+
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
-  const [loading, setLoading] = useState(false);
+  // const [loading, setLoading] = useState(false);
 
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
+
+  const { mutate: loginMutate, isPending: loading, isSuccess } = useLoginOrganisation();
 
   const {
     register,
@@ -38,19 +45,31 @@ const LoginPage = () => {
 
   const onSubmit = (data: LoginFormValues) => {
     console.log(data);
-    setLoading(true);
+    // setLoading(true);
 
-    setUserToLocalStorage({
-      id: "123",
-      name: getNameFromEmail(data?.email),
-      email: data?.email,
-    });
+    loginMutate(data);
 
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/community");
-    }, 2000);
+    // setUserToLocalStorage({
+    //   id: "123",
+    //   name: getNameFromEmail(data?.email),
+    //   email: data?.email,
+    // });
+
+    // setTimeout(() => {
+    //   setLoading(false);
+    //   navigate("/community");
+    // }, 2000);
   };
+
+  // useEffect(() => {
+  //   if (isSuccess) {
+  //     navigate("/community");
+  //   }
+  // }, [isSuccess]);
+
+  if (isAuthenticated() && !isSuccess) {
+    return <Navigate to="/community" replace />;
+  }
 
   return (
     <AuthLayout>

@@ -51,13 +51,13 @@ const StatCard = ({
   );
 };
 
-const CommunityStats = () => {
+const CommunityStats = ({ data }: { data?: any }) => {
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
         title="Total Campaigns"
-        value="1,245"
-        trend="8.5%"
+        value={data?.totalCampaigns}
+        trend={data?.campaignsSinceLastMonth + "%"}
         trendDirection="down"
         icon={<PackageIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
@@ -65,17 +65,17 @@ const CommunityStats = () => {
       />
       <StatCard
         title="Total Funds Raised"
-        value="$456,320.00"
-        trend="8.5%"
-        trendDirection="up"
+        value={data?.totalFundsRaisedCents}
+        trend={data?.fundsRaisedSinceLastMonthCents + "%"}
+        trendDirection="down"
         icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
         iconColor="#12AA5B"
       />
       <StatCard
         title="Members"
-        value="832"
-        trend="7.3%"
+        value={data?.totalMembers}
+        trend={data?.membersSinceLastMonth + "%"}
         trendDirection="down"
         icon={<UsersFourIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
@@ -83,8 +83,80 @@ const CommunityStats = () => {
       />
       <StatCard
         title="Community Health Score"
-        value="12"
-        trend="5.1%"
+        value="0"
+        trend="0%"
+        trendDirection="down"
+        icon={<MoneyIcon size={20} weight="duotone" color={"#40C4AA"} />}
+        iconBg="#EFFEFA"
+        iconColor="#12AA5B"
+      />
+    </div>
+  );
+};
+
+export const StatCardSkeleton = () => {
+  return (
+    <div className="font-ubuntu flex h-full w-full flex-col justify-between rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
+      {/* Top Section */}
+      <div className="flex items-start justify-between">
+        {/* Title */}
+        <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
+
+        {/* Icon */}
+        <div className="size-9 animate-pulse rounded-md bg-gray-200" />
+      </div>
+
+      {/* Bottom Section */}
+      <div>
+        {/* Value */}
+        <div className="mb-2 h-7 w-28 animate-pulse rounded bg-gray-200" />
+
+        <div className="flex items-center gap-2">
+          {/* Trend badge */}
+          <div className="h-4 w-12 animate-pulse rounded-full bg-gray-200" />
+
+          {/* From last month text */}
+          <div className="h-3 w-24 animate-pulse rounded bg-gray-200" />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export const CommunityDashboardStats = ({ data }: { data?: any }) => {
+  return (
+    <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+      <StatCard
+        title="Total Community"
+        value={data?.totalCampaigns || 0}
+        trend={(data?.campaignsSinceLastMonth || 0) + "%"}
+        trendDirection="down"
+        icon={<PackageIcon size={20} weight="duotone" color={"#40C4AA"} />}
+        iconBg="#EFFEFA"
+        iconColor="#0BA5EC"
+      />
+      <StatCard
+        title="Total Funds Raised"
+        value={data?.totalFundsRaisedCents || 0}
+        trend={(data?.fundsRaisedSinceLastMonthCents || 0) + "%"}
+        trendDirection="down"
+        icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}
+        iconBg="#EFFEFA"
+        iconColor="#12AA5B"
+      />
+      <StatCard
+        title="Members"
+        value={data?.totalMembers || 0}
+        trend={(data?.membersSinceLastMonth || 0) + "%"}
+        trendDirection="down"
+        icon={<UsersFourIcon size={20} weight="duotone" color={"#40C4AA"} />}
+        iconBg="#EFFEFA"
+        iconColor="#12AA5B"
+      />
+      <StatCard
+        title="Active community"
+        value="0"
+        trend="0%"
         trendDirection="down"
         icon={<MoneyIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"

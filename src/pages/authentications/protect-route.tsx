@@ -4,8 +4,7 @@ import DashboardLayout from "@/components/layout/dashboard-layout";
 // import { useQueryState } from "nuqs";
 
 const isAuthenticated = () => {
-  return true;
-  //   return !!localStorage.getItem('token')
+  return !!localStorage.getItem("accessToken");
 };
 
 const ProtectedRoute = () => {

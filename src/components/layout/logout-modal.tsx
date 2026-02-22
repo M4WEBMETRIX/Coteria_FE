@@ -1,8 +1,13 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Dialog, DialogContent, DialogDescription, DialogTitle } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Logout01Icon } from "hugeicons-react";
-import { removeUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import {
+  removeEndUserFromLocalStorage,
+  removeOrgUserFromLocalStorage,
+} from "@/end-user-app/services/local-storage";
+import { useLogoutOrganisation } from "@/services/auth";
+import { useEffect } from "react";
 
 interface LogoutModalProps {
   open: boolean;
@@ -10,27 +15,48 @@ interface LogoutModalProps {
   isUser?: boolean;
 }
 
-const LogoutModal = ({ open, onOpenChange, isUser }: LogoutModalProps) => {
+const LogoutModal = ({
+  open,
+  onOpenChange,
+  // isUser
+}: LogoutModalProps) => {
   const navigate = useNavigate();
+
+  const location = useLocation();
+  const isUserPath = location.pathname.includes("user");
+
+  const { mutate: logoutMutate, isPending, isSuccess } = useLogoutOrganisation();
+
+  const refreshToken = isUserPath
+    ? localStorage.getItem("userRefreshToken")
+    : localStorage.getItem("refreshToken");
+  // console.log("refreshToken", refreshToken);
 
   const handleLogout = () => {
     // Clear any auth tokens/session data here if needed
     // localStorage.removeItem("authToken");
     // sessionStorage.clear();
 
-    onOpenChange(false);
-    if (isUser) {
-      navigate("/user/login");
-    } else {
-      navigate("/auth/login");
-    }
-
-    removeUserFromLocalStorage();
+    logoutMutate({ refreshToken });
   };
 
   const handleCancel = () => {
     onOpenChange(false);
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      onOpenChange(false);
+
+      if (isUserPath) {
+        navigate("/user/login");
+        removeEndUserFromLocalStorage();
+      } else {
+        navigate("/auth/login");
+        removeOrgUserFromLocalStorage();
+      }
+    }
+  }, [isSuccess]);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -58,7 +84,7 @@ const LogoutModal = ({ open, onOpenChange, isUser }: LogoutModalProps) => {
 
           {/* Description */}
           <DialogDescription className="text-center text-sm leading-[150%] font-normal tracking-[2%] text-[#666D80]">
-            Are you sure want to Logout to Coterie?
+            Are you sure want to Logout of Coterie?
           </DialogDescription>
         </div>
 
@@ -75,7 +101,7 @@ const LogoutModal = ({ open, onOpenChange, isUser }: LogoutModalProps) => {
             onClick={handleLogout}
             className="flex-1 rounded-lg bg-[#DF1C41] py-2.5 text-sm font-medium text-white hover:bg-[#C91839]"
           >
-            Yes, Logout
+            {isPending ? "Logging out..." : "Yes, Logout"}
           </Button>
         </div>
       </DialogContent>

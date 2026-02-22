@@ -1,11 +1,11 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Check, X } from "lucide-react";
 import { maskEmail } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
+// import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 export default function EmailVerificationFlow({
   showVerification,
@@ -21,6 +21,13 @@ export default function EmailVerificationFlow({
   const [showSuccess, setShowSuccess] = useState(false);
   const [code, setCode] = useState(["", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
+
+  useEffect(() => {
+    if (showVerification) {
+      setShowSuccess(true);
+      setShowVerification(false);
+    }
+  }, [showVerification]);
 
   const handleCodeChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -54,11 +61,11 @@ export default function EmailVerificationFlow({
   const handleClick = () => {
     setLoading(true);
 
-    setUserToLocalStorage({
-      id: "123",
-      name: getNameFromEmail(email),
-      email: email,
-    });
+    // setUserToLocalStorage({
+    //   id: "123",
+    //   name: getNameFromEmail(email),
+    //   email: email,
+    // });
 
     setTimeout(() => {
       setLoading(false);

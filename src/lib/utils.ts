@@ -12,3 +12,5 @@ export function maskEmail(email: string) {
   const visible = name.slice(0, 1);
   return `${visible}***@${domain}`;
 }
+
+export const getBaseUrl = () => window.location.origin;

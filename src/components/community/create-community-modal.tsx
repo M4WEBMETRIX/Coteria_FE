@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -23,6 +23,7 @@ import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
+import { useCreateCommunity } from "@/services/generics/hooks";
 
 interface CreateCommunityModalProps {
   isCustom?: boolean;
@@ -78,6 +79,12 @@ const CreateCommunityModal = ({
 
   const logoFile = watch("logo");
 
+  const {
+    mutate: createCommunityMutate,
+    isPending: isCreatingCommunity,
+    isSuccess,
+  } = useCreateCommunity();
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setValue("logo", e.target.files[0], { shouldValidate: true });
@@ -86,17 +93,26 @@ const CreateCommunityModal = ({
 
   const onSubmit = (data: CommunityFormValues) => {
     console.log("Submitting community:", data);
-    setCommunityData((prev: any) => [
-      ...prev,
-      {
-        id: Date.now(),
-        ...data,
-        stats: { members: 1, campaigns: 0 },
-      },
-    ]);
-    setOpen(false);
-    reset();
+    createCommunityMutate({
+      ...data,
+      name: data?.title,
+    });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setCommunityData((prev: any) => [
+        ...prev,
+        {
+          id: Date.now(),
+          // ...data,
+          stats: { members: 1, campaigns: 0 },
+        },
+      ]);
+      setOpen(false);
+      reset();
+    }
+  }, [isSuccess]);
 
   return (
     <Dialog open={isCustom ? customOpen : open} onOpenChange={isCustom ? setCustomOpen : setOpen}>
@@ -273,7 +289,7 @@ const CreateCommunityModal = ({
               disabled={!isValid}
               className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
             >
-              Create
+              {isCreatingCommunity ? "Creating..." : "Create"}
             </Button>
           </div>
         </form>

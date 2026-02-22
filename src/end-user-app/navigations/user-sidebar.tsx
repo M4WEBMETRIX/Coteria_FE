@@ -10,10 +10,12 @@ import {
   // CaretDownIcon,
 } from "@phosphor-icons/react";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import LogoutModal from "@/components/layout/logout-modal";
 import { userSidebarLinks } from "@/constants/nav-links";
 import { Separator } from "@/components/ui/separator";
+import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
+import { setEndUserToLocalStorage } from "../services/local-storage";
 
 // Mock translation function for now
 const t = (key: string) => key;
@@ -22,6 +24,13 @@ const UserSidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
   const location = useLocation();
+
+  const { data: userData } = useGetEndUserProfile();
+  console.log("user data", userData?.data);
+
+  useEffect(() => {
+    setEndUserToLocalStorage(userData?.data);
+  }, [userData]);
 
   function handleLogoutClick() {
     setIsLogoutModalOpen(true);

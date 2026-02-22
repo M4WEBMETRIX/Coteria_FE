@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -9,30 +9,38 @@ import { Eye } from "@phosphor-icons/react";
 import EmailVerificationFlow from "./sign-up-verify-modal";
 import { useQueryState } from "nuqs";
 import ExtendedLineageModal from "./referral-lineage-modal";
+import { useRegisterUser } from "@/services/users/user-auth";
 
 const UserSignUp = () => {
   const [isReferrer] = useQueryState("referral-code");
   const [isExtendedLineageOpen, setIsExtendedLineageOpen] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [formData, setFormData] = useState(
-    isReferrer
-      ? {
-          name: "",
-          email: "",
-          password: "",
-        }
-      : {
-          name: "Wale Abba",
-          email: "wale.abba@coterie.com",
-          password: "testpassword123",
-        }
-  );
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    password: "",
+    phoneNumber: "+2348011223345",
+  });
+
+  const { mutate: userMutate, isPending, data } = useRegisterUser();
+
+  console.log(data);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log("Form submitted:", formData);
+    userMutate(formData);
   };
+
+  useEffect(() => {
+    if (data?.data?.requiresEmailVerification) {
+      setShowVerification(true);
+    }
+  }, [data?.data?.requiresEmailVerification]);
+
+  // console.log("verify", data?.data?.requiresEmailVerification);
 
   return (
     <UserAuthLayout
@@ -64,19 +72,37 @@ const UserSignUp = () => {
         <ExtendedLineageModal isOpen={isExtendedLineageOpen} setIsOpen={setIsExtendedLineageOpen} />
         {/* Form */}
         <form onSubmit={handleSubmit} className="space-y-5">
-          {/* Name Field */}
+          {/* First Name Field */}
           <div className="space-y-1.5">
             <Label
               className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
-              htmlFor="name"
+              htmlFor="firstName"
             >
-              Name<span className="text-red-500">*</span>
+              First Name<span className="text-red-500">*</span>
             </Label>
             <Input
-              id="name"
+              id="firstName"
               type="text"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              value={formData.firstName}
+              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
+              required
+              className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+            />
+          </div>
+
+          {/* Last Name Field */}
+          <div className="space-y-1.5">
+            <Label
+              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              htmlFor="lastName"
+            >
+              Last Name<span className="text-red-500">*</span>
+            </Label>
+            <Input
+              id="lastName"
+              type="text"
+              value={formData.lastName}
+              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
               required
               className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
             />
@@ -133,12 +159,12 @@ const UserSignUp = () => {
 
           {/* Submit Button */}
           <Button
-            // type="submit"
-            type="button"
-            onClick={() => setShowVerification(true)}
+            type="submit"
+            // type="button"
+            // onClick={() => setShowVerification(true)}
             className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
           >
-            Create Account
+            {isPending ? "Creating Account..." : "Create Account"}
           </Button>
         </form>
 
