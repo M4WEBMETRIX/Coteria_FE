@@ -1,11 +1,40 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getFunction, postFunction } from "./generic-index";
-import type { createCommunityProps } from "./types";
+import { getFunction, postFunction, putFunction } from "./generic-index";
+import type { createCampaignProps, createCommunityProps } from "./types";
 import { toast } from "sonner";
 
 const USE_GET_ORGANISATION_PROFILE_API = "USE_GET_ORGANISATION_PROFILE_API";
 const USE_GET_ALL_COMMUNITIES_API = "USE_GET_ALL_COMMUNITIES_API";
 const USE_GET_COMMUNITIES_DETAILS_STATS_API = "USE_GET_COMMUNITIES_DETAILS_STATS_API";
+const USE_GET_SUBSCRIPTION_PLANS_API = "USE_GET_SUBSCRIPTION_PLANS_API";
+const USE_GET_SUBSCRIPTION_INVOICES_API = "USE_GET_SUBSCRIPTION_INVOICES";
+const USE_GET_ALL_CAMPAIGNS_API = "USE_GET_ALL_CAMPAIGNS_API";
+const USE_GET_CURRENCIES_API = "USE_GET_CURRENCIES_API";
+
+export const useCreateCampaign = () => {
+  const queryClient = useQueryClient();
+
+  const URL = "/org/campaigns";
+  return useMutation({
+    mutationFn: (payload: createCampaignProps) => postFunction(payload, URL),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_ALL_CAMPAIGNS_API],
+      });
+      toast.success("campaign created successfully");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error creating campaign, please try again.!"),
+  });
+};
+
+export const useGetCurrencies = () => {
+  const URL = "/currencies";
+  return useQuery({
+    queryKey: [USE_GET_CURRENCIES_API],
+    queryFn: () => getFunction(URL),
+  });
+};
 
 export const useGetOrganisationProfile = () => {
   const URL = "/org/profile";
@@ -35,7 +64,8 @@ export const useCreateCommunity = () => {
       });
       toast.success("community created successfully");
     },
-    onError: (err: any) => toast.error(err || "Error creating community, please try again.!"),
+    onError: (err: any) =>
+      toast.error(err?.message || "Error creating community, please try again.!"),
   });
 };
 
@@ -60,6 +90,70 @@ export const useCreateInviteToCommunity = (id: string | undefined) => {
       //   });
       toast.success("Referral code generated");
     },
-    onError: (err: any) => toast.error(err || "Error generating referral, please try again.!"),
+    onError: (err: any) =>
+      toast.error(err?.message || "Error generating referral, please try again.!"),
+  });
+};
+
+export const useGetSubscriptionPlans = () => {
+  const URL = `/org/subscription`;
+  return useQuery({
+    queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+    queryFn: () => getFunction(URL),
+  });
+};
+
+export const useGetSubscriptionInvoices = () => {
+  const URL = `/org/subscription/invoices`;
+  return useQuery({
+    queryKey: [USE_GET_SUBSCRIPTION_INVOICES_API],
+    queryFn: () => getFunction(URL),
+  });
+};
+
+export const useChangeBillingType = () => {
+  const queryClient = useQueryClient();
+
+  const URL = `/org/subscription/plan`;
+  return useMutation({
+    mutationFn: (payload: any) => putFunction(payload, URL),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+      });
+      toast.success("Bliling plan changed successfully");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error changing billing plan, please try again.!"),
+  });
+};
+
+export const useActivateBilling = () => {
+  const queryClient = useQueryClient();
+
+  const URL = `/org/subscription/checkout`;
+  return useMutation({
+    mutationFn: (payload: any) => postFunction(payload, URL),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+      });
+
+      const checkoutUrl = response?.data?.checkoutUrl;
+
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      }
+      toast.success("You are being checked out");
+    },
+    onError: (err: any) => toast.error(err?.message || "Error checking out, please try again.!"),
   });
 };

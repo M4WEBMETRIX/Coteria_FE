@@ -30,7 +30,7 @@ const CommunityPage = () => {
   // const [justCreated, setJustCreated] = useState<any>(true);
   return (
     <>
-      {communityData?.data?.length <= 0 ? (
+      {communityData?.data?.items?.length <= 0 ? (
         <div className="font-inter my-auto flex h-full w-full flex-col place-content-center items-center justify-center">
           <img src={EmptyCampaigns} alt="empty-campaigns" className="mb-3 h-[106px] w-[106px]" />
           <p className="trackin-[-2%] pb-4 text-center text-base leading-6 font-semibold text-[#1E1F24]">
@@ -74,7 +74,10 @@ const CommunityPage = () => {
 
             {/* Stats Grid */}
             <CommunityDashboardStats />
-            <CommunityTableList isPending={isPending} communityData={communityData?.data || []} />
+            <CommunityTableList
+              isPending={isPending}
+              communityData={communityData?.data?.items || []}
+            />
           </div>{" "}
         </div>
       )}

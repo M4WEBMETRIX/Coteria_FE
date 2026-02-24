@@ -22,6 +22,7 @@ import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
+import { useCreateCampaign } from "@/services/generics/hooks";
 // import { useNavigate } from "react-router-dom";
 
 interface CreateCampaignModalProps {
@@ -60,6 +61,8 @@ const CreateCampaignModal = ({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const { mutateAsync: createCampaign } = useCreateCampaign();
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFormData({ ...formData, thumbnail: e.target.files[0] });
@@ -68,7 +71,22 @@ const CreateCampaignModal = ({
 
   const handleNext = () => setStep(2);
   const handleBack = () => setStep(1);
+
   const handleSubmit = () => {
+    const payload = {
+      name: formData.title,
+      visibility: formData.visibility,
+      description: formData.description,
+      goalType: formData.campaignType,
+      communityId: "",
+      categoryId: formData.category,
+      goalAmountCents: Number(formData.goal) * 100,
+      startDate: formData.startDate,
+      endDate: formData.endDate,
+    };
+
+    createCampaign(payload);
+
     // Handle submission logic here
     console.log("Submitting campaign:", formData);
     setOpen(false);

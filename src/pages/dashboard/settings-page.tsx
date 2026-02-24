@@ -38,25 +38,25 @@ const SettingsPage = () => {
   // Centralized form state for all tabs
   const [formData, setFormData] = useState({
     // Organization Profile
-    organizationName: "Coterie",
+    organizationName: "",
     industry: "",
     language: "en",
-    currency: "usd",
+    currency: "CAD",
     addressStreet: "",
-    addressCity: "Los Angeles",
+    addressCity: "",
     addressState: "",
-    addressCountry: "us",
-    addressPostalCode: "90029",
+    addressCountry: "",
+    addressPostalCode: "",
 
     // My Account
     fullName: "",
-    email: "johndoe@gmail.com",
-    phone: "+1 (212) 555 4567",
+    email: "",
+    phone: "",
 
     // Billing & Integration
-    apiKey: "2716",
-    billingPeriod: "monthly",
-    emailAddress: "coteriegloteam@mail.com",
+    apiKey: "",
+    billingPeriod: "",
+    emailAddress: "",
 
     // Link Account
     instagram: "https://www.instagram.com/koterie",
@@ -109,7 +109,7 @@ const SettingsPage = () => {
       case "organization-profile":
         return <OrganizationProfileTab formData={formData} setFormData={setFormData} />;
       case "my-account":
-        return <MyAccountTab formData={formData} setFormData={setFormData} />;
+        return <MyAccountTab formData={formData as any} setFormData={setFormData} />;
       case "billing-integration":
         return <BillingIntegrationTab formData={formData} setFormData={setFormData} />;
       case "access-roles":

@@ -40,7 +40,7 @@ const LinkAccountTab = ({ formData, setFormData }: LinkAccountTabProps) => {
               id="instagram"
               value={formData.instagram}
               onChange={(e) => handleChange("instagram", e.target.value)}
-              placeholder="https://www.instagram.com/koterie"
+              placeholder="Please enter your Instagram URL"
             />
           </div>
 
@@ -55,7 +55,7 @@ const LinkAccountTab = ({ formData, setFormData }: LinkAccountTabProps) => {
               id="facebook"
               value={formData.facebook}
               onChange={(e) => handleChange("facebook", e.target.value)}
-              placeholder="https://www.facebook.com/koterie"
+              placeholder="Please enter your Facebook URL"
             />
           </div>
 
@@ -70,7 +70,7 @@ const LinkAccountTab = ({ formData, setFormData }: LinkAccountTabProps) => {
               id="twitter"
               value={formData.twitter}
               onChange={(e) => handleChange("twitter", e.target.value)}
-              placeholder="https://www.twitter.com/coterie"
+              placeholder="Please enter your Twitter URL"
             />
           </div>
 
@@ -85,7 +85,7 @@ const LinkAccountTab = ({ formData, setFormData }: LinkAccountTabProps) => {
               id="youtube"
               value={formData.youtube}
               onChange={(e) => handleChange("youtube", e.target.value)}
-              placeholder="https://www.youtube.com/coterie"
+              placeholder="Please enter your YouTube URL"
             />
           </div>
         </div>

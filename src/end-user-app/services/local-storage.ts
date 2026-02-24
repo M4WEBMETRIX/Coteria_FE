@@ -10,6 +10,22 @@ type User = {
   isVerified?: boolean;
   slug?: string;
   stripeOnboardingComplete?: boolean;
+  defaultCurrency?: string;
+  currentUser?: {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    phone?: string;
+    email?: string;
+    businessEmail?: string;
+    businessNumber?: string;
+    createdAt?: string;
+    hasStripeConnected?: boolean;
+    isActive?: boolean;
+    isVerified?: boolean;
+    slug?: string;
+    stripeOnboardingComplete?: boolean;
+  };
 };
 
 export const setOrgUserToLocalStorage = (user: User) => {

@@ -8,6 +8,9 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Separator } from "../ui/separator";
+import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { useEffect, useMemo } from "react";
+import { useGetCurrencies } from "@/services/generics/hooks";
 
 interface OrganizationProfileTabProps {
   formData: {
@@ -28,6 +31,23 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
   const handleChange = (field: string, value: string) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
   };
+
+  const { data: currencies } = useGetCurrencies();
+  console.log(currencies);
+
+  const orgUser = useMemo(() => {
+    return getOrgUserFromLocalStorage();
+  }, []);
+
+  useEffect(() => {
+    if (orgUser) {
+      setFormData((prev: any) => ({
+        ...prev,
+        organizationName: orgUser?.name,
+        currency: orgUser?.defaultCurrency,
+      }));
+    }
+  }, [orgUser]);
 
   return (
     <div className="font-ubuntu">
@@ -98,10 +118,15 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
                 <SelectValue placeholder="Select currency" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="usd">US Dollar</SelectItem>
+                {currencies?.map((currency: string, index: number) => (
+                  <SelectItem key={index} value={currency}>
+                    {getCurrencyName(currency)}
+                  </SelectItem>
+                ))}
+                {/* <SelectItem value="usd">US Dollar</SelectItem>
                 <SelectItem value="eur">Euro</SelectItem>
-                <SelectItem value="gbp">British Pound</SelectItem>
-                <SelectItem value="ngn">Nigerian Naira</SelectItem>
+                {/* <SelectItem value="gbp">British Pound</SelectItem>
+                <SelectItem value="ngn">Nigerian Naira</SelectItem> */}
               </SelectContent>
             </Select>
           </div>
@@ -169,7 +194,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               id="addressCity"
               value={formData.addressCity}
               onChange={(e) => handleChange("addressCity", e.target.value)}
-              placeholder="Los Angeles"
+              placeholder="Please enter your city"
             />
           </div>
           <div className="flex w-full gap-6">
@@ -185,7 +210,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
                 className="w-[372px]"
                 value={formData.addressStreet}
                 onChange={(e) => handleChange("addressStreet", e.target.value)}
-                placeholder="123 Garrett Boulevard, Los Angeles, Ca"
+                placeholder="Please enter your address"
               />
             </div>
             <div className="space-y-2">
@@ -200,7 +225,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
                 className="min-w-[110px]"
                 value={formData.addressPostalCode}
                 onChange={(e) => handleChange("addressPostalCode", e.target.value)}
-                placeholder="90029"
+                placeholder="Please enter your postal code"
               />
             </div>
           </div>
@@ -209,5 +234,19 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
     </div>
   );
 };
+
+export function getCurrencyName(code: string) {
+  const currencies: Record<string, string> = {
+    usd: "US Dollar",
+    cad: "CAD Dollar",
+    eur: "Euro",
+    gbp: "British Pound",
+    ngn: "Nigerian Naira",
+  };
+
+  if (!code) return "";
+
+  return currencies[code.toLowerCase()] || code;
+}
 
 export default OrganizationProfileTab;
