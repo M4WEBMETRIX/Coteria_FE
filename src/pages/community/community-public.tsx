@@ -116,7 +116,7 @@ const CommunityPublic = () => {
               {communityData.campaigns.map((campaign) => (
                 <div
                   key={campaign.id}
-                  onClick={() => navigate(`/community/${slug}/campaign/${campaign.id}`)}
+                  onClick={() => navigate(`/community/public/${slug}/campaign/${campaign.id}`)}
                   className="cursor-pointer space-y-4 rounded-[10px] border border-[#ECEFF3] bg-white transition-shadow hover:shadow-lg"
                 >
                   <div className="h-48 w-full overflow-hidden rounded-t-[10px] bg-gray-100">
