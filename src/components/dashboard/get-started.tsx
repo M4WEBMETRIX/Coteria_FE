@@ -24,11 +24,11 @@ const GetStartedPage = () => {
   const [isCampaignOpen, setIsCampaignOpen] = useState(false);
   const [
     // campaignsData,
-    setCampaignsData,
+    // setCampaignsData,
   ] = useState([]);
   const [
     // justCreated,
-    setJustCreated,
+    // setJustCreated,
   ] = useState(true);
 
   const steps = [
@@ -92,8 +92,8 @@ const GetStartedPage = () => {
         isCustom={true}
         customOpen={isCampaignOpen}
         setCustomOpen={setIsCampaignOpen}
-        setCampaignsData={setCampaignsData}
-        setJustCreated={setJustCreated}
+        // setCampaignsData={setCampaignsData}
+        // setJustCreated={setJustCreated}
       />
       <div className="h-full w-full bg-white">
         <div className="fixed top-0 left-0 w-full p-6">
