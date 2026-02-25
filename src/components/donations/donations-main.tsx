@@ -18,7 +18,7 @@ import ManagePagination from "@/components/Manage-pagination";
 
 const donationsData = Array.from({ length: 10 }).map((_, i) => ({
   id: i + 1,
-  donor: "antonymous",
+  donor: "anonymous",
   campaign: "Green Planet Advocates",
   date: "August 19, 2026",
   amount: "$500.00",

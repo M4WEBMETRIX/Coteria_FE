@@ -25,15 +25,15 @@ const PulseStatsWidget = () => {
       footer: ["Participant", "Conversion rate"],
       footerColor: "text-[#8B8D98]",
     },
-    {
-      title: "Influence",
-      value: "33%",
-      badge: "+20.0",
-      badgeRole: "info", // blue
-      hasChartIcon: false,
-      footer: ["5 active influencers"],
-      footerColor: "text-[#8B8D98]",
-    },
+    // {
+    //   title: "Influence",
+    //   value: "33%",
+    //   badge: "+20.0",
+    //   badgeRole: "info", // blue
+    //   hasChartIcon: false,
+    //   footer: ["5 active influencers"],
+    //   footerColor: "text-[#8B8D98]",
+    // },
     {
       title: "Momentum",
       value: "Growing",
@@ -47,7 +47,7 @@ const PulseStatsWidget = () => {
   ];
 
   return (
-    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
       {stats.map((stat, index) => (
         <div
           key={index}

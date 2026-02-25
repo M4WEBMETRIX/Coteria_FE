@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -17,18 +17,32 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Checkbox } from "@/components/ui/checkbox";
+// import { Checkbox } from "@/components/ui/checkbox";
 import { Switch } from "@/components/ui/switch";
 import { Plus } from "lucide-react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Cancel01Icon } from "@hugeicons/core-free-icons";
-import { useCreateCampaign } from "@/services/generics/hooks";
+import {
+  useCreateCampaign,
+  useGetAllCommunities,
+  useGetCampaignCategories,
+} from "@/services/generics/hooks";
+// import {
+//   Combobox,
+//   ComboboxContent,
+//   ComboboxEmpty,
+//   ComboboxInput,
+//   ComboboxItem,
+//   ComboboxList,
+//   ComboboxTrigger,
+//   ComboboxValue,
+// } from "../ui/combobox";
 // import { useNavigate } from "react-router-dom";
 
 interface CreateCampaignModalProps {
   children?: React.ReactNode;
-  setCampaignsData: any;
-  setJustCreated: any;
+  // setCampaignsData: any;
+  // setJustCreated: any;
   isCustom?: boolean;
   customOpen?: boolean;
   setCustomOpen?: (open: boolean) => void;
@@ -36,8 +50,8 @@ interface CreateCampaignModalProps {
 
 const CreateCampaignModal = ({
   // children,
-  setCampaignsData,
-  setJustCreated,
+  // setCampaignsData,
+  // setJustCreated,
   isCustom,
   customOpen,
   setCustomOpen,
@@ -52,22 +66,51 @@ const CreateCampaignModal = ({
     category: "",
     thumbnail: null as File | null,
     campaignType: "",
-    participation: [] as string[],
+    // participation: [] as string[],
     startDate: "",
     endDate: "",
     isOngoing: false,
     visibility: "",
+    communityId: "" as any,
   });
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const { mutateAsync: createCampaign } = useCreateCampaign();
+  const {
+    mutateAsync: createCampaign,
+    isPending: isCreatingCampaign,
+    isSuccess: isCreatingCampaignSuccess,
+  } = useCreateCampaign();
+  const { data: categories } = useGetCampaignCategories();
+  const { data: communityData, isPending: isCommunityPending } = useGetAllCommunities();
 
+  // console.log(categories);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       setFormData({ ...formData, thumbnail: e.target.files[0] });
     }
   };
+
+  useEffect(() => {
+    if (isCreatingCampaignSuccess) {
+      setOpen(false);
+      setStep(1);
+      setFormData({
+        title: "",
+        description: "",
+        goal: "",
+        category: "",
+        thumbnail: null,
+        campaignType: "",
+        // participation: [],
+        startDate: "",
+        endDate: "",
+        isOngoing: false,
+        visibility: "",
+        communityId: "",
+      });
+    }
+  }, [isCreatingCampaignSuccess]);
 
   const handleNext = () => setStep(2);
   const handleBack = () => setStep(1);
@@ -78,64 +121,42 @@ const CreateCampaignModal = ({
       visibility: formData.visibility,
       description: formData.description,
       goalType: formData.campaignType,
-      communityId: "",
-      categoryId: formData.category,
+      communityId: formData.communityId || null,
+      categoryId: formData.category || null,
       goalAmountCents: Number(formData.goal) * 100,
       startDate: formData.startDate,
-      endDate: formData.endDate,
+      endDate: formData.endDate || null,
     };
 
-    createCampaign(payload);
+    createCampaign(payload as any);
 
     // Handle submission logic here
     console.log("Submitting campaign:", formData);
-    setOpen(false);
-    setStep(1);
-    setFormData({
-      title: "",
-      description: "",
-      goal: "",
-      category: "",
-      thumbnail: null,
-      campaignType: "",
-      participation: [],
-      startDate: "",
-      endDate: "",
-      isOngoing: false,
-      visibility: "",
-    });
-    setCampaignsData([
-      {
-        title: "",
-        description: "",
-        goal: "",
-        category: "",
-        thumbnail: null,
-        campaignType: "",
-        participation: [],
-        startDate: "",
-        endDate: "",
-        isOngoing: false,
-        visibility: "",
-      },
-    ]);
-    setJustCreated(true);
-
-    //MVP NAVIGATION FOR DEMO
-    // navigate("/campaigns/sample-campaign-1xeydjtYWDB");
   };
 
-  const handleParticipationChange = (value: string) => {
-    setFormData((prev) => ({
-      ...prev,
-      participation: prev.participation.includes(value)
-        ? prev.participation.filter((item) => item !== value)
-        : [...prev.participation, value],
-    }));
-  };
+  // const handleParticipationChange = (value: string) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     participation: prev.participation.includes(value)
+  //       ? prev.participation.filter((item) => item !== value)
+  //       : [...prev.participation, value],
+  //   }));
+  // };
+
+  const communityItems =
+    communityData?.data?.items?.map((item: any) => ({
+      label: item.name,
+      value: item.id,
+    })) ?? [];
+
+  console.log(communityItems);
 
   return (
-    <Dialog open={isCustom ? customOpen : open} onOpenChange={isCustom ? setCustomOpen : setOpen}>
+    <Dialog
+      // modal={true}
+      open={isCustom ? customOpen : open}
+      onOpenChange={isCustom ? setCustomOpen : setOpen}
+    >
       <DialogTrigger asChild>
         {isCustom ? null : (
           <Button className="max-w-[257px] px-[51px] py-3" variant={"outline"}>
@@ -146,7 +167,8 @@ const CreateCampaignModal = ({
         )}
       </DialogTrigger>
       <DialogContent
-        showCloseButton={false}
+        // onInteractOutside={(e) => e.preventDefault()}
+        // showCloseButton={false}
         className="max-h-[95vh] w-full min-w-[700px] gap-0 overflow-hidden bg-white p-0"
       >
         <DialogHeader className="border-b border-[#DFE1E7] p-6">
@@ -182,7 +204,7 @@ const CreateCampaignModal = ({
                 <div className="relative">
                   <Textarea
                     id="description"
-                    placeholder="Lorem Ipsum is simply dummy text..."
+                    placeholder="Please enter description..."
                     className="min-h-[120px] resize-none pb-8"
                     value={formData.description}
                     onChange={(e) =>
@@ -217,27 +239,26 @@ const CreateCampaignModal = ({
                 />
               </div>
 
-              {/* Category */}
-              <div className="w-full space-y-2">
-                <Label htmlFor="category" className="text-sm font-medium text-[#344054]">
-                  Category <span className="text-red-500">*</span>
+              {/* Goal Type */}
+              <div className="space-y-2">
+                <Label htmlFor="type" className="text-sm font-medium text-[#344054]">
+                  Goal Type <span className="text-red-500">*</span>
                 </Label>
                 <Select
-                  value={formData.category}
+                  value={formData.campaignType}
                   onValueChange={(value) =>
                     setFormData({
                       ...formData,
-                      category: value,
+                      campaignType: value,
                     })
                   }
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select category" />
+                    <SelectValue placeholder="Select type" />
                   </SelectTrigger>
-                  <SelectContent className="w-full">
-                    <SelectItem value="medical">Medical</SelectItem>
-                    <SelectItem value="education">Education</SelectItem>
-                    <SelectItem value="emergency">Emergency</SelectItem>
+                  <SelectContent>
+                    <SelectItem value="Amount">Amount</SelectItem>
+                    <SelectItem value="Time">Time</SelectItem>
                   </SelectContent>
                 </Select>
               </div>
@@ -289,33 +310,35 @@ const CreateCampaignModal = ({
             </div>
           ) : (
             <div className="space-y-6">
-              {/* Campaign Type */}
-              <div className="space-y-2">
-                <Label htmlFor="type" className="text-sm font-medium text-[#344054]">
-                  Campaign Type <span className="text-red-500">*</span>
+              {/* Category */}
+              <div className="w-full space-y-2">
+                <Label htmlFor="category" className="text-sm font-medium text-[#344054]">
+                  Category <span className="text-red-500">*</span>
                 </Label>
                 <Select
-                  value={formData.campaignType}
+                  value={formData.category}
                   onValueChange={(value) =>
                     setFormData({
                       ...formData,
-                      campaignType: value,
+                      category: value,
                     })
                   }
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select type" />
+                    <SelectValue placeholder="Select category" />
                   </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="fundraising">Fundraising</SelectItem>
-                    <SelectItem value="awareness">Awareness / Advocacy</SelectItem>
-                    <SelectItem value="community">Community Support</SelectItem>
+                  <SelectContent className="w-full">
+                    {categories?.map((category: any) => (
+                      <SelectItem key={category.id} value={category.id}>
+                        {category.label}
+                      </SelectItem>
+                    ))}
                   </SelectContent>
                 </Select>
               </div>
 
               {/* Participation */}
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label className="text-sm font-medium text-[#344054]">
                   How can people participate? <span className="text-red-500">*</span>
                 </Label>
@@ -342,7 +365,7 @@ const CreateCampaignModal = ({
                     </div>
                   ))}
                 </div>
-              </div>
+              </div> */}
 
               {/* Duration */}
               <div className="space-y-2">
@@ -423,6 +446,69 @@ const CreateCampaignModal = ({
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Community */}
+              {formData.visibility === "community" && (
+                <div className="w-full space-y-2">
+                  <Label htmlFor="community" className="text-sm font-medium text-[#344054]">
+                    Community <span className="text-red-500">*</span>
+                  </Label>
+
+                  {/* <>
+                  
+                    <Combobox
+                      value={formData.communityId}
+                      items={communityItems}
+                      onValueChange={(value) =>
+                        setFormData((prev) => ({
+                          ...prev,
+                          communityId: value,
+                        }))
+                      }
+                    >
+                      <ComboboxTrigger className="border-input bg-background w-full justify-between rounded-md border px-3 py-2 text-sm shadow-xs">
+                        <ComboboxValue placeholder="Select community" />
+                      </ComboboxTrigger>
+                      <ComboboxContent
+                        // anchor={"trigger"}
+                        className="z-[9999] !w-[var(--anchor-width)] !min-w-[var(--anchor-width)]"
+                      >
+                        <ComboboxInput showTrigger={false} placeholder="Search" />
+                        <ComboboxEmpty>No items found.</ComboboxEmpty>
+                        <ComboboxList>
+                          {(item) => (
+                            <ComboboxItem key={item.value} value={item.value}>
+                              {item.label}
+                            </ComboboxItem>
+                          )}
+                        </ComboboxList>
+                      </ComboboxContent>
+                    </Combobox>
+                  </> */}
+                  <Select
+                    disabled={isCommunityPending}
+                    value={formData.communityId}
+                    onValueChange={(value) => {
+                      console.log("value", value);
+                      setFormData({
+                        ...formData,
+                        communityId: value,
+                      });
+                    }}
+                  >
+                    <SelectTrigger className="w-full">
+                      <SelectValue placeholder="Select community" />
+                    </SelectTrigger>
+                    <SelectContent className="w-full">
+                      {communityItems?.map((item: any, index: number) => (
+                        <SelectItem key={index} value={item.value}>
+                          {item.label}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                </div>
+              )}
             </div>
           )}
         </div>
@@ -446,10 +532,11 @@ const CreateCampaignModal = ({
                 Back
               </Button>
               <Button
+                disabled={isCreatingCampaign}
                 onClick={handleSubmit}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
               >
-                Submit
+                {isCreatingCampaign ? "Creating..." : "Submit"}
               </Button>
             </>
           )}

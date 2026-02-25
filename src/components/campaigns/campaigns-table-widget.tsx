@@ -19,49 +19,54 @@ import {
 } from "@/components/ui/table";
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { timeAgo } from "@/pages/dashboard/community-table-list";
+import { getCurrencySymbol } from "@/lib/utils";
+import CommunityTableBodySkeleton from "@/pages/dashboard/components/skeletons/community-table-skeleton";
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
+import { EyeIcon, TrashIcon } from "@phosphor-icons/react";
 
-const campaignsData = [
-  {
-    id: "1",
-    title: "Strength in Unity: Cancer Patient Support Program",
-    participants: 126,
-    trend: "up",
-    lastActivity: "2h ago",
-    goalAmount: "$500.00",
-    raised: "-",
-    status: "Draft",
-  },
-  {
-    id: "2",
-    title: "Journey of Hope: Empowering Cancer Survivors",
-    participants: 32,
-    trend: "down",
-    lastActivity: "3 days ago",
-    goalAmount: "$500.00",
-    raised: "$100.00",
-    status: "Active",
-  },
-  {
-    id: "3",
-    title: "Light of Hope: Cancer Awareness and Support",
-    participants: 126,
-    trend: "up",
-    lastActivity: "2h ago",
-    goalAmount: "$500.00",
-    raised: "$500.00",
-    status: "Paused",
-  },
-  {
-    id: "4",
-    title: "Radiant Futures: A Cancer Support Initiative",
-    participants: 0,
-    trend: "down",
-    lastActivity: "50 days ago",
-    goalAmount: "$500.00",
-    raised: "-",
-    status: "Suspended",
-  },
-];
+// const campaignsData = [
+//   {
+//     id: "1",
+//     title: "Strength in Unity: Cancer Patient Support Program",
+//     participants: 126,
+//     trend: "up",
+//     lastActivity: "2h ago",
+//     goalAmount: "$500.00",
+//     raised: "-",
+//     status: "Draft",
+//   },
+//   {
+//     id: "2",
+//     title: "Journey of Hope: Empowering Cancer Survivors",
+//     participants: 32,
+//     trend: "down",
+//     lastActivity: "3 days ago",
+//     goalAmount: "$500.00",
+//     raised: "$100.00",
+//     status: "Active",
+//   },
+//   {
+//     id: "3",
+//     title: "Light of Hope: Cancer Awareness and Support",
+//     participants: 126,
+//     trend: "up",
+//     lastActivity: "2h ago",
+//     goalAmount: "$500.00",
+//     raised: "$500.00",
+//     status: "Paused",
+//   },
+//   {
+//     id: "4",
+//     title: "Radiant Futures: A Cancer Support Initiative",
+//     participants: 0,
+//     trend: "down",
+//     lastActivity: "50 days ago",
+//     goalAmount: "$500.00",
+//     raised: "-",
+//     status: "Suspended",
+//   },
+// ];
 
 const StatusBadge = ({ status }: { status: string }) => {
   let styles = "";
@@ -99,15 +104,21 @@ const StatusBadge = ({ status }: { status: string }) => {
   );
 };
 
-const CampaignsTableWidget = () => {
+const CampaignsTableWidget = ({
+  campaignsData,
+  isPending,
+}: {
+  campaignsData: any[];
+  isPending: boolean;
+}) => {
   const navigate = useNavigate();
 
   return (
-    <div className="font-ubuntu overflow-hidden rounded-xl border border-[#DFE1E7] bg-white">
+    <div className="font-ubuntu mb-6 overflow-hidden rounded-xl border border-[#DFE1E7] bg-white">
       {/* Header Controls */}
       <div className="flex flex-col items-center justify-between gap-4 border-b border-[#E0E1E6] p-4 md:flex-row">
         <h3 className="mr-auto text-base leading-[150%] font-bold tracking-[2%] whitespace-nowrap text-[#0D0D12] md:mr-0">
-          Campigns Table
+          Campaigns Table
         </h3>
 
         <div className="flex w-full items-center gap-3 md:w-auto">
@@ -140,7 +151,7 @@ const CampaignsTableWidget = () => {
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="min-h-[45vh] overflow-x-auto">
         <Table>
           <TableHeader className="border border-[#DFE1E7] bg-[#F6F8FA]">
             <TableRow className="border-b border-[#E0E1E6] text-sm leading-[150%] text-[#666D80] hover:bg-transparent">
@@ -151,7 +162,7 @@ const CampaignsTableWidget = () => {
               <TableHead className="min-w-[250px] font-medium text-[#666D80]">
                 Campaign Title
               </TableHead>
-              <TableHead className="font-medium text-[#666D80]">Participation</TableHead>
+              <TableHead className="font-medium text-[#666D80]">Donation count</TableHead>
               <TableHead className="font-medium text-[#666D80]">Last Activity</TableHead>
               <TableHead className="font-medium text-[#666D80]">Goal Amount</TableHead>
               <TableHead className="font-medium text-[#666D80]">Raised</TableHead>
@@ -159,62 +170,110 @@ const CampaignsTableWidget = () => {
               <TableHead className="w-[50px] font-medium"> </TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {campaignsData.map((campaign) => (
-              <TableRow
-                key={campaign.id}
-                onClick={() => navigate(`/campaigns/${campaign.id}`)}
-                className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
-              >
-                <TableCell className="py-4 pl-4">
-                  <Checkbox
-                    onClick={(e) => e.stopPropagation()}
-                    className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
-                  />
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.id}
-                </TableCell>
-                <TableCell className="max-w-[300px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.title}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1.5">
-                    <span className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                      {campaign.participants} participants
-                    </span>
-                    {campaign.trend === "up" ? (
-                      <HugeiconsIcon icon={ArrowUp01} size={16} className="text-[#12AA5B]" />
+          {isPending ? (
+            <CommunityTableBodySkeleton rows={6} />
+          ) : (
+            <TableBody>
+              {campaignsData?.map((campaign, index) => (
+                <TableRow
+                  key={campaign?.id}
+                  onClick={() => navigate(`/campaigns/${campaign?.id}`)}
+                  className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
+                >
+                  <TableCell className="py-4 pl-4">
+                    <Checkbox
+                      onClick={(e) => e.stopPropagation()}
+                      className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
+                    />
+                  </TableCell>
+                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="max-w-[300px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                    <p className="line-clamp-2">
+                      {campaign?.name}: {campaign?.description}
+                    </p>
+                  </TableCell>
+                  <TableCell>
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                        {campaign?.donationsCount ? campaign?.donationsCount : 0} Donors
+                      </span>
+                      {campaign.trend === "up" ? (
+                        <HugeiconsIcon icon={ArrowDown01} size={16} className="text-[#F04438]" />
+                      ) : (
+                        <HugeiconsIcon icon={ArrowUp01} size={16} className="text-[#12AA5B]" />
+                      )}
+                    </div>
+                  </TableCell>
+                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                    {timeAgo(campaign?.updatedAt)}
+                  </TableCell>
+                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                    {campaign?.goalAmountCents ? (
+                      <>
+                        {getCurrencySymbol(campaign?.goalCurrency)}
+                        {""}
+                        {(Number(campaign?.goalAmountCents) / 100)?.toLocaleString()}
+                      </>
                     ) : (
-                      <HugeiconsIcon icon={ArrowDown01} size={16} className="text-[#F04438]" />
+                      "-"
                     )}
-                  </div>
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.lastActivity}
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.goalAmount}
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.raised}
-                </TableCell>
-                <TableCell>
-                  <StatusBadge status={campaign.status} />
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8B8D98]">
-                    <HugeiconsIcon icon={MoreHorizontalIcon} size={20} color="#666D80" />
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+                  </TableCell>
+                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                    {campaign?.totalRaisedCents ? (
+                      <>
+                        {getCurrencySymbol(campaign?.goalCurrency)}
+                        {""}
+                        {(Number(campaign?.totalRaisedCents) / 100)?.toLocaleString()}
+                      </>
+                    ) : (
+                      "-"
+                    )}
+                  </TableCell>
+                  <TableCell>
+                    <StatusBadge status={campaign?.status} />
+                  </TableCell>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <ActionPopover id={campaign?.id} />
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       </div>
       {/* Pagination placeholder if needed? Not shown in screenshot, but good to have padding at bottom or standard footer */}
     </div>
   );
 };
+
+export function ActionPopover({ id }: { id: string | number }) {
+  const navigate = useNavigate();
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8B8D98]">
+          <HugeiconsIcon icon={MoreHorizontalIcon} size={20} color="#666D80" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-max">
+        <div className="grid gap-4">
+          <div
+            onClick={() => navigate(`/campaigns/${id}`)}
+            className="flex items-center gap-2 text-sm"
+          >
+            <EyeIcon size={18} />
+            View
+          </div>
+          <div className="flex items-center gap-2 text-sm text-[red]">
+            <TrashIcon size={18} />
+            Delete
+          </div>
+        </div>
+      </PopoverContent>
+    </Popover>
+  );
+}
 
 export default CampaignsTableWidget;

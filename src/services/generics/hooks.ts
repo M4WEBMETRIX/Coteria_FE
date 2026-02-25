@@ -10,6 +10,7 @@ const USE_GET_SUBSCRIPTION_PLANS_API = "USE_GET_SUBSCRIPTION_PLANS_API";
 const USE_GET_SUBSCRIPTION_INVOICES_API = "USE_GET_SUBSCRIPTION_INVOICES";
 const USE_GET_ALL_CAMPAIGNS_API = "USE_GET_ALL_CAMPAIGNS_API";
 const USE_GET_CURRENCIES_API = "USE_GET_CURRENCIES_API";
+const USE_GET_CAMPAIGN_CATEGORIES_API = "USE_GET_CAMPAIGN_CATEGORIES_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -32,6 +33,22 @@ export const useGetCurrencies = () => {
   const URL = "/currencies";
   return useQuery({
     queryKey: [USE_GET_CURRENCIES_API],
+    queryFn: () => getFunction(URL),
+  });
+};
+
+export const useGetCampaigns = () => {
+  const URL = "/org/campaigns";
+  return useQuery({
+    queryKey: [USE_GET_ALL_CAMPAIGNS_API],
+    queryFn: () => getFunction(URL),
+  });
+};
+
+export const useGetCampaignCategories = () => {
+  const URL = "/campaigns/categories";
+  return useQuery({
+    queryKey: [USE_GET_CAMPAIGN_CATEGORIES_API],
     queryFn: () => getFunction(URL),
   });
 };

@@ -119,7 +119,7 @@ const SignupPage = () => {
                   htmlFor="name"
                   className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
                 >
-                  Organisation Name
+                  Organization Name
                 </FieldLabel>
                 <FieldContent>
                   <Input

@@ -48,7 +48,7 @@ const CampaignOverviewStats = () => {
       {/* 1. Campaign Active - Icon: Dollar Sign in Green Circle */}
       <StatsCard
         title="Campaign Active"
-        value="4"
+        value="0"
         icon={<CurrencyCircleDollarIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -56,7 +56,7 @@ const CampaignOverviewStats = () => {
       {/* 2. Total Raised - Icon: Minus/Dash in Green Circle */}
       <StatsCard
         title="Total Raised"
-        value="$245,000"
+        value="$0.00"
         icon={<ArrowCircleUpIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -64,7 +64,7 @@ const CampaignOverviewStats = () => {
       {/* 3. Total Goal - Icon: Check in Green Circle */}
       <StatsCard
         title="Total Goal"
-        value="$1,200,000"
+        value="$0.00"
         icon={<CheckCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -72,7 +72,7 @@ const CampaignOverviewStats = () => {
       {/* 4. Campaign Closed - Icon: X in Green Circle */}
       <StatsCard
         title="Campaign Closed"
-        value="4"
+        value="0"
         icon={<XCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
