@@ -21,7 +21,7 @@ const UserSignUp = () => {
     lastName: "",
     email: "",
     password: "",
-    phoneNumber: "+2348011223345",
+    // phoneNumber: "+2348011223345",
   });
 
   const { mutate: userMutate, isPending, data } = useRegisterUser();
