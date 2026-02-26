@@ -26,12 +26,6 @@ const CheckEmailPage = () => {
   const { mutateAsync: resendVerificationEmail, isPending: resendLoading } =
     useOrganisationResendVerificationEmail();
 
-  //   useEffect(() => {
-  //     if (token) {
-  //       verifyEmail({ token });
-  //     }
-  //   }, [token]);
-
   useEffect(() => {
     if (isSuccess) {
       navigate("/auth/setup-account");
@@ -42,21 +36,6 @@ const CheckEmailPage = () => {
     <AuthLayout>
       {token ? (
         <div>
-          {/* <div className="mt-4 flex items-center justify-center">
-                  <h2 className="flex items-center text-[32px] leading-[100%] font-semibold tracking-[1%]">
-                    Connect with{" "}
-                    <span className="pl-1.75">
-                      <img src={STRIPE_LOGO} className="w-21.25 bg-cover" alt="stripe-logo" />
-                    </span>{" "}
-                    <div className="flex items-center gap-0.5 pt-1.5 pl-3.25">
-                      <span className="text-[12px] leading-5.5 tracking-[0%] text-[#12AA5B]">Why</span>{" "}
-                      <div>
-                        <Question color="#12AA5B" size={16} />
-                      </div>
-                    </div>
-                  </h2>
-                </div> */}
-
           <p className="mt-3.5 mb-7.5 text-center text-base leading-5.5 tracking-[0%] text-[#414143]">
             You'll be redirected to set up your organisation account after verification. This
             usually takes 2–3 minutes.
@@ -73,7 +52,7 @@ const CheckEmailPage = () => {
               className="h-11.5 w-full cursor-pointer bg-[#12AA5B] text-base leading-6.5 tracking-[0%] text-white hover:bg-[#554AFF]/90"
               variant="secondary"
             >
-              Verify email
+              {verifyLoading ? "Verifying email..." : "Verify email"}
             </Button>
             <div className="mb-6">
               <Button
