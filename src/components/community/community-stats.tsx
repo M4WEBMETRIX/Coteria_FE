@@ -128,9 +128,9 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
         title="Total Community"
-        value={data?.totalCampaigns || 0}
-        trend={(data?.campaignsSinceLastMonth || 0) + "%"}
-        trendDirection="down"
+        value={data?.totalCommunities || 0}
+        trend={(data?.communitiesSinceLastMonth || 0) + "%"}
+        trendDirection="up"
         icon={<PackageIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
         iconColor="#0BA5EC"
@@ -139,7 +139,7 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
         title="Total Funds Raised"
         value={data?.totalFundsRaisedCents || 0}
         trend={(data?.fundsRaisedSinceLastMonthCents || 0) + "%"}
-        trendDirection="down"
+        trendDirection="up"
         icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
         iconColor="#12AA5B"
@@ -148,16 +148,16 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
         title="Members"
         value={data?.totalMembers || 0}
         trend={(data?.membersSinceLastMonth || 0) + "%"}
-        trendDirection="down"
+        trendDirection="up"
         icon={<UsersFourIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
         iconColor="#12AA5B"
       />
       <StatCard
-        title="Active community"
-        value="0"
-        trend="0%"
-        trendDirection="down"
+        title="Total Community Campaigns"
+        value={data?.totalCommunityCampaigns || 0}
+        trend={(data?.communityCampaignsSinceLastMonth || 0) + "%"}
+        trendDirection="up"
         icon={<MoneyIcon size={20} weight="duotone" color={"#40C4AA"} />}
         iconBg="#EFFEFA"
         iconColor="#12AA5B"

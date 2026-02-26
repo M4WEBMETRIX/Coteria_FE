@@ -12,6 +12,7 @@ import {
 import { toast } from "sonner";
 import { removeTokens, removeUserTokens } from "@/end-user-app/services/local-storage";
 import { useLocation, useNavigate } from "react-router-dom";
+import { postFunction } from "./generics/generic-index";
 
 export const useRegisterOrganisation = () => {
   return useMutation({
@@ -31,12 +32,39 @@ export const useRegisterOrganisation = () => {
   });
 };
 
+export const useOrganisationVerifyEmail = () => {
+  return useMutation({
+    mutationFn: (payload: { token: string }) => postFunction(payload, "/auth/verify-email"),
+    onSuccess: () => {
+      toast.success("Please check your email for further instructions");
+    },
+    onError: (error) => {
+      //   console.log("err", error);
+      toast.error(error?.message);
+    },
+  });
+};
+
+export const useOrganisationResendVerificationEmail = () => {
+  return useMutation({
+    mutationFn: (payload: any) => postFunction(payload, "/auth/resend-verification"),
+    onSuccess: () => {
+      toast.success("Please check your email for further instructions");
+    },
+    onError: (error) => {
+      //   console.log("err", error);
+      toast.error(error?.message);
+    },
+  });
+};
+
 export const useLoginOrganisation = () => {
   const navigate = useNavigate();
   return useMutation({
     mutationFn: (payload: LoginProps) => loginOrganisation(payload),
     onSuccess: (response) => {
-      const { token, refreshToken, organizationSummary } = response.data;
+      const { token, refreshToken, organizationSummary, requiresEmailVerification, email } =
+        response.data;
 
       localStorage.setItem("accessToken", token);
       localStorage.setItem("refreshToken", refreshToken);
@@ -44,8 +72,14 @@ export const useLoginOrganisation = () => {
       //   console.log(organizationSummary);
 
       toast.success("You've successfully login");
-
-      if (organizationSummary?.requiresOnboarding) {
+      if (organizationSummary?.requiresOnboarding && requiresEmailVerification) {
+        navigate("/auth/check-email", {
+          state: {
+            email: email,
+          },
+        });
+        // console.log("requiresOnboarding");
+      } else if (organizationSummary?.requiresOnboarding && !requiresEmailVerification) {
         navigate("/auth/setup-account");
         // console.log("requiresOnboarding");
       } else {

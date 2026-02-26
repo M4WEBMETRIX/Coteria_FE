@@ -24,6 +24,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
 import { useCreateCommunity } from "@/services/generics/hooks";
+import { useDeleteUpload, useFileUpload } from "@/services/file-upload-hook";
 
 interface CreateCommunityModalProps {
   isCustom?: boolean;
@@ -85,8 +86,23 @@ const CreateCommunityModal = ({
     isSuccess,
   } = useCreateCommunity();
 
+  const {
+    mutate: fileUploadMutate,
+    isPending: isUploading,
+    data: fileUploadData,
+  } = useFileUpload();
+
+  const { mutate: deleteUploadMutate, isPending: isDeletingUpload } = useDeleteUpload(
+    fileUploadData?.url
+  );
+
+  console.log("fileUploadData", fileUploadData);
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+      fileUploadMutate(formData);
       setValue("logo", e.target.files[0], { shouldValidate: true });
     }
   };
@@ -247,7 +263,11 @@ const CreateCommunityModal = ({
                       />
                       <button
                         type="button"
-                        onClick={() => setValue("logo", null as any, { shouldValidate: true })}
+                        disabled={isDeletingUpload}
+                        onClick={() => {
+                          deleteUploadMutate();
+                          setValue("logo", null as any, { shouldValidate: true });
+                        }}
                         className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
                       >
                         <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
@@ -286,7 +306,7 @@ const CreateCommunityModal = ({
             </Button>
             <Button
               type="submit"
-              disabled={!isValid}
+              disabled={!isValid || isDeletingUpload || isUploading}
               className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
             >
               {isCreatingCommunity ? "Creating..." : "Create"}

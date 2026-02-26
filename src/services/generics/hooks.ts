@@ -11,6 +11,7 @@ const USE_GET_SUBSCRIPTION_INVOICES_API = "USE_GET_SUBSCRIPTION_INVOICES";
 const USE_GET_ALL_CAMPAIGNS_API = "USE_GET_ALL_CAMPAIGNS_API";
 const USE_GET_CURRENCIES_API = "USE_GET_CURRENCIES_API";
 const USE_GET_CAMPAIGN_CATEGORIES_API = "USE_GET_CAMPAIGN_CATEGORIES_API";
+const USE_GET_COMMUNITIES_STATS_API = "USE_GET_COMMUNITIES_STATS_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -79,10 +80,22 @@ export const useCreateCommunity = () => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_ALL_COMMUNITIES_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_COMMUNITIES_STATS_API],
+      });
       toast.success("community created successfully");
     },
     onError: (err: any) =>
       toast.error(err?.message || "Error creating community, please try again.!"),
+  });
+};
+
+export const useCommunityStats = () => {
+  const URL = `/org/communities/stats`;
+  return useQuery({
+    queryKey: [USE_GET_COMMUNITIES_STATS_API],
+    queryFn: () => getFunction(URL),
   });
 };
 

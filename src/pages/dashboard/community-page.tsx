@@ -1,6 +1,6 @@
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import { Button } from "@/components/ui/button";
-import { CommunityDashboardStats } from "@/components/community/community-stats";
+import { CommunityDashboardStats, StatCardSkeleton } from "@/components/community/community-stats";
 // import GrowthTrendsWidget from "@/components/community/growth-trends-widget";
 // import CommunityAiInsightWidget from "@/components/community/community-ai-insight-widget";
 // import ActivitySummaryWidget from "@/components/community/activity-summary-widget";
@@ -10,7 +10,7 @@ import EmptyCampaigns from "../../assets/icons/empty-campaigns.svg";
 import { useState } from "react";
 import CreateCommunityModal from "@/components/community/create-community-modal";
 
-import { useGetAllCommunities } from "@/services/generics/hooks";
+import { useCommunityStats, useGetAllCommunities } from "@/services/generics/hooks";
 import CommunityTableList from "./community-table-list";
 
 const CommunityPage = () => {
@@ -25,6 +25,7 @@ const CommunityPage = () => {
   const [, setCommunity] = useState<any>([]);
 
   const { data: communityData, isPending } = useGetAllCommunities();
+  const { data: communityStats, isPending: isPendingStats } = useCommunityStats();
   // console.log("community data hmm", communityData?.data);
 
   // const [justCreated, setJustCreated] = useState<any>(true);
@@ -73,7 +74,15 @@ const CommunityPage = () => {
             </div>
 
             {/* Stats Grid */}
-            <CommunityDashboardStats />
+            {isPendingStats ? (
+              <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+                {Array.from({ length: 4 }).map((_, index) => (
+                  <StatCardSkeleton key={index} />
+                ))}
+              </div>
+            ) : (
+              <CommunityDashboardStats data={communityStats?.data} />
+            )}
             <CommunityTableList
               isPending={isPending}
               communityData={communityData?.data?.items || []}

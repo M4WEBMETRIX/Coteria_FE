@@ -46,6 +46,7 @@ const SignupPage = () => {
     register,
     handleSubmit,
     watch,
+    getValues,
     control,
     formState: { errors, isValid },
     reset,
@@ -95,7 +96,8 @@ const SignupPage = () => {
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/auth/setup-account");
+      // navigate("/auth/setup-account");
+      navigate("/auth/check-email", { state: { email: getValues("email") } });
       reset();
     }
   }, [isSuccess]);
