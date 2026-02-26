@@ -63,7 +63,7 @@ const CheckEmailPage = () => {
                 className="h-11.5 w-full cursor-pointer border-[#12AA5B] text-base leading-6.5 tracking-[0%] text-[#12AA5B] hover:bg-[#12AA5B]/90 hover:text-[#FFFFFF]"
                 variant="outline"
               >
-                Resend verification email
+                {resendLoading ? "Resending verification email..." : "Resend verification email"}
               </Button>
             </div>
           </div>
