@@ -110,9 +110,9 @@ const CheckEmailPage = () => {
                     variant={"link"}
                     // to="/auth/forgot-password"
                     onClick={() => resendVerificationEmail({})}
-                    className="text-left text-base font-normal text-[#026451] underline"
+                    className="px-0 text-left text-base font-normal text-[#026451] underline"
                   >
-                    Re-enter your email and try again
+                    Resend verification email
                   </Button>
                   {resendLoading && (
                     <p className="text-sm font-normal text-[#026451]">Sending email...</p>

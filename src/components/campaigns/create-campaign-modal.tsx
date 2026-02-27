@@ -27,6 +27,7 @@ import {
   useGetAllCommunities,
   useGetCampaignCategories,
 } from "@/services/generics/hooks";
+import { useDeleteUpload, useFileUpload } from "@/services/file-upload-hook";
 // import {
 //   Combobox,
 //   ComboboxContent,
@@ -64,6 +65,7 @@ const CreateCampaignModal = ({
     description: "",
     goal: "",
     category: "",
+    imageUrl: "",
     thumbnail: null as File | null,
     campaignType: "",
     // participation: [] as string[],
@@ -84,10 +86,30 @@ const CreateCampaignModal = ({
   const { data: categories } = useGetCampaignCategories();
   const { data: communityData, isPending: isCommunityPending } = useGetAllCommunities();
 
+  const {
+    mutate: fileUploadMutate,
+    isPending: isUploading,
+    data: fileUploadData,
+  } = useFileUpload();
+
+  const { mutate: deleteUploadMutate, isPending: isDeletingUpload } = useDeleteUpload(
+    fileUploadData?.url
+  );
+
+  useEffect(() => {
+    if (fileUploadData) {
+      setFormData({ ...formData, imageUrl: fileUploadData.url });
+    }
+  }, [fileUploadData]);
+
   // console.log(categories);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      setFormData({ ...formData, thumbnail: e.target.files[0] });
+      const formData = new FormData();
+      formData.append("file", e.target.files[0]);
+      fileUploadMutate(formData);
+
+      setFormData({ ...formData, thumbnail: e.target.files[0] } as any);
     }
   };
 
@@ -102,6 +124,7 @@ const CreateCampaignModal = ({
         category: "",
         thumbnail: null,
         campaignType: "",
+        imageUrl: "",
         // participation: [],
         startDate: "",
         endDate: "",
@@ -125,13 +148,14 @@ const CreateCampaignModal = ({
       categoryId: formData.category || null,
       goalAmountCents: Number(formData.goal) * 100,
       startDate: formData.startDate,
+      imageUrl: formData.imageUrl,
       endDate: formData.endDate || null,
     };
 
     createCampaign(payload as any);
 
     // Handle submission logic here
-    console.log("Submitting campaign:", formData);
+    // console.log("Submitting campaign:", formData);
   };
 
   // const handleParticipationChange = (value: string) => {
@@ -149,7 +173,7 @@ const CreateCampaignModal = ({
       value: item.id,
     })) ?? [];
 
-  console.log(communityItems);
+  // console.log(communityItems);
 
   return (
     <Dialog
@@ -215,7 +239,7 @@ const CreateCampaignModal = ({
                     }
                   />
                   <div className="absolute right-2 bottom-2 text-xs text-gray-400">
-                    {formData.description.length}/200
+                    {formData?.description?.length}/200
                   </div>
                 </div>
               </div>
@@ -276,12 +300,14 @@ const CreateCampaignModal = ({
                       className="h-full w-full object-cover"
                     />
                     <button
-                      onClick={() =>
+                      disabled={isDeletingUpload}
+                      onClick={() => {
+                        deleteUploadMutate();
                         setFormData({
                           ...formData,
                           thumbnail: null,
-                        })
-                      }
+                        });
+                      }}
                       className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
                     >
                       <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
@@ -300,6 +326,7 @@ const CreateCampaignModal = ({
                   </div>
                 )}
                 <input
+                  disabled={isUploading}
                   type="file"
                   ref={fileInputRef}
                   className="hidden"
@@ -520,6 +547,7 @@ const CreateCampaignModal = ({
                 Cancel
               </Button>
               <Button
+                disabled={isUploading || isDeletingUpload}
                 onClick={handleNext}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
               >

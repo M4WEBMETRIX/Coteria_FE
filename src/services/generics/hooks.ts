@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getFunction, postFunction, putFunction } from "./generic-index";
 import type { createCampaignProps, createCommunityProps } from "./types";
 import { toast } from "sonner";
+import { showErrorToast } from "@/lib/utils";
 
 const USE_GET_ORGANISATION_PROFILE_API = "USE_GET_ORGANISATION_PROFILE_API";
 const USE_GET_ALL_COMMUNITIES_API = "USE_GET_ALL_COMMUNITIES_API";
@@ -12,6 +13,7 @@ const USE_GET_ALL_CAMPAIGNS_API = "USE_GET_ALL_CAMPAIGNS_API";
 const USE_GET_CURRENCIES_API = "USE_GET_CURRENCIES_API";
 const USE_GET_CAMPAIGN_CATEGORIES_API = "USE_GET_CAMPAIGN_CATEGORIES_API";
 const USE_GET_COMMUNITIES_STATS_API = "USE_GET_COMMUNITIES_STATS_API";
+const USE_GET_CAMPAIGN_DETAILS_API = "USE_GET_CAMPAIGN_DETAILS_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -25,8 +27,16 @@ export const useCreateCampaign = () => {
       });
       toast.success("campaign created successfully");
     },
-    onError: (err: any) =>
-      toast.error(err?.message || "Error creating campaign, please try again.!"),
+    onError: (err: any) => showErrorToast(err, "Error creating campaign, please try again.!"),
+  });
+};
+
+export const useCampaignDetails = (id: string | number | undefined) => {
+  const URL = `/org/campaigns/${id}`;
+  return useQuery({
+    queryKey: [USE_GET_CAMPAIGN_DETAILS_API, id],
+    queryFn: () => getFunction(URL),
+    enabled: !!id,
   });
 };
 
@@ -38,10 +48,10 @@ export const useGetCurrencies = () => {
   });
 };
 
-export const useGetCampaigns = () => {
-  const URL = "/org/campaigns";
+export const useGetCampaigns = (params: { sort: string; search: string }) => {
+  const URL = `/org/campaigns?sort=${params?.sort}&search=${params?.search}`;
   return useQuery({
-    queryKey: [USE_GET_ALL_CAMPAIGNS_API],
+    queryKey: [USE_GET_ALL_CAMPAIGNS_API, params?.sort, params?.search],
     queryFn: () => getFunction(URL),
   });
 };
@@ -62,11 +72,12 @@ export const useGetOrganisationProfile = () => {
   });
 };
 
-export const useGetAllCommunities = () => {
-  const URL = "/org/communities";
+export const useGetAllCommunities = (params?: { sort?: string; search?: string }) => {
+  const URL = `/org/communities?sort=${params?.sort}&search=${params?.search}`;
   return useQuery({
-    queryKey: [USE_GET_ALL_COMMUNITIES_API],
+    queryKey: [USE_GET_ALL_COMMUNITIES_API, params?.sort, params?.search],
     queryFn: () => getFunction(URL),
+    // enabled: !!params?.sort && !!params?.search,
   });
 };
 
@@ -118,7 +129,7 @@ export const useCreateInviteToCommunity = (id: string | undefined) => {
       //   queryClient.invalidateQueries({
       //     queryKey: [USE_GET_ALL_COMMUNITIES_API],
       //   });
-      toast.success("Referral code generated");
+      // toast.success("Referral code generated");
     },
     onError: (err: any) =>
       toast.error(err?.message || "Error generating referral, please try again.!"),

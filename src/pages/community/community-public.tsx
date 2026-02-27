@@ -7,6 +7,7 @@ import PUBLIC_COMMUNITY_IMAGE_1 from "@/assets/images/public-community-image-1.p
 import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
 import SAMPLE_PUB_COM_IMAGE_1 from "@/assets/images/pub-com-1.png";
 import SAMPLE_PUB_COM_IMAGE_2 from "@/assets/images/pub-com-2.png";
+import { useGetPublicCommunity } from "./services";
 
 // Mock data - would come from API in production
 const communityData = {
@@ -64,6 +65,9 @@ const communityData = {
 const CommunityPublic = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
+
+  const { data: publicCommunityData } = useGetPublicCommunity(slug);
+  console.log("publicCommunityData", publicCommunityData);
 
   return (
     <div className="min-h-screen bg-white">

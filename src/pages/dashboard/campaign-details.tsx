@@ -7,22 +7,26 @@ import CommandCenter from "@/components/campaigns/details/command-center";
 // import ActivateInfluencer from "@/components/campaigns/details/activate-influencer";
 import Settings from "@/components/campaigns/details/settings";
 import { cn } from "@/lib/utils";
-import CampaignsEvents from "@/components/campaigns/campaign-events";
-import CampaignResources from "@/components/campaigns/campaign-resources";
+import { useCampaignDetails } from "@/services/generics/hooks";
+import { useParams } from "react-router-dom";
+// import CampaignsEvents from "@/components/campaigns/campaign-events";
+// import CampaignResources from "@/components/campaigns/campaign-resources";
 
 const Campaigndetails = () => {
-  // const { id } = useParams(); // Unused for now as we hardcode the view
+  const { id } = useParams();
 
   const [activeTab, setActiveTab] = useQueryState(
     "view",
     parseAsString.withDefault("command-center")
   );
 
+  const { data: campaignDetails } = useCampaignDetails(id);
+
   useBreadcrumb({
     items: [
       { label: "Dashboard", href: "/dashboard" },
       { label: "Campaigns", href: "/campaigns" },
-      { label: "Housing Support Drive", href: "#", isCurrentPage: true }, // Hardcoded name for demo matching screenshot
+      { label: campaignDetails?.data?.name, href: "#", isCurrentPage: true },
     ],
   });
 
@@ -30,7 +34,7 @@ const Campaigndetails = () => {
     {
       value: "command-center",
       label: "Command center",
-      component: <CommandCenter />,
+      component: <CommandCenter data={campaignDetails?.data} />,
     },
     //COMMENTED OUT FOR MVC
     // {
@@ -42,12 +46,12 @@ const Campaigndetails = () => {
 
     //
     //BROUGHT IN FOR MVC
-    {
-      value: "events",
-      label: "Events",
-      component: <CampaignsEvents />,
-    },
-    { value: "resources", label: "Resources", component: <CampaignResources /> },
+    // {
+    //   value: "events",
+    //   label: "Events",
+    //   component: <CampaignsEvents />,
+    // },
+    // { value: "resources", label: "Resources", component: <CampaignResources /> },
 
     { value: "settings", label: "Settings", component: <Settings /> },
   ];

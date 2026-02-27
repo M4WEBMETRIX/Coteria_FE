@@ -44,6 +44,7 @@ const communitySchema = z.object({
       message: "Community Logo is required",
     })
     .refine((file) => file !== null, "Community Logo is required"),
+  imageUrl: z.string().refine((v) => v !== null, "Image URL is required"),
 });
 
 type CommunityFormValues = z.infer<typeof communitySchema>;
@@ -96,6 +97,12 @@ const CreateCommunityModal = ({
     fileUploadData?.url
   );
 
+  useEffect(() => {
+    if (fileUploadData) {
+      setValue("imageUrl", fileUploadData.url, { shouldValidate: true });
+    }
+  }, [fileUploadData]);
+
   console.log("fileUploadData", fileUploadData);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -108,7 +115,7 @@ const CreateCommunityModal = ({
   };
 
   const onSubmit = (data: CommunityFormValues) => {
-    console.log("Submitting community:", data);
+    // console.log("Submitting community:", data);
     createCommunityMutate({
       ...data,
       name: data?.title,
@@ -288,6 +295,7 @@ const CreateCommunityModal = ({
                     </div>
                   )}
                   <input
+                    disabled={isUploading}
                     type="file"
                     ref={fileInputRef}
                     className="hidden"

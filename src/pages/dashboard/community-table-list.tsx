@@ -3,8 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   MoreHorizontalIcon,
   Search01Icon,
-  FilterHorizontalIcon,
-  ArrowDown01Icon,
+  // FilterHorizontalIcon,
+  // ArrowDown01Icon,
   //   ArrowDown01,
   //   ArrowUp01,
 } from "@hugeicons/core-free-icons";
@@ -22,7 +22,14 @@ import { useNavigate } from "react-router-dom";
 import { formatDistanceToNowStrict } from "date-fns";
 import CommunityTableBodySkeleton from "./components/skeletons/community-table-skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { EyeIcon, TrashIcon } from "@phosphor-icons/react";
+import { EyeIcon } from "@phosphor-icons/react";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 
 export function ActionPopover({ id }: { id: string | number }) {
   const navigate = useNavigate();
@@ -42,10 +49,10 @@ export function ActionPopover({ id }: { id: string | number }) {
             <EyeIcon size={18} />
             View
           </div>
-          <div className="flex items-center gap-2 text-sm text-[red]">
+          {/* <div className="flex items-center gap-2 text-sm text-[red]">
             <TrashIcon size={18} />
             Delete
-          </div>
+          </div> */}
         </div>
       </PopoverContent>
     </Popover>
@@ -137,7 +144,14 @@ const StatusBadge = ({ status }: { status: string }) => {
   );
 };
 
-const CommunityTableList = ({ communityData, isPending }: any) => {
+const CommunityTableList = ({
+  communityData,
+  isPending,
+  sort,
+  setSort,
+  search,
+  setSearch,
+}: any) => {
   const navigate = useNavigate();
   //   console.log("table dataaa1", communityData);
 
@@ -157,24 +171,28 @@ const CommunityTableList = ({ communityData, isPending }: any) => {
               className="absolute top-1/2 left-3 -translate-y-1/2 text-[#8B8D98]"
             />
             <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search"
               className="h-10 w-full rounded-lg border-[#E0E1E6] bg-white pl-10"
             />
           </div>
-          <Button
+          {/* <Button
             variant="outline"
             className="h-10 gap-2 rounded-lg border-[#E0E1E6] bg-white text-[#5E606A] hover:bg-gray-50"
           >
             <HugeiconsIcon icon={FilterHorizontalIcon} size={20} />
             Filter
-          </Button>
-          <Button
-            variant="outline"
-            className="h-10 gap-2 rounded-lg border-[#E0E1E6] bg-white text-[#5E606A] hover:bg-gray-50"
-          >
-            <HugeiconsIcon icon={ArrowDown01Icon} size={20} />
-            Sort by
-          </Button>
+          </Button> */}
+          <Select defaultValue="asc" value={sort} onValueChange={(value) => setSort(value)}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">Ascending</SelectItem>
+              <SelectItem value="desc">Descending</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -203,50 +221,60 @@ const CommunityTableList = ({ communityData, isPending }: any) => {
           {isPending ? (
             <CommunityTableBodySkeleton rows={6} />
           ) : (
-            <TableBody>
-              {communityData?.map((community: any, index: number) => (
-                <TableRow
-                  key={community?.id}
-                  onClick={() => navigate(`/community/${community?.id}`)}
-                  className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
-                >
-                  <TableCell className="py-4 pl-4">
-                    <Checkbox
-                      onClick={(e) => e.stopPropagation()}
-                      className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
-                    />
-                  </TableCell>
-                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                    {index + 1}
-                  </TableCell>
-                  <TableCell className="max-w-[300px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                    {community?.name}
-                  </TableCell>
-                  <TableCell>
-                    <div className="flex items-center gap-1.5">
-                      <span className="max-w-[320px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                        {community?.description}
-                      </span>
-                    </div>
-                  </TableCell>
-                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                    {community?.visibility}
-                  </TableCell>
-                  <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                    {timeAgo(community?.updatedAt)}
-                  </TableCell>
-                  {/* <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.raised}
-                </TableCell> */}
-                  <TableCell>
-                    <StatusBadge status={community?.isActive ? "Active" : "Draft"} />
-                  </TableCell>
-                  <TableCell onClick={(e) => e.stopPropagation()}>
-                    <ActionPopover id={community?.id} />
+            <>
+              {communityData?.length <= 0 ? (
+                <TableRow>
+                  <TableCell colSpan={7} className="h-[45vh] text-center">
+                    No communities found
                   </TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
+              ) : (
+                <TableBody>
+                  {communityData?.map((community: any, index: number) => (
+                    <TableRow
+                      key={community?.id}
+                      onClick={() => navigate(`/community/${community?.id}`)}
+                      className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
+                    >
+                      <TableCell className="py-4 pl-4">
+                        <Checkbox
+                          onClick={(e) => e.stopPropagation()}
+                          className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
+                        />
+                      </TableCell>
+                      <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell className="max-w-[300px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                        {community?.name}
+                      </TableCell>
+                      <TableCell>
+                        <div className="flex items-center gap-1.5">
+                          <span className="max-w-[320px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                            {community?.description}
+                          </span>
+                        </div>
+                      </TableCell>
+                      <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                        {community?.visibility}
+                      </TableCell>
+                      <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                        {timeAgo(community?.updatedAt)}
+                      </TableCell>
+                      {/* <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                  {campaign.raised}
+                </TableCell> */}
+                      <TableCell>
+                        <StatusBadge status={community?.isActive ? "Active" : "Draft"} />
+                      </TableCell>
+                      <TableCell onClick={(e) => e.stopPropagation()}>
+                        <ActionPopover id={community?.id} />
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )}
+            </>
           )}
         </Table>
       </div>

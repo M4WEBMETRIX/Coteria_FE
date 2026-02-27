@@ -3,8 +3,8 @@ import { Checkbox } from "@/components/ui/checkbox";
 import {
   MoreHorizontalIcon,
   Search01Icon,
-  FilterHorizontalIcon,
-  ArrowDown01Icon,
+  // FilterHorizontalIcon,
+  // ArrowDown01Icon,
   ArrowDown01,
   ArrowUp01,
 } from "@hugeicons/core-free-icons";
@@ -23,7 +23,8 @@ import { timeAgo } from "@/pages/dashboard/community-table-list";
 import { getCurrencySymbol } from "@/lib/utils";
 import CommunityTableBodySkeleton from "@/pages/dashboard/components/skeletons/community-table-skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { EyeIcon, TrashIcon } from "@phosphor-icons/react";
+import { EyeIcon } from "@phosphor-icons/react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 
 // const campaignsData = [
 //   {
@@ -107,9 +108,17 @@ const StatusBadge = ({ status }: { status: string }) => {
 const CampaignsTableWidget = ({
   campaignsData,
   isPending,
+  sort,
+  setSort,
+  search,
+  setSearch,
 }: {
   campaignsData: any[];
   isPending: boolean;
+  sort: string;
+  setSort: (sort: string) => void;
+  search: string;
+  setSearch: (search: string) => void;
 }) => {
   const navigate = useNavigate();
 
@@ -129,24 +138,22 @@ const CampaignsTableWidget = ({
               className="absolute top-1/2 left-3 -translate-y-1/2 text-[#8B8D98]"
             />
             <Input
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
               placeholder="Search"
               className="h-10 w-full rounded-lg border-[#E0E1E6] bg-white pl-10"
             />
           </div>
-          <Button
-            variant="outline"
-            className="h-10 gap-2 rounded-lg border-[#E0E1E6] bg-white text-[#5E606A] hover:bg-gray-50"
-          >
-            <HugeiconsIcon icon={FilterHorizontalIcon} size={20} />
-            Filter
-          </Button>
-          <Button
-            variant="outline"
-            className="h-10 gap-2 rounded-lg border-[#E0E1E6] bg-white text-[#5E606A] hover:bg-gray-50"
-          >
-            <HugeiconsIcon icon={ArrowDown01Icon} size={20} />
-            Sort by
-          </Button>
+
+          <Select value={sort} onValueChange={setSort}>
+            <SelectTrigger>
+              <SelectValue placeholder="Sort by" />
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="asc">Ascending</SelectItem>
+              <SelectItem value="desc">Descending</SelectItem>
+            </SelectContent>
+          </Select>
         </div>
       </div>
 
@@ -266,10 +273,10 @@ export function ActionPopover({ id }: { id: string | number }) {
             <EyeIcon size={18} />
             View
           </div>
-          <div className="flex items-center gap-2 text-sm text-[red]">
+          {/* <div className="flex items-center gap-2 text-sm text-[red]">
             <TrashIcon size={18} />
             Delete
-          </div>
+          </div> */}
         </div>
       </PopoverContent>
     </Popover>

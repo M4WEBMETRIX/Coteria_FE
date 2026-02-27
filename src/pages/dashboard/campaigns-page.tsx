@@ -11,6 +11,8 @@ import CreateCampaignModal from "@/components/campaigns/create-campaign-modal";
 
 import EmptyCampaigns from "../../assets/icons/empty-campaigns.svg";
 import { useGetCampaigns } from "@/services/generics/hooks";
+import { useDebounce } from "@/lib/utils";
+import { useState } from "react";
 
 const CampaignsPage = () => {
   useBreadcrumb({
@@ -20,7 +22,17 @@ const CampaignsPage = () => {
     ],
   });
 
-  const { data: campaignsData, isPending } = useGetCampaigns();
+  const [sort, setSort] = useState<string>("asc");
+  const [search, setSearch] = useState<string>("");
+
+  const debouncedSearch = useDebounce(search, 500);
+
+  const params = {
+    sort,
+    // search,
+    search: debouncedSearch,
+  };
+  const { data: campaignsData, isPending } = useGetCampaigns(params);
   // console.log("campaign data", campaignsData);
 
   // Initialize with data to show the populated state
@@ -30,7 +42,7 @@ const CampaignsPage = () => {
 
   return (
     <div className="font-inter flex h-full w-full flex-col gap-6">
-      {campaignsData?.data?.items?.length <= 0 ? (
+      {campaignsData?.data?.items?.length <= 0 && !search ? (
         <div className="my-auto flex h-full w-full flex-col place-content-center items-center justify-center">
           <img src={EmptyCampaigns} alt="empty-campaigns" className="mb-3 h-[106px] w-[106px]" />
           <p className="trackin-[-2%] pb-4 text-center text-base leading-6 font-semibold text-[#1E1F24]">
@@ -88,6 +100,10 @@ const CampaignsPage = () => {
           <CampaignsTableWidget
             campaignsData={campaignsData?.data?.items || []}
             isPending={isPending}
+            sort={sort}
+            setSort={setSort}
+            search={search}
+            setSearch={setSearch}
           />
         </div>
       )}
