@@ -56,9 +56,9 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
   const { data: subscriptionInvoices, isPending: invoicesLoading } = useGetSubscriptionInvoices();
   const { mutate: activateMutate, isPending } = useActivateBilling();
 
-  console.log("invoices", subscriptionInvoices);
+  // console.log("invoices", subscriptionInvoices);
 
-  console.log("sub", subscription);
+  // console.log("sub", subscription);
 
   const handleActivate = () => {
     activateMutate({

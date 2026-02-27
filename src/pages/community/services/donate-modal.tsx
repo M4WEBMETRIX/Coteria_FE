@@ -14,8 +14,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCreateDonation } from ".";
 import { useParams } from "react-router-dom";
-import { useEffect, useMemo } from "react";
-import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { useEffect } from "react";
+import { getBaseUrl } from "@/lib/utils";
 
 const formSchema = z.object({
   amount: z
@@ -33,15 +33,13 @@ type FormValues = z.infer<typeof formSchema>;
 export function DonationModal({
   open,
   onOpenChange,
+  currency,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
+  currency: string;
 }) {
   const { slug, campaignId } = useParams();
-
-  const orgUser = useMemo(() => {
-    return getOrgUserFromLocalStorage();
-  }, []);
 
   const {
     register,
@@ -64,7 +62,7 @@ export function DonationModal({
 
   const formattedAmount = new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: "USD",
+    currency: currency,
   }).format(amount || 0);
 
   const {
@@ -77,12 +75,12 @@ export function DonationModal({
     const payload = {
       slug: campaignId,
       amountCents: values.amount,
-      currency: orgUser?.defaultCurrency,
+      currency: currency || "CAD",
       //   donorUserId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       donorEmail: values.donorEmail,
       //   referrerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      successUrl: `/community/public/${slug}/campaign/${campaignId}`,
-      cancelUrl: `/community/public/${slug}/campaign/${campaignId}`,
+      successUrl: `${getBaseUrl()}/community/public/${slug}/campaign/${campaignId}`,
+      cancelUrl: `${getBaseUrl()}/community/public/${slug}/campaign/${campaignId}`,
     };
 
     createDonation(payload);

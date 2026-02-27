@@ -82,7 +82,11 @@ const CampaignPublic = () => {
 
   return (
     <>
-      <DonationModal open={isOpen} onOpenChange={setIsOpen} />
+      <DonationModal
+        currency={publicCampaignData?.data?.goalCurrency}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+      />
 
       <div className="min-h-screen bg-white">
         {/* Header */}
