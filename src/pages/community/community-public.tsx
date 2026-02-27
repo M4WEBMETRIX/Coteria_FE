@@ -7,7 +7,9 @@ import PUBLIC_COMMUNITY_IMAGE_1 from "@/assets/images/public-community-image-1.p
 import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
 import SAMPLE_PUB_COM_IMAGE_1 from "@/assets/images/pub-com-1.png";
 import SAMPLE_PUB_COM_IMAGE_2 from "@/assets/images/pub-com-2.png";
-import { useGetPublicCommunity } from "./services";
+import { useGetPublicCommunity, useGetPublicCommunityCampaigns } from "./services";
+import { getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
+import CommunityPublicSkeleton from "./community-public-skeleton";
 
 // Mock data - would come from API in production
 const communityData = {
@@ -65,17 +67,31 @@ const communityData = {
 const CommunityPublic = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
+  const { communityId } = useParams();
 
-  const { data: publicCommunityData } = useGetPublicCommunity(slug);
-  console.log("publicCommunityData", publicCommunityData);
+  const { data: publicCommunityCampaignsData, isPending: publicCommunityCampaignsPending } =
+    useGetPublicCommunityCampaigns(communityId);
+  const { data: publicCommunityData, isPending: publicCommunityPending } =
+    useGetPublicCommunity(slug);
+  // console.log("publicCommunityData", publicCommunityData);
+
+  const scrollToCampaigns = () => {
+    document.getElementById("campaigns")?.scrollIntoView({ behavior: "smooth" });
+  };
+
+  const isLoading = publicCommunityPending || publicCommunityCampaignsPending;
+
+  if (isLoading) {
+    return <CommunityPublicSkeleton />;
+  }
 
   return (
     <div className="min-h-screen bg-white">
       {/* Hero Section */}
       <div className="relative h-[426px] w-full overflow-hidden">
         <img
-          src={communityData.heroImage}
-          alt={communityData.name}
+          src={publicCommunityData?.data?.heroImage}
+          alt={publicCommunityData?.data?.name}
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent">
@@ -86,10 +102,13 @@ const CommunityPublic = () => {
                 {/* <h1 className="text-2xl font-bold text-[#1E1F24]">Atlantic Salmon Museum</h1> */}
               </div>
               <p className="max-w-md text-lg leading-relaxed text-[#24205C]">
-                {communityData.description}
+                {publicCommunityData?.data?.description}
               </p>
               <div className="flex gap-4">
-                <Button className="h-12 w-39.5 rounded-[10px] bg-[#12AA5B] px-8 text-white hover:bg-[#0da055]">
+                <Button
+                  onClick={scrollToCampaigns}
+                  className="h-12 w-39.5 rounded-[10px] bg-[#12AA5B] px-8 text-white hover:bg-[#0da055]"
+                >
                   Donate <CaretRightIcon className="ml-2" />
                 </Button>
                 <Button
@@ -113,54 +132,74 @@ const CommunityPublic = () => {
               <h2 className="mb-2 text-3xl font-normal text-[#1E1F24]">
                 Support Our Campaigns to Grow
               </h2>
-              <h3 className="text-2xl font-bold text-[#1E1F24]">{communityData.name}</h3>
+              <h3 className="text-2xl font-bold text-[#1E1F24]">
+                {publicCommunityData?.data?.name}
+              </h3>
             </div>
 
-            <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-              {communityData.campaigns.map((campaign) => (
+            <div id="campaigns" className="grid grid-cols-1 gap-6 md:grid-cols-2">
+              {publicCommunityCampaignsData?.data?.items.map((campaign: any) => (
                 <div
-                  key={campaign.id}
-                  onClick={() => navigate(`/community/public/${slug}/campaign/${campaign.id}`)}
+                  key={campaign?.id}
+                  onClick={() => navigate(`/community/public/${slug}/campaign/${campaign?.slug}`)}
                   className="cursor-pointer space-y-4 rounded-[10px] border border-[#ECEFF3] bg-white transition-shadow hover:shadow-lg"
                 >
                   <div className="h-48 w-full overflow-hidden rounded-t-[10px] bg-gray-100">
                     <img
-                      src={campaign.image}
-                      alt={campaign.title}
+                      src={campaign?.imageUrl}
+                      alt={campaign?.name}
                       className="h-full w-full object-cover"
                     />
                   </div>
                   <div className="space-y-3 p-5">
                     <h4 className="text-lg leading-[100%] font-normal text-[#605A5C]">
-                      {campaign.title}
+                      {campaign?.name}
                     </h4>
                     <p className="line-clamp-2 text-[13px] leading-[100%] text-[#A19FA2]">
-                      {campaign.description}
+                      {campaign?.description}
                     </p>
                     <div className="space-y-2">
-                      <Progress value={(campaign.raised / campaign.goal) * 100} className="h-2" />
+                      <Progress
+                        value={(campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100}
+                        className="h-2"
+                      />
                       <div className="flex items-center justify-between text-sm">
                         <div className="flex items-center gap-1.5">
                           <span className="text-[17px] leading-[100%] font-normal text-[#615D60]">
-                            ${campaign.raised.toLocaleString()}
+                            {getCurrencySymbol(campaign?.goalCurrency)}{" "}
+                            {campaign?.totalRaisedCents
+                              ? (campaign?.totalRaisedCents / 100)?.toLocaleString()
+                              : "0"}
                           </span>
                           <span className="text-[13px] leading-[100%] font-thin text-[#908F92]">
-                            ${campaign.goal.toLocaleString()} Goal
+                            {getCurrencySymbol(campaign?.goalCurrency)}{" "}
+                            {campaign?.goalAmountCents
+                              ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                              : "0"}{" "}
+                            Goal
                           </span>
                         </div>
 
                         <span className="text-[15px] leading-[100%] font-normal text-[#979498]">
-                          {campaign.donors} Donors
+                          {campaign?.donationsCount} Donor
+                          {campaign?.donationsCount <= 1 ? "" : "s"}
                         </span>
                       </div>
                     </div>
                     <div className="mt-3 flex items-center justify-between">
-                      <Button className="w-31 rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]">
+                      <Button
+                        onClick={() =>
+                          navigate(`/community/public/${slug}/campaign/${campaign?.id}`)
+                        }
+                        className="w-31 rounded-lg bg-[#12AA5B] text-white hover:bg-[#0da055]"
+                      >
                         Donate
                       </Button>
-                      <span className="text-[13px] leading-[100%] font-normal text-[#89B994]">
-                        {campaign.daysLeft} Days
-                      </span>
+                      {campaign?.endDate !== null && (
+                        <span className="text-[13px] leading-[100%] font-normal text-[#89B994]">
+                          {getDaysBetweenDates(campaign?.startDate, campaign?.endDate)} Days
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

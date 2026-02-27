@@ -4,6 +4,9 @@ import {
   CurrencyCircleDollarIcon,
   XCircleIcon,
 } from "@phosphor-icons/react";
+import { useMemo } from "react";
+import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { getCurrencySymbol } from "@/lib/utils";
 
 interface StatsCardProps {
   title: string;
@@ -44,6 +47,9 @@ const StatsCard = ({
 
 const CampaignOverviewStats = ({ data }: { data: any }) => {
   // console.log("data", data);
+  const orgUser = useMemo(() => {
+    return getOrgUserFromLocalStorage();
+  }, []);
 
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -66,7 +72,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       {/* 3. Total Goal - Icon: Check in Green Circle */}
       <StatsCard
         title="Total Goal"
-        value={`${data ? data?.totalGoalAmountsCents / 100 : 0}`}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalGoalAmountsCents / 100)?.toLocaleString() : 0}`}
         icon={<CheckCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"

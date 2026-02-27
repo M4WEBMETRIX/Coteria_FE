@@ -78,13 +78,18 @@ const CreateCampaignModal = ({
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
+  const today = new Date().toISOString().split("T")[0];
+
   const {
     mutateAsync: createCampaign,
     isPending: isCreatingCampaign,
     isSuccess: isCreatingCampaignSuccess,
   } = useCreateCampaign();
   const { data: categories } = useGetCampaignCategories();
-  const { data: communityData, isPending: isCommunityPending } = useGetAllCommunities();
+  const { data: communityData, isPending: isCommunityPending } = useGetAllCommunities({
+    sort: "",
+    search: "",
+  });
 
   const {
     mutate: fileUploadMutate,
@@ -254,12 +259,18 @@ const CreateCampaignModal = ({
                   placeholder="$1,500.00"
                   type="text" // Keep text for currency formatting flexibility
                   value={formData.goal}
-                  onChange={(e) =>
+                  onChange={(e) => {
+                    let value = e.target.value.replace(/[^0-9.]/g, "");
+
+                    const parts = value.split(".");
+                    if (parts.length > 2) {
+                      value = parts[0] + "." + parts[1];
+                    }
                     setFormData({
                       ...formData,
-                      goal: e.target.value,
-                    })
-                  }
+                      goal: value,
+                    });
+                  }}
                 />
               </div>
 
@@ -403,6 +414,7 @@ const CreateCampaignModal = ({
                   <div className="flex items-center gap-2">
                     <Input
                       type="date"
+                      min={today}
                       placeholder="Start date"
                       value={formData.startDate}
                       onChange={(e) =>
@@ -416,6 +428,7 @@ const CreateCampaignModal = ({
                     <span className="text-gray-400">/</span>
                     <Input
                       type="date"
+                      min={formData.startDate || today}
                       placeholder="End date (optional)"
                       value={formData.endDate}
                       onChange={(e) =>
@@ -475,13 +488,13 @@ const CreateCampaignModal = ({
               </div>
 
               {/* Community */}
-              {formData.visibility === "community" && (
-                <div className="w-full space-y-2">
-                  <Label htmlFor="community" className="text-sm font-medium text-[#344054]">
-                    Community <span className="text-red-500">*</span>
-                  </Label>
 
-                  {/* <>
+              <div className="w-full space-y-2">
+                <Label htmlFor="community" className="text-sm font-medium text-[#344054]">
+                  Community <span className="text-red-500">*</span>
+                </Label>
+
+                {/* <>
                   
                     <Combobox
                       value={formData.communityId}
@@ -512,30 +525,29 @@ const CreateCampaignModal = ({
                       </ComboboxContent>
                     </Combobox>
                   </> */}
-                  <Select
-                    disabled={isCommunityPending}
-                    value={formData.communityId}
-                    onValueChange={(value) => {
-                      console.log("value", value);
-                      setFormData({
-                        ...formData,
-                        communityId: value,
-                      });
-                    }}
-                  >
-                    <SelectTrigger className="w-full">
-                      <SelectValue placeholder="Select community" />
-                    </SelectTrigger>
-                    <SelectContent className="w-full">
-                      {communityItems?.map((item: any, index: number) => (
-                        <SelectItem key={index} value={item.value}>
-                          {item.label}
-                        </SelectItem>
-                      ))}
-                    </SelectContent>
-                  </Select>
-                </div>
-              )}
+                <Select
+                  disabled={isCommunityPending}
+                  value={formData.communityId}
+                  onValueChange={(value) => {
+                    console.log("value", value);
+                    setFormData({
+                      ...formData,
+                      communityId: value,
+                    });
+                  }}
+                >
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="Select community" />
+                  </SelectTrigger>
+                  <SelectContent className="w-full">
+                    {communityItems?.map((item: any, index: number) => (
+                      <SelectItem key={index} value={item.value}>
+                        {item.label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
             </div>
           )}
         </div>

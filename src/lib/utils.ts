@@ -84,3 +84,13 @@ export const showErrorToast = (error: any, fallback?: string) => {
 
   toast.error(message);
 };
+
+export const getDaysBetweenDates = (startDate: string, endDate: string) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  const diffInMs = (end as any) - (start as any);
+  const diffInDays = diffInMs / (1000 * 60 * 60 * 24);
+
+  return Math.round(diffInDays);
+};
