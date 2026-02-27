@@ -14,6 +14,7 @@ const USE_GET_CURRENCIES_API = "USE_GET_CURRENCIES_API";
 const USE_GET_CAMPAIGN_CATEGORIES_API = "USE_GET_CAMPAIGN_CATEGORIES_API";
 const USE_GET_COMMUNITIES_STATS_API = "USE_GET_COMMUNITIES_STATS_API";
 const USE_GET_CAMPAIGN_DETAILS_API = "USE_GET_CAMPAIGN_DETAILS_API";
+const USE_GET_CAMPAIGNS_STATS_API = "USE_GET_CAMPAIGNS_STATS_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -24,6 +25,10 @@ export const useCreateCampaign = () => {
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_ALL_CAMPAIGNS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGNS_STATS_API],
       });
       toast.success("campaign created successfully");
     },
@@ -106,6 +111,14 @@ export const useCommunityStats = () => {
   const URL = `/org/communities/stats`;
   return useQuery({
     queryKey: [USE_GET_COMMUNITIES_STATS_API],
+    queryFn: () => getFunction(URL),
+  });
+};
+
+export const useCampaignStats = () => {
+  const URL = `/org/campaigns/stats`;
+  return useQuery({
+    queryKey: [USE_GET_CAMPAIGNS_STATS_API],
     queryFn: () => getFunction(URL),
   });
 };

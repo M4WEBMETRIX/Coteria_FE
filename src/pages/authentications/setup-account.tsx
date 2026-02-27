@@ -16,7 +16,7 @@ import { cn } from "@/lib/utils";
 import STRIPE_LOGO from "@/assets/icons/stripe_logo.svg";
 import type { OnboardProps } from "@/services";
 import { useOnboardOrganisation } from "@/services/auth";
-import { useNavigate } from "react-router-dom";
+import { Navigate, useNavigate } from "react-router-dom";
 
 interface IProps {
   data: OnboardProps;
@@ -252,6 +252,11 @@ const StepThree: React.FC = () => {
 const SetupAccountPage: React.FC = () => {
   const [step, setStep] = React.useState(1);
 
+  const accessToken = localStorage.getItem("accessToken");
+
+  if (!accessToken) {
+    return <Navigate to="/auth/login" replace />;
+  }
   const [formData, setFormData] = React.useState<OnboardProps>({
     firstName: "",
     lastName: "",

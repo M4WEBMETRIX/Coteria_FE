@@ -1,5 +1,5 @@
 import AuthLayout from "./auth-layout";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import gmail from "@/assets/icons/gmail.svg";
 import outlook from "@/assets/icons/microsoft_outlook.svg";
 import {
@@ -13,11 +13,15 @@ import { useQueryState } from "nuqs";
 const CheckEmailPage = () => {
   const navigate = useNavigate();
   const location = useLocation();
+  const accessToken = localStorage.getItem("accessToken");
   const [token] = useQueryState("token");
 
-  const email = location.state?.email;
+  if (!accessToken) {
+    return <Navigate to="/auth/login" replace />;
+  }
 
-  //   const token = localStorage.getItem("accessToken");
+  const email = location.state?.email || "your mail";
+
   const {
     mutateAsync: verifyEmail,
     isSuccess,

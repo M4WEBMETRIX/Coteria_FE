@@ -10,7 +10,12 @@ import {
   type RegisterProps,
 } from ".";
 import { toast } from "sonner";
-import { removeTokens, removeUserTokens } from "@/end-user-app/services/local-storage";
+import {
+  removeEndUserFromLocalStorage,
+  removeOrgUserFromLocalStorage,
+  removeTokens,
+  removeUserTokens,
+} from "@/end-user-app/services/local-storage";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postFunction } from "./generics/generic-index";
 
@@ -39,8 +44,11 @@ export const useOrganisationVerifyEmail = () => {
       toast.success("Please check your email for further instructions");
     },
     onError: (error) => {
-      //   console.log("err", error);
-      toast.error(error?.message);
+      if (error?.message?.toLocaleLowerCase() === "invalid or expired token") {
+        toast.error("Please click resend verification email to get a new link");
+      } else {
+        toast.error(error?.message);
+      }
     },
   });
 };
@@ -95,6 +103,7 @@ export const useLoginOrganisation = () => {
 };
 
 export const useLogoutOrganisation = () => {
+  const navigate = useNavigate();
   const location = useLocation();
   const isUserPath = location.pathname.includes("user");
 
@@ -109,6 +118,15 @@ export const useLogoutOrganisation = () => {
       toast.success("You've successfully logged out");
     },
     onError: (error) => {
+      if (isUserPath) {
+        removeUserTokens();
+        removeEndUserFromLocalStorage();
+      } else {
+        removeTokens();
+        removeOrgUserFromLocalStorage();
+      }
+
+      navigate("/auth/login");
       console.log("err", error);
       toast.error(error?.message);
     },

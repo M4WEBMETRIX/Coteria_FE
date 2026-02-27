@@ -13,16 +13,19 @@ type User = {
   defaultCurrency?: string;
   currentUser?: {
     id?: string;
-    firstName?: string;
-    lastName?: string;
-    phone?: string;
-    email?: string;
-    businessEmail?: string;
-    businessNumber?: string;
+    firstName?: string | undefined;
+    lastName?: string | undefined;
+    phone?: string | undefined;
+    email?: string | undefined;
+    businessEmail?: string | undefined;
+    businessNumber?: string | undefined;
+    photo?: string | undefined;
     createdAt?: string;
     hasStripeConnected?: boolean;
     isActive?: boolean;
     isVerified?: boolean;
+    emailVerified?: boolean;
+    role?: string;
     slug?: string;
     stripeOnboardingComplete?: boolean;
   };

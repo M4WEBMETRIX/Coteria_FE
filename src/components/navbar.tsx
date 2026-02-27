@@ -1,12 +1,13 @@
 import { Search, Bell } from "lucide-react";
 // import UserProfileMenu from "@/components/user-profile-menu";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useMemo, useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
+import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 // import ProfilePIC from "@/assets/images/image-2.png";
-import { useGetOrganisationProfile } from "@/services/generics/hooks";
-import { setOrgUserToLocalStorage } from "@/end-user-app/services/local-storage";
+// import { useGetOrganisationProfile } from "@/services/generics/hooks";
+// import { setOrgUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
@@ -15,12 +16,10 @@ interface NavbarProps {
 const Navbar = ({ breadcrumbs }: NavbarProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
-  const { data: userData } = useGetOrganisationProfile();
-  // console.log("user data", userData?.data);
 
-  useEffect(() => {
-    setOrgUserToLocalStorage(userData?.data);
-  }, [userData]);
+  const orgUser = useMemo(() => {
+    return getOrgUserFromLocalStorage();
+  }, []);
 
   return (
     <nav className="font-inter sticky top-0 z-50 flex h-[72px] w-full items-center justify-between border-b border-[#DFE1E7] bg-white">
@@ -73,15 +72,15 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
         <div className="h-[20px] w-[px] bg-[#DFE1E7]" />
         <button className="flex items-center justify-start gap-2 outline-none">
           <Avatar className="h-12 w-12 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
-            <AvatarImage src={userData?.data?.photo || ""} className="object-cover" />
-            <AvatarFallback>{getNameAbbrev(userData?.data?.name)}</AvatarFallback>
+            <AvatarImage src={orgUser?.currentUser?.photo || ""} className="object-cover" />
+            <AvatarFallback>{getNameAbbrev(orgUser?.currentUser?.firstName as any)}</AvatarFallback>
           </Avatar>
           <div className="flex flex-col items-start justify-start text-left">
             <p className="truncate text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
-              {userData?.data?.name}
+              {orgUser?.currentUser?.firstName}
             </p>
             <p className="text-left text-xs leading-[150%] font-normal tracking-[2%] text-[#666D80]">
-              Admin
+              {orgUser?.currentUser?.role}
             </p>
           </div>
         </button>

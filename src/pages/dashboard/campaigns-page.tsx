@@ -10,9 +10,10 @@ import CreateCampaignModal from "@/components/campaigns/create-campaign-modal";
 // import { HugeiconsIcon } from "@hugeicons/react";
 
 import EmptyCampaigns from "../../assets/icons/empty-campaigns.svg";
-import { useGetCampaigns } from "@/services/generics/hooks";
+import { useCampaignStats, useGetCampaigns } from "@/services/generics/hooks";
 import { useDebounce } from "@/lib/utils";
 import { useState } from "react";
+import { StatCardSkeleton } from "@/components/community/community-stats";
 
 const CampaignsPage = () => {
   useBreadcrumb({
@@ -33,6 +34,8 @@ const CampaignsPage = () => {
     search: debouncedSearch,
   };
   const { data: campaignsData, isPending } = useGetCampaigns(params);
+
+  const { data: campaignsStatsData, isPending: isPendingStats } = useCampaignStats();
   // console.log("campaign data", campaignsData);
 
   // Initialize with data to show the populated state
@@ -94,7 +97,15 @@ const CampaignsPage = () => {
           </div>
 
           {/* Stats */}
-          <CampaignOverviewStats />
+          {isPendingStats ? (
+            <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+              {Array.from({ length: 4 }).map((_, index) => (
+                <StatCardSkeleton key={index} />
+              ))}
+            </div>
+          ) : (
+            <CampaignOverviewStats data={campaignsStatsData?.data} />
+          )}
 
           {/* Table */}
           <CampaignsTableWidget
