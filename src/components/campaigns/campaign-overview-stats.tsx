@@ -43,13 +43,14 @@ const StatsCard = ({
 };
 
 const CampaignOverviewStats = ({ data }: { data: any }) => {
-  console.log("data", data);
+  // console.log("data", data);
+
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       {/* 1. Campaign Active - Icon: Dollar Sign in Green Circle */}
       <StatsCard
         title="Campaign Active"
-        value="0"
+        value={data?.activeCampaigns}
         icon={<CurrencyCircleDollarIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -57,7 +58,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       {/* 2. Total Raised - Icon: Minus/Dash in Green Circle */}
       <StatsCard
         title="Total Raised"
-        value="$0.00"
+        value={data?.totalAmountRaisedCents}
         icon={<ArrowCircleUpIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -65,7 +66,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       {/* 3. Total Goal - Icon: Check in Green Circle */}
       <StatsCard
         title="Total Goal"
-        value="$0.00"
+        value={`${data ? data?.totalGoalAmountsCents / 100 : 0}`}
         icon={<CheckCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -73,7 +74,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       {/* 4. Campaign Closed - Icon: X in Green Circle */}
       <StatsCard
         title="Campaign Closed"
-        value="0"
+        value={data?.completedCampaigns}
         icon={<XCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
