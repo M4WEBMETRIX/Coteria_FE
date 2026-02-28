@@ -44,7 +44,7 @@ const LoginPage = () => {
   });
 
   const onSubmit = (data: LoginFormValues) => {
-    console.log(data);
+    // console.log(data);
     // setLoading(true);
 
     loginMutate(data);

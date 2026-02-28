@@ -15,6 +15,7 @@ import EmptyCampaigns from "../../assets/icons/empty-campaigns.svg";
 import { useEffect, useMemo, useState } from "react";
 import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import BillingIntegrationSkeleton from "./skeleton/billing-skeleton";
+import { CreditCardIcon } from "@phosphor-icons/react";
 
 interface BillingIntegrationTabProps {
   formData: {
@@ -66,7 +67,8 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
     });
   };
 
-  // const test = true
+  const cardInfoJSON = JSON.parse(subscription?.data?.paymentMethodDetailsJson || "{}");
+  console.log("cardInfoJSON", cardInfoJSON);
 
   if (isLoading || invoicesLoading) {
     return <BillingIntegrationSkeleton />;
@@ -84,22 +86,30 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
             Manage your payment methods securely. Add, update, or remove your credit/debit cards.
           </p>
         </div>
-        <div className="w-[532px]">
-          <div className="flex items-center justify-between rounded-xl border border-[#E1E4EA] bg-white p-4">
-            <div className="flex items-center gap-4">
-              <div className="flex h-8 w-12 items-center justify-center rounded border border-[#E1E4EA] bg-white text-xs font-bold text-[#00579F]">
-                VISA
+        {subscription?.data?.paymentMethodDetailsJson ? (
+          <div className="w-[532px]">
+            <div className="flex items-center justify-between rounded-xl border border-[#E1E4EA] bg-white p-4">
+              <div className="flex items-center gap-4">
+                <div className="flex h-8 w-12 items-center justify-center rounded border border-[#E1E4EA] bg-white text-xs font-bold text-[#00579F]">
+                  <BrandBadge brand={cardInfoJSON?.brand} />
+                </div>
+                <div className="space-y-0.5">
+                  <p className="text-sm font-medium text-[#0A0A0C]">
+                    •••• •••• •••• {cardInfoJSON?.last4}
+                  </p>
+                  <p className="text-xs text-[#525866]">
+                    Expiry {cardInfoJSON?.expMonth}/{cardInfoJSON?.expYear?.toString().slice(-2)}
+                  </p>
+                </div>
               </div>
-              <div className="space-y-0.5">
-                <p className="text-sm font-medium text-[#0A0A0C]">•••• •••• •••• 7228</p>
-                <p className="text-xs text-[#525866]">Expiry 10/26</p>
-              </div>
+              <button className="text-[#525866]">
+                <MoreHorizontal className="h-5 w-5" />
+              </button>
             </div>
-            <button className="text-[#525866]">
-              <MoreHorizontal className="h-5 w-5" />
-            </button>
           </div>
-        </div>
+        ) : (
+          <BillingCardEmptyState />
+        )}
       </div>
 
       <Separator />
@@ -309,5 +319,78 @@ export function ChangeBillingPopover({ billingCode }: { billingCode: string }) {
     </Popover>
   );
 }
+
+const BrandBadge = ({ brand }: { brand?: string }) => {
+  const b = brand?.toLowerCase();
+
+  const styles: Record<string, any> = {
+    visa: {
+      bg: "bg-white",
+      text: "text-[#1a1f71]",
+      label: "VISA",
+      font: "font-bold text-[11px] font-serif",
+    },
+    mastercard: {
+      bg: "bg-white",
+      label: "MC",
+    },
+    amex: {
+      bg: "bg-[#016fd0]",
+      text: "text-white",
+      label: "AMEX",
+      font: "font-bold text-[8px]",
+    },
+    discover: {
+      bg: "bg-white",
+      text: "text-[#f76f20]",
+      label: "DISC",
+      font: "font-bold text-[8px]",
+    },
+  };
+
+  const fallback = {
+    bg: "bg-gray-100",
+    text: "text-gray-500",
+    label: brand ? brand.slice(0, 4).toUpperCase() : "CARD",
+    font: "font-semibold text-[10px]",
+  };
+
+  const s = styles[b || ""] || fallback;
+
+  return (
+    <div
+      className={`flex h-[28px] w-[44px] shrink-0 items-center justify-center rounded-md ${s.bg} `}
+    >
+      {b === "mastercard" ? (
+        <svg width="26" height="16" viewBox="0 0 38 24">
+          <circle cx="13" cy="12" r="11" fill="#eb001b" />
+          <circle cx="25" cy="12" r="11" fill="#f79e1b" opacity="0.9" />
+        </svg>
+      ) : (
+        <span
+          className={` ${s.text || fallback.text} ${s.font || fallback.font} ${b === "visa" ? "tracking-wide" : ""} `}
+        >
+          {s.label}
+        </span>
+      )}
+    </div>
+  );
+};
+
+const BillingCardEmptyState = () => (
+  <div className="w-[532px]">
+    <div className="flex items-center justify-between rounded-xl border border-[#E1E4EA] bg-white p-4">
+      <div className="flex items-center gap-4">
+        <div className="flex h-8 w-12 items-center justify-center rounded border border-[#E1E4EA] bg-white text-xs font-bold text-[#00579F]">
+          <CreditCardIcon size={20} />
+        </div>
+        <div className="space-y-0.5">
+          <p className="text-sm font-medium text-[#0A0A0C]">No card record</p>
+          <p className="text-xs text-[#525866]">Billing method will be added after checkout</p>
+        </div>
+      </div>
+    </div>
+  </div>
+);
 
 export default BillingIntegrationTab;

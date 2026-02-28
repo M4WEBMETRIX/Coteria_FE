@@ -33,7 +33,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
   };
 
   const { data: currencies } = useGetCurrencies();
-  console.log(currencies);
+  // console.log(currencies);
 
   const orgUser = useMemo(() => {
     return getOrgUserFromLocalStorage();

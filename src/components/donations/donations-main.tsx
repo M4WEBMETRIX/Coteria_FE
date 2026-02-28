@@ -15,6 +15,7 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ManagePagination from "@/components/Manage-pagination";
+import { useGetOrganisationDonations } from "@/services/generics/hooks";
 
 const donationsData = Array.from({ length: 10 }).map((_, i) => ({
   id: i + 1,
@@ -31,6 +32,9 @@ export function DonationsMainTable() {
   const [totalPages] = useState(30);
   const [itemsPerPage, setItemsPerPage] = useState(10);
   const [selectedRows, setSelectedRows] = useState<number[]>([]);
+
+  const { data: donationsData1 } = useGetOrganisationDonations();
+  console.log(donationsData1);
 
   const toggleAll = () => {
     if (selectedRows.length === donationsData.length) {

@@ -15,6 +15,7 @@ const USE_GET_CAMPAIGN_CATEGORIES_API = "USE_GET_CAMPAIGN_CATEGORIES_API";
 const USE_GET_COMMUNITIES_STATS_API = "USE_GET_COMMUNITIES_STATS_API";
 const USE_GET_CAMPAIGN_DETAILS_API = "USE_GET_CAMPAIGN_DETAILS_API";
 const USE_GET_CAMPAIGNS_STATS_API = "USE_GET_CAMPAIGNS_STATS_API";
+const USE_GET_ORGANISATION_DONATIONS_API = "USE_GET_ORGANISATION_DONATIONS_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -119,6 +120,14 @@ export const useCampaignStats = () => {
   const URL = `/org/campaigns/stats`;
   return useQuery({
     queryKey: [USE_GET_CAMPAIGNS_STATS_API],
+    queryFn: () => getFunction(URL),
+  });
+};
+
+export const useGetOrganisationDonations = () => {
+  const URL = `/org/donations`;
+  return useQuery({
+    queryKey: [USE_GET_ORGANISATION_DONATIONS_API],
     queryFn: () => getFunction(URL),
   });
 };

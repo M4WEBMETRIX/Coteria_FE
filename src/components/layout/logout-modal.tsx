@@ -8,6 +8,7 @@ import {
 } from "@/end-user-app/services/local-storage";
 import { useLogoutOrganisation } from "@/services/auth";
 import { useEffect } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface LogoutModalProps {
   open: boolean;
@@ -20,6 +21,7 @@ const LogoutModal = ({
   onOpenChange,
   // isUser
 }: LogoutModalProps) => {
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
 
   const location = useLocation();
@@ -51,9 +53,11 @@ const LogoutModal = ({
       if (isUserPath) {
         navigate("/user/login");
         removeEndUserFromLocalStorage();
+        queryClient.clear();
       } else {
         navigate("/auth/login");
         removeOrgUserFromLocalStorage();
+        queryClient.clear();
       }
     }
   }, [isSuccess]);

@@ -13,7 +13,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useCreateDonation } from ".";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getBaseUrl } from "@/lib/utils";
 
@@ -39,6 +39,7 @@ export function DonationModal({
   onOpenChange: (open: boolean) => void;
   currency: string;
 }) {
+  const navigate = useNavigate();
   const { slug, campaignId } = useParams();
 
   const {
@@ -69,12 +70,13 @@ export function DonationModal({
     mutate: createDonation,
     isPending: createDonationPending,
     isSuccess,
+    data,
   } = useCreateDonation(campaignId);
 
   const onSubmit = (values: FormValues) => {
     const payload = {
       slug: campaignId,
-      amountCents: values.amount,
+      amountCents: values.amount * 100,
       currency: currency || "CAD",
       //   donorUserId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       donorEmail: values.donorEmail,
@@ -89,6 +91,7 @@ export function DonationModal({
   useEffect(() => {
     if (isSuccess) {
       onOpenChange(false);
+      navigate(data?.data?.checkoutUrl);
     }
   }, [isSuccess]);
 

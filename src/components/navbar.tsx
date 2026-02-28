@@ -1,13 +1,10 @@
 import { Search, Bell } from "lucide-react";
 // import UserProfileMenu from "@/components/user-profile-menu";
-import { useMemo, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
-import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
-// import ProfilePIC from "@/assets/images/image-2.png";
-// import { useGetOrganisationProfile } from "@/services/generics/hooks";
-// import { setOrgUserToLocalStorage } from "@/end-user-app/services/local-storage";
+import { useGetOrganisationProfile } from "@/services/generics/hooks";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
@@ -17,9 +14,8 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  const orgUser = useMemo(() => {
-    return getOrgUserFromLocalStorage();
-  }, []);
+  const { data: userData } = useGetOrganisationProfile();
+  const orgUser = userData?.data;
 
   return (
     <nav className="font-inter sticky top-0 z-50 flex h-[72px] w-full items-center justify-between border-b border-[#DFE1E7] bg-white">
