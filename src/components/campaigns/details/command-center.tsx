@@ -1,10 +1,9 @@
-import { Button } from "@/components/ui/button";
-
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon, Cancel01Icon, Checkmark, Share01Icon } from "@hugeicons/core-free-icons";
+import { ArrowRight01Icon, Cancel01Icon, Checkmark } from "@hugeicons/core-free-icons";
 
 import PulseStatsWidget from "@/components/campaigns/details/pulse-stats-widget";
 import TodaysObjectivesWidget from "@/components/campaigns/details/todays-objectives-widget";
+import ShareCampaign from "./share-campaign";
 // import DriverAnalysisWidget from "@/components/campaigns/details/driver-analysis-widget";
 // import CampaignMomentumTimeline from "@/components/campaigns/details/campaign-momentum-timeline";
 // import {
@@ -43,10 +42,9 @@ const CommandCenter = ({ data }: { data: any }) => {
                 <span className="text-xs text-[#8B8D98]">{data?.description}</span>
               </div>
             </div>
-            <Button variant="outline" className="h-8 gap-2 border-[#E0E1E6] text-xs text-[#5E606A]">
-              <HugeiconsIcon icon={Share01Icon} size={14} />
-              Share | 517
-            </Button>
+            {data?.communityId && data?.slug && (
+              <ShareCampaign campaignSlug={data?.slug} communityId={data?.communityId} />
+            )}
           </div>
 
           {/* Pulse Stats Widgets */}

@@ -75,8 +75,11 @@ api.interceptors.response.use(
         const backendError = err.response.data;
 
         return Promise.reject({
+          ...err,
+          response: err.response,
           message: backendError?.error?.message || backendError?.message || "Something went wrong",
-          code: backendError?.error?.code || error.response.status,
+          code: backendError?.error?.code || err.response.status,
+          validationErrors: backendError?.error?.validationErrors || backendError?.validationErrors,
         });
         // return Promise.reject(err);
       } finally {
@@ -92,8 +95,11 @@ api.interceptors.response.use(
     const backendError = error.response.data;
 
     return Promise.reject({
+      ...error,
+      response: error.response,
       message: backendError?.error?.message || backendError?.message || "Something went wrong",
       code: backendError?.error?.code || error.response.status,
+      validationErrors: backendError?.error?.validationErrors || backendError?.validationErrors,
     });
   }
 );

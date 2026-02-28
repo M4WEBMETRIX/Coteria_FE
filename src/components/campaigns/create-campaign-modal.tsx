@@ -103,18 +103,18 @@ const CreateCampaignModal = ({
 
   useEffect(() => {
     if (fileUploadData) {
-      setFormData({ ...formData, imageUrl: fileUploadData.url });
+      setFormData((prev) => ({ ...prev, imageUrl: fileUploadData.url }));
     }
   }, [fileUploadData]);
 
   // console.log(categories);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const formData = new FormData();
-      formData.append("file", e.target.files[0]);
-      fileUploadMutate(formData);
+      const uploadPayload = new FormData();
+      uploadPayload.append("file", e.target.files[0]);
+      fileUploadMutate(uploadPayload);
 
-      setFormData({ ...formData, thumbnail: e.target.files[0] } as any);
+      setFormData((prev) => ({ ...prev, thumbnail: e.target.files![0] }) as any);
     }
   };
 

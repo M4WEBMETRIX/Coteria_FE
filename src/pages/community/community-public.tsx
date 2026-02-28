@@ -90,7 +90,7 @@ const CommunityPublic = () => {
       {/* Hero Section */}
       <div className="relative h-[426px] w-full overflow-hidden">
         <img
-          src={publicCommunityData?.data?.heroImage}
+          src={publicCommunityData?.data?.imageUrl}
           alt={publicCommunityData?.data?.name}
           className="h-full w-full object-cover"
         />

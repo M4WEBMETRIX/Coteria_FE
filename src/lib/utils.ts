@@ -62,23 +62,37 @@ export const debounce = (func: (...args: any[]) => any, delay: number) => {
 };
 
 export const showErrorToast = (error: any, fallback?: string) => {
-  console.log(error);
-  const validationErrors = error?.response?.data?.error?.validationErrors;
+  console.log("showErrorToast received:", error);
+  // Extract validation errors either from the direct property (if attached by interceptor)
+  // or deeply nested inside the response data
+  const validationErrors =
+    error?.validationErrors ||
+    error?.response?.data?.error?.validationErrors ||
+    error?.response?.data?.validationErrors;
 
   // Show individual validation errors
-  if (validationErrors) {
+  if (validationErrors && typeof validationErrors === "object") {
+    let hasShownError = false;
     Object.values(validationErrors).forEach((messages: any) => {
-      messages.forEach((message: string) => {
-        toast.error(message);
-      });
+      if (Array.isArray(messages)) {
+        messages.forEach((message: string) => {
+          toast.error(message);
+          hasShownError = true;
+        });
+      } else if (typeof messages === "string") {
+        toast.error(messages);
+        hasShownError = true;
+      }
     });
-    return;
+
+    if (hasShownError) return;
   }
 
   // Try multiple message sources
   const message =
-    error?.response?.data?.error?.message || // API error
-    error?.message || // Normal JS error
+    error?.message || // Message derived from interceptor or JS error
+    error?.response?.data?.error?.message || // Direct API error message
+    error?.response?.data?.message || // Direct API message
     fallback || // Custom fallback
     "Something went wrong";
 
