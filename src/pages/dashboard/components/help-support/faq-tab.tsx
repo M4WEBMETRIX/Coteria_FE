@@ -42,6 +42,7 @@ const suggestions = [
 ];
 
 export function FaqTab({ isUser }: { isUser?: boolean }) {
+  const isOrgs = true;
   return (
     <div className="h-full">
       <h2 className="mb-4 text-lg font-semibold text-[#0A0A0C]">Frequently Asked Question</h2>
@@ -68,7 +69,7 @@ export function FaqTab({ isUser }: { isUser?: boolean }) {
         </div>
 
         {/* AI Insights Panel */}
-        {!isUser && (
+        {!isUser && !isOrgs && (
           <div className="relative flex h-fit min-h-[600px] w-1/2 shrink-0 flex-col items-center rounded-xl border border-[#DFE1E7] bg-white p-6 text-center">
             <div className="mb-8 flex w-full items-center justify-between">
               <span className="font-semibold text-[#0A0A0C]">Coterie Ai Insights</span>

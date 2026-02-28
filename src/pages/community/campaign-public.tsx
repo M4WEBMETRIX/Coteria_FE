@@ -61,15 +61,10 @@ During his formative years, young Bill spent many happy days wandering through N
   ],
 };
 
-// <div className="flex h-16 w-86 items-center rounded-lg px-4">
-//                 <img src={ATLANTIC_LOGO} alt="atlantic-salmon" />
-//                 {/* <h1 className="text-2xl font-bold text-[#1E1F24]">Atlantic Salmon Museum</h1> */}
-//               </div>
-
 const CampaignPublic = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { slug, campaignId } = useParams();
+  const { campaignId } = useParams();
 
   const { data: publicCampaignData, isPending: publicCampaignPending } =
     useGetPublicCampaign(campaignId);
@@ -96,12 +91,12 @@ const CampaignPublic = () => {
               <div className="flex items-center gap-4">
                 <div
                   className="h-10 w-48 bg-contain bg-left bg-no-repeat"
-                  style={{ backgroundImage: `url(${campaignData.logo})` }}
+                  style={{ backgroundImage: `url(${publicCampaignData?.data?.logo})` }}
                 />
               </div>
               <div className="flex items-center gap-2.5">
                 <button
-                  onClick={() => navigate(`/community/${slug}`)}
+                  onClick={() => navigate(-1)}
                   className="flex cursor-pointer items-center gap-2 text-sm text-[#969294] hover:text-[#12AA5B]"
                 >
                   {/* <ArrowLeftIcon size={16} /> */}

@@ -4,7 +4,7 @@ import { Progress } from "@/components/ui/progress";
 import { CaretRightIcon, CalendarIcon, UserIcon } from "@phosphor-icons/react";
 import { useNavigate, useParams } from "react-router-dom";
 import PUBLIC_COMMUNITY_IMAGE_1 from "@/assets/images/public-community-image-1.png";
-import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
+// import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
 import SAMPLE_PUB_COM_IMAGE_1 from "@/assets/images/pub-com-1.png";
 import SAMPLE_PUB_COM_IMAGE_2 from "@/assets/images/pub-com-2.png";
 import { useGetPublicCommunity, useGetPublicCommunityCampaigns } from "./services";
@@ -98,7 +98,7 @@ const CommunityPublic = () => {
           <div className="container mx-auto flex h-full max-w-7xl flex-col justify-center px-8">
             <div className="max-w-xl space-y-6">
               <div className="flex h-16 w-86 items-center rounded-lg px-4">
-                <img src={ATLANTIC_LOGO} alt="atlantic-salmon" />
+                <img src={publicCommunityData?.data?.logo} alt={publicCommunityData?.data?.name} />
                 {/* <h1 className="text-2xl font-bold text-[#1E1F24]">Atlantic Salmon Museum</h1> */}
               </div>
               <p className="max-w-md text-lg leading-relaxed text-[#24205C]">
