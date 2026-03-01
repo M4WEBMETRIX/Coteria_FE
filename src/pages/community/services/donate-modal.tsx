@@ -40,7 +40,7 @@ export function DonationModal({
   currency: string;
 }) {
   const navigate = useNavigate();
-  const { slug, campaignId } = useParams();
+  const { campaignId } = useParams();
 
   const {
     register,
@@ -81,8 +81,8 @@ export function DonationModal({
       //   donorUserId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
       donorEmail: values.donorEmail,
       //   referrerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      successUrl: `${getBaseUrl()}/community/public/${slug}/campaign/${campaignId}`,
-      cancelUrl: `${getBaseUrl()}/community/public/${slug}/campaign/${campaignId}`,
+      successUrl: `${getBaseUrl()}/community/public/campaign/${campaignId}`,
+      cancelUrl: `${getBaseUrl()}/community/public/campaign/${campaignId}`,
     };
 
     createDonation(payload);

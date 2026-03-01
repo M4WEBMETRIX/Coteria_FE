@@ -53,7 +53,7 @@ const Campaigndetails = () => {
     // },
     // { value: "resources", label: "Resources", component: <CampaignResources /> },
 
-    { value: "settings", label: "Settings", component: <Settings /> },
+    { value: "settings", label: "Settings", component: <Settings data={campaignDetails?.data} /> },
   ];
 
   return (

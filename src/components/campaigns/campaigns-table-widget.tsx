@@ -69,7 +69,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 //   },
 // ];
 
-const StatusBadge = ({ status }: { status: string }) => {
+export const StatusBadge = ({ status }: { status: string }) => {
   let styles = "";
   switch (status) {
     case "Active":

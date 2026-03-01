@@ -26,11 +26,11 @@ const UserSignUp = () => {
 
   const { mutate: userMutate, isPending, data } = useRegisterUser();
 
-  console.log(data);
+  // console.log(data);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
     userMutate(formData);
   };
 

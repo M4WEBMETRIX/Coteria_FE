@@ -31,9 +31,37 @@ export const useCreateCampaign = () => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGNS_STATS_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_DETAILS_API],
+      });
       toast.success("campaign created successfully");
     },
     onError: (err: any) => showErrorToast(err, "Error creating campaign, please try again.!"),
+  });
+};
+
+export const useUpdateCampaign = (id: string | number | undefined) => {
+  const queryClient = useQueryClient();
+
+  const URL = `/org/campaigns/${id}`;
+  return useMutation({
+    mutationFn: (payload: createCampaignProps) => putFunction(payload, URL),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_ALL_CAMPAIGNS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGNS_STATS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_DETAILS_API],
+      });
+      toast.success("campaign updated successfully");
+    },
+    onError: (err: any) => showErrorToast(err, "Error updating campaign, please try again.!"),
   });
 };
 
@@ -124,10 +152,27 @@ export const useCampaignStats = () => {
   });
 };
 
-export const useGetOrganisationDonations = () => {
-  const URL = `/org/donations`;
+export const useGetOrganisationDonations = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sort?: string;
+}) => {
+  const queryParams = new URLSearchParams();
+  if (params?.page) queryParams.append("page", params.page.toString());
+  if (params?.limit) queryParams.append("limit", params.limit.toString());
+  if (params?.search) queryParams.append("search", params.search);
+  if (params?.sort) queryParams.append("sort", params.sort);
+
+  const URL = `/org/donations${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
   return useQuery({
-    queryKey: [USE_GET_ORGANISATION_DONATIONS_API],
+    queryKey: [
+      USE_GET_ORGANISATION_DONATIONS_API,
+      params?.page,
+      params?.limit,
+      params?.search,
+      params?.sort,
+    ],
     queryFn: () => getFunction(URL),
   });
 };

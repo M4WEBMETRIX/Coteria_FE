@@ -153,13 +153,15 @@ const CampaignPublic = () => {
                       {publicCampaignData?.data?.donationsCount} Donor
                       {publicCampaignData?.data?.donationsCount <= 1 ? "" : "s"}
                     </p>
-                    <span className="text-[15px] text-[#8D8A8C]">
-                      {getDaysBetweenDates(
-                        publicCampaignData?.data?.startDate,
-                        publicCampaignData?.data?.endDate
-                      )}{" "}
-                      Days Left
-                    </span>
+                    {(publicCampaignData?.data?.endDate || publicCampaignData?.data?.startDate) && (
+                      <span className="text-[15px] text-[#8D8A8C]">
+                        {getDaysBetweenDates(
+                          publicCampaignData?.data?.startDate,
+                          publicCampaignData?.data?.endDate
+                        )}{" "}
+                        Days Left
+                      </span>
+                    )}
                   </div>
                   <Progress
                     value={

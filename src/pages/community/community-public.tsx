@@ -155,7 +155,7 @@ const CommunityPublic = () => {
                     <h4 className="text-lg leading-[100%] font-normal text-[#605A5C]">
                       {campaign?.name}
                     </h4>
-                    <p className="line-clamp-2 text-[13px] leading-[100%] text-[#A19FA2]">
+                    <p className="line-clamp-2 min-h-[26px] text-[13px] leading-[100%] text-[#A19FA2]">
                       {campaign?.description}
                     </p>
                     <div className="space-y-2">
@@ -195,7 +195,7 @@ const CommunityPublic = () => {
                       >
                         Donate
                       </Button>
-                      {campaign?.endDate !== null && (
+                      {(campaign?.endDate || campaign?.startDate) && (
                         <span className="text-[13px] leading-[100%] font-normal text-[#89B994]">
                           {getDaysBetweenDates(campaign?.startDate, campaign?.endDate)} Days
                         </span>

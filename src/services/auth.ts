@@ -18,6 +18,8 @@ import {
 } from "@/end-user-app/services/local-storage";
 import { useLocation, useNavigate } from "react-router-dom";
 import { postFunction } from "./generics/generic-index";
+import { showErrorToast } from "@/lib/utils";
+import { postFunctionUserEnd } from "./generics/user-generics/user-generic-index";
 
 export const useRegisterOrganisation = () => {
   return useMutation({
@@ -47,7 +49,36 @@ export const useOrganisationVerifyEmail = () => {
       if (error?.message?.toLocaleLowerCase() === "invalid or expired token") {
         toast.error("Please click resend verification email to get a new link");
       } else {
-        toast.error(error?.message);
+        showErrorToast(error);
+      }
+    },
+  });
+};
+
+export const useUserResendVerificationEmail = () => {
+  return useMutation({
+    mutationFn: (payload: any) => postFunctionUserEnd(payload, "/auth/resend-verification"),
+    onSuccess: () => {
+      toast.success("Please check your email for further instructions");
+    },
+    onError: (error) => {
+      //   console.log("err", error);
+      showErrorToast(error);
+    },
+  });
+};
+
+export const useUserVerifyEmail = () => {
+  return useMutation({
+    mutationFn: (payload: { token: string }) => postFunctionUserEnd(payload, "/auth/verify-email"),
+    onSuccess: () => {
+      toast.success("Please check your email for further instructions");
+    },
+    onError: (error) => {
+      if (error?.message?.toLocaleLowerCase() === "invalid or expired token") {
+        toast.error("Please click resend verification email to get a new link");
+      } else {
+        showErrorToast(error);
       }
     },
   });
@@ -61,7 +92,7 @@ export const useOrganisationResendVerificationEmail = () => {
     },
     onError: (error) => {
       //   console.log("err", error);
-      toast.error(error?.message);
+      showErrorToast(error);
     },
   });
 };

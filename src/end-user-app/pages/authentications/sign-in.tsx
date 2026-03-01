@@ -12,6 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
 // import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 import { useLoginUser } from "@/services/users/user-auth";
+import EmailVerificationFlow from "./sign-up-verify-modal";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -22,6 +23,7 @@ type LoginFormValues = z.infer<typeof loginSchema>;
 
 const UserSignIn = () => {
   const navigate = useNavigate();
+  const [showVerification, setShowVerification] = useState(false);
   // const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
@@ -43,7 +45,11 @@ const UserSignIn = () => {
   console.log(data);
   useEffect(() => {
     if (isSuccess) {
-      navigate("/user/dashboard");
+      if (data?.data?.requiresEmailVerification) {
+        setShowVerification(true);
+      } else {
+        navigate("/user/dashboard");
+      }
 
       // setUserToLocalStorage({
       //   id: "123",
@@ -59,6 +65,12 @@ const UserSignIn = () => {
 
     userLoginMutate(data);
   };
+
+  // useEffect(() => {
+  //   if (data?.data?.requiresEmailVerification || data?.data?.emailVerified) {
+  //     setShowVerification(true);
+  //   }
+  // }, [data?.data?.requiresEmailVerification, data?.data?.emailVerified]);
 
   return (
     <UserAuthLayout
@@ -145,12 +157,17 @@ const UserSignIn = () => {
         </form>
 
         {/* Sign In Link */}
-        {/* <p className="mt-5 text-left text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
-          Already have an account?{" "}
-          <a href="#" className="text-[#000000] hover:text-blue-600 hover:underline">
-            Log In Here
-          </a>
-        </p> */}
+        <p className="mt-5 text-left text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
+          You don't have an account?{" "}
+          <Link to="/user/signup" className="text-[#000000] hover:text-blue-600 hover:underline">
+            Sign Up Here
+          </Link>
+        </p>
+        <EmailVerificationFlow
+          email={data?.data?.email}
+          showVerification={showVerification}
+          setShowVerification={setShowVerification}
+        />
       </div>
     </UserAuthLayout>
   );

@@ -6,11 +6,11 @@ import { Button } from "@/components/ui/button";
 import { CopyIcon, EnvelopeSimpleIcon, WhatsappLogoIcon } from "@phosphor-icons/react";
 import { getBaseUrl } from "@/lib/utils";
 
-const ShareCampaign = ({ campaignSlug, communityId }: any) => {
+const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<any>(null);
 
-  const communityUrl = `${getBaseUrl()}/community/public/${campaignSlug}/${communityId}`;
+  const communityUrl = `${getBaseUrl()}/community/public/${communitySlug}/${communityId}`;
   const campaignUrl = `${getBaseUrl()}/community/public/campaign/${campaignSlug}`;
   const shareUrl = communityId ? communityUrl : campaignUrl;
 

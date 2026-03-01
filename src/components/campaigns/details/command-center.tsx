@@ -43,7 +43,11 @@ const CommandCenter = ({ data }: { data: any }) => {
               </div>
             </div>
 
-            <ShareCampaign campaignSlug={data?.slug} communityId={data?.communityId} />
+            <ShareCampaign
+              communitySlug={data?.community?.slug}
+              campaignSlug={data?.slug}
+              communityId={data?.communityId}
+            />
           </div>
 
           {/* Pulse Stats Widgets */}

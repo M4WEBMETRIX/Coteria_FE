@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Check, X } from "lucide-react";
 import { maskEmail } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
+import { useUserResendVerificationEmail, useUserVerifyEmail } from "@/services/auth";
 // import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 
 export default function EmailVerificationFlow({
@@ -19,15 +20,17 @@ export default function EmailVerificationFlow({
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [showSuccess, setShowSuccess] = useState(false);
-  const [code, setCode] = useState(["", "", "", "", ""]);
+  const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
-  useEffect(() => {
-    if (showVerification) {
-      setShowSuccess(true);
-      setShowVerification(false);
-    }
-  }, [showVerification]);
+  const { mutate: resendVerificationEmailMutate, isPending: resendVerificationEmailPending } =
+    useUserResendVerificationEmail();
+
+  const {
+    mutate: verifyEmailMutate,
+    isPending: verifyEmailPending,
+    isSuccess: verifyEmailSuccess,
+  } = useUserVerifyEmail();
 
   const handleCodeChange = (index: number, value: string) => {
     if (value.length > 1) return;
@@ -37,7 +40,7 @@ export default function EmailVerificationFlow({
     setCode(newCode);
 
     // Auto-focus next input
-    if (value && index < 4) {
+    if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
   };
@@ -49,13 +52,17 @@ export default function EmailVerificationFlow({
   };
 
   const handleVerify = () => {
-    setShowVerification(false);
-    setShowSuccess(true);
+    // setShowVerification(false);
+    // setShowSuccess(true);
+    verifyEmailMutate({
+      token: code.join(""),
+    });
   };
 
   const handleResend = () => {
-    setCode(["", "", "", "", ""]);
+    setCode(["", "", "", "", "", ""]);
     inputRefs.current[0]?.focus();
+    resendVerificationEmailMutate({});
   };
 
   const handleClick = () => {
@@ -73,11 +80,22 @@ export default function EmailVerificationFlow({
     }, 2000);
   };
 
+  useEffect(() => {
+    if (verifyEmailSuccess) {
+      setShowVerification(false);
+      setShowSuccess(true);
+    }
+  }, [verifyEmailSuccess]);
+
   return (
     <>
       {/* Email Verification Modal */}
       <Dialog open={showVerification} onOpenChange={setShowVerification}>
-        <DialogContent showCloseButton={false} className="sm:max-w-md">
+        <DialogContent
+          onInteractOutside={(e) => e.preventDefault()}
+          showCloseButton={false}
+          className=""
+        >
           <button
             onClick={() => setShowVerification(false)}
             className="absolute top-4 right-4 flex h-6.5 w-6.5 cursor-pointer items-center justify-center rounded-sm bg-[#F6F8FA] shadow-[0_1px_2px_0px_#F6F8FA]"
@@ -141,16 +159,17 @@ export default function EmailVerificationFlow({
             <p className="mb-5 text-base font-light text-[#6F6F6F]">
               Didn't receive the code?{" "}
               <button onClick={handleResend} className="font-medium text-[#000000] hover:underline">
-                Resend
+                {resendVerificationEmailPending ? "Resending..." : "Resend"}
               </button>
             </p>
 
             {/* Verify Button */}
             <Button
+              disabled={verifyEmailPending || code.join("").length !== 6}
               onClick={handleVerify}
               className="h-11.5 w-full bg-[#45D884] py-6 text-white hover:bg-[#45D884]/90"
             >
-              Verify Code
+              {verifyEmailPending ? "Verifying..." : "Verify Code"}
             </Button>
           </div>
         </DialogContent>
@@ -158,7 +177,11 @@ export default function EmailVerificationFlow({
 
       {/* Success Modal */}
       <Dialog open={showSuccess} onOpenChange={setShowSuccess}>
-        <DialogContent showCloseButton={false} className="sm:h-max sm:max-w-md">
+        <DialogContent
+          onInteractOutside={(e) => e.preventDefault()}
+          showCloseButton={false}
+          className="sm:h-max sm:max-w-md"
+        >
           <div className="flex flex-col items-center text-center">
             {/* Success Icon */}
             <div className="mb-6 flex h-24 w-24 items-center justify-center rounded-full bg-[#45D884]">
