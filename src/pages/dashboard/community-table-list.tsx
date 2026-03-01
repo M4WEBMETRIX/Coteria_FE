@@ -44,7 +44,7 @@ export function ActionPopover({ id }: { id: string | number }) {
         <div className="grid gap-4">
           <div
             onClick={() => navigate(`/community/${id}`)}
-            className="flex items-center gap-2 text-sm"
+            className="flex cursor-pointer items-center gap-2 text-sm"
           >
             <EyeIcon size={18} />
             View

@@ -96,7 +96,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
             />
           </div>
 
-          <div className="space-y-2">
+          {/* <div className="space-y-2">
             <Label
               htmlFor="phone"
               className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
@@ -111,7 +111,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
               onChange={(e) => handleChange("phone", e.target.value)}
               placeholder="User's phone number"
             />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

@@ -5,6 +5,8 @@ import { CaretRightIcon } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import CAMPAIGN_IMAGE from "@/assets/images/sample-campaign.png";
 import CAMPAIGN_IMAGE_1 from "@/assets/images/sample-campaign-image-1.png";
+import Autoplay from "embla-carousel-autoplay";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 
 export const campaigns = [
   {
@@ -19,47 +21,76 @@ export const campaigns = [
   },
 ];
 
+const featuredCampaigns = [
+  {
+    id: "287",
+    image: CAMPAIGN_IMAGE,
+    title: "Campaigns",
+    subtitle: "Atlantic Salmon Museum",
+  },
+  {
+    id: "288",
+    image: CAMPAIGN_IMAGE_1,
+    title: "Global Ocean Clean Up",
+    subtitle: "Ocean Conservancy",
+  },
+];
+
 const DashboardCampaigns = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"active" | "completed">("active");
 
   return (
     <div className="w-full space-y-6">
-      {/* Banner */}
-      <div
-        onClick={() => navigate("/user/dashboard/campaign/287")}
-        className="relative h-51.75 w-full cursor-pointer overflow-hidden rounded-[10px] bg-gray-200"
+      {/* Banner Carousel */}
+      <Carousel
+        className="w-full"
+        opts={{ loop: true }}
+        plugins={[
+          Autoplay({
+            delay: 4000,
+          }),
+        ]}
       >
-        <img
-          src={CAMPAIGN_IMAGE} // Placeholder
-          alt="Campaign Banner"
-          className="h-full w-full object-cover"
-        />
-        <div className="absolute bottom-6 left-6 flex items-center gap-3.5">
-          <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#00D06C]">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fill-rule="evenodd"
-                clip-rule="evenodd"
-                d="M2.783 5.573C3.887 4.537 5.39 4 7 4C8.34 4 9.524 4.557 10.443 5.22C11.083 5.682 11.614 6.209 12 6.671C12.4576 6.12508 12.9805 5.63743 13.557 5.219C14.476 4.557 15.66 4 17 4C18.61 4 20.113 4.537 21.217 5.573C22.327 6.613 23 8.124 23 10C23 11.893 21.94 14.748 20.081 17.12C18.212 19.505 15.457 21.5 12 21.5C8.543 21.5 5.788 19.505 3.919 17.12C2.059 14.749 1 11.894 1 10C1 8.124 1.674 6.613 2.783 5.573ZM6 10C6 10.993 6.29 12.461 7.188 13.71C8.124 15.007 9.674 16 12 16C14.326 16 15.876 15.008 16.811 13.71C17.711 12.46 18 10.992 18 10H16C16 10.673 15.79 11.706 15.188 12.54C14.624 13.326 13.675 14 12 14C10.326 14 9.376 13.325 8.812 12.54C8.21 11.707 8 10.674 8 10H6Z"
-                fill="white"
-              />
-            </svg>
-          </div>
-          <div className="text-white">
-            <h1 className="text-[22px] leading-[140%] font-medium tracking-[-2%]">Campaigns</h1>
-            <p className="text-sm leading-[150%] font-normal tracking-[-2%] opacity-90">
-              Atlantic Salmon Museum
-            </p>
-          </div>
-        </div>
-      </div>
+        <CarouselContent>
+          {featuredCampaigns.map((banner) => (
+            <CarouselItem key={banner.id}>
+              <div
+                onClick={() => navigate(`/user/dashboard/campaign/${banner.id}`)}
+                className="relative h-51.75 w-full cursor-pointer overflow-hidden rounded-[10px] bg-gray-200"
+              >
+                <img src={banner.image} alt={banner.title} className="h-full w-full object-cover" />
+                <div className="absolute bottom-6 left-6 flex items-center gap-3.5">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#00D06C]">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M2.783 5.573C3.887 4.537 5.39 4 7 4C8.34 4 9.524 4.557 10.443 5.22C11.083 5.682 11.614 6.209 12 6.671C12.4576 6.12508 12.9805 5.63743 13.557 5.219C14.476 4.557 15.66 4 17 4C18.61 4 20.113 4.537 21.217 5.573C22.327 6.613 23 8.124 23 10C23 11.893 21.94 14.748 20.081 17.12C18.212 19.505 15.457 21.5 12 21.5C8.543 21.5 5.788 19.505 3.919 17.12C2.059 14.749 1 11.894 1 10C1 8.124 1.674 6.613 2.783 5.573ZM6 10C6 10.993 6.29 12.461 7.188 13.71C8.124 15.007 9.674 16 12 16C14.326 16 15.876 15.008 16.811 13.71C17.711 12.46 18 10.992 18 10H16C16 10.673 15.79 11.706 15.188 12.54C14.624 13.326 13.675 14 12 14C10.326 14 9.376 13.325 8.812 12.54C8.21 11.707 8 10.674 8 10H6Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
+                  <div className="text-white">
+                    <h1 className="text-[22px] leading-[140%] font-medium tracking-[-2%]">
+                      {banner.title}
+                    </h1>
+                    <p className="text-sm leading-[150%] font-normal tracking-[-2%] opacity-90">
+                      {banner.subtitle}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </CarouselItem>
+          ))}
+        </CarouselContent>
+      </Carousel>
 
       {/* Tabs */}
       <div className="flex items-center gap-7">

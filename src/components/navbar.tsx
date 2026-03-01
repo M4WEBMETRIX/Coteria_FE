@@ -1,16 +1,18 @@
-import { Search, Bell } from "lucide-react";
+import { Search } from "lucide-react";
 // import UserProfileMenu from "@/components/user-profile-menu";
 import { useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useGetOrganisationProfile } from "@/services/generics/hooks";
+import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
 }
 
 const Navbar = ({ breadcrumbs }: NavbarProps) => {
+  const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -61,12 +63,15 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
           />
         </div>
         {/* Notifications */}
-        <button className="relative flex h-12 w-12 items-center justify-center rounded-full border border-[#DFE1E7] bg-[#FCFCFD] text-[#0A0A0C] transition-colors">
+        {/* <button className="relative flex h-12 w-12 items-center justify-center rounded-full border border-[#DFE1E7] bg-[#FCFCFD] text-[#0A0A0C] transition-colors">
           <div className="absolute top-2 right-3 h-3 w-3 rounded-full bg-[#DF1C41]" />
           <Bell className="h-5 w-5" />
-        </button>
+        </button> */}
         <div className="h-[20px] w-[px] bg-[#DFE1E7]" />
-        <button className="flex items-center justify-start gap-2 outline-none">
+        <button
+          onClick={() => navigate("/settings?tab=my-account")}
+          className="flex items-center justify-start gap-2 outline-none"
+        >
           <Avatar className="h-12 w-12 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
             <AvatarImage src={orgUser?.currentUser?.photo || ""} className="object-cover" />
             <AvatarFallback>{getNameAbbrev(orgUser?.currentUser?.firstName as any)}</AvatarFallback>

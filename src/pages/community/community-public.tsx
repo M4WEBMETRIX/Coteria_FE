@@ -141,7 +141,7 @@ const CommunityPublic = () => {
               {publicCommunityCampaignsData?.data?.items.map((campaign: any) => (
                 <div
                   key={campaign?.id}
-                  onClick={() => navigate(`/community/public/${slug}/campaign/${campaign?.slug}`)}
+                  onClick={() => navigate(`/community/public/campaign/${campaign?.slug}`)}
                   className="cursor-pointer space-y-4 rounded-[10px] border border-[#ECEFF3] bg-white transition-shadow hover:shadow-lg"
                 >
                   <div className="h-48 w-full overflow-hidden rounded-t-[10px] bg-gray-100">

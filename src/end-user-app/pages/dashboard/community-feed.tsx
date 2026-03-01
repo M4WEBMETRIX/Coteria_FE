@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
@@ -15,7 +15,7 @@ import {
   CaretDownIcon,
   ArrowUpRight,
 } from "@phosphor-icons/react";
-import { CaretRightIcon, MapPinIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
+import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useNavigate } from "react-router-dom";
 
 import SAMPLE_FEED_IMAGE from "@/assets/images/sample-community-image.png";
@@ -186,7 +186,8 @@ const CommunityFeed = () => {
           {/* Right Sidebar */}
           <div className="w-[300px] space-y-6">
             {/* Events Widget (Mocked for now based on image) */}
-            <div className="space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white px-4 py-5">
+            {/* NO EVENT FOR MVP  */}
+            {/* <div className="space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white px-4 py-5">
               <div className="flex items-center justify-between border-b border-b-[#EFEFEF] pb-4">
                 <h3 className="text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                   Upcoming Events
@@ -209,7 +210,7 @@ const CommunityFeed = () => {
                   <MapPinIcon weight="fill" size={16} /> Toronto, Ontario
                 </div>
               </div>
-            </div>
+            </div> */}
 
             {/* Active Campaigns Widget */}
             <div className="space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white px-4 py-5">

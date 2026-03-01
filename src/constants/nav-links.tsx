@@ -1,7 +1,7 @@
 import {
   // BookIcon,
   BuildingApartmentIcon,
-  CalendarDotsIcon,
+  // CalendarDotsIcon,
   GearIcon,
   HandHeartIcon,
   // CalendarDotsIcon,
@@ -117,11 +117,11 @@ export const userSidebarLinks: NavLinkSection[] = [
         icon: <SquaresFourIcon size={20} weight="regular" />,
         path: "/user/dashboard",
       },
-      {
-        name: "Events",
-        icon: <CalendarDotsIcon size={20} weight="regular" />,
-        path: "/user/events",
-      },
+      // {
+      //   name: "Events",
+      //   icon: <CalendarDotsIcon size={20} weight="regular" />,
+      //   path: "/user/events",
+      // },
       {
         name: "Receipt  & taxes",
         icon: <ReceiptIcon size={20} weight="regular" />,

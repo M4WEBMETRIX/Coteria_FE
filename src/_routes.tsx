@@ -80,7 +80,7 @@ const AllRoutes = () => {
 
         {/* Public routes */}
         <Route path="community/public/:slug/:communityId" element={<CommunityPublic />} />
-        <Route path="community/public/:slug/campaign/:campaignId" element={<CampaignPublic />} />
+        <Route path="community/public/campaign/:campaignId" element={<CampaignPublic />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

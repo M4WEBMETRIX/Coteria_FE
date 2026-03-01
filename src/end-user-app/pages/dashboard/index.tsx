@@ -8,7 +8,7 @@ import DashboardMember from "./dashboard-member";
 import { Calendar } from "@/components/ui/calendar";
 import { useMemo, useState } from "react";
 import {
-  CaretDownIcon,
+  // CaretDownIcon,
   CaretRightIcon,
   MagnifyingGlassIcon,
   UserIcon,
@@ -16,6 +16,7 @@ import {
 import { Input } from "@/components/ui/input";
 import DashboardImpact from "./dashboard-impact";
 import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { useNavigate } from "react-router-dom";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
 
@@ -32,6 +33,7 @@ const getAdjacentDays = (date?: Date | null) => {
 };
 
 const DashboardIndex = () => {
+  const navigate = useNavigate();
   const user = getOrgUserFromLocalStorage();
   const [activeTab] = useQueryState("tab", {
     defaultValue: "home",
@@ -65,7 +67,8 @@ const DashboardIndex = () => {
               </div>
             </div>
 
-            <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">
+            {/* NOT AVAILABLE FOR MVP  */}
+            {/* <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">
               <div className="">
                 <svg
                   width="18"
@@ -88,7 +91,7 @@ const DashboardIndex = () => {
                   5
                 </p>
               </div>
-            </div>
+            </div> */}
           </div>
         </nav>
         <ButtonTabs
@@ -96,7 +99,7 @@ const DashboardIndex = () => {
             { label: "Home", value: "home" },
             { label: "Community", value: "community" },
             { label: "Campaigns", value: "campaigns" },
-            { label: "Resources ", value: "resources" },
+            // { label: "Resources ", value: "resources" },
             { label: "Impact", value: "impact" },
             // { label: "Member", value: "member" },
           ]}
@@ -138,7 +141,10 @@ const DashboardIndex = () => {
                   5400
                 </p>
               </div>
-              <button className="mt-3 flex h-11 w-full cursor-pointer items-center justify-center gap-3 rounded-[100px] bg-[#EFFFF8] text-base leading-[155%] font-normal tracking-[0%] text-[#000000]">
+              <button
+                onClick={() => navigate("/user/account-settings/edit")}
+                className="mt-3 flex h-11 w-full cursor-pointer items-center justify-center gap-3 rounded-[100px] bg-[#EFFFF8] text-base leading-[155%] font-normal tracking-[0%] text-[#000000]"
+              >
                 Edit Profile
                 <div>
                   <svg
@@ -162,7 +168,8 @@ const DashboardIndex = () => {
             </div>
           </div>
 
-          <div className="mb-5 flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-5.5 py-3.5">
+          {/* NO AVAILABLE FOR MVP  */}
+          {/* <div className="mb-5 flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-5.5 py-3.5">
             <div className="flex items-center gap-3">
               <div className="relative h-6.75 w-6.75 rounded-full bg-[#45D884]">
                 <p className="absolute right-0 bottom-0 h-[6.75px] w-[6.75px] rounded-full border border-[#F8FAFB] bg-[#40C4AA]" />
@@ -195,7 +202,7 @@ const DashboardIndex = () => {
                 <CaretDownIcon weight="bold" color="#919191" size={18} />
               </div>
             </div>
-          </div>
+          </div> */}
 
           <div className="mb-4 flex items-center justify-between">
             <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">

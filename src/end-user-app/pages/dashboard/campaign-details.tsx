@@ -1,4 +1,4 @@
-import UserUpcomingEventCard from "@/components/end-users/events/user-upcoming-event-card";
+// import UserUpcomingEventCard from "@/components/end-users/events/user-upcoming-event-card";
 
 import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
@@ -228,7 +228,8 @@ const CampaignDetails = () => {
           </div>
 
           {/* Right Sidebar */}
-          <UserUpcomingEventCard />
+          {/* NOT AVAIALABLE FOR MVP  */}
+          {/* <UserUpcomingEventCard /> */}
         </div>
       </div>
     </>

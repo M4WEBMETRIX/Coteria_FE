@@ -42,9 +42,8 @@ const CommandCenter = ({ data }: { data: any }) => {
                 <span className="text-xs text-[#8B8D98]">{data?.description}</span>
               </div>
             </div>
-            {data?.communityId && data?.slug && (
-              <ShareCampaign campaignSlug={data?.slug} communityId={data?.communityId} />
-            )}
+
+            <ShareCampaign campaignSlug={data?.slug} communityId={data?.communityId} />
           </div>
 
           {/* Pulse Stats Widgets */}

@@ -1,6 +1,7 @@
 import { Input } from "@/components/ui/input";
 import { MagnifyingGlassIcon, UserIcon } from "@phosphor-icons/react";
 import { useRef, useState, type ReactElement, type ReactEventHandler } from "react";
+import { useNavigate } from "react-router-dom";
 
 const InnerNav = ({
   text,
@@ -9,6 +10,7 @@ const InnerNav = ({
   text: string | ReactElement;
   onClick: ReactEventHandler;
 }) => {
+  const navigate = useNavigate();
   const [, setIsSearchOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   return (
@@ -51,7 +53,8 @@ const InnerNav = ({
           </div>
         </div>
 
-        <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">
+        {/* NOT AVAILABLE FOR MVP  */}
+        {/* <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">
           <div className="">
             <svg
               width="18"
@@ -74,10 +77,13 @@ const InnerNav = ({
               5
             </p>
           </div>
-        </div>
+        </div> */}
 
         <div className="">
-          <div className="flex h-14 w-14 items-center justify-center rounded-full bg-[#45D884]">
+          <div
+            onClick={() => navigate("/user/account-settings/edit")}
+            className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-[#45D884]"
+          >
             <UserIcon size={32} color="#FFFFFF" />
           </div>
         </div>

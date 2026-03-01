@@ -10,22 +10,24 @@ const ShareCampaign = ({ campaignSlug, communityId }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<any>(null);
 
-  const CampaignUrl = `${getBaseUrl()}/community/public/${campaignSlug}/${communityId}`;
+  const communityUrl = `${getBaseUrl()}/community/public/${campaignSlug}/${communityId}`;
+  const campaignUrl = `${getBaseUrl()}/community/public/campaign/${campaignSlug}`;
+  const shareUrl = communityId ? communityUrl : campaignUrl;
 
   const copyLink = () => {
-    navigator.clipboard.writeText(CampaignUrl);
+    navigator.clipboard.writeText(shareUrl);
     setIsOpen(false);
   };
 
   const shareOnWhatsApp = () => {
-    const url = `https://wa.me/?text=${encodeURIComponent(CampaignUrl)}`;
+    const url = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
     setIsOpen(false);
   };
 
   const shareOnEmail = () => {
     const url = `mailto:?subject=${encodeURIComponent("Share Campaign")}&body=${encodeURIComponent(
-      CampaignUrl
+      shareUrl
     )}`;
     window.open(url, "_blank");
     setIsOpen(false);

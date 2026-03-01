@@ -1,6 +1,6 @@
 import CampaignsTableWidget from "@/components/campaigns/campaigns-table-widget";
 import CampaignOverviewStats from "@/components/campaigns/campaign-overview-stats";
-import CampaignOnboardingWidget from "@/components/campaigns/campaign-onboarding-widget";
+// import CampaignOnboardingWidget from "@/components/campaigns/campaign-onboarding-widget";
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 // import { useState } from "react";
 // import { Button } from "@/components/ui/button";
@@ -82,7 +82,7 @@ const CampaignsPage = () => {
           )} */}
 
           {/* Onboarding Widget */}
-          {campaignsData?.data && <CampaignOnboardingWidget />}
+          {/* {campaignsData?.data && <CampaignOnboardingWidget />} */}
 
           {/* Section Header */}
           <div className="mt-4 flex items-end justify-between">

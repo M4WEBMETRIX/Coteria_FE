@@ -9,7 +9,7 @@ import {
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { DotsThree, Funnel, ArrowsDownUpIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { DotsThree, ArrowsDownUpIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 
 import { useState } from "react";
@@ -68,9 +68,7 @@ export function DonationsMainTable() {
             />
             <Input placeholder="Search" className="h-10 w-[250px] border-[#DFE1E7] bg-white pl-9" />
           </div>
-          <Button variant="outline" className="h-10 gap-2 border-[#DFE1E7]">
-            <Funnel size={20} color="#818898" /> Filter
-          </Button>
+
           <Button variant="outline" className="h-10 gap-2 border-[#DFE1E7]">
             <ArrowsDownUpIcon size={20} color="#818898" /> Sort by
           </Button>
