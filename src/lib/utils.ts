@@ -29,14 +29,14 @@ export const getCurrencySymbol = (currencyCode: string | undefined | any): strin
   if (!currencyCode) return "";
 
   return (0)
-    .toLocaleString("en", {
+    ?.toLocaleString("en", {
       style: "currency",
       currency: currencyCode,
       minimumFractionDigits: 0,
       maximumFractionDigits: 0,
     })
-    .replace(/\d/g, "")
-    .trim();
+    ?.replace(/\d/g, "")
+    ?.trim();
 };
 
 export const useDebounce = (value: string, delay: number) => {
