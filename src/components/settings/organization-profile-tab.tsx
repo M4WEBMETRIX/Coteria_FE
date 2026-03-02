@@ -132,9 +132,9 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
           </div>
         </div>
       </div>
-      <Separator />
+      {/* <Separator /> */}
       {/* Address Section */}
-      <div className="flex justify-between p-6">
+      {/* <div className="flex justify-between p-6">
         <div className="w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
             Address
@@ -230,7 +230,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   );
 };

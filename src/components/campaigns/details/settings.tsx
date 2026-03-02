@@ -16,7 +16,7 @@ import { Separator } from "@/components/ui/separator";
 import { useQueryState } from "nuqs";
 import { StatusBadge } from "../campaigns-table-widget";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { useUpdateCampaign } from "@/services/generics/hooks";
+import { useUpdateCampaign, useUpdateCampaignStatus } from "@/services/generics/hooks";
 import { useParams } from "react-router-dom";
 
 const CAMPAIGN_SETTINGS_TABS = [
@@ -54,6 +54,9 @@ const BasicSettings = ({
           Campaign Name <span className="text-[#DF1C41]">*</span>
         </Label>
         <Input
+          disabled={
+            data?.status?.toLowerCase() === "active" || data?.status?.toLowerCase() === "completed"
+          }
           id="campaignName"
           value={formData.campaignName || ""}
           onChange={(e) => handleChange("campaignName", e.target.value)}
@@ -66,6 +69,9 @@ const BasicSettings = ({
           Short description <span className="text-[#DF1C41]">*</span>
         </Label>
         <Input
+          disabled={
+            data?.status?.toLowerCase() === "active" || data?.status?.toLowerCase() === "completed"
+          }
           id="shortDescription"
           value={formData.shortDescription || ""}
           onChange={(e) => handleChange("shortDescription", e.target.value)}
@@ -263,18 +269,22 @@ const NotificationSettings = ({
   </div>
 );
 
-const DangerZoneSettings = ({ mutate, isPending }: { mutate: any; isPending: boolean }) => {
+const DangerZoneSettings = () => {
+  const { id } = useParams();
   const [endValue, setEndValue] = useState("");
   const [pauseValue, setPauseValue] = useState("");
 
+  const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
+    useUpdateCampaignStatus(id);
+
   const handleEndCampaign = () => {
     setEndValue("end");
-    mutate({ status: "end" });
+    updateCampaignStatus({ status: "completed" });
   };
 
   const handlePauseCampaign = () => {
     setPauseValue("paused");
-    mutate({ status: "paused" });
+    updateCampaignStatus({ status: "paused" });
   };
 
   return (
@@ -295,8 +305,12 @@ const DangerZoneSettings = ({ mutate, isPending }: { mutate: any; isPending: boo
               Temporarily stop donations and engagement.
             </p>
           </div>
-          <Button onClick={handlePauseCampaign} variant="outline" disabled={isPending}>
-            {isPending && pauseValue === "paused" ? "Pausing..." : "Pause"}
+          <Button
+            onClick={handlePauseCampaign}
+            variant="outline"
+            disabled={updateCampaignStatusPending}
+          >
+            {updateCampaignStatusPending && pauseValue === "paused" ? "Pausing..." : "Pause"}
           </Button>
         </div>
         <div className="flex items-center justify-between">
@@ -310,11 +324,11 @@ const DangerZoneSettings = ({ mutate, isPending }: { mutate: any; isPending: boo
           </div>
           <Button
             onClick={handleEndCampaign}
-            disabled={isPending}
+            disabled={updateCampaignStatusPending}
             variant="outline"
             className="border-[#F3654A] px-5 text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
           >
-            {isPending && endValue === "end" ? "Ending..." : "End"}
+            {updateCampaignStatusPending && endValue === "end" ? "Ending..." : "End"}
           </Button>
         </div>
       </div>
@@ -359,6 +373,25 @@ const Settings = ({ data }: { data: any }) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
+  const handleCancel = () => {
+    setFormData({
+      campaignName: data.name || "",
+      shortDescription: data.description || "",
+      visibility: data.visibility?.toLowerCase() || "public",
+      isPrivate: false,
+      visibleInInsights: true,
+      eligibleForInfluencer: true,
+      allowRepeatDonations: false,
+      allowSharing: true,
+      includeInInfluenceScoring: true,
+      campaignUpdateReminder: true,
+      reminderFrequency: "14",
+      notifyOnUpdate: true,
+      notifyOnMilestone: true,
+      notifyOnEnding: true,
+    });
+  };
+
   useEffect(() => {
     if (!data) return;
     setFormData({
@@ -390,7 +423,7 @@ const Settings = ({ data }: { data: any }) => {
       case "notifications":
         return <NotificationSettings formData={formData} handleChange={handleChange} />;
       case "danger-zone":
-        return <DangerZoneSettings mutate={updateCampaign} isPending={updateCampaignLoading} />;
+        return <DangerZoneSettings />;
       default:
         return null;
     }
@@ -400,16 +433,20 @@ const Settings = ({ data }: { data: any }) => {
     <div className="font-ubuntu">
       <div className="mb-6 flex w-full items-center justify-between">
         <h2 className="text-xl font-semibold text-[#0A0A0C]">Settings</h2>
-        <div className="flex gap-3">
-          <Button variant="outline">Cancel</Button>
-          <Button
-            disabled={updateCampaignLoading}
-            onClick={handleSave}
-            className="bg-[#12AA5B] hover:bg-[#0E8A4A]"
-          >
-            {updateCampaignLoading ? "Saving..." : "Save Change"}
-          </Button>
-        </div>
+        {data?.status?.toLowerCase() !== "active" && (
+          <div className="flex gap-3">
+            <Button onClick={handleCancel} variant="outline">
+              Cancel
+            </Button>
+            <Button
+              disabled={updateCampaignLoading}
+              onClick={handleSave}
+              className="bg-[#12AA5B] hover:bg-[#0E8A4A]"
+            >
+              {updateCampaignLoading ? "Saving..." : "Save Change"}
+            </Button>
+          </div>
+        )}
       </div>
 
       <div className="flex overflow-hidden rounded-xl border border-[#E1E4EA] bg-white">

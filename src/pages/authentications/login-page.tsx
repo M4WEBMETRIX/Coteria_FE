@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
 // import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
-import { useLoginOrganisation } from "@/services/auth";
+import { useLoginOrganisation, useOrganisationResendVerificationEmail } from "@/services/auth";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -28,7 +28,8 @@ const LoginPage = () => {
 
   // const navigate = useNavigate();
 
-  const { mutate: loginMutate, isPending: loading, isSuccess } = useLoginOrganisation();
+  const { mutate: loginMutate, isPending: loading, isSuccess, data } = useLoginOrganisation();
+  const { mutate: userResendVerificationEmailMutate } = useOrganisationResendVerificationEmail();
 
   const {
     register,
@@ -61,11 +62,13 @@ const LoginPage = () => {
     // }, 2000);
   };
 
-  // useEffect(() => {
-  //   if (isSuccess) {
-  //     navigate("/community");
-  //   }
-  // }, [isSuccess]);
+  useEffect(() => {
+    if (isSuccess) {
+      if (data?.data?.requiresEmailVerification) {
+        userResendVerificationEmailMutate({});
+      }
+    }
+  }, [isSuccess]);
 
   if (isAuthenticated() && !isSuccess) {
     return <Navigate to="/community" replace />;

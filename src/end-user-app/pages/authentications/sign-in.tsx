@@ -13,6 +13,7 @@ import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/fie
 // import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 import { useLoginUser } from "@/services/users/user-auth";
 import EmailVerificationFlow from "./sign-up-verify-modal";
+import { useUserResendVerificationEmail } from "@/services/auth";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -41,12 +42,14 @@ const UserSignIn = () => {
   });
 
   const { mutate: userLoginMutate, isPending: loading, isSuccess, data } = useLoginUser();
+  const { mutate: userResendVerificationEmailMutate } = useUserResendVerificationEmail();
 
   console.log(data);
   useEffect(() => {
     if (isSuccess) {
       if (data?.data?.requiresEmailVerification) {
         setShowVerification(true);
+        userResendVerificationEmailMutate({});
       } else {
         navigate("/user/dashboard");
       }

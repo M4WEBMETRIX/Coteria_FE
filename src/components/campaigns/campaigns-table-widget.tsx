@@ -23,8 +23,10 @@ import { timeAgo } from "@/pages/dashboard/community-table-list";
 import { getCurrencySymbol } from "@/lib/utils";
 import CommunityTableBodySkeleton from "@/pages/dashboard/components/skeletons/community-table-skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { EyeIcon } from "@phosphor-icons/react";
+import { ArrowsClockwiseIcon, EyeIcon } from "@phosphor-icons/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
+import { useUpdateCampaignStatus } from "@/services/generics/hooks";
+import { Loader2Icon } from "lucide-react";
 
 // const campaignsData = [
 //   {
@@ -242,7 +244,7 @@ const CampaignsTableWidget = ({
                     <StatusBadge status={campaign?.status} />
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
-                    <ActionPopover id={campaign?.id} />
+                    <ActionPopover status={campaign?.status} id={campaign?.id} />
                   </TableCell>
                 </TableRow>
               ))}
@@ -255,8 +257,10 @@ const CampaignsTableWidget = ({
   );
 };
 
-export function ActionPopover({ id }: { id: string | number }) {
+export function ActionPopover({ id, status }: { id: string | number; status: string }) {
   const navigate = useNavigate();
+  const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
+    useUpdateCampaignStatus(id);
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -273,10 +277,19 @@ export function ActionPopover({ id }: { id: string | number }) {
             <EyeIcon size={18} />
             View
           </div>
-          {/* <div className="flex items-center gap-2 text-sm text-[red]">
-            <TrashIcon size={18} />
-            Delete
-          </div> */}
+          {status?.toLocaleLowerCase() !== "active" && (
+            <div
+              onClick={() => updateCampaignStatus({ status: "active" })}
+              className="flex items-center gap-2 text-sm text-green-600"
+            >
+              <ArrowsClockwiseIcon size={18} />
+              {updateCampaignStatusPending ? (
+                <Loader2Icon size={18} className="animate-spin" />
+              ) : (
+                "Activate"
+              )}
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>

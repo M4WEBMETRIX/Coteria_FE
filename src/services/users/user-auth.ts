@@ -31,7 +31,7 @@ export const useLoginUser = () => {
       localStorage.setItem("userAccessToken", token);
       localStorage.setItem("userRefreshToken", refreshToken);
 
-      toast.success("You've successfully login");
+      // toast.success("You've successfully login");
     },
     onError: (error) => {
       //   console.log("err-from query", error);

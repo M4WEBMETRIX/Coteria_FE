@@ -12,10 +12,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { cn } from "@/lib/utils";
+import { cn, getBaseUrl } from "@/lib/utils";
 import STRIPE_LOGO from "@/assets/icons/stripe_logo.svg";
 import type { OnboardProps } from "@/services";
-import { useOnboardOrganisation } from "@/services/auth";
+import { useConnectStripe, useOnboardOrganisation } from "@/services/auth";
 import { Navigate, useNavigate } from "react-router-dom";
 
 interface IProps {
@@ -204,6 +204,16 @@ const StepTwo: React.FC<IProps> = ({ data, setData, onNext }) => {
 
 const StepThree: React.FC = () => {
   const navigate = useNavigate();
+
+  const { mutate: connectStripeMutate, isPending } = useConnectStripe();
+
+  const handleConnectStripe = () => {
+    connectStripeMutate({
+      returnUrl: `${getBaseUrl()}/auth/setup-account`,
+      refreshUrl: `${getBaseUrl()}/auth/setup-account`,
+    });
+  };
+
   return (
     <div className="mx-auto flex h-[55vh] max-w-130 items-center justify-center text-center">
       <div>
@@ -229,10 +239,11 @@ const StepThree: React.FC = () => {
 
         <div className="mb-6 space-y-4">
           <Button
+            onClick={handleConnectStripe}
             className="h-11.5 w-full cursor-pointer bg-[#554AFF] text-base leading-6.5 tracking-[0%] text-white hover:bg-[#554AFF]/90"
             variant="secondary"
           >
-            Continue
+            {isPending ? "Initializing..." : "Continue"}
           </Button>
           <div className="mb-6">
             <Button

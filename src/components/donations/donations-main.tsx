@@ -8,8 +8,7 @@ import {
 } from "@/components/ui/table";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
-import { DotsThree, ArrowsDownUpIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
+import { ArrowsDownUpIcon, MagnifyingGlassIcon } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -18,11 +17,16 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-
+import { MoreHorizontalIcon } from "@hugeicons/core-free-icons";
 import { useState } from "react";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import ManagePagination from "@/components/Manage-pagination";
 import { formatFullDate, getCurrencySymbol } from "@/lib/utils";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Button } from "../ui/button";
+import { EyeIcon } from "@phosphor-icons/react";
+import { HugeiconsIcon } from "@hugeicons/react";
+
 // import { useGetOrganisationDonations } from "@/services/generics/hooks";
 
 export function DonationsMainTable({
@@ -50,7 +54,7 @@ export function DonationsMainTable({
   setSort: (s: string) => void;
   totalPages: number;
 }) {
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
 
   const toggleAll = () => {
@@ -154,7 +158,7 @@ export function DonationsMainTable({
                 <TableRow
                   key={donation?.id}
                   className="cursor-pointer hover:bg-[#F6F8FA]"
-                  // onClick={() => navigate(`/donations/${donation.id}`)}
+                  onClick={() => navigate(`/donation/${donation.id}`)}
                 >
                   <TableCell className="pl-4" onClick={(e) => e.stopPropagation()}>
                     <Checkbox
@@ -164,7 +168,7 @@ export function DonationsMainTable({
                   </TableCell>
                   <TableCell className="text-sm text-[#0D0D12]">{index + 1}</TableCell>
                   <TableCell className="text-sm font-medium text-[#0D0D12]">
-                    {donation?.donor ? donation?.donor : "Anonymous"}
+                    {donation?.donorDisplayName ? donation?.donorDisplayName : "Anonymous"}
                   </TableCell>
                   <TableCell className="line-clamp-1 text-sm text-[#0D0D12]">
                     {donation?.campaignName}
@@ -184,10 +188,8 @@ export function DonationsMainTable({
                       {donation?.status}
                     </Badge>
                   </TableCell>
-                  <TableCell>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 cursor-pointer">
-                      <DotsThree size={24} color="#666D80" />
-                    </Button>
+                  <TableCell onClick={(e) => e.stopPropagation()}>
+                    <ActionPopover id={donation?.id} />
                   </TableCell>
                 </TableRow>
               ))
@@ -205,5 +207,33 @@ export function DonationsMainTable({
         />
       </div>
     </div>
+  );
+}
+
+function ActionPopover({ id }: { id: string | number }) {
+  const navigate = useNavigate();
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8B8D98]">
+          <HugeiconsIcon icon={MoreHorizontalIcon} size={20} color="#666D80" />
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-max">
+        <div className="grid gap-4">
+          <div
+            onClick={() => navigate(`/donation/${id}`)}
+            className="flex cursor-pointer items-center gap-2 text-sm"
+          >
+            <EyeIcon size={18} />
+            View
+          </div>
+          {/* <div className="flex items-center gap-2 text-sm text-[red]">
+            <TrashIcon size={18} />
+            Delete
+          </div> */}
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }

@@ -21,9 +21,10 @@ const DonationsPage = lazy(() => import("./pages/dashboard/donations-page"));
 const TeamPage = lazy(() => import("./pages/dashboard/team-page"));
 const MessagesPage = lazy(() => import("./pages/dashboard/messages-page"));
 const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
-const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
+const DonorDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
+const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-detail-page"));
 const VerifyEmailPage = lazy(() => import("./pages/authentications/verify-email-page"));
 const OrgCommunityDetailPage = lazy(() => import("./pages/dashboard/org-community-detail-page"));
 const CreateEventFlow = lazy(
@@ -69,8 +70,9 @@ const AllRoutes = () => {
 
           <Route path="insights" element={<InsightsPage />} />
           <Route path="donors" element={<DonorsPage />} />
+          <Route path="donors/:id" element={<DonorDetailsPage />} />
           <Route path="donations" element={<DonationsPage />} />
-          <Route path="donors/:id" element={<DonationDetailsPage />} />
+          <Route path="donation/:id" element={<DonationDetailsPage />} />
           <Route path="team" element={<TeamPage />} />
           <Route path="messages" element={<MessagesPage />} />
           <Route path="reports" element={<ReportsPage />} />

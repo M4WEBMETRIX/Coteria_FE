@@ -24,6 +24,11 @@ export interface LogoutProps {
   refreshToken: string | null;
 }
 
+export interface ConnectStripeProps {
+  returnUrl: string;
+  refreshUrl: string;
+}
+
 export const registerOrganisation = async (payload: RegisterProps) => {
   const response = await api.post("/org/auth/register", payload);
   return response.data;
@@ -41,5 +46,10 @@ export const logoutOrganisation = async (payload: LogoutProps) => {
 
 export const onboardOrganisation = async (payload: OnboardProps) => {
   const response = await api.post("/org/onboarding", payload);
+  return response.data;
+};
+
+export const connectStripe = async (payload: ConnectStripeProps) => {
+  const response = await api.post("/org/stripe/connect", payload);
   return response.data;
 };

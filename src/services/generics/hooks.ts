@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getFunction, postFunction, putFunction } from "./generic-index";
+import { getFunction, patchFunction, postFunction, putFunction } from "./generic-index";
 import type { createCampaignProps, createCommunityProps } from "./types";
 import { toast } from "sonner";
 import { showErrorToast } from "@/lib/utils";
@@ -16,6 +16,7 @@ const USE_GET_COMMUNITIES_STATS_API = "USE_GET_COMMUNITIES_STATS_API";
 const USE_GET_CAMPAIGN_DETAILS_API = "USE_GET_CAMPAIGN_DETAILS_API";
 const USE_GET_CAMPAIGNS_STATS_API = "USE_GET_CAMPAIGNS_STATS_API";
 const USE_GET_ORGANISATION_DONATIONS_API = "USE_GET_ORGANISATION_DONATIONS_API";
+const USE_GET_ORGANISATION_DONATION_DETAILS_API = "USE_GET_ORGANISATION_DONATION_DETAILS_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -62,6 +63,31 @@ export const useUpdateCampaign = (id: string | number | undefined) => {
       toast.success("campaign updated successfully");
     },
     onError: (err: any) => showErrorToast(err, "Error updating campaign, please try again.!"),
+  });
+};
+
+export const useUpdateCampaignStatus = (id: string | number | undefined) => {
+  const queryClient = useQueryClient();
+
+  const URL = `/org/campaigns/${id}/status`;
+  return useMutation({
+    mutationFn: (payload: { status: string }) => patchFunction(payload, URL),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_ALL_CAMPAIGNS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGNS_STATS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_DETAILS_API],
+      });
+      toast.success("campaign status updated successfully");
+    },
+    onError: (err: any) =>
+      showErrorToast(err, "Error updating campaign status, please try again.!"),
   });
 };
 
@@ -174,6 +200,15 @@ export const useGetOrganisationDonations = (params?: {
       params?.sort,
     ],
     queryFn: () => getFunction(URL),
+  });
+};
+
+export const useGetOrganisationDonationDetails = (id: string | number | undefined) => {
+  const URL = `/org/donations/${id}`;
+  return useQuery({
+    queryKey: [USE_GET_ORGANISATION_DONATION_DETAILS_API, id],
+    queryFn: () => getFunction(URL),
+    enabled: !!id,
   });
 };
 

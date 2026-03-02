@@ -1,9 +1,11 @@
 import { useMutation } from "@tanstack/react-query";
 import {
+  connectStripe,
   loginOrganisation,
   logoutOrganisation,
   onboardOrganisation,
   registerOrganisation,
+  type ConnectStripeProps,
   type LoginProps,
   type LogoutProps,
   type OnboardProps,
@@ -110,7 +112,7 @@ export const useLoginOrganisation = () => {
 
       //   console.log(organizationSummary);
 
-      toast.success("You've successfully login");
+      // toast.success("You've successfully login");
       if (organizationSummary?.requiresOnboarding && requiresEmailVerification) {
         navigate("/auth/check-email", {
           state: {
@@ -146,9 +148,9 @@ export const useLogoutOrganisation = () => {
       } else {
         removeTokens();
       }
-      toast.success("You've successfully logged out");
+      // toast.success("You've successfully logged out");
     },
-    onError: (error) => {
+    onError: () => {
       if (isUserPath) {
         removeUserTokens();
         removeEndUserFromLocalStorage();
@@ -158,8 +160,8 @@ export const useLogoutOrganisation = () => {
       }
 
       navigate("/auth/login");
-      console.log("err", error);
-      toast.error(error?.message);
+      // console.log("err", error);
+      // toast.error(error?.message);
     },
   });
 };
@@ -170,6 +172,20 @@ export const useOnboardOrganisation = () => {
     onSuccess: (response) => {
       console.log(response);
       toast.success("You've successfully onboarded");
+    },
+    onError: (error) => {
+      console.log("err", error);
+      toast.error(error?.message);
+    },
+  });
+};
+
+export const useConnectStripe = () => {
+  return useMutation({
+    mutationFn: (payload: ConnectStripeProps) => connectStripe(payload),
+    onSuccess: (response) => {
+      // console.log(response?.data?.accountLinkUrl);
+      window.location.href = response?.data?.accountLinkUrl;
     },
     onError: (error) => {
       console.log("err", error);

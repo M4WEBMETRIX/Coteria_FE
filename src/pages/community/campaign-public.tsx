@@ -138,8 +138,8 @@ const CampaignPublic = () => {
                   <div>
                     <span className="text-[20px] leading-[100%] text-[#6B9671]">
                       {getCurrencySymbol(publicCampaignData?.data?.goalCurrency)}{" "}
-                      {publicCampaignData?.data?.totalGoalCents
-                        ? (publicCampaignData?.data?.totalGoalCents / 100)?.toLocaleString()
+                      {publicCampaignData?.data?.goalAmountCents
+                        ? (publicCampaignData?.data?.goalAmountCents / 100)?.toLocaleString()
                         : "0"}
                     </span>
                     <span className="ml-1 text-base font-normal text-[#888688]">goal</span>

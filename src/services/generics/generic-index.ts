@@ -15,6 +15,11 @@ export const putFunction = async (payload: any, URL: string) => {
   return response.data;
 };
 
+export const patchFunction = async (payload: any, URL: string) => {
+  const response = await api.patch(URL, payload);
+  return response.data;
+};
+
 export const deleteFunction = async (payload: any, URL: string) => {
   const response = await api.delete(URL, payload);
   return response.data;
