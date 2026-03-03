@@ -12,7 +12,7 @@ import {
 } from "@phosphor-icons/react";
 import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useState } from "react";
-import { campaigns } from "./dashboard-campaigns";
+// import { campaigns } from "./dashboard-campaigns";
 import { useNavigate } from "react-router-dom";
 
 const CampaignDetails = () => {
@@ -141,7 +141,7 @@ const CampaignDetails = () => {
 
             {/* Content */}
             <div className="space-y-8">
-              {campaigns.map((campaign) => (
+              {campaigns.map((campaign: any) => (
                 <div key={campaign.id} className="space-y-6">
                   <div className="flex items-center justify-between">
                     <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
