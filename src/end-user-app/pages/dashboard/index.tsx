@@ -15,7 +15,7 @@ import {
 } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 import DashboardImpact from "./dashboard-impact";
-import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import { useNavigate } from "react-router-dom";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
@@ -34,10 +34,14 @@ const getAdjacentDays = (date?: Date | null) => {
 
 const DashboardIndex = () => {
   const navigate = useNavigate();
-  const user = getOrgUserFromLocalStorage();
+  // const user = getOrgUserFromLocalStorage();
   const [activeTab] = useQueryState("tab", {
     defaultValue: "community",
   });
+
+  const endUser: any = useMemo(() => {
+    return getEndUserFromLocalStorage();
+  }, []);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
@@ -49,10 +53,10 @@ const DashboardIndex = () => {
         <nav className="mb-13.75 flex items-center justify-between">
           <div className="space-y-0.75">
             <p className="text-[32px] leading-[120%] font-normal tracking-[-2%] text-[#000000]">
-              Good Morning,
+              Good day,
             </p>
             <p className="text-[48px] leading-[120%] font-medium tracking-[-2%] text-[#000000]">
-              {user?.name}!
+              {endUser?.firstName}!
             </p>
           </div>
           <div className="flex items-center gap-3">

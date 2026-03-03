@@ -1,49 +1,52 @@
 import { Button } from "@/components/ui/button";
 import { CaretRightIcon, MapPin, Trophy } from "@phosphor-icons/react";
+import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 
-const directReferrals = [
-  {
-    id: 1,
-    name: "Nick Daniels",
-    avatar: "https://placehold.co/40x40/png",
-    location: "",
-    status: { label: "You", color: "bg-[#E7FDF3] text-[#0F973D]" }, // Mocking logic for "You" tag
-    boosts: 0,
-    referralId: "D234",
-    amount: 0,
-    subText: "0 Boosts",
-  },
-  {
-    id: 2,
-    name: "Anonymous",
-    avatar: "", // No avatar
-    location: "Toronto",
-    status: null,
-    amount: 0,
-    subText: "Referred 0 Friends",
-    referredUsers: [1, 2, 3], // Mock for mini avatars
-  },
-  {
-    id: 3,
-    name: "Ben Smith",
-    avatar: "https://placehold.co/40x40/png",
-    location: "Toronto",
-    status: null,
-    amount: 0,
-    subText: "0 Friends Referred",
-    referredUsers: [1, 2, 3],
-  },
-  {
-    id: 4,
-    name: "John Maguire",
-    avatar: "https://placehold.co/40x40/png",
-    location: "Toronto",
-    status: { label: "CA$0", color: "bg-[#E7FDF3] text-[#0F973D]" },
-    amount: 0,
-    subText: "Referred 0 Friends",
-    referredUsers: [1, 2, 3],
-  },
-];
+// const directReferrals = [
+//   {
+//     id: 1,
+//     name: "Nick Daniels",
+//     avatar: "https://placehold.co/40x40/png",
+//     location: "",
+//     status: { label: "You", color: "bg-[#E7FDF3] text-[#0F973D]" }, // Mocking logic for "You" tag
+//     boosts: 0,
+//     referralId: "D234",
+//     amount: 0,
+//     subText: "0 Boosts",
+//   },
+//   {
+//     id: 2,
+//     name: "Anonymous",
+//     avatar: "", // No avatar
+//     location: "Toronto",
+//     status: null,
+//     amount: 0,
+//     subText: "Referred 0 Friends",
+//     referredUsers: [1, 2, 3], // Mock for mini avatars
+//   },
+//   {
+//     id: 3,
+//     name: "Ben Smith",
+//     avatar: "https://placehold.co/40x40/png",
+//     location: "Toronto",
+//     status: null,
+//     amount: 0,
+//     subText: "0 Friends Referred",
+//     referredUsers: [1, 2, 3],
+//   },
+//   {
+//     id: 4,
+//     name: "John Maguire",
+//     avatar: "https://placehold.co/40x40/png",
+//     location: "Toronto",
+//     status: { label: "CA$0", color: "bg-[#E7FDF3] text-[#0F973D]" },
+//     amount: 0,
+//     subText: "Referred 0 Friends",
+//     referredUsers: [1, 2, 3],
+//   },
+// ];
+
+const directReferrals: any = [];
 
 const DashboardImpact = () => {
   return (
@@ -66,7 +69,7 @@ const DashboardImpact = () => {
           {/* Referred Donations Card */}
           <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
             <div className="space-y-1">
-              <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">$3,250</h3>
+              <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">CA$0</h3>
               <p className="text-2xl leading-[150%] font-normal text-[#888787]">
                 Referred Donations
               </p>
@@ -87,7 +90,7 @@ const DashboardImpact = () => {
           <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">30</h3>
+                <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">0</h3>
                 <p className="text-2xl leading-[150%] font-normal text-[#888787]">
                   People Referred
                 </p>
@@ -116,93 +119,109 @@ const DashboardImpact = () => {
             Direct Referrals
           </h3>
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white">
-            <div className="p-6">
-              {directReferrals.map((referral) => (
-                <div
-                  key={referral.id}
-                  className={`flex items-center justify-between border-b py-6 last:border-b-0`}
-                >
-                  <div className="flex items-start gap-4">
-                    <div
-                      className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
-                    >
-                      {referral.avatar ? (
-                        <img
-                          src={referral.avatar}
-                          alt={referral.name}
-                          className="h-full w-full object-cover"
-                        />
-                      ) : (
-                        <div className="h-full w-full rounded-full bg-[#FFD3D8]" />
-                      )}
-                      {referral.id === 1 && (
-                        <div className="absolute -right-1 -bottom-1">
-                          {/* Status dot or icon if needed */}
-                        </div>
-                      )}
-                    </div>
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2">
-                        <p className="text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
-                          {referral.name}
-                        </p>
-                        {referral.location && (
-                          <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
-                            <MapPin size={16} weight="fill" className="text-gray-400" />
-                            {referral.location}
+            {directReferrals?.length === 0 ? (
+              <div className="mt-6 flex h-[25vh] flex-col items-center justify-center">
+                <img
+                  src={EmptyCampaigns}
+                  alt="empty-campaigns"
+                  className="mb-3 h-[72px] w-[72px]"
+                />
+                <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                  No referrals yet.
+                </p>
+
+                <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                  When you refer someone, they will show up here.
+                </p>
+              </div>
+            ) : (
+              <div className="p-6">
+                {directReferrals?.map((referral: any) => (
+                  <div
+                    key={referral.id}
+                    className={`flex items-center justify-between border-b py-6 last:border-b-0`}
+                  >
+                    <div className="flex items-start gap-4">
+                      <div
+                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
+                      >
+                        {referral.avatar ? (
+                          <img
+                            src={referral.avatar}
+                            alt={referral.name}
+                            className="h-full w-full object-cover"
+                          />
+                        ) : (
+                          <div className="h-full w-full rounded-full bg-[#FFD3D8]" />
+                        )}
+                        {referral.id === 1 && (
+                          <div className="absolute -right-1 -bottom-1">
+                            {/* Status dot or icon if needed */}
                           </div>
                         )}
-                        {referral.status && (
-                          <span
-                            className={`rounded px-2 py-0.5 text-xs font-normal ${referral.status.color}`}
-                          >
-                            {referral.status.label}
-                          </span>
-                        )}
                       </div>
-                      {referral.subText && (
-                        <div className="flex items-center gap-2 text-sm text-gray-500">
-                          {referral.referredUsers && (
-                            <div className="flex -space-x-2">
-                              {[1, 2, 3].map((i) => (
-                                <div
-                                  key={i}
-                                  className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
-                                />
-                              ))}
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <p className="text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
+                            {referral.name}
+                          </p>
+                          {referral.location && (
+                            <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
+                              <MapPin size={16} weight="fill" className="text-gray-400" />
+                              {referral.location}
                             </div>
                           )}
-                          <p className="text-base leading-[150%] font-normal text-[#888787]">
-                            {referral.id === 1
-                              ? `${referral.boosts} Boosts D234`
-                              : referral.id === 3
-                                ? "$55 - +$85 referred"
-                                : "$120 referred"}
-                          </p>
+                          {referral.status && (
+                            <span
+                              className={`rounded px-2 py-0.5 text-xs font-normal ${referral.status.color}`}
+                            >
+                              {referral.status.label}
+                            </span>
+                          )}
                         </div>
-                      )}
+                        {referral.subText && (
+                          <div className="flex items-center gap-2 text-sm text-gray-500">
+                            {referral.referredUsers && (
+                              <div className="flex -space-x-2">
+                                {[1, 2, 3].map((i) => (
+                                  <div
+                                    key={i}
+                                    className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
+                                  />
+                                ))}
+                              </div>
+                            )}
+                            <p className="text-base leading-[150%] font-normal text-[#888787]">
+                              {referral.id === 1
+                                ? `${referral.boosts} Boosts D234`
+                                : referral.id === 3
+                                  ? "CA$0 referred"
+                                  : "CA$0 referred"}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="text-right">
+                      <p
+                        className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral.id === 1 || referral.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
+                      >
+                        ${referral.amount.toLocaleString()}
+                        {/* <CaretRightIcon size={14} color="#000000" /> */}
+                      </p>
+                      <p className="text-sm font-medium text-[#888787]">
+                        {referral.id === 1
+                          ? "0 Boosts"
+                          : referral.id === 3
+                            ? "0 Friends Referred"
+                            : "Referred 0 Friends"}
+                      </p>
                     </div>
                   </div>
-
-                  <div className="text-right">
-                    <p
-                      className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral.id === 1 || referral.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
-                    >
-                      ${referral.amount.toLocaleString()}
-                      {/* <CaretRightIcon size={14} color="#000000" /> */}
-                    </p>
-                    <p className="text-sm font-medium text-[#888787]">
-                      {referral.id === 1
-                        ? "3 Boosts"
-                        : referral.id === 3
-                          ? "+4 Friends Referred"
-                          : "Referred 5 Friends"}
-                    </p>
-                  </div>
-                </div>
-              ))}
-            </div>
-
+                ))}
+              </div>
+            )}
             {/* Volunteer Highlight Card */}
             <div className="space-y-4 rounded-b-[10px] border-t border-t-[#F6F6F6] bg-[#EEFFF1] p-6">
               <div className="flex items-start gap-4">
@@ -222,9 +241,7 @@ const DashboardImpact = () => {
                       Volunteer
                     </span>
                   </div>
-                  <p className="text-base leading-[150%] font-normal text-[#595959]">
-                    24+ Referred
-                  </p>
+                  <p className="text-base leading-[150%] font-normal text-[#595959]">10 Referred</p>
                 </div>
               </div>
               <p className="text-base leading-[150%] font-normal text-[#595959]">

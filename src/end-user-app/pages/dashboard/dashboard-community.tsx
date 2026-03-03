@@ -17,6 +17,7 @@ import {
   // BookmarkSimple,
 } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
+import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 
 // const communities = [
 //   {
@@ -84,7 +85,7 @@ import { useNavigate } from "react-router-dom";
 const DashboardCommunity = () => {
   const navigate = useNavigate();
   const { data, isPending } = useGetUserCommunities();
-  console.log(data);
+  // console.log(data);
 
   const communities = data?.data?.items;
 
@@ -119,46 +120,69 @@ const DashboardCommunity = () => {
           {isPending ? (
             <TableSkeleton />
           ) : (
-            <TableBody>
-              {communities?.map((community: any, index: number) => (
-                <TableRow key={community?.id}>
-                  <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
-                    {index + 1}
+            <>
+              {communities?.length <= 0 ? (
+                <TableRow>
+                  <TableCell colSpan={6} className="h-[45vh] text-center">
+                    <div className="mt-6 flex flex-col items-center justify-center">
+                      <img
+                        src={EmptyCampaigns}
+                        alt="empty-campaigns"
+                        className="mb-3 h-[72px] w-[72px]"
+                      />
+                      <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                        No communities found
+                      </p>
+
+                      <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                        When you join a community, it will show up here.
+                      </p>
+                    </div>
                   </TableCell>
-                  <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
-                    {community?.name}
-                  </TableCell>
-                  <TableCell className="line-clamp-3 w-56 py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
-                    {community?.description}
-                    {/* <Badge
+                </TableRow>
+              ) : (
+                <TableBody>
+                  {communities?.map((community: any, index: number) => (
+                    <TableRow key={community?.id}>
+                      <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
+                        {index + 1}
+                      </TableCell>
+                      <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
+                        {community?.name}
+                      </TableCell>
+                      <TableCell className="line-clamp-3 w-56 py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
+                        {community?.description}
+                        {/* <Badge
                     className={`hover:bg-opacity-80 rounded-full border-0 px-3.5 py-1.5 text-base leading-[155%] font-normal ${community.roleColor}`}
                   >
                     {community.roleIcon}
                     {community.role}
                   </Badge> */}
-                  </TableCell>
-                  {/* <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                      </TableCell>
+                      {/* <TableCell className="py-6 text-sm leading-[155%] font-normal">
                   {community.joined}
                 </TableCell> */}
-                  <TableCell className="py-6 text-sm leading-[155%] font-normal">
-                    {community?.visibility}
-                  </TableCell>
-                  <TableCell className="py-6 text-sm leading-[155%] font-normal">
-                    {community?.campaignsCount ? community?.campaignsCount : 0}
-                  </TableCell>
-                  <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
-                    <Button
-                      onClick={() => navigate(`/user/dashboard/community/${community?.id}`)}
-                      className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
-                    >
-                      <div className="flex items-center">
-                        Enter <CaretRightIcon size={14} weight="bold" className="text-white" />
-                      </div>
-                    </Button>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
+                      <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                        {community?.visibility}
+                      </TableCell>
+                      <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                        {community?.campaignsCount ? community?.campaignsCount : 0}
+                      </TableCell>
+                      <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
+                        <Button
+                          onClick={() => navigate(`/user/dashboard/community/${community?.id}`)}
+                          className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
+                        >
+                          <div className="flex items-center">
+                            Enter <CaretRightIcon size={14} weight="bold" className="text-white" />
+                          </div>
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              )}
+            </>
           )}
         </Table>
       </div>

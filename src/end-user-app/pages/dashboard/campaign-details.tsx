@@ -19,6 +19,27 @@ const CampaignDetails = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"active" | "completed">("active");
 
+  const campaigns = [
+    {
+      id: 1,
+      title: "Community Support Fund",
+      description: "Help us reach our goal of $10,000 to support community projects.",
+      progress: 65,
+      daysLeft: 12,
+      image: "https://placehold.co/600x400/png",
+      status: "active",
+    },
+    {
+      id: 2,
+      title: "Winter Clothing Drive",
+      description: "Collecting warm clothes for those in need this winter.",
+      progress: 100,
+      daysLeft: 0,
+      image: "https://placehold.co/600x400/png",
+      status: "completed",
+    },
+  ];
+
   return (
     <>
       <InnerNav
@@ -141,7 +162,7 @@ const CampaignDetails = () => {
 
             {/* Content */}
             <div className="space-y-8">
-              {campaigns.map((campaign: any) => (
+              {campaigns?.map((campaign: any) => (
                 <div key={campaign.id} className="space-y-6">
                   <div className="flex items-center justify-between">
                     <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
