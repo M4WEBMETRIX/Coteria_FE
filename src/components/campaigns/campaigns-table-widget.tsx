@@ -280,7 +280,7 @@ export function ActionPopover({ id, status }: { id: string | number; status: str
           {status?.toLocaleLowerCase() !== "active" && (
             <div
               onClick={() => updateCampaignStatus({ status: "active" })}
-              className="flex items-center gap-2 text-sm text-green-600"
+              className="flex cursor-pointer items-center gap-2 text-sm text-green-600"
             >
               <ArrowsClockwiseIcon size={18} />
               {updateCampaignStatusPending ? (

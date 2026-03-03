@@ -15,18 +15,23 @@ import {
 import { cn, getBaseUrl } from "@/lib/utils";
 import STRIPE_LOGO from "@/assets/icons/stripe_logo.svg";
 import type { OnboardProps } from "@/services";
-import { useConnectStripe, useOnboardOrganisation } from "@/services/auth";
-import { Navigate, useNavigate } from "react-router-dom";
+import { useConnectStripe, useLogoutOrganisation, useOnboardOrganisation } from "@/services/auth";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
+import { useQueryState } from "nuqs";
+import { removeOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { useQueryClient } from "@tanstack/react-query";
 
 interface IProps {
   data: OnboardProps;
   setData: React.Dispatch<React.SetStateAction<OnboardProps>>;
   onNext: () => void;
+  handleLogout?: () => void;
+  logoutPending?: boolean;
 }
 
 const roles = ["Designer", "Fundraiser", "Developer", "Executive"];
 
-const StepOne: React.FC<IProps> = ({ onNext, data, setData }) => {
+const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logoutPending }) => {
   return (
     <div className="mx-auto max-w-130">
       <div className="mt-4">
@@ -87,25 +92,35 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData }) => {
         </div>
       </div>
 
-      <div className="flex items-center gap-5">
-        <Button
-          className="w-30.75 cursor-pointer rounded-full bg-[#12AA5B] py-6 text-base font-medium hover:bg-[#12AA5B]/90"
-          onClick={onNext}
-        >
-          Next
-        </Button>
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-5">
+          <Button
+            className="w-30.75 cursor-pointer rounded-full bg-[#12AA5B] py-6 text-base font-medium hover:bg-[#12AA5B]/90"
+            onClick={onNext}
+          >
+            Next
+          </Button>
+          <button
+            onClick={onNext}
+            className="w-22.75 cursor-pointer text-center text-base font-medium text-[#12AA5B]"
+          >
+            Skip
+          </button>
+        </div>
+
         <button
-          onClick={onNext}
-          className="w-22.75 text-center text-base font-medium text-[#12AA5B]"
+          onClick={handleLogout}
+          disabled={logoutPending}
+          className="w-max cursor-pointer text-center text-base font-medium text-[#414143]"
         >
-          Skip
+          {logoutPending ? "Logging out..." : "Logout"}
         </button>
       </div>
     </div>
   );
 };
 
-const StepTwo: React.FC<IProps> = ({ data, setData, onNext }) => {
+const StepTwo: React.FC<IProps> = ({ data, setData, onNext, handleLogout, logoutPending }) => {
   const isFormFilled =
     data?.firstName === "" ||
     data?.hopingToImprove === "" ||
@@ -189,14 +204,23 @@ const StepTwo: React.FC<IProps> = ({ data, setData, onNext }) => {
           })}
         </RadioGroup>
       </div>
-      <div className="flex items-center gap-4 pb-6">
-        <Button
-          disabled={isFormFilled}
-          className="cursor-pointer rounded-full bg-[#12AA5B] px-11 py-6 text-base font-medium hover:bg-[#12AA5B]/90"
-          onClick={handleSubmit}
+      <div className="flex items-center justify-between">
+        <div className="flex items-center gap-4 pb-6">
+          <Button
+            disabled={isFormFilled}
+            className="cursor-pointer rounded-full bg-[#12AA5B] px-11 py-6 text-base font-medium hover:bg-[#12AA5B]/90"
+            onClick={handleSubmit}
+          >
+            {isPending ? "Saving..." : "Save & Connect Stripe"}
+          </Button>
+        </div>
+        <button
+          onClick={handleLogout}
+          disabled={logoutPending}
+          className="w-max cursor-pointer text-center text-base font-medium text-[#414143]"
         >
-          {isPending ? "Saving..." : "Save & Connect Stripe"}
-        </Button>
+          {logoutPending ? "Logging out..." : "Logout"}
+        </button>
       </div>
     </div>
   );
@@ -209,8 +233,8 @@ const StepThree: React.FC = () => {
 
   const handleConnectStripe = () => {
     connectStripeMutate({
-      returnUrl: `${getBaseUrl()}/auth/setup-account`,
-      refreshUrl: `${getBaseUrl()}/auth/setup-account`,
+      returnUrl: `${getBaseUrl()}/community`,
+      refreshUrl: `${getBaseUrl()}/community`,
     });
   };
 
@@ -261,7 +285,11 @@ const StepThree: React.FC = () => {
 };
 
 const SetupAccountPage: React.FC = () => {
-  const [step, setStep] = React.useState(1);
+  const [activePage, setActivePage] = useQueryState("page", { defaultValue: "details" });
+  // const [step, setStep] = React.useState(1);
+  const navigate = useNavigate();
+  const location = useLocation();
+  const queryClient = useQueryClient();
 
   const accessToken = localStorage.getItem("accessToken");
 
@@ -275,34 +303,68 @@ const SetupAccountPage: React.FC = () => {
     hopingToImprove: "",
   });
 
+  function getStep() {
+    if (activePage === "details") {
+      return 1;
+    } else if (activePage === "improve") {
+      return 2;
+    } else if (activePage === "stripe") {
+      return 3;
+    }
+  }
+
+  const isUserPath = location.pathname.includes("user");
+
+  const {
+    mutate: logoutMutate,
+    isPending: logoutPending,
+    isSuccess: logoutSuccess,
+  } = useLogoutOrganisation();
+
+  const refreshToken = isUserPath
+    ? localStorage.getItem("userRefreshToken")
+    : localStorage.getItem("refreshToken");
+
+  const handleLogout = () => {
+    logoutMutate({ refreshToken });
+  };
+
+  useEffect(() => {
+    if (logoutSuccess) {
+      navigate("/auth/login");
+      removeOrgUserFromLocalStorage();
+      queryClient.clear();
+    }
+  }, [logoutSuccess]);
+
   return (
     <AuthLayout>
       <div className="grid w-full place-content-center">
         <div className="w-185 max-w-185">
           <div className="mt-12.5 flex items-center justify-between text-2xl font-semibold text-[#0A0A0C]">
             <p>Account set up</p>
-            <p>{step}/3</p>
+            <p>{getStep()}/3</p>
           </div>
           <div className="mt-6 mb-4 h-2 w-full rounded-full bg-gray-200">
             <div
               className={`h-2 rounded-full bg-green-500`}
-              style={{ width: `${(step / 3) * 100}%` }}
+              style={{ width: `${((getStep() as number) / 3) * 100}%` }}
             />
           </div>
 
-          {step !== 1 && (
+          {activePage !== "details" && (
             <div className="mt-6">
               <ArrowLeft
                 className="cursor-pointer"
                 onClick={() => {
-                  if (step === 1) {
+                  if (activePage === "details") {
                     return;
-                  } else if (step === 2) {
-                    setStep(1);
-                  } else if (step === 3) {
-                    setStep(2);
+                  } else if (activePage === "improve") {
+                    setActivePage("details");
+                  } else if (activePage === "stripe") {
+                    setActivePage("improve");
                   } else {
-                    setStep(1);
+                    setActivePage("details");
                   }
                 }}
                 color="0A0A0C"
@@ -311,13 +373,25 @@ const SetupAccountPage: React.FC = () => {
             </div>
           )}
 
-          {step === 1 && (
-            <StepOne data={formData} setData={setFormData} onNext={() => setStep(2)} />
+          {activePage === "details" && (
+            <StepOne
+              data={formData}
+              setData={setFormData}
+              onNext={() => setActivePage("improve")}
+              handleLogout={handleLogout}
+              logoutPending={logoutPending}
+            />
           )}
-          {step === 2 && (
-            <StepTwo data={formData} setData={setFormData} onNext={() => setStep(3)} />
+          {activePage === "improve" && (
+            <StepTwo
+              data={formData}
+              setData={setFormData}
+              onNext={() => setActivePage("stripe")}
+              handleLogout={handleLogout}
+              logoutPending={logoutPending}
+            />
           )}
-          {step === 3 && <StepThree />}
+          {activePage === "stripe" && <StepThree />}
         </div>
       </div>
     </AuthLayout>
