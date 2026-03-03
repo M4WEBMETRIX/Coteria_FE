@@ -9,7 +9,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { useMemo, useState } from "react";
 import {
   // CaretDownIcon,
-  CaretRightIcon,
+  // CaretRightIcon,
   MagnifyingGlassIcon,
   UserIcon,
 } from "@phosphor-icons/react";
@@ -36,7 +36,7 @@ const DashboardIndex = () => {
   const navigate = useNavigate();
   const user = getOrgUserFromLocalStorage();
   const [activeTab] = useQueryState("tab", {
-    defaultValue: "home",
+    defaultValue: "community",
   });
 
   const [date, setDate] = useState<Date | undefined>(new Date());
@@ -96,7 +96,7 @@ const DashboardIndex = () => {
         </nav>
         <ButtonTabs
           tabs={[
-            { label: "Home", value: "home" },
+            // { label: "Home", value: "home" },
             { label: "Community", value: "community" },
             { label: "Campaigns", value: "campaigns" },
             // { label: "Resources ", value: "resources" },
@@ -130,7 +130,7 @@ const DashboardIndex = () => {
                   Level
                 </p>
                 <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
-                  7
+                  0
                 </p>
               </div>
               <div className="flex items-center justify-between">
@@ -138,7 +138,7 @@ const DashboardIndex = () => {
                   Total XP
                 </p>
                 <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
-                  5400
+                  0
                 </p>
               </div>
               <button
@@ -229,7 +229,7 @@ const DashboardIndex = () => {
             }}
             className="w-full rounded-lg border text-sm! font-normal! text-[#6F6F6F]!"
           />
-
+          {/* 
           <div className="mt-4 mb-3 flex items-center justify-between">
             <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
               Your Attention
@@ -252,7 +252,7 @@ const DashboardIndex = () => {
             <p className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
               Ongoing
             </p>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

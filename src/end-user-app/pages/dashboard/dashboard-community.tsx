@@ -1,4 +1,4 @@
-import { Badge } from "@/components/ui/badge";
+// import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Table,
@@ -8,80 +8,86 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { useGetUserCommunities } from "@/services/generics/user-generics/user-hooks";
 import {
   CaretRightIcon,
-  Trophy,
-  Sparkle,
-  CheckCircle,
-  BookmarkSimple,
+  // Trophy,
+  // Sparkle,
+  // CheckCircle,
+  // BookmarkSimple,
 } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 
-const communities = [
-  {
-    id: 1,
-    name: "Larkden Community",
-    role: "Champion",
-    joined: "March 10",
-    members: "1,240",
-    campaigns: 4,
-    roleColor: "bg-[#E0F8FF] text-[#009BC2]",
-    roleIcon: <Trophy size={20} weight="fill" className="mr-1 text-[#009BC2]" />,
-  },
-  {
-    id: 2,
-    name: "Social Club Community",
-    role: "Amplifier",
-    joined: "March 10",
-    members: "1,240",
-    campaigns: 60,
-    roleColor: "bg-[#F4E6FF] text-[#A838D6]",
-    roleIcon: <Sparkle size={20} weight="fill" className="mr-1 text-[#A838D6]" />,
-  },
-  {
-    id: 3,
-    name: "Church Community",
-    role: "Completed",
-    joined: "March 10",
-    members: "1,240",
-    campaigns: 60,
-    roleColor: "bg-[#DFFFF2] text-[#00C48C]",
-    roleIcon: <CheckCircle size={20} weight="fill" className="mr-1 text-[#00C48C]" />,
-  },
-  {
-    id: 4,
-    name: "WOFBEC Community",
-    role: "Joined",
-    joined: "March 10",
-    members: "1,240",
-    campaigns: 60,
-    roleColor: "bg-[#FFF4D6] text-[#D9A300]",
-    roleIcon: <BookmarkSimple size={20} weight="fill" className="mr-1 text-[#D9A300]" />,
-  },
-  {
-    id: 5,
-    name: "Women of Dignity Community",
-    role: "Amplifier",
-    joined: "March 10",
-    members: "1,240",
-    campaigns: 60,
-    roleColor: "bg-[#F4E6FF] text-[#A838D6]",
-    roleIcon: <Sparkle size={20} weight="fill" className="mr-1 text-[#A838D6]" />,
-  },
-  {
-    id: 6,
-    name: "Men of Valor Community",
-    role: "Joined",
-    joined: "March 10",
-    members: "1,240",
-    campaigns: 60,
-    roleColor: "bg-[#FFF4D6] text-[#D9A300]",
-    roleIcon: <BookmarkSimple size={20} weight="fill" className="mr-1 text-[#D9A300]" />,
-  },
-];
+// const communities = [
+//   {
+//     id: 1,
+//     name: "Larkden Community",
+//     role: "Champion",
+//     joined: "March 10",
+//     members: "1,240",
+//     campaigns: 4,
+//     roleColor: "bg-[#E0F8FF] text-[#009BC2]",
+//     roleIcon: <Trophy size={20} weight="fill" className="mr-1 text-[#009BC2]" />,
+//   },
+//   {
+//     id: 2,
+//     name: "Social Club Community",
+//     role: "Amplifier",
+//     joined: "March 10",
+//     members: "1,240",
+//     campaigns: 60,
+//     roleColor: "bg-[#F4E6FF] text-[#A838D6]",
+//     roleIcon: <Sparkle size={20} weight="fill" className="mr-1 text-[#A838D6]" />,
+//   },
+//   {
+//     id: 3,
+//     name: "Church Community",
+//     role: "Completed",
+//     joined: "March 10",
+//     members: "1,240",
+//     campaigns: 60,
+//     roleColor: "bg-[#DFFFF2] text-[#00C48C]",
+//     roleIcon: <CheckCircle size={20} weight="fill" className="mr-1 text-[#00C48C]" />,
+//   },
+//   {
+//     id: 4,
+//     name: "WOFBEC Community",
+//     role: "Joined",
+//     joined: "March 10",
+//     members: "1,240",
+//     campaigns: 60,
+//     roleColor: "bg-[#FFF4D6] text-[#D9A300]",
+//     roleIcon: <BookmarkSimple size={20} weight="fill" className="mr-1 text-[#D9A300]" />,
+//   },
+//   {
+//     id: 5,
+//     name: "Women of Dignity Community",
+//     role: "Amplifier",
+//     joined: "March 10",
+//     members: "1,240",
+//     campaigns: 60,
+//     roleColor: "bg-[#F4E6FF] text-[#A838D6]",
+//     roleIcon: <Sparkle size={20} weight="fill" className="mr-1 text-[#A838D6]" />,
+//   },
+//   {
+//     id: 6,
+//     name: "Men of Valor Community",
+//     role: "Joined",
+//     joined: "March 10",
+//     members: "1,240",
+//     campaigns: 60,
+//     roleColor: "bg-[#FFF4D6] text-[#D9A300]",
+//     roleIcon: <BookmarkSimple size={20} weight="fill" className="mr-1 text-[#D9A300]" />,
+//   },
+// ];
 
 const DashboardCommunity = () => {
   const navigate = useNavigate();
+  const { data, isPending } = useGetUserCommunities();
+  console.log(data);
+
+  const communities = data?.data?.items;
+
   return (
     <div className="w-full">
       <div className="">
@@ -95,13 +101,13 @@ const DashboardCommunity = () => {
                 Community
               </TableHead>
               <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
-                Role
+                Description
               </TableHead>
-              <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
+              {/* <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
                 Joined
-              </TableHead>
+              </TableHead> */}
               <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
-                Members
+                Visibility
               </TableHead>
               <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
                 Campaigns
@@ -109,48 +115,91 @@ const DashboardCommunity = () => {
               <TableHead className="text-right"></TableHead>
             </TableRow>
           </TableHeader>
-          <TableBody>
-            {communities.map((community, index) => (
-              <TableRow key={community.id}>
-                <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
-                  {index + 1}
-                </TableCell>
-                <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
-                  {community.name}
-                </TableCell>
-                <TableCell className="py-6">
-                  <Badge
+
+          {isPending ? (
+            <TableSkeleton />
+          ) : (
+            <TableBody>
+              {communities?.map((community: any, index: number) => (
+                <TableRow key={community?.id}>
+                  <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
+                    {index + 1}
+                  </TableCell>
+                  <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
+                    {community?.name}
+                  </TableCell>
+                  <TableCell className="line-clamp-3 w-56 py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
+                    {community?.description}
+                    {/* <Badge
                     className={`hover:bg-opacity-80 rounded-full border-0 px-3.5 py-1.5 text-base leading-[155%] font-normal ${community.roleColor}`}
                   >
                     {community.roleIcon}
                     {community.role}
-                  </Badge>
-                </TableCell>
-                <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                  </Badge> */}
+                  </TableCell>
+                  {/* <TableCell className="py-6 text-sm leading-[155%] font-normal">
                   {community.joined}
-                </TableCell>
-                <TableCell className="py-6 text-sm leading-[155%] font-normal">
-                  {community.members}
-                </TableCell>
-                <TableCell className="py-6 text-sm leading-[155%] font-normal">
-                  {community.campaigns}
-                </TableCell>
-                <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
-                  <Button
-                    onClick={() => navigate(`/user/dashboard/community/${community.id}`)}
-                    className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
-                  >
-                    <div className="flex items-center">
-                      Enter <CaretRightIcon size={14} weight="bold" className="text-white" />
-                    </div>
-                  </Button>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
+                </TableCell> */}
+                  <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                    {community?.visibility}
+                  </TableCell>
+                  <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                    {community?.campaignsCount ? community?.campaignsCount : 0}
+                  </TableCell>
+                  <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
+                    <Button
+                      onClick={() => navigate(`/user/dashboard/community/${community?.id}`)}
+                      className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
+                    >
+                      <div className="flex items-center">
+                        Enter <CaretRightIcon size={14} weight="bold" className="text-white" />
+                      </div>
+                    </Button>
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          )}
         </Table>
       </div>
     </div>
+  );
+};
+
+const TableSkeleton = ({ rows = 6 }: { rows?: number }) => {
+  return (
+    <TableBody>
+      {Array.from({ length: rows }).map((_, index) => (
+        <TableRow key={index}>
+          <TableCell className="py-6">
+            <div className="h-5 w-6 animate-pulse rounded bg-gray-200" />
+          </TableCell>
+
+          <TableCell className="py-6">
+            <div className="h-5 w-40 animate-pulse rounded bg-gray-200" />
+          </TableCell>
+
+          <TableCell className="py-6">
+            <div className="space-y-2">
+              <div className="h-4 w-56 animate-pulse rounded bg-gray-200" />
+              <div className="h-4 w-40 animate-pulse rounded bg-gray-200" />
+            </div>
+          </TableCell>
+
+          <TableCell className="py-6">
+            <div className="h-5 w-16 animate-pulse rounded bg-gray-200" />
+          </TableCell>
+
+          <TableCell className="py-6">
+            <div className="h-5 w-12 animate-pulse rounded bg-gray-200" />
+          </TableCell>
+
+          <TableCell className="py-6 text-right">
+            <div className="ml-auto h-10 w-24 animate-pulse rounded-full bg-gray-200" />
+          </TableCell>
+        </TableRow>
+      ))}
+    </TableBody>
   );
 };
 

@@ -115,7 +115,7 @@ export const userSidebarLinks: NavLinkSection[] = [
       {
         name: "World",
         icon: <SquaresFourIcon size={20} weight="regular" />,
-        path: "/user/dashboard",
+        path: "/user/dashboard?tab=community",
       },
       // {
       //   name: "Events",

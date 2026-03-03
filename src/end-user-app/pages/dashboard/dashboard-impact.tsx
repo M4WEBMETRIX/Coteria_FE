@@ -8,10 +8,10 @@ const directReferrals = [
     avatar: "https://placehold.co/40x40/png",
     location: "",
     status: { label: "You", color: "bg-[#E7FDF3] text-[#0F973D]" }, // Mocking logic for "You" tag
-    boosts: 3,
+    boosts: 0,
     referralId: "D234",
-    amount: 1240,
-    subText: "3 Boosts",
+    amount: 0,
+    subText: "0 Boosts",
   },
   {
     id: 2,
@@ -19,8 +19,8 @@ const directReferrals = [
     avatar: "", // No avatar
     location: "Toronto",
     status: null,
-    amount: 120,
-    subText: "Referred 5 Friends",
+    amount: 0,
+    subText: "Referred 0 Friends",
     referredUsers: [1, 2, 3], // Mock for mini avatars
   },
   {
@@ -29,8 +29,8 @@ const directReferrals = [
     avatar: "https://placehold.co/40x40/png",
     location: "Toronto",
     status: null,
-    amount: 140,
-    subText: "+4 Friends Referred",
+    amount: 0,
+    subText: "0 Friends Referred",
     referredUsers: [1, 2, 3],
   },
   {
@@ -38,9 +38,9 @@ const directReferrals = [
     name: "John Maguire",
     avatar: "https://placehold.co/40x40/png",
     location: "Toronto",
-    status: { label: "$150", color: "bg-[#E7FDF3] text-[#0F973D]" },
-    amount: 95,
-    subText: "Referred 5 Friends",
+    status: { label: "CA$0", color: "bg-[#E7FDF3] text-[#0F973D]" },
+    amount: 0,
+    subText: "Referred 0 Friends",
     referredUsers: [1, 2, 3],
   },
 ];
@@ -79,7 +79,7 @@ const DashboardImpact = () => {
               </div>
             </Button>
             <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-              3 referrals away from reaching the next level
+              0 referrals away from reaching the next level
             </p>
           </div>
 
@@ -103,7 +103,7 @@ const DashboardImpact = () => {
                 Amplifier Badge Earned
                 {/* + $280 <span className="text-gray-400">Bonus Earned</span> */}
               </span>
-              <span>45 Days</span>
+              <span>0 Days</span>
             </div>
             <Button className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]">
               Refer More Family <CaretRightIcon className="ml-2 h-4 w-4" />

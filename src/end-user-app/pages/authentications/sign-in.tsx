@@ -51,7 +51,7 @@ const UserSignIn = () => {
         setShowVerification(true);
         userResendVerificationEmailMutate({});
       } else {
-        navigate("/user/dashboard");
+        navigate("/user/dashboard?tab=community");
       }
 
       // setUserToLocalStorage({

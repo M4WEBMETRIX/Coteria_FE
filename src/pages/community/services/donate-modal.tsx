@@ -16,6 +16,7 @@ import { useCreateDonation } from ".";
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import { getBaseUrl } from "@/lib/utils";
+import { useQueryState } from "nuqs";
 
 const formSchema = z.object({
   amount: z
@@ -39,6 +40,7 @@ export function DonationModal({
   onOpenChange: (open: boolean) => void;
   currency: string;
 }) {
+  const [userId] = useQueryState("userId");
   const navigate = useNavigate();
   const { campaignId } = useParams();
 
@@ -73,16 +75,21 @@ export function DonationModal({
     data,
   } = useCreateDonation(campaignId);
 
+  const successUrl = userId
+    ? `${getBaseUrl()}/user/dashboard?tab=community`
+    : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
+  const cancelUrl = userId
+    ? `${getBaseUrl()}/user/dashboard?tab=community`
+    : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
+
   const onSubmit = (values: FormValues) => {
     const payload = {
       slug: campaignId,
       amountCents: values.amount * 100,
       currency: currency || "CAD",
-      //   donorUserId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      donorEmail: values.donorEmail,
-      //   referrerId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      successUrl: `${getBaseUrl()}/community/public/campaign/${campaignId}`,
-      cancelUrl: `${getBaseUrl()}/community/public/campaign/${campaignId}`,
+      ...(userId ? { donorUserId: userId } : { donorEmail: values.donorEmail }),
+      successUrl: successUrl,
+      cancelUrl: cancelUrl,
     };
 
     createDonation(payload);
@@ -124,15 +131,17 @@ export function DonationModal({
           </div> */}
 
           {/* Email */}
-          <div className="space-y-2">
-            <label className="text-sm font-medium">Email Address</label>
+          {!userId && (
+            <div className="space-y-2">
+              <label className="text-sm font-medium">Email Address</label>
 
-            <Input placeholder="email@example.com (optional)" {...register("donorEmail")} />
+              <Input placeholder="email@example.com (optional)" {...register("donorEmail")} />
 
-            {errors.donorEmail && (
-              <p className="text-sm text-red-500">{errors.donorEmail.message}</p>
-            )}
-          </div>
+              {errors.donorEmail && (
+                <p className="text-sm text-red-500">{errors.donorEmail.message}</p>
+              )}
+            </div>
+          )}
 
           <p className="text-sm text-gray-500">
             {" "}
