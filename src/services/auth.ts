@@ -36,7 +36,7 @@ export const useRegisterOrganisation = () => {
     },
     onError: (error) => {
       //   console.log("err", error);
-      toast.error(error?.message);
+      showErrorToast(error);
     },
   });
 };
@@ -175,7 +175,7 @@ export const useOnboardOrganisation = () => {
     },
     onError: (error) => {
       console.log("err", error);
-      toast.error(error?.message);
+      showErrorToast(error);
     },
   });
 };
@@ -189,7 +189,7 @@ export const useConnectStripe = () => {
     },
     onError: (error) => {
       console.log("err", error);
-      toast.error(error?.message);
+      showErrorToast(error);
     },
   });
 };
