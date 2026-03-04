@@ -39,7 +39,7 @@ const InviteMembersModal = ({
     }
   }, [id]);
 
-  const inviteLink = `${getBaseUrl()}/join-community?ref=${data?.data?.code}`;
+  const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${data?.data?.code}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(inviteLink);

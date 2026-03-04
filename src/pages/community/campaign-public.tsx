@@ -16,6 +16,7 @@ import { getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
 import CampaignPublicSkeleton from "./campaign-public-skeleton";
 import { DonationModal } from "./services/donate-modal";
 import { useState } from "react";
+import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 
 // Mock data - would come from API in production
 const campaignData = {
@@ -38,27 +39,29 @@ During his formative years, young Bill spent many happy days wandering through N
     supporters: 168,
     actionsTaken: 174,
   },
-  updates: [
-    {
-      id: "1",
-      title: "Weekly progress updates from our desk",
-      description: "Clear visibility into how your support adds up",
-    },
-  ],
-  upcomingEvents: [
-    {
-      id: "1",
-      title: "Salmon Museum & Friends Lotto",
-      date: "May 10",
-      description: "The Salmon Museum and Friends weekly lotto was first established in 2019",
-    },
-    {
-      id: "2",
-      title: "Chase The Ace Lottery",
-      date: "June 2",
-      description: "We expect to kick off our exciting new Chase the Ace",
-    },
-  ],
+  // updates: [
+  //   {
+  //     id: "1",
+  //     title: "Weekly progress updates from our desk",
+  //     description: "Clear visibility into how your support adds up",
+  //   },
+  // ],
+  updates: [],
+  upcomingEvents: [],
+  // upcomingEvents: [
+  //   {
+  //     id: "1",
+  //     title: "Salmon Museum & Friends Lotto",
+  //     date: "May 10",
+  //     description: "The Salmon Museum and Friends weekly lotto was first established in 2019",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Chase The Ace Lottery",
+  //     date: "June 2",
+  //     description: "We expect to kick off our exciting new Chase the Ace",
+  //   },
+  // ],
 };
 
 const CampaignPublic = () => {
@@ -81,6 +84,7 @@ const CampaignPublic = () => {
         currency={publicCampaignData?.data?.goalCurrency}
         open={isOpen}
         onOpenChange={setIsOpen}
+        campaignName={publicCampaignData?.data?.campaignName}
       />
 
       <div className="min-h-screen bg-white">
@@ -253,28 +257,45 @@ const CampaignPublic = () => {
                 <h3 className="text-[22px] leading-[27.16px] font-bold text-[#5A5C59]">
                   Community Updates: Stay Engaged
                 </h3>
-                <div className="w-full space-y-3">
-                  {campaignData.updates.map((update) => (
-                    <div
-                      key={update.id}
-                      className="w-full cursor-pointer space-y-2 rounded-[10px] bg-white p-4 text-[19px] font-normal text-[#7D7B7C] transition-colors hover:bg-gray-50"
-                    >
-                      <div>
-                        <h4 className="flex items-center justify-between">
-                          <div className="flex items-start gap-2.5">
-                            <p className="mt-3 h-2.5 w-2.5 gap-2 rounded-full bg-[#12AA5B]" />
-                            <p className="w-57.25">{update.title}</p>
-                          </div>
-                          <CaretRightIcon size={16} className="text-gray-400" />
-                        </h4>
+                {campaignData?.updates?.length === 0 ? (
+                  <div className="mt-6 flex flex-col items-center justify-center rounded-[8px] bg-white p-4">
+                    <img
+                      src={EmptyCampaigns}
+                      alt="empty-campaigns"
+                      className="mb-3 h-[72px] w-[72px]"
+                    />
+                    <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                      No campaign updates yet.
+                    </p>
+
+                    <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                      When campaign updates are available, they will show up here.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="w-full space-y-3">
+                    {campaignData.updates.map((update: any, index: number) => (
+                      <div
+                        key={index}
+                        className="w-full cursor-pointer space-y-2 rounded-[10px] bg-white p-4 text-[19px] font-normal text-[#7D7B7C] transition-colors hover:bg-gray-50"
+                      >
+                        <div>
+                          <h4 className="flex items-center justify-between">
+                            <div className="flex items-start gap-2.5">
+                              <p className="mt-3 h-2.5 w-2.5 gap-2 rounded-full bg-[#12AA5B]" />
+                              <p className="w-57.25">{update?.title}</p>
+                            </div>
+                            <CaretRightIcon size={16} className="text-gray-400" />
+                          </h4>
+                        </div>
+                        <div className="flex items-start gap-2.5">
+                          <p className="mt-3 h-2.5 w-2.5 gap-2 rounded-full bg-[#12AA5B]" />
+                          <p className="w-57.25">{update?.description}</p>
+                        </div>
                       </div>
-                      <div className="flex items-start gap-2.5">
-                        <p className="mt-3 h-2.5 w-2.5 gap-2 rounded-full bg-[#12AA5B]" />
-                        <p className="w-57.25">{update.description}</p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Upcoming Events */}
@@ -282,28 +303,45 @@ const CampaignPublic = () => {
                 <h3 className="text-[22px] leading-[27.16px] font-bold text-[#5A5C59]">
                   Upcoming Events: Join In
                 </h3>
-                <div className="space-y-3">
-                  {campaignData.upcomingEvents.map((event) => (
-                    <div
-                      key={event.id}
-                      className="cursor-pointer space-y-2 rounded-[10px] bg-white p-4 transition-colors hover:bg-gray-50"
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="flex items-center gap-2">
-                          <CalendarIcon size={18} color="#12AA5B" />
-                          <h4 className="text-[15px] font-bold text-[#676566]">{event.title}</h4>
+                {campaignData?.upcomingEvents?.length === 0 ? (
+                  <div className="mt-6 flex flex-col items-center justify-center rounded-[8px] bg-white p-4">
+                    <img
+                      src={EmptyCampaigns}
+                      alt="empty-campaigns"
+                      className="mb-3 h-[72px] w-[72px]"
+                    />
+                    <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                      No upcoming events yet.
+                    </p>
+
+                    <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                      When campaign events are available, they will show up here.
+                    </p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {campaignData.upcomingEvents.map((event: any, index: number) => (
+                      <div
+                        key={index}
+                        className="cursor-pointer space-y-2 rounded-[10px] bg-white p-4 transition-colors hover:bg-gray-50"
+                      >
+                        <div className="flex items-start justify-between">
+                          <div className="flex items-center gap-2">
+                            <CalendarIcon size={18} color="#12AA5B" />
+                            <h4 className="text-[15px] font-bold text-[#676566]">{event?.title}</h4>
+                          </div>
+                          <CaretRightIcon size={16} className="text-gray-400" />
                         </div>
-                        <CaretRightIcon size={16} className="text-gray-400" />
+                        <div className="text-[15px] font-semibold text-[#848284]">
+                          <span>{event?.date}</span>
+                        </div>
+                        <p className="text-sm leading-[21px] font-normal text-[#898689]">
+                          {event?.description}
+                        </p>
                       </div>
-                      <div className="text-[15px] font-semibold text-[#848284]">
-                        <span>{event.date}</span>
-                      </div>
-                      <p className="text-sm leading-[21px] font-normal text-[#898689]">
-                        {event.description}
-                      </p>
-                    </div>
-                  ))}
-                </div>
+                    ))}
+                  </div>
+                )}
               </div>
             </div>
           </div>

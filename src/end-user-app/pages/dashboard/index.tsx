@@ -15,8 +15,9 @@ import {
 } from "@phosphor-icons/react";
 import { Input } from "@/components/ui/input";
 import DashboardImpact from "./dashboard-impact";
-import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+// import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import { useNavigate } from "react-router-dom";
+import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
 
@@ -39,9 +40,13 @@ const DashboardIndex = () => {
     defaultValue: "community",
   });
 
-  const endUser: any = useMemo(() => {
-    return getEndUserFromLocalStorage();
-  }, []);
+  const { data, isPending } = useGetEndUserProfile();
+
+  const endUser: any = data?.data;
+
+  // useMemo(() => {
+  //   return getEndUserFromLocalStorage();
+  // }, []);
 
   const [date, setDate] = useState<Date | undefined>(new Date());
 
@@ -51,14 +56,16 @@ const DashboardIndex = () => {
     <div className="flex w-full gap-4">
       <div className="w-full py-8.5">
         <nav className="mb-13.75 flex items-center justify-between">
-          <div className="space-y-0.75">
-            <p className="text-[32px] leading-[120%] font-normal tracking-[-2%] text-[#000000]">
-              Good day,
-            </p>
-            <p className="text-[48px] leading-[120%] font-medium tracking-[-2%] text-[#000000]">
-              {endUser?.firstName}!
-            </p>
-          </div>
+          {!isPending && (
+            <div className="space-y-0.75">
+              <p className="text-[32px] leading-[120%] font-normal tracking-[-2%] text-[#000000]">
+                Good day,
+              </p>
+              <p className="text-[48px] leading-[120%] font-medium tracking-[-2%] text-[#000000]">
+                {endUser?.firstName}!
+              </p>
+            </div>
+          )}
           <div className="flex items-center gap-3">
             <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
               <div className="flex items-center gap-3">

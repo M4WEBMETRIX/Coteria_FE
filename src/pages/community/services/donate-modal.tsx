@@ -35,10 +35,14 @@ export function DonationModal({
   open,
   onOpenChange,
   currency,
+  campaignName = "",
+  endUserId,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currency: string;
+  campaignName?: string;
+  endUserId?: string;
 }) {
   const [userId] = useQueryState("userId");
   const navigate = useNavigate();
@@ -63,9 +67,11 @@ export function DonationModal({
     name: "amount",
   });
 
+  const safeCurrency = currency || "CAD";
+
   const formattedAmount = new Intl.NumberFormat("en-US", {
     style: "currency",
-    currency: currency,
+    currency: safeCurrency,
   }).format(amount || 0);
 
   const {
@@ -75,19 +81,23 @@ export function DonationModal({
     data,
   } = useCreateDonation(campaignId);
 
-  const successUrl = userId
-    ? `${getBaseUrl()}/user/dashboard?tab=community`
-    : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
-  const cancelUrl = userId
-    ? `${getBaseUrl()}/user/dashboard?tab=community`
-    : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
+  const successUrl =
+    userId || endUserId
+      ? `${getBaseUrl()}/user/dashboard?tab=community`
+      : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
+  const cancelUrl =
+    userId || endUserId
+      ? `${getBaseUrl()}/user/dashboard?tab=community`
+      : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
 
   const onSubmit = (values: FormValues) => {
     const payload = {
       slug: campaignId,
       amountCents: values.amount * 100,
       currency: currency || "CAD",
-      ...(userId ? { donorUserId: userId } : { donorEmail: values.donorEmail }),
+      ...(userId || endUserId
+        ? { donorUserId: userId || endUserId }
+        : { donorEmail: values.donorEmail }),
       successUrl: successUrl,
       cancelUrl: cancelUrl,
     };
@@ -131,7 +141,7 @@ export function DonationModal({
           </div> */}
 
           {/* Email */}
-          {!userId && (
+          {!userId && !endUserId && (
             <div className="space-y-2">
               <label className="text-sm font-medium">Email Address</label>
 
@@ -145,13 +155,18 @@ export function DonationModal({
 
           <p className="text-sm text-gray-500">
             {" "}
-            You are about to donate {formattedAmount}. Provide an email if you'd like a
+            You are about to donate {formattedAmount} to{" "}
+            <span className="font-bold">{campaignName}</span>. Provide an email if you'd like a
             receipt.{" "}
           </p>
 
           <DialogFooter>
-            <Button disabled={createDonationPending} type="submit" className="w-full">
-              {createDonationPending ? "Loading..." : "Confirm & Pay"}
+            <Button
+              disabled={createDonationPending || amount <= 0}
+              type="submit"
+              className="w-full"
+            >
+              {createDonationPending ? "Loading..." : "Confirm & Donate"}
             </Button>
           </DialogFooter>
         </form>

@@ -10,6 +10,7 @@ import SAMPLE_PUB_COM_IMAGE_2 from "@/assets/images/pub-com-2.png";
 import { useGetPublicCommunity, useGetPublicCommunityCampaigns } from "./services";
 import { getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
 import CommunityPublicSkeleton from "./community-public-skeleton";
+import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 
 // Mock data - would come from API in production
 const communityData = {
@@ -47,21 +48,22 @@ const communityData = {
     quote:
       "This community is making Toronto greener, one tree at a time. I'm so proud to be part of it!",
   },
-  upcomingEvents: [
-    {
-      id: "1",
-      title: "Cast and Craft Festival",
-      description: "Where the River Meets Creativity and you are invited",
-      date: "Wed, Apr 24 at 6:00PM",
-    },
-    {
-      id: "2",
-      title: "Chase The Ace Lottery",
-      description:
-        "The Atlantic Salmon Museum Chase the Ace is returning soon, bigger and better than ever.",
-      date: "Sun, May 12 at 5:00PM",
-    },
-  ],
+  upcomingEvents: [],
+  // upcomingEvents: [
+  //   {
+  //     id: "1",
+  //     title: "Cast and Craft Festival",
+  //     description: "Where the River Meets Creativity and you are invited",
+  //     date: "Wed, Apr 24 at 6:00PM",
+  //   },
+  //   {
+  //     id: "2",
+  //     title: "Chase The Ace Lottery",
+  //     description:
+  //       "The Atlantic Salmon Museum Chase the Ace is returning soon, bigger and better than ever.",
+  //     date: "Sun, May 12 at 5:00PM",
+  //   },
+  // ],
 };
 
 const CommunityPublic = () => {
@@ -239,35 +241,53 @@ const CommunityPublic = () => {
               <div className="flex items-center justify-between">
                 <h3 className="text-lg font-normal text-[#606266]">Upcoming Events: Join Us</h3>
               </div>
-              <div className="flex flex-col items-center justify-center space-y-4">
-                {communityData.upcomingEvents.map((event) => (
-                  <div
-                    key={event.id}
-                    className="cursor-pointer space-y-2 rounded-lg border border-[#ECEFF3] bg-white p-4 transition-colors hover:bg-gray-50"
-                  >
-                    <div className="flex items-start gap-2">
-                      <CalendarIcon
-                        size={20}
-                        className="mt-0.5 shrink-0 text-[#12AA5B]"
-                        weight="fill"
-                      />
-                      <h4 className="text-base font-bold text-[#706D70]">{event.title}</h4>
-                    </div>
-                    <p className="text-[13px] text-[#9C9A9D]">{event.description}</p>
-                    {/* <div className="flex items-center gap-2 text-xs text-gray-400">
+
+              {communityData.upcomingEvents?.length === 0 ? (
+                <div className="mt-6 flex flex-col items-center justify-center rounded-[8px] bg-white p-4">
+                  <img
+                    src={EmptyCampaigns}
+                    alt="empty-campaigns"
+                    className="mb-3 h-[72px] w-[72px]"
+                  />
+                  <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                    No upcoming events yet.
+                  </p>
+
+                  <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                    When campaign events are available, they will show up here.
+                  </p>
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center space-y-4">
+                  {communityData.upcomingEvents.map((event: any, index: number) => (
+                    <div
+                      key={index}
+                      className="cursor-pointer space-y-2 rounded-lg border border-[#ECEFF3] bg-white p-4 transition-colors hover:bg-gray-50"
+                    >
+                      <div className="flex items-start gap-2">
+                        <CalendarIcon
+                          size={20}
+                          className="mt-0.5 shrink-0 text-[#12AA5B]"
+                          weight="fill"
+                        />
+                        <h4 className="text-base font-bold text-[#706D70]">{event.title}</h4>
+                      </div>
+                      <p className="text-[13px] text-[#9C9A9D]">{event.description}</p>
+                      {/* <div className="flex items-center gap-2 text-xs text-gray-400">
                       <CalendarIcon size={14} />
                       <span>{event.date}</span>
                     </div> */}
-                    {/* <CaretRightIcon className="ml-auto text-gray-400" /> */}
-                  </div>
-                ))}
-                <Button
-                  variant="link"
-                  className="w-[205px] justify-center bg-white text-[#A4A8B0] hover:text-[#A4A8B0]"
-                >
-                  View All Events
-                </Button>
-              </div>
+                      {/* <CaretRightIcon className="ml-auto text-gray-400" /> */}
+                    </div>
+                  ))}
+                  <Button
+                    variant="link"
+                    className="w-[205px] justify-center bg-white text-[#A4A8B0] hover:text-[#A4A8B0]"
+                  >
+                    View All Events
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

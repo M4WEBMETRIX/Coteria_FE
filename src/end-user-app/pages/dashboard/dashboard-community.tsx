@@ -121,7 +121,7 @@ const DashboardCommunity = () => {
             <TableSkeleton />
           ) : (
             <>
-              {communities?.length <= 0 ? (
+              {communities?.length <= 0 || !communities ? (
                 <TableRow>
                   <TableCell colSpan={6} className="h-[45vh] text-center">
                     <div className="mt-6 flex flex-col items-center justify-center">

@@ -269,10 +269,11 @@ const NotificationSettings = ({
   </div>
 );
 
-const DangerZoneSettings = () => {
+const DangerZoneSettings = ({ data }: { data?: any }) => {
   const { id } = useParams();
   const [endValue, setEndValue] = useState("");
   const [pauseValue, setPauseValue] = useState("");
+  const [activateValue, setActivateValue] = useState("");
 
   const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
     useUpdateCampaignStatus(id);
@@ -287,6 +288,13 @@ const DangerZoneSettings = () => {
     updateCampaignStatus({ status: "paused" });
   };
 
+  const handleActivateCampaign = () => {
+    setActivateValue("active");
+    updateCampaignStatus({ status: "active" });
+  };
+
+  console.log(data);
+
   return (
     <div className="flex gap-8">
       <div className="w-[300px] shrink-0">
@@ -296,41 +304,87 @@ const DangerZoneSettings = () => {
         </p>
       </div>
       <div className="flex-1 space-y-6">
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-              Pause campaign
-            </p>
-            <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-              Temporarily stop donations and engagement.
-            </p>
+        {data?.status?.toLowerCase() === "completed" ? (
+          <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                Activate campaign
+              </p>
+              <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                Campaign will be active for new donations and engagement.
+              </p>
+            </div>
+            <Button
+              onClick={handleActivateCampaign}
+              variant="outline"
+              disabled={updateCampaignStatusPending}
+            >
+              {updateCampaignStatusPending && activateValue === "active"
+                ? "Activating..."
+                : "Activate"}
+            </Button>
           </div>
-          <Button
-            onClick={handlePauseCampaign}
-            variant="outline"
-            disabled={updateCampaignStatusPending}
-          >
-            {updateCampaignStatusPending && pauseValue === "paused" ? "Pausing..." : "Pause"}
-          </Button>
-        </div>
-        <div className="flex items-center justify-between">
-          <div>
-            <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-              End campaign
-            </p>
-            <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-              End this campaign permanently. No new donations.
-            </p>
-          </div>
-          <Button
-            onClick={handleEndCampaign}
-            disabled={updateCampaignStatusPending}
-            variant="outline"
-            className="border-[#F3654A] px-5 text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
-          >
-            {updateCampaignStatusPending && endValue === "end" ? "Ending..." : "End"}
-          </Button>
-        </div>
+        ) : (
+          <>
+            {data?.status?.toLowerCase() === "paused" ? (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                    Activate campaign
+                  </p>
+                  <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                    Campaign will be active for new donations and engagement.
+                  </p>
+                </div>
+                <Button
+                  onClick={handleActivateCampaign}
+                  variant="outline"
+                  disabled={updateCampaignStatusPending}
+                >
+                  {updateCampaignStatusPending && activateValue === "active"
+                    ? "Activating..."
+                    : "Activate"}
+                </Button>
+              </div>
+            ) : (
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                    Pause campaign
+                  </p>
+                  <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                    Temporarily stop donations and engagement.
+                  </p>
+                </div>
+                <Button
+                  onClick={handlePauseCampaign}
+                  variant="outline"
+                  disabled={updateCampaignStatusPending}
+                >
+                  {updateCampaignStatusPending && pauseValue === "paused" ? "Pausing..." : "Pause"}
+                </Button>
+              </div>
+            )}
+            <div className="flex items-center justify-between">
+              <div>
+                <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                  End campaign
+                </p>
+                <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                  End this campaign permanently. No new donations.
+                </p>
+              </div>
+              <Button
+                onClick={handleEndCampaign}
+                disabled={updateCampaignStatusPending}
+                variant="outline"
+                className="border-[#F3654A] px-5 text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
+              >
+                {updateCampaignStatusPending && endValue === "end" ? "Ending..." : "End"}
+              </Button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
@@ -423,7 +477,7 @@ const Settings = ({ data }: { data: any }) => {
       case "notifications":
         return <NotificationSettings formData={formData} handleChange={handleChange} />;
       case "danger-zone":
-        return <DangerZoneSettings />;
+        return <DangerZoneSettings data={data} />;
       default:
         return null;
     }

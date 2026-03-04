@@ -1,12 +1,11 @@
 import { Search } from "lucide-react";
 // import UserProfileMenu from "@/components/user-profile-menu";
-import { useEffect, useRef, useState, type ReactNode } from "react";
+import { useRef, useState, type ReactNode } from "react";
 
 import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useGetOrganisationProfile } from "@/services/generics/hooks";
 import { useNavigate } from "react-router-dom";
-import { StripeOnboardingModal } from "@/pages/authentications/setup-stripe-modal";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
@@ -15,23 +14,22 @@ interface NavbarProps {
 const Navbar = ({ breadcrumbs }: NavbarProps) => {
   const navigate = useNavigate();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const [isStripeModalOpen, setIsStripeModalOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: userData } = useGetOrganisationProfile();
   const orgUser = userData?.data;
 
-  console.log(orgUser);
+  // console.log(orgUser);
 
-  useEffect(() => {
-    if (orgUser?.stripeOnboardingComplete === false) {
-      setIsStripeModalOpen(true);
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (orgUser?.stripeOnboardingComplete === false) {
+  //     setIsStripeModalOpen(true);
+  //   }
+  // }, []);
 
   return (
     <>
-      <StripeOnboardingModal isOpen={isStripeModalOpen} onOpenChange={setIsStripeModalOpen} />
+      {/* <StripeOnboardingModal isOpen={isStripeModalOpen} onOpenChange={setIsStripeModalOpen} /> */}
       <nav className="font-inter sticky top-0 z-50 flex h-[72px] w-full items-center justify-between border-b border-[#DFE1E7] bg-white">
         {/* Breadcrumb */}
         <div className="flex items-center">{breadcrumbs}</div>

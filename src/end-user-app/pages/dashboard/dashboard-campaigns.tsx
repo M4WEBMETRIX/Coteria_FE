@@ -11,16 +11,20 @@ import { useGetUserActiveCampaigns } from "@/services/generics/user-generics/use
 import { getCurrencySymbol } from "@/lib/utils";
 import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
+import { DonationModal } from "@/pages/community/services/donate-modal";
 
 const DashboardCampaigns = () => {
   const navigate = useNavigate();
   const [tab, setTab] = useState<"active" | "completed">("active");
 
+  const [isOpen, setIsOpen] = useState<any | null>(null);
+  const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
+
   const endUser = useMemo(() => {
     return getEndUserFromLocalStorage();
   }, []);
 
-  // console.log(orgUser);
+  // console.log(endUser);
 
   const { data: userActiveCampaigns, isPending: isLoading } = useGetUserActiveCampaigns();
   // console.log(userActiveCampaigns);
@@ -189,9 +193,10 @@ const DashboardCampaigns = () => {
                     </div>
                   </div>
                   <Button
-                    onClick={() =>
-                      navigate(`/community/public/campaign/${campaign?.slug}?userId=${endUser?.id}`)
-                    }
+                    onClick={() => {
+                      setSelectedCampaign(campaign);
+                      setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                    }}
                     className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
                   >
                     <div className="flex items-center text-sm font-medium">
@@ -223,6 +228,14 @@ const DashboardCampaigns = () => {
           </div>
         </div>
       )}
+
+      <DonationModal
+        currency={selectedCampaign?.goalCurrency}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        campaignName={selectedCampaign?.name}
+        endUserId={endUser?.id}
+      />
     </>
   );
 };

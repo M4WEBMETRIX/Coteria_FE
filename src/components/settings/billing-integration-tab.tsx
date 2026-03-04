@@ -134,7 +134,9 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <ChangeBillingPopover billingCode={subscription?.data?.plan?.code} />
+              {subscription?.data?.status?.toLowerCase() !== "active" && (
+                <ChangeBillingPopover billingCode={subscription?.data?.plan?.code} />
+              )}
               <Button variant="outline" size="icon" className="h-9 w-9">
                 <Bell className="h-4 w-4" />
               </Button>
@@ -158,18 +160,24 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
                 </div>
                 <p className="text-sm text-[#525866]">{subscription?.data?.plan?.description}</p>
               </div>
-              <Button
-                disabled={subscription?.data?.status === "active"}
-                onClick={handleActivate}
-                variant="outline"
-                className="h-8 text-xs font-medium"
-              >
-                {subscription?.data?.status === "active" ? (
-                  "Activated"
-                ) : (
-                  <>{isPending ? "Activating..." : "Activate"}</>
-                )}
-              </Button>
+              {subscription?.data?.status?.toLowerCase() === "active" ? (
+                <>
+                  <ChangeBillingPopover billingCode={subscription?.data?.plan?.code} />
+                </>
+              ) : (
+                <Button
+                  disabled={subscription?.data?.status === "active"}
+                  onClick={handleActivate}
+                  variant="outline"
+                  className="h-8 text-xs font-medium"
+                >
+                  {subscription?.data?.status === "active" ? (
+                    "Activated"
+                  ) : (
+                    <>{isPending ? "Activating..." : "Activate"}</>
+                  )}
+                </Button>
+              )}
             </div>
             {/* <Separator className="my-4" />
             <div className="flex items-center justify-between">

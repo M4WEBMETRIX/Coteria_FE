@@ -2,6 +2,9 @@
 
 import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
+import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { getCurrencySymbol } from "@/lib/utils";
+import { useGetUserSpecificCampaigns } from "@/services/generics/user-generics/user-hooks";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CaretDownIcon,
@@ -11,34 +14,37 @@ import {
   Trophy,
 } from "@phosphor-icons/react";
 import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
-import { useState } from "react";
+import { useMemo, useState } from "react";
 // import { campaigns } from "./dashboard-campaigns";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const CampaignDetails = () => {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [tab, setTab] = useState<"active" | "completed">("active");
 
-  const campaigns = [
-    {
-      id: 1,
-      title: "Community Support Fund",
-      description: "Help us reach our goal of $10,000 to support community projects.",
-      progress: 65,
-      daysLeft: 12,
-      image: "https://placehold.co/600x400/png",
-      status: "active",
-    },
-    {
-      id: 2,
-      title: "Winter Clothing Drive",
-      description: "Collecting warm clothes for those in need this winter.",
-      progress: 100,
-      daysLeft: 0,
-      image: "https://placehold.co/600x400/png",
-      status: "completed",
-    },
-  ];
+  const { data: userSpecificCampaigns } = useGetUserSpecificCampaigns(id);
+
+  // , isPending: isLoading
+  const endUser: any = useMemo(() => {
+    return getEndUserFromLocalStorage();
+  }, []);
+
+  // console.log(userSpecificCampaigns);
+
+  const campaign = userSpecificCampaigns?.data;
+
+  // const campaigns = [
+  //   {
+  //     id: 1,
+  //     name: "Community Support Fund",
+  //     description: "Help us reach our goal of $10,000 to support community projects.",
+  //     progress: 65,
+  //     daysLeft: 12,
+  //     image: "https://placehold.co/600x400/png",
+  //     status: "active",
+  //   },
+  // ];
 
   return (
     <>
@@ -52,16 +58,18 @@ const CampaignDetails = () => {
           {/* Profile Card */}
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 text-center">
             <div className="flex items-center gap-3">
-              <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-                <img
-                  src="https://placehold.co/80x80/png"
-                  alt="Profile"
-                  className="h-full w-full object-cover"
-                />
+              <div>
+                <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
+                  <img
+                    src="https://placehold.co/80x80/png"
+                    alt="Profile"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
               <div>
-                <h3 className="line-clamp-1 text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                  Wale Johnson
+                <h3 className="ml-2 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                  {endUser?.firstName} {endUser?.lastName}
                 </h3>
                 <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
                   <Trophy weight="fill" /> Champion
@@ -95,14 +103,14 @@ const CampaignDetails = () => {
             </div>
             <div>
               <div className="mb-2 flex justify-between text-sm">
-                <span className="font-medium">Level 5</span>
+                <span className="font-medium">Level 1</span>
                 {/* <span className="text-gray-400">1000/1200 XP</span> */}
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full w-[80%] rounded-full bg-[#12AA5B]" />
+                <div className="h-full w-[0%] rounded-full bg-[#12AA5B]" />
               </div>
               <p className="mt-1 flex items-center justify-end gap-1.5 text-right text-sm text-gray-500">
-                <span className="font-medium text-[#12AA5B]">+200</span> to level 6
+                <span className="font-medium text-[#12AA5B]">0</span> to level 6
                 <svg
                   width="18"
                   height="18"
@@ -122,14 +130,14 @@ const CampaignDetails = () => {
           </div>
         </div>
 
-        <div className="flex items-start gap-4">
+        <div className="flex w-full items-start gap-4">
           {/* Main Feed */}
           <div className="w-full space-y-6">
             {/* Banner */}
             <div className="relative h-62 w-full cursor-pointer overflow-hidden rounded-[10px] bg-gray-200">
               <img
-                src="https://placehold.co/1000x200/png" // Placeholder
-                alt="Campaign Banner"
+                src={campaign?.imageUrl}
+                alt={campaign?.name}
                 className="h-full w-full object-cover"
               />
               <div className="absolute bottom-6 left-6 flex items-center gap-3.5">
@@ -151,10 +159,10 @@ const CampaignDetails = () => {
                 </div>
                 <div className="text-white">
                   <h1 className="text-[22px] leading-[140%] font-medium tracking-[-2%]">
-                    Campaigns
+                    {campaign?.name}
                   </h1>
                   <p className="text-sm leading-[150%] font-normal tracking-[-2%] opacity-90">
-                    Atlantic Salmon Museum
+                    {campaign?.categoryLabel}
                   </p>
                 </div>
               </div>
@@ -162,39 +170,43 @@ const CampaignDetails = () => {
 
             {/* Content */}
             <div className="space-y-8">
-              {campaigns?.map((campaign: any) => (
-                <div key={campaign.id} className="space-y-6">
-                  <div className="flex items-center justify-between">
-                    <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
-                      {campaign.name}
-                    </h2>
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div className="flex w-full items-center gap-3">
-                      <div className="flex items-center leading-[155%] font-normal tracking-[0%]">
-                        <span className="text-lg font-medium text-[#6B6B6B]">
-                          ${campaign.raised.toLocaleString()}
-                        </span>
-                        <span className="text-[#A3A3A3]">/${campaign.target.toLocaleString()}</span>
-                      </div>
-                      {/* Progress Bar Custom */}
-                      <div className="h-2 w-full max-w-138.75 overflow-hidden rounded-full bg-[#D9D9D9]">
-                        <div
-                          className="h-full rounded-full bg-[#12AA5B]"
-                          style={{ width: `${(campaign.raised / campaign.target) * 100}%` }}
-                        />
-                      </div>
-                    </div>
-                    <Button className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]">
-                      <div className="flex items-center text-sm font-medium">
-                        Donate
-                        <CaretRightIcon size={14} weight="bold" className="text-white" />
-                      </div>
-                    </Button>
-                  </div>
+              <div className="space-y-6">
+                <div className="flex items-center justify-between">
+                  <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+                    {campaign?.name}
+                  </h2>
                 </div>
-              ))}
+
+                <div className="flex items-center justify-between">
+                  <div className="flex w-full items-center gap-3">
+                    <div className="flex items-center leading-[155%] font-normal tracking-[0%]">
+                      <span className="text-lg font-medium text-[#6B6B6B]">
+                        {getCurrencySymbol(campaign?.goalCurrency)}{" "}
+                        {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
+                      </span>
+                      <span className="text-[#A3A3A3]">
+                        /{getCurrencySymbol(campaign?.goalCurrency)}{" "}
+                        {(campaign?.goalAmountCents / 100)?.toLocaleString()}
+                      </span>
+                    </div>
+                    {/* Progress Bar Custom */}
+                    <div className="h-2 w-full max-w-138.75 overflow-hidden rounded-full bg-[#D9D9D9]">
+                      <div
+                        className="h-full rounded-full bg-[#12AA5B]"
+                        style={{
+                          width: `${(campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100}%`,
+                        }}
+                      />
+                    </div>
+                  </div>
+                  <Button className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]">
+                    <div className="flex items-center text-sm font-medium">
+                      Donate
+                      <CaretRightIcon size={14} weight="bold" className="text-white" />
+                    </div>
+                  </Button>
+                </div>
+              </div>
             </div>
             <p className="max-w-110 text-xs leading-[155%] font-medium tracking-[0%] text-[#000000]">
               If you are interested in donating an item to our collection, please contact us at{" "}
@@ -227,11 +239,7 @@ const CampaignDetails = () => {
 
             <div className="max-w-186.5 p-4">
               <p className="mb-2 line-clamp-4 text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Jack King was a trainman as were two of his brothers. After Jack’s death, John’s
-                uncles would use their train passes to take him far and wide on fishing trips that
-                he would remember for the rest of his life. Given that he also developed a passion
-                for “collecting” early on, it’s not surprising that later in life John would
-                establish a sport fishing museum to house his many artifacts.....
+                {campaign?.description}
               </p>
 
               <div className="flex items-center justify-start gap-3 text-[#6B6B6B]">

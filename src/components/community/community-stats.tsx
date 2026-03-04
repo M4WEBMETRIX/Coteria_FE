@@ -1,4 +1,7 @@
+import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { getCurrencySymbol } from "@/lib/utils";
 import { HandHeartIcon, MoneyIcon, PackageIcon, UsersFourIcon } from "@phosphor-icons/react";
+import { useMemo } from "react";
 
 interface StatCardProps {
   title: string;
@@ -52,6 +55,10 @@ const StatCard = ({
 };
 
 const CommunityStats = ({ data }: { data?: any }) => {
+  const orgUser = useMemo(() => {
+    return getOrgUserFromLocalStorage();
+  }, []);
+
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
@@ -65,7 +72,7 @@ const CommunityStats = ({ data }: { data?: any }) => {
       />
       <StatCard
         title="Total Funds Raised"
-        value={data?.totalFundsRaisedCents}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalFundsRaisedCents / 100)?.toLocaleString() : 0}`}
         trend={data?.fundsRaisedSinceLastMonthCents + "%"}
         trendDirection="down"
         icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}
@@ -124,6 +131,10 @@ export const StatCardSkeleton = () => {
 };
 
 export const CommunityDashboardStats = ({ data }: { data?: any }) => {
+  const orgUser = useMemo(() => {
+    return getOrgUserFromLocalStorage();
+  }, []);
+
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
@@ -137,7 +148,7 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
       />
       <StatCard
         title="Total Funds Raised"
-        value={data?.totalFundsRaisedCents || 0}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalFundsRaisedCents / 100)?.toLocaleString() : 0}`}
         trend={(data?.fundsRaisedSinceLastMonthCents || 0) + "%"}
         trendDirection="up"
         icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}

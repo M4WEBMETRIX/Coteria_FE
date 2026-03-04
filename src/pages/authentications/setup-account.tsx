@@ -120,7 +120,8 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logout
   );
 };
 
-const StepTwo: React.FC<IProps> = ({ data, setData, onNext, handleLogout, logoutPending }) => {
+const StepTwo: React.FC<IProps> = ({ data, setData, handleLogout, logoutPending }) => {
+  const navigate = useNavigate();
   const isFormFilled =
     data?.firstName === "" ||
     data?.hopingToImprove === "" ||
@@ -143,7 +144,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData, onNext, handleLogout, logout
 
   useEffect(() => {
     if (isSuccess) {
-      onNext();
+      // onNext();
+      navigate("/community");
 
       setData({
         firstName: "",
@@ -343,12 +345,12 @@ const SetupAccountPage: React.FC = () => {
         <div className="w-185 max-w-185">
           <div className="mt-12.5 flex items-center justify-between text-2xl font-semibold text-[#0A0A0C]">
             <p>Account set up</p>
-            <p>{getStep()}/3</p>
+            <p>{getStep()}/2</p>
           </div>
           <div className="mt-6 mb-4 h-2 w-full rounded-full bg-gray-200">
             <div
               className={`h-2 rounded-full bg-green-500`}
-              style={{ width: `${((getStep() as number) / 3) * 100}%` }}
+              style={{ width: `${((getStep() as number) / 2) * 100}%` }}
             />
           </div>
 
