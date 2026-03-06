@@ -25,7 +25,7 @@ const AccountSettingsIndex = () => {
 
   const { data } = useGetEndUserProfile();
   const user = data?.data;
-  console.log("user", user);
+  // console.log("user", user);
 
   return (
     <div className="mx-auto w-full space-y-8">

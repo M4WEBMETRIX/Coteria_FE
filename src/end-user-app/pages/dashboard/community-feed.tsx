@@ -3,30 +3,37 @@ import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
-  ChatCircle,
+  // ChatCircle,
   Heart,
-  ShareFat,
+  // ShareFat,
   WhatsappLogo,
   LinkedinLogo,
   XLogo,
   Plus,
   // Users,
-  Trophy,
+  // Trophy,
   CaretDownIcon,
   ArrowUpRight,
 } from "@phosphor-icons/react";
 import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useNavigate, useParams } from "react-router-dom";
 
-import SAMPLE_FEED_IMAGE from "@/assets/images/sample-community-image.png";
-import { useGetUserSpecificCommunity } from "@/services/generics/user-generics/user-hooks";
+// import SAMPLE_FEED_IMAGE from "@/assets/images/sample-community-image.png";
+import {
+  useGetEndUserProfile,
+  useGetUserSpecificCommunity,
+} from "@/services/generics/user-generics/user-hooks";
+import { formatFullDate } from "@/lib/utils";
 
 const CommunityFeed = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
   const { data: community } = useGetUserSpecificCommunity(id);
-  console.log("community", community);
+
+  const { data } = useGetEndUserProfile();
+  const user = data?.data;
+  // console.log("community", community);
 
   return (
     <>
@@ -40,22 +47,25 @@ const CommunityFeed = () => {
           {/* Profile Card */}
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 text-center">
             <div className="mb-14.5 flex items-center gap-3">
-              <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-                <img
-                  src="https://placehold.co/80x80/png"
-                  alt="Profile"
-                  className="h-full w-full object-cover"
-                />
+              <div>
+                <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
+                  <img
+                    src="https://placehold.co/80x80/png"
+                    alt="Profile"
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </div>
               <div>
-                <h3 className="line-clamp-1 text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                  Wale Johnson
+                <h3 className="ml-4 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                  {user?.firstName} {user?.lastName}
                 </h3>
                 <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
-                  <Trophy weight="fill" /> Champion
+                  {user?.isFullyVerified ? "Verified" : "Not Verified"}
                 </div>
               </div>
             </div>
+
             <Button className="h-12 w-full justify-start gap-3 rounded-[10px] border border-[#EFEFEF] bg-white text-base font-normal text-[#000000] hover:bg-gray-50">
               <span className="text-yellow-500">🤝</span> Invite Friends & Family
             </Button>
@@ -111,13 +121,13 @@ const CommunityFeed = () => {
             </div>
             <div>
               <div className="mb-2 flex justify-between text-sm">
-                <span className="font-medium">Level 5</span>
+                <span className="font-medium">Level 1</span>
                 {/* <span className="text-gray-400">1000/1200 XP</span> */}
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full w-[80%] rounded-full bg-[#12AA5B]" />
+                <div className="h-full w-[0%] rounded-full bg-[#12AA5B]" />
               </div>
-              <p className="mt-1 flex items-center justify-end gap-1.5 text-right text-sm text-gray-500">
+              {/* <p className="mt-1 flex items-center justify-end gap-1.5 text-right text-sm text-gray-500">
                 <span className="font-medium text-[#12AA5B]">+200</span> to level 6
                 <svg
                   width="18"
@@ -133,47 +143,46 @@ const CommunityFeed = () => {
                     fill="#12AA5B"
                   />
                 </svg>
-              </p>
+              </p> */}
             </div>
           </div>
         </div>
 
-        <div className="flex items-start gap-4 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 py-3.5">
+        <div className="flex w-full items-start gap-4 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 py-3.5">
           {/* Main Feed */}
           <div className="flex-1 space-y-6">
             <h2 className="text-2xl font-bold text-[#1E1F24]">Community Feed</h2>
 
             {/* Post Mock */}
-            <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
+            <div className="flex-1 space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
               <div className="flex items-center gap-3">
                 <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100 text-xl font-bold text-pink-500">
                   CA
                 </div>
                 <div>
                   <h3 className="text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                    Community Admin
+                    {community?.data?.name}
                   </h3>
                   <p className="text-lg leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
-                    Posted: 4th May, 2023
+                    Created: {formatFullDate(community?.data?.createdAt)}
                   </p>
                 </div>
               </div>
 
               <p className="pb-2 text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Lorem ipsum dolor sit amet consectetur. Convallis at lacinia amet nulla nulla
-                vulputate eget. Volutpat morbi sed semper tincidunt dolor et cras.
+                {community?.data?.description}
               </p>
 
               <div className="space-y-3">
                 <div className="h-[180px] w-full overflow-hidden rounded-xl bg-gray-100">
                   <img
-                    src={SAMPLE_FEED_IMAGE}
+                    src={community?.data?.imageUrl || ""}
                     alt="Post Content"
-                    className="h-full w-full object-cover"
+                    className="h-full w-full object-cover object-center"
                   />
                 </div>
 
-                <div className="flex items-center justify-end gap-3 text-gray-500">
+                {/* <div className="flex items-center justify-end gap-3 text-gray-500">
                   <button className="flex items-center gap-1 hover:text-[#12AA5B]">
                     <ChatCircle size={20} />
                   </button>
@@ -183,7 +192,7 @@ const CommunityFeed = () => {
                   <button className="flex items-center gap-1 hover:text-blue-500">
                     <ShareFat size={20} />
                   </button>
-                </div>
+                </div> */}
               </div>
             </div>
           </div>
