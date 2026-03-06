@@ -1,21 +1,22 @@
 import { Input } from "@/components/ui/input";
-import { Switch } from "@/components/ui/switch";
+// import { Switch } from "@/components/ui/switch";
 // import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
 import { PencilSimple, UserIcon } from "@phosphor-icons/react";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
-import { cn } from "@/lib/utils";
+import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
+// import { useState } from "react";
+// import { cn } from "@/lib/utils";
 
 const EditProfile = () => {
-  const [isChecked, setIsChecked] = useState<boolean>(true);
+  // const [isChecked, setIsChecked] = useState<boolean>(true);
   const navigate = useNavigate();
   // useUserAppBreadcrumb({
   //   items: [
@@ -23,6 +24,9 @@ const EditProfile = () => {
   //     { label: "Edit Profile", href: "/user/account-settings/edit", isCurrentPage: true },
   //   ],
   // });
+
+  const { data } = useGetEndUserProfile();
+  const user = data?.data;
 
   return (
     <>
@@ -49,7 +53,7 @@ const EditProfile = () => {
         </div>
 
         {/* Profile Visibility */}
-        <div className="max-w-[140px] space-y-4">
+        {/* <div className="max-w-[140px] space-y-4">
           <div className="flex flex-col gap-1">
             <h3 className="text-base leading-6 font-normal tracking-[0%] text-[#1C222A]">
               Profile Visibility
@@ -79,7 +83,7 @@ const EditProfile = () => {
               </span>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Detailed Information */}
         <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white px-5 py-4">
@@ -90,14 +94,25 @@ const EditProfile = () => {
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Name<span className="text-red-500">*</span>
+                First Name<span className="text-red-500">*</span>
               </label>
               <Input
+                value={user?.firstName}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
               />
             </div>
             <div className="space-y-2">
+              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                Last Name<span className="text-red-500">*</span>
+              </label>
+              <Input
+                value={user?.lastName}
+                placeholder="Enter your name"
+                className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
+              />
+            </div>
+            {/* <div className="space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
                 Birth Date<span className="text-red-500">*</span>
               </label>
@@ -108,18 +123,19 @@ const EditProfile = () => {
                   className="h-12 rounded-[10px] border-[#DFE1E7] bg-white pl-16"
                 />
               </div>
-            </div>
+            </div> */}
 
             <div className="space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
                 Email<span className="text-red-500">*</span>
               </label>
               <Input
+                value={user?.email}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
               />
             </div>
-
+            {/* 
             <div className="w-full space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
                 Birth Date<span className="text-red-500">*</span>
@@ -134,9 +150,9 @@ const EditProfile = () => {
                   <SelectItem value="other">Other</SelectItem>
                 </SelectContent>
               </Select>
-            </div>
+            </div> */}
 
-            <div className="space-y-2 md:col-span-2">
+            <div className="space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
                 Address (For tax receipts etc)
               </label>

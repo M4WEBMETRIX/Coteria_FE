@@ -16,12 +16,17 @@ import {
   ArrowUpRight,
 } from "@phosphor-icons/react";
 import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import SAMPLE_FEED_IMAGE from "@/assets/images/sample-community-image.png";
+import { useGetUserSpecificCommunity } from "@/services/generics/user-generics/user-hooks";
 
 const CommunityFeed = () => {
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const { data: community } = useGetUserSpecificCommunity(id);
+  console.log("community", community);
 
   return (
     <>

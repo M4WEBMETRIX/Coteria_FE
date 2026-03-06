@@ -5,6 +5,7 @@ export const USE_GET_USER_PROFILE_API = "USE_GET_USER_PROFILE_API";
 export const USE_GET_USER_COMMUNITIES_API = "USE_GET_USER_COMMUNITIES_API";
 export const USE_GET_USER_ACTIVE_CAMPAIGNS_API = "USE_GET_USER_ACTIVE_CAMPAIGNS_API";
 export const USE_GET_USER_SPECIFIC_CAMPAIGNS_API = "USE_GET_USER_SPECIFIC_CAMPAIGNS_API";
+export const USE_GET_USER_SPECIFIC_COMMUNITY_API = "USE_GET_USER_SPECIFIC_COMMUNITY_API";
 
 export const useGetEndUserProfile = () => {
   const URL = "/donor/profile";
@@ -19,6 +20,15 @@ export const useGetUserCommunities = () => {
   return useQuery({
     queryKey: [USE_GET_USER_COMMUNITIES_API],
     queryFn: () => getFunctionUserEnd(URL),
+  });
+};
+
+export const useGetUserSpecificCommunity = (communityId: string | undefined) => {
+  const URL = `/communities/${communityId}`;
+  return useQuery({
+    queryKey: [USE_GET_USER_SPECIFIC_COMMUNITY_API, communityId],
+    queryFn: () => getFunctionUserEnd(URL),
+    enabled: !!communityId,
   });
 };
 

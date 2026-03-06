@@ -1,19 +1,20 @@
 import { Button } from "@/components/ui/button";
 import {
-  Trophy,
-  MapPin,
+  // Trophy,
+  // MapPin,
   WhatsappLogo,
   LinkedinLogo,
   XLogo,
-  Plus,
+  // Plus,
   PencilSimple,
   CaretRightIcon,
   Leaf,
   ChartBar,
   UserIcon,
 } from "@phosphor-icons/react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
+import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
 
 const AccountSettingsIndex = () => {
   const navigate = useNavigate();
@@ -21,6 +22,10 @@ const AccountSettingsIndex = () => {
   useUserAppBreadcrumb({
     items: [{ label: "Account Settings", href: "/user/account-settings", isCurrentPage: true }],
   });
+
+  const { data } = useGetEndUserProfile();
+  const user = data?.data;
+  console.log("user", user);
 
   return (
     <div className="mx-auto w-full space-y-8">
@@ -39,15 +44,15 @@ const AccountSettingsIndex = () => {
                 <UserIcon size={32} color="#FFFFFF" />
               </div>
               <div className="flex flex-col items-start">
-                <h3 className="line-clamp-1 text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                  Wale Johnson
+                <h3 className="line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                  {user?.firstName} {user?.lastName}
                 </h3>
                 <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
-                  <Trophy weight="fill" /> Champion
+                  {user?.isFullyVerified ? "Verified" : "Not Verified"}
                 </div>
-                <div className="mt-2 flex items-center justify-center gap-1 text-sm text-gray-500">
+                {/* <div className="mt-2 flex items-center justify-center gap-1 text-sm text-gray-500">
                   <MapPin weight="fill" /> Toronto
-                </div>
+                </div> */}
               </div>
             </div>
 
@@ -85,18 +90,21 @@ const AccountSettingsIndex = () => {
                 </div>
                 <PencilSimple className="cursor-pointer text-gray-400" />
               </div>
-              <Button
+              {/* <Button
                 variant="outline"
                 className="h-12 w-full justify-center rounded-[10px] border border-[#EFEFEF] font-medium text-gray-500"
               >
                 <Plus className="mr-2" /> Add Social Links
-              </Button>
+              </Button> */}
             </div>
           </div>
 
           {/* Discover Widget (Mock matching visual) */}
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
-            <div className="flex cursor-pointer items-center justify-between border-b pb-4">
+            <div
+              onClick={() => navigate("/user/dashboard?tab=impact")}
+              className="flex cursor-pointer items-center justify-between border-b pb-4"
+            >
               <div className="flex items-center gap-3">
                 <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#E7FDF3] text-[#12AA5B]">
                   <Leaf weight="fill" />
@@ -109,11 +117,11 @@ const AccountSettingsIndex = () => {
             </div>
             <div className="space-y-3">
               <div className="flex justify-between text-sm text-gray-500">
-                <span>Level 5</span>
-                <span className="font-normal text-[#12AA5B]">+750</span>
+                <span>Level 1</span>
+                <span className="font-normal text-[#12AA5B]">0</span>
               </div>
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full w-[40%] rounded-full bg-[#12AA5B]" />
+                <div className="h-full w-[0%] rounded-full bg-[#12AA5B]" />
               </div>
             </div>
           </div>
@@ -212,7 +220,13 @@ const AccountSettingsIndex = () => {
                 <li className="flex items-start gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                   <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gray-500" />
                   <span>
-                    Stay informed of new <span className="cursor-pointer underline">policies.</span>
+                    Stay informed of new{" "}
+                    <Link
+                      to="https://usecoterie.com/privacy-policy"
+                      className="cursor-pointer underline"
+                    >
+                      policies.
+                    </Link>
                   </span>
                 </li>
               </ul>
