@@ -169,10 +169,7 @@ export const useLogoutOrganisation = () => {
 export const useOnboardOrganisation = () => {
   return useMutation({
     mutationFn: (payload: OnboardProps) => onboardOrganisation(payload),
-    onSuccess: (response) => {
-      console.log(response);
-      toast.success("You've successfully onboarded");
-    },
+    onSuccess: () => {},
     onError: (error) => {
       console.log("err", error);
       showErrorToast(error);

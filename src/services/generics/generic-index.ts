@@ -10,6 +10,21 @@ export const postFunction = async (payload: any, URL: string) => {
   return response.data;
 };
 
+export const postFunctionWithProgress = async (
+  payload: any,
+  URL: string,
+  onUploadProgress?: (progress: number) => void
+) => {
+  const response = await api.post(URL, payload, {
+    onUploadProgress: (event) => {
+      if (event.total) {
+        onUploadProgress?.(Math.round((event.loaded * 100) / event.total));
+      }
+    },
+  });
+  return response.data;
+};
+
 export const putFunction = async (payload: any, URL: string) => {
   const response = await api.put(URL, payload);
   return response.data;

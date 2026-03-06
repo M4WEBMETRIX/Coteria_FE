@@ -1,4 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
+import { toast } from "sonner";
+
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 import {
   Dialog,
   DialogContent,
@@ -59,6 +63,7 @@ const CreateCampaignModal = ({
 }: CreateCampaignModalProps) => {
   // const navigate = useNavigate();
   const [open, setOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     title: "",
@@ -95,6 +100,7 @@ const CreateCampaignModal = ({
     mutate: fileUploadMutate,
     isPending: isUploading,
     data: fileUploadData,
+    uploadProgress,
   } = useFileUpload();
 
   const { mutate: deleteUploadMutate, isPending: isDeletingUpload } = useDeleteUpload(
@@ -108,13 +114,55 @@ const CreateCampaignModal = ({
   }, [fileUploadData]);
 
   // console.log(categories);
+  const validateAndUploadFile = (file: File) => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      toast.error(`File size exceeds ${MAX_FILE_SIZE_MB}MB limit. Please choose a smaller file.`);
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (JPG, PNG, etc.).");
+      return;
+    }
+    const uploadPayload = new FormData();
+    uploadPayload.append("file", file);
+    fileUploadMutate(uploadPayload);
+    setFormData((prev) => ({ ...prev, thumbnail: file }) as any);
+  };
+
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const uploadPayload = new FormData();
-      uploadPayload.append("file", e.target.files[0]);
-      fileUploadMutate(uploadPayload);
+      validateAndUploadFile(e.target.files[0]);
+    }
+  };
 
-      setFormData((prev) => ({ ...prev, thumbnail: e.target.files![0] }) as any);
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      validateAndUploadFile(files[0]);
+    }
+  };
+
+  const handleDeleteThumbnail = () => {
+    deleteUploadMutate();
+    setFormData((prev) => ({ ...prev, thumbnail: null, imageUrl: "" }));
+    // Reset file input so re-selecting the same file triggers onChange
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
@@ -304,21 +352,29 @@ const CreateCampaignModal = ({
                   Thumbnail <span className="text-red-500">*</span>
                 </Label>
                 {formData.thumbnail ? (
-                  <div className="group relative h-32 w-full overflow-hidden rounded-lg">
+                  <div className="group relative h-32 w-full overflow-hidden rounded-lg border border-[#D0D5DD]">
                     <img
                       src={URL.createObjectURL(formData.thumbnail)}
                       alt="Thumbnail"
                       className="h-full w-full object-cover"
                     />
+                    {/* Upload progress overlay */}
+                    {isUploading && (
+                      <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50">
+                        <div className="mb-2 text-sm font-medium text-white">
+                          Uploading... {uploadProgress}%
+                        </div>
+                        <div className="h-2 w-3/4 overflow-hidden rounded-full bg-white/30">
+                          <div
+                            className="h-full rounded-full bg-white transition-all duration-300 ease-out"
+                            style={{ width: `${uploadProgress}%` }}
+                          />
+                        </div>
+                      </div>
+                    )}
                     <button
-                      disabled={isDeletingUpload}
-                      onClick={() => {
-                        deleteUploadMutate();
-                        setFormData({
-                          ...formData,
-                          thumbnail: null,
-                        });
-                      }}
+                      disabled={isDeletingUpload || isUploading}
+                      onClick={handleDeleteThumbnail}
                       className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
                     >
                       <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
@@ -330,10 +386,21 @@ const CreateCampaignModal = ({
                 ) : (
                   <div
                     onClick={() => fileInputRef.current?.click()}
-                    className="flex h-25 w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-[#DFE1E7] transition-colors hover:bg-gray-50"
+                    onDragOver={handleDragOver}
+                    onDragLeave={handleDragLeave}
+                    onDrop={handleDrop}
+                    className={`flex h-25 w-full cursor-pointer flex-col items-center justify-center rounded-lg border transition-colors ${
+                      isDragging
+                        ? "border-dashed border-[#12AA5B] bg-[#12AA5B]/5"
+                        : "border-[#DFE1E7] hover:bg-gray-50"
+                    }`}
                   >
-                    {/* <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" /> */}
-                    <span className="text-sm text-gray-500">Click to upload thumbnail</span>
+                    <span className="text-sm text-gray-500">
+                      Drag & Drop your files or <span className="text-[#12AA5B]">Browse</span>
+                    </span>
+                    <span className="mt-1 text-xs text-gray-400">
+                      Max {MAX_FILE_SIZE_MB}MB, JPG/PNG
+                    </span>
                   </div>
                 )}
                 <input

@@ -25,6 +25,10 @@ import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
 import { useCreateCommunity } from "@/services/generics/hooks";
 import { useDeleteUpload, useFileUpload } from "@/services/file-upload-hook";
+import { toast } from "sonner";
+
+const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 
 interface CreateCommunityModalProps {
   isCustom?: boolean;
@@ -35,8 +39,8 @@ interface CreateCommunityModalProps {
 }
 
 const communitySchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  description: z.string().min(1, "Description is required").max(200, "Max 200 characters"),
+  title: z.string().min(1, "Title is required").max(200, "Title must be 200 characters or less"),
+  description: z.string().min(1, "Description is required").max(400, "Max 400 characters"),
   visibility: z.string().min(1, "Visibility is required"),
   management: z.string().min(1, "Management preference is required"),
   logo: z
@@ -57,6 +61,7 @@ const CreateCommunityModal = ({
   setCustomOpen,
 }: CreateCommunityModalProps) => {
   const [open, setOpen] = useState(false);
+  const [isDragging, setIsDragging] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const {
@@ -91,6 +96,7 @@ const CreateCommunityModal = ({
     mutate: fileUploadMutate,
     isPending: isUploading,
     data: fileUploadData,
+    uploadProgress,
   } = useFileUpload();
 
   const { mutate: deleteUploadMutate, isPending: isDeletingUpload } = useDeleteUpload(
@@ -103,19 +109,60 @@ const CreateCommunityModal = ({
     }
   }, [fileUploadData]);
 
-  // console.log("fileUploadData", fileUploadData);
+  const validateAndUploadFile = (file: File) => {
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      toast.error(`File size exceeds ${MAX_FILE_SIZE_MB}MB limit. Please choose a smaller file.`);
+      return;
+    }
+    if (!file.type.startsWith("image/")) {
+      toast.error("Please upload an image file (JPG, PNG, etc.).");
+      return;
+    }
+    const formData = new FormData();
+    formData.append("file", file);
+    fileUploadMutate(formData);
+    setValue("logo", file, { shouldValidate: true });
+  };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const formData = new FormData();
-      formData.append("file", e.target.files[0]);
-      fileUploadMutate(formData);
-      setValue("logo", e.target.files[0], { shouldValidate: true });
+      validateAndUploadFile(e.target.files[0]);
+    }
+  };
+
+  const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    const files = e.dataTransfer.files;
+    if (files && files[0]) {
+      validateAndUploadFile(files[0]);
+    }
+  };
+
+  const handleDeleteLogo = () => {
+    deleteUploadMutate();
+    setValue("logo", null as any, { shouldValidate: true });
+    setValue("imageUrl", "" as any, { shouldValidate: true });
+    // Reset file input so re-selecting the same file triggers onChange
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
     }
   };
 
   const onSubmit = (data: CommunityFormValues) => {
-    // console.log("Submitting community:", data);
     createCommunityMutate({
       ...data,
       name: data?.title,
@@ -128,7 +175,6 @@ const CreateCommunityModal = ({
         ...prev,
         {
           id: Date.now(),
-          // ...data,
           stats: { members: 1, campaigns: 0 },
         },
       ]);
@@ -194,11 +240,12 @@ const CreateCommunityModal = ({
                     <Textarea
                       id="description"
                       placeholder="Placeholder"
+                      maxLength={400}
                       className="h-[151px] max-h-[151px] resize-none border-[#D0D5DD] pb-8"
                       {...register("description")}
                     />
                     <div className="absolute bottom-2 left-2 text-xs text-gray-400">
-                      {watch("description")?.length || 0}/200
+                      {watch("description")?.length || 0}/400
                     </div>
                   </div>
                   <FieldError errors={[errors.description]} />
@@ -268,13 +315,24 @@ const CreateCommunityModal = ({
                         alt="Logo"
                         className="h-full w-full object-cover"
                       />
+                      {/* Upload progress overlay */}
+                      {isUploading && (
+                        <div className="absolute inset-0 flex flex-col items-center justify-center bg-black/50">
+                          <div className="mb-2 text-sm font-medium text-white">
+                            Uploading... {uploadProgress}%
+                          </div>
+                          <div className="h-2 w-3/4 overflow-hidden rounded-full bg-white/30">
+                            <div
+                              className="h-full rounded-full bg-white transition-all duration-300 ease-out"
+                              style={{ width: `${uploadProgress}%` }}
+                            />
+                          </div>
+                        </div>
+                      )}
                       <button
                         type="button"
-                        disabled={isDeletingUpload}
-                        onClick={() => {
-                          deleteUploadMutate();
-                          setValue("logo", null as any, { shouldValidate: true });
-                        }}
+                        disabled={isDeletingUpload || isUploading}
+                        onClick={handleDeleteLogo}
                         className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
                       >
                         <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
@@ -286,11 +344,20 @@ const CreateCommunityModal = ({
                   ) : (
                     <div
                       onClick={() => fileInputRef.current?.click()}
-                      className="flex h-25 w-full cursor-pointer flex-col items-center justify-center rounded-lg border border-[#DFE1E7] transition-colors hover:bg-gray-50"
+                      onDragOver={handleDragOver}
+                      onDragLeave={handleDragLeave}
+                      onDrop={handleDrop}
+                      className={`flex h-25 w-full cursor-pointer flex-col items-center justify-center rounded-lg border transition-colors ${
+                        isDragging
+                          ? "border-dashed border-[#12AA5B] bg-[#12AA5B]/5"
+                          : "border-[#DFE1E7] hover:bg-gray-50"
+                      }`}
                     >
-                      {/* <HugeiconsIcon icon={Image01Icon} size={24} className="mb-2 text-gray-400" /> */}
                       <span className="text-sm text-gray-500">
                         Drag & Drop your files or <span className="text-[#12AA5B]">Browse</span>
+                      </span>
+                      <span className="mt-1 text-xs text-gray-400">
+                        Max {MAX_FILE_SIZE_MB}MB, JPG/PNG
                       </span>
                     </div>
                   )}

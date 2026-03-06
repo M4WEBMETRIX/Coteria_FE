@@ -4,6 +4,7 @@ import gmail from "@/assets/icons/gmail.svg";
 import outlook from "@/assets/icons/microsoft_outlook.svg";
 import { useOrganisationResendVerificationEmail } from "@/services/auth";
 import { Button } from "@/components/ui/button";
+import { useState, useEffect } from "react";
 
 const CheckEmailPage = () => {
   const location = useLocation();
@@ -17,6 +18,25 @@ const CheckEmailPage = () => {
 
   const { mutateAsync: resendVerificationEmail, isPending: resendLoading } =
     useOrganisationResendVerificationEmail();
+
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
+  const handleResend = async () => {
+    if (countdown > 0 || resendLoading) return;
+    try {
+      await resendVerificationEmail({});
+      setCountdown(60);
+    } catch (error) {
+      // Errors are handled by the mutation hook via toast
+    }
+  };
 
   return (
     <AuthLayout>
@@ -59,11 +79,11 @@ const CheckEmailPage = () => {
               <div className="flex items-center">
                 <Button
                   variant={"link"}
-                  // to="/auth/forgot-password"
-                  onClick={() => resendVerificationEmail({})}
-                  className="px-0 text-left text-base font-normal text-[#026451] underline"
+                  onClick={handleResend}
+                  disabled={countdown > 0 || resendLoading}
+                  className="px-0 text-left text-base font-normal text-[#026451] underline disabled:text-gray-400 disabled:no-underline"
                 >
-                  Resend verification email
+                  {countdown > 0 ? `Resend in ${countdown}s` : "Resend verification email"}
                 </Button>
                 {resendLoading && (
                   <p className="text-sm font-normal text-[#026451]">Sending email...</p>

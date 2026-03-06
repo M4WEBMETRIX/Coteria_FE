@@ -115,7 +115,7 @@ const DashboardIndex = () => {
             // { label: "Member", value: "member" },
           ]}
           values={TAB_VALUES}
-          defaultValue={TAB_VALUES[0]}
+          defaultValue={TAB_VALUES[1]}
           className="mb-9 max-w-[650px]"
         />
         {activeTab === "home" && <DashboardHome />}

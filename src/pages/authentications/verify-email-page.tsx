@@ -4,7 +4,7 @@ import {
   useOrganisationResendVerificationEmail,
   useOrganisationVerifyEmail,
 } from "@/services/auth";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useQueryState } from "nuqs";
 
@@ -24,6 +24,25 @@ const VerifyEmailPage = () => {
   } = useOrganisationVerifyEmail();
   const { mutateAsync: resendVerificationEmail, isPending: resendLoading } =
     useOrganisationResendVerificationEmail();
+
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
+  const handleResend = async () => {
+    if (countdown > 0 || resendLoading) return;
+    try {
+      await resendVerificationEmail({});
+      setCountdown(60);
+    } catch (error) {
+      // Errors are handled by the mutation hook via toast
+    }
+  };
 
   useEffect(() => {
     if (isSuccess) {
@@ -55,14 +74,16 @@ const VerifyEmailPage = () => {
           </Button>
           <div className="mb-6">
             <Button
-              disabled={resendLoading}
-              onClick={() => {
-                resendVerificationEmail({});
-              }}
-              className="h-11.5 w-full cursor-pointer border-[#12AA5B] text-base leading-6.5 tracking-[0%] text-[#12AA5B] hover:bg-[#12AA5B]/90 hover:text-[#FFFFFF]"
+              disabled={resendLoading || countdown > 0}
+              onClick={handleResend}
+              className="h-11.5 w-full cursor-pointer border-[#12AA5B] text-base leading-6.5 tracking-[0%] text-[#12AA5B] hover:bg-[#12AA5B]/90 hover:text-[#FFFFFF] disabled:cursor-not-allowed disabled:border-gray-300 disabled:text-gray-400 disabled:hover:bg-transparent"
               variant="outline"
             >
-              {resendLoading ? "Resending verification email..." : "Resend verification email"}
+              {resendLoading
+                ? "Resending verification email..."
+                : countdown > 0
+                  ? `Resend in ${countdown}s`
+                  : "Resend verification email"}
             </Button>
           </div>
         </div>

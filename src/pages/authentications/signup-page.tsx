@@ -3,7 +3,6 @@ import { Eye, EyeOff, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { CheckCircle } from "@phosphor-icons/react";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import AuthLayout from "./auth-layout";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -13,10 +12,15 @@ import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/fie
 import { Label } from "@/components/ui/label";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRegisterOrganisation } from "@/services/auth";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { Checkbox } from "@/components/ui/checkbox";
 
 const signupSchema = z
   .object({
-    name: z.string().nonempty("Please enter organization name"),
+    name: z
+      .string()
+      .min(1, "Please enter organization name")
+      .max(200, "Organization name must be 200 characters or less"),
     email: z.string().email("Please enter a valid organization email address"),
     businessNumber: z.string().min(1, "Business number is required"),
     password: z
@@ -27,7 +31,7 @@ const signupSchema = z
       .regex(/\d/, "One number")
       .regex(/[!@#$%^&*(),.?":{}|<>]/, "One special character"),
     confirmPassword: z.string().min(1, "Please confirm your password"),
-    newsletter: z.enum(["default", "none"]).optional(),
+    newsletter: z.boolean().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
@@ -59,7 +63,7 @@ const SignupPage = () => {
       businessNumber: "",
       password: "",
       confirmPassword: "",
-      newsletter: "default",
+      newsletter: false,
     },
   });
 
@@ -86,7 +90,7 @@ const SignupPage = () => {
       businessNumber: data?.businessNumber,
       adminEmail: data?.email,
       adminPassword: data?.password,
-      optInProductUpdates: data?.newsletter === "default" ? true : false,
+      optInProductUpdates: data?.newsletter,
     };
 
     registerMutate(payload);
@@ -162,9 +166,7 @@ const SignupPage = () => {
                   className="flex items-center gap-1 text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
                 >
                   Organization / Charity Business Number*
-                  <span className="flex items-center gap-1 text-sm font-normal text-[#12AA5B]">
-                    why <HelpCircle className="h-4 w-4" />
-                  </span>
+                  <WhyTooltip />
                 </FieldLabel>
                 <FieldContent>
                   <div className="relative">
@@ -265,6 +267,26 @@ const SignupPage = () => {
                 name="newsletter"
                 control={control}
                 render={({ field }) => (
+                  <div className="flex items-center gap-3">
+                    <Checkbox
+                      id="newsletter"
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      className="h-4 w-4 cursor-pointer border border-gray-300 data-[state=checked]:border-green-500 data-[state=checked]:bg-green-500"
+                    />
+                    <Label
+                      htmlFor="newsletter"
+                      className="mt-0.5 cursor-pointer text-sm leading-[100%] font-normal tracking-[1%] text-[#414143]"
+                    >
+                      I'd like to receive product updates and best practices from Coterie
+                    </Label>
+                  </div>
+                )}
+              />
+              {/* <Controller
+                name="newsletter"
+                control={control}
+                render={({ field }) => (
                   <RadioGroup
                     onValueChange={field.onChange}
                     value={field.value}
@@ -285,7 +307,7 @@ const SignupPage = () => {
                     </div>
                   </RadioGroup>
                 )}
-              />
+              /> */}
 
               {/* Terms */}
               <p className="text-sm leading-[100%] font-light tracking-[1%] text-[#414143]">
@@ -313,7 +335,7 @@ const SignupPage = () => {
                 type="submit"
                 className="w-full rounded-[24px] bg-[#12AA5B] py-6 font-semibold text-white hover:bg-green-600"
               >
-                {loading ? "Creating account..." : "Get started free"}
+                {loading ? "Creating account..." : "Get started for free"}
               </Button>
 
               {/* Login Link */}
@@ -330,5 +352,24 @@ const SignupPage = () => {
     </AuthLayout>
   );
 };
+
+function WhyTooltip() {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="flex cursor-pointer items-center gap-1 text-sm font-normal text-[#12AA5B]">
+          why <HelpCircle className="h-4 w-4" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent className="bg-white shadow" side="right">
+        <p className="max-w-[300px] text-sm text-[#1E1F24]">
+          To verify your organization’s legitimacy, we ask for your Charity Business Number (BN)
+          issued by the Canada Revenue Agency (CRA). This helps ensure that organizations on Coterie
+          are properly registered and trusted by donors.
+        </p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
 
 export default SignupPage;

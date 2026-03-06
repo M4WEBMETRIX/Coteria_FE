@@ -32,6 +32,8 @@ interface IProps {
 const roles = ["Designer", "Fundraiser", "Developer", "Executive"];
 
 const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logoutPending }) => {
+  const [errors, setErrors] = React.useState({ firstName: "", lastName: "" });
+
   return (
     <div className="mx-auto max-w-130">
       <div className="mt-4">
@@ -51,10 +53,18 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logout
           </Label>
           <Input
             value={data.firstName}
-            onChange={(e) => setData((prev) => ({ ...prev, firstName: e.target.value }))}
+            onChange={(e) => {
+              const value = e.target.value;
+              setData((prev) => ({ ...prev, firstName: value }));
+              setErrors((prev) => ({
+                ...prev,
+                firstName: value.length > 200 ? "First name must not exceed 200 characters" : "",
+              }));
+            }}
             placeholder="Enter first name"
             className="h-12 rounded-xl border-0 bg-[#FAFAFA] px-2.5 py-5 text-[#0A0A0C]"
           />
+          {errors.firstName && <p className="mt-1 text-xs text-red-500">{errors.firstName}</p>}
         </div>
         <div>
           <Label className="mb-2 block text-base leading-5.5 font-medium text-[#414143]">
@@ -62,10 +72,18 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logout
           </Label>
           <Input
             value={data.lastName}
-            onChange={(e) => setData((prev) => ({ ...prev, lastName: e.target.value }))}
+            onChange={(e) => {
+              const value = e.target.value;
+              setData((prev) => ({ ...prev, lastName: value }));
+              setErrors((prev) => ({
+                ...prev,
+                lastName: value.length > 200 ? "Last name must not exceed 200 characters" : "",
+              }));
+            }}
             placeholder="Enter last name"
             className="h-12 rounded-xl border-0 bg-[#FAFAFA] px-2.5 py-5 text-[#0A0A0C]"
           />
+          {errors.lastName && <p className="mt-1 text-xs text-red-500">{errors.lastName}</p>}
         </div>
       </div>
 
@@ -97,6 +115,7 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logout
           <Button
             className="w-30.75 cursor-pointer rounded-full bg-[#12AA5B] py-6 text-base font-medium hover:bg-[#12AA5B]/90"
             onClick={onNext}
+            disabled={!!errors.firstName || !!errors.lastName}
           >
             Next
           </Button>
@@ -144,8 +163,8 @@ const StepTwo: React.FC<IProps> = ({ data, setData, handleLogout, logoutPending 
 
   useEffect(() => {
     if (isSuccess) {
-      // onNext();
-      navigate("/community");
+      // Use replace to prevent back-navigation to setup after onboarding
+      navigate("/community", { replace: true });
 
       setData({
         firstName: "",
@@ -273,7 +292,7 @@ const StepThree: React.FC = () => {
           </Button>
           <div className="mb-6">
             <Button
-              onClick={() => navigate("/community")}
+              onClick={() => navigate("/community", { replace: true })}
               className="h-11.5 w-full cursor-pointer border-[#554AFF] text-base leading-6.5 tracking-[0%] text-[#554AFF] hover:bg-[#554AFF]/90 hover:text-[#FFFFFF]"
               variant="outline"
             >
@@ -317,27 +336,26 @@ const SetupAccountPage: React.FC = () => {
 
   const isUserPath = location.pathname.includes("user");
 
-  const {
-    mutate: logoutMutate,
-    isPending: logoutPending,
-    isSuccess: logoutSuccess,
-  } = useLogoutOrganisation();
+  const { mutate: logoutMutate, isPending: logoutPending } = useLogoutOrganisation();
 
   const refreshToken = isUserPath
     ? localStorage.getItem("userRefreshToken")
     : localStorage.getItem("refreshToken");
 
   const handleLogout = () => {
-    logoutMutate({ refreshToken });
+    logoutMutate(
+      { refreshToken },
+      {
+        onSettled: () => {
+          // Clean up synchronously before navigating to prevent blank screen.
+          // onSettled fires on both success and error, ensuring cleanup always happens.
+          removeOrgUserFromLocalStorage();
+          queryClient.clear();
+          navigate("/auth/login", { replace: true });
+        },
+      }
+    );
   };
-
-  useEffect(() => {
-    if (logoutSuccess) {
-      navigate("/auth/login");
-      removeOrgUserFromLocalStorage();
-      queryClient.clear();
-    }
-  }, [logoutSuccess]);
 
   return (
     <AuthLayout>

@@ -89,7 +89,7 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
               </AvatarFallback>
             </Avatar>
             <div className="flex flex-col items-start justify-start text-left">
-              <p className="truncate text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
+              <p className="max-w-[150px] truncate text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
                 {orgUser?.currentUser?.firstName}
               </p>
               <p className="text-left text-xs leading-[150%] font-normal tracking-[2%] text-[#666D80]">
