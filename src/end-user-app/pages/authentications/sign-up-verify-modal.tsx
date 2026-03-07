@@ -76,7 +76,7 @@ export default function EmailVerificationFlow({
 
     setTimeout(() => {
       setLoading(false);
-      navigate("/user/dashboard");
+      navigate("/user/dashboard", { replace: true });
     }, 2000);
   };
 

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
 import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import { getCurrencySymbol } from "@/lib/utils";
+import { DonationModal } from "@/pages/community/services/donate-modal";
 import { useGetUserSpecificCampaigns } from "@/services/generics/user-generics/user-hooks";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
@@ -19,6 +20,7 @@ import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 const CampaignDetails = () => {
+  const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { id } = useParams();
   const [tab, setTab] = useState<"active" | "completed">("active");
@@ -79,7 +81,7 @@ const CampaignDetails = () => {
           </div>
 
           {/* Invite Widget */}
-          <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
+          {/* <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
             <Button className="h-12 w-full justify-start gap-3 rounded-[10px] border border-[#EFEFEF] bg-white text-base font-normal text-[#000000] hover:bg-gray-50">
               <span className="text-yellow-500">🤝</span> Invite Friends & Family
             </Button>
@@ -91,7 +93,7 @@ const CampaignDetails = () => {
                 new members to the community.
               </p>
             </div>
-          </div>
+          </div> */}
 
           {/* Impact Score */}
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
@@ -186,7 +188,9 @@ const CampaignDetails = () => {
                       </span>
                       <span className="text-[#A3A3A3]">
                         /{getCurrencySymbol(campaign?.goalCurrency)}{" "}
-                        {(campaign?.goalAmountCents / 100)?.toLocaleString()}
+                        {campaign?.goalAmountCents
+                          ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                          : "0"}
                       </span>
                     </div>
                     {/* Progress Bar Custom */}
@@ -199,7 +203,10 @@ const CampaignDetails = () => {
                       />
                     </div>
                   </div>
-                  <Button className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]">
+                  <Button
+                    onClick={() => setIsOpen(true)}
+                    className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
+                  >
                     <div className="flex items-center text-sm font-medium">
                       Donate
                       <CaretRightIcon size={14} weight="bold" className="text-white" />
@@ -261,6 +268,14 @@ const CampaignDetails = () => {
           {/* <UserUpcomingEventCard /> */}
         </div>
       </div>
+
+      <DonationModal
+        currency={campaign?.goalCurrency}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        campaignName={campaign?.name}
+        endUserId={endUser?.id}
+      />
     </>
   );
 };

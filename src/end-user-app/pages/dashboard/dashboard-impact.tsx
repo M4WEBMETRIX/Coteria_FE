@@ -98,7 +98,7 @@ const DashboardImpact = () => {
             </div>
             <div className="space-y-1">
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
-                <div className="h-full w-[60%] rounded-full bg-[#12AA5B]" />
+                <div className="h-full w-[0%] rounded-full bg-[#12AA5B]" />
               </div>
             </div>
             <div className="flex items-center justify-between text-2xl leading-[150%] font-normal text-[#888787]">

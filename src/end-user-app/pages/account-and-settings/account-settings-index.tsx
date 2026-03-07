@@ -2,11 +2,11 @@ import { Button } from "@/components/ui/button";
 import {
   // Trophy,
   // MapPin,
-  WhatsappLogo,
-  LinkedinLogo,
-  XLogo,
+  // WhatsappLogo,
+  // LinkedinLogo,
+  // XLogo,
   // Plus,
-  PencilSimple,
+  // PencilSimple,
   CaretRightIcon,
   Leaf,
   ChartBar,
@@ -64,7 +64,7 @@ const AccountSettingsIndex = () => {
             </Button>
           </div>
 
-          <div className="space-y-4">
+          {/* <div className="space-y-4">
             <h4 className="border-b pb-4 text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
               Social Links
             </h4>
@@ -90,14 +90,14 @@ const AccountSettingsIndex = () => {
                 </div>
                 <PencilSimple className="cursor-pointer text-gray-400" />
               </div>
-              {/* <Button
+              <Button
                 variant="outline"
                 className="h-12 w-full justify-center rounded-[10px] border border-[#EFEFEF] font-medium text-gray-500"
               >
                 <Plus className="mr-2" /> Add Social Links
-              </Button> */}
+              </Button>
             </div>
-          </div>
+          </div> */}
 
           {/* Discover Widget (Mock matching visual) */}
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
@@ -214,7 +214,12 @@ const AccountSettingsIndex = () => {
                   <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gray-500" />
                   <span>
                     Understand our principles for{" "}
-                    <span className="cursor-pointer underline">respectful participation.</span>
+                    <Link
+                      to={"https://usecoterie.com/accessibility"}
+                      className="cursor-pointer underline"
+                    >
+                      respectful participation.
+                    </Link>
                   </span>
                 </li>
                 <li className="flex items-start gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">

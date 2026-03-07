@@ -4,36 +4,64 @@ import InnerNav from "@/end-user-app/navigations/inner-nav";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   // ChatCircle,
-  Heart,
+  // Heart,
   // ShareFat,
   WhatsappLogo,
   LinkedinLogo,
   XLogo,
-  Plus,
+  // Plus,
   // Users,
   // Trophy,
   CaretDownIcon,
   ArrowUpRight,
+  HandArrowUpIcon,
 } from "@phosphor-icons/react";
 import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useNavigate, useParams } from "react-router-dom";
+import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 
 // import SAMPLE_FEED_IMAGE from "@/assets/images/sample-community-image.png";
 import {
   useGetEndUserProfile,
   useGetUserSpecificCommunity,
 } from "@/services/generics/user-generics/user-hooks";
-import { formatFullDate } from "@/lib/utils";
+import { formatFullDate, getBaseUrl, getCurrencySymbol } from "@/lib/utils";
+import { useGetPublicCommunityCampaigns } from "@/pages/community/services";
+import { timeAgo } from "@/pages/dashboard/community-table-list";
+import { DonationModal } from "@/pages/community/services/donate-modal";
+import { useState } from "react";
 
 const CommunityFeed = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState<any | null>(null);
+  const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
 
-  const { data: community } = useGetUserSpecificCommunity(id);
+  const { data: community, isPending: communityLoading } = useGetUserSpecificCommunity(id);
+  const { data: communityCampaigns, isPending: campaignsLoading } =
+    useGetPublicCommunityCampaigns(id);
 
-  const { data } = useGetEndUserProfile();
+  const { data, isPending: userLoading } = useGetEndUserProfile();
   const user = data?.data;
-  // console.log("community", community);
+  // console.log("community campaigns", communityCampaigns);
+
+  const shareUrl = `${getBaseUrl()}/community/public/${community?.data?.slug}/${community?.data?.id}`;
+
+  const shareOnWhatsApp = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
+  };
+
+  const shareOnX = () => {
+    const text = `Check out this community: ${community?.data?.name}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
+  };
+
+  const shareOnLinkedIn = () => {
+    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
+  };
 
   return (
     <>
@@ -46,29 +74,41 @@ const CommunityFeed = () => {
         <div className="w-[350px] space-y-6 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 pt-[38.5px] pb-5">
           {/* Profile Card */}
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 text-center">
-            <div className="mb-14.5 flex items-center gap-3">
-              <div>
-                <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-                  <img
-                    src="https://placehold.co/80x80/png"
-                    alt="Profile"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-              <div>
-                <h3 className="ml-4 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                  {user?.firstName} {user?.lastName}
-                </h3>
-                <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
-                  {user?.isFullyVerified ? "Verified" : "Not Verified"}
-                </div>
-              </div>
-            </div>
+            {userLoading ? (
+              <div className="flex animate-pulse items-center gap-3">
+                <div className="h-20 w-20 rounded-full bg-gray-200" />
 
-            <Button className="h-12 w-full justify-start gap-3 rounded-[10px] border border-[#EFEFEF] bg-white text-base font-normal text-[#000000] hover:bg-gray-50">
+                <div className="flex-1 space-y-3">
+                  <div className="h-5 w-40 rounded bg-gray-200" />
+                  <div className="h-4 w-24 rounded bg-gray-200" />
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center gap-3">
+                {/* mb-14.5 */}
+                <div>
+                  <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
+                    <img
+                      src="https://placehold.co/80x80/png"
+                      alt="Profile"
+                      className="h-full w-full object-cover"
+                    />
+                  </div>
+                </div>
+                <div>
+                  <h3 className="ml-4 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                    {user?.firstName} {user?.lastName}
+                  </h3>
+                  <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
+                    {user?.isFullyVerified ? "Verified" : "Not Verified"}
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* <Button className="h-12 w-full justify-start gap-3 rounded-[10px] border border-[#EFEFEF] bg-white text-base font-normal text-[#000000] hover:bg-gray-50">
               <span className="text-yellow-500">🤝</span> Invite Friends & Family
-            </Button>
+            </Button> */}
           </div>
 
           {/* Invite Widget */}
@@ -83,6 +123,7 @@ const CommunityFeed = () => {
 
             <div className="space-y-2.5">
               <Button
+                onClick={() => shareOnWhatsApp()}
                 variant="outline"
                 className="h-10 w-full justify-start gap-3 rounded-[10px] border-[#EFEFEF] text-sm font-normal text-gray-600"
               >
@@ -90,6 +131,7 @@ const CommunityFeed = () => {
                 Whatsapp
               </Button>
               <Button
+                onClick={() => shareOnLinkedIn()}
                 variant="outline"
                 className="h-10 w-full justify-start gap-3 rounded-[10px] border-[#EFEFEF] text-sm font-normal text-gray-600"
               >
@@ -97,17 +139,18 @@ const CommunityFeed = () => {
                 Linkedin
               </Button>
               <Button
+                onClick={() => shareOnX()}
                 variant="outline"
                 className="h-10 w-full justify-start gap-3 rounded-[10px] border-[#EFEFEF] text-sm font-normal text-gray-600"
               >
                 <XLogo size={20} className="text-black" weight="fill" /> Share on X
               </Button>
-              <Button
+              {/* <Button
                 variant="outline"
                 className="h-10 w-full justify-center gap-2 rounded-[10px] border-[#EFEFEF] text-sm font-medium text-[#1E1F24]"
               >
                 <Plus size={16} /> Add Social Links
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -154,35 +197,51 @@ const CommunityFeed = () => {
             <h2 className="text-2xl font-bold text-[#1E1F24]">Community Feed</h2>
 
             {/* Post Mock */}
-            <div className="flex-1 space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
-              <div className="flex items-center gap-3">
-                <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100 text-xl font-bold text-pink-500">
-                  CA
+            {communityLoading ? (
+              <div className="animate-pulse space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-gray-200" />
+                  <div className="space-y-2">
+                    <div className="h-4 w-40 rounded bg-gray-200" />
+                    <div className="h-3 w-24 rounded bg-gray-200" />
+                  </div>
                 </div>
-                <div>
-                  <h3 className="text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                    {community?.data?.name}
-                  </h3>
-                  <p className="text-lg leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
-                    Created: {formatFullDate(community?.data?.createdAt)}
-                  </p>
-                </div>
+
+                <div className="h-4 w-full rounded bg-gray-200" />
+                <div className="h-4 w-3/4 rounded bg-gray-200" />
+
+                <div className="h-[180px] w-full rounded-xl bg-gray-200" />
               </div>
-
-              <p className="pb-2 text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                {community?.data?.description}
-              </p>
-
-              <div className="space-y-3">
-                <div className="h-[180px] w-full overflow-hidden rounded-xl bg-gray-100">
-                  <img
-                    src={community?.data?.imageUrl || ""}
-                    alt="Post Content"
-                    className="h-full w-full object-cover object-center"
-                  />
+            ) : (
+              <div className="flex-1 space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
+                <div className="flex items-center gap-3">
+                  <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100 text-xl font-bold text-pink-500">
+                    CA
+                  </div>
+                  <div>
+                    <h3 className="text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                      {community?.data?.name}
+                    </h3>
+                    <p className="text-lg leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
+                      Created: {formatFullDate(community?.data?.createdAt)}
+                    </p>
+                  </div>
                 </div>
 
-                {/* <div className="flex items-center justify-end gap-3 text-gray-500">
+                <p className="pb-2 text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                  {community?.data?.description}
+                </p>
+
+                <div className="space-y-3">
+                  <div className="h-[180px] w-full overflow-hidden rounded-xl bg-gray-100">
+                    <img
+                      src={community?.data?.imageUrl || ""}
+                      alt="Post Content"
+                      className="h-full w-full object-cover object-center"
+                    />
+                  </div>
+
+                  {/* <div className="flex items-center justify-end gap-3 text-gray-500">
                   <button className="flex items-center gap-1 hover:text-[#12AA5B]">
                     <ChatCircle size={20} />
                   </button>
@@ -193,8 +252,9 @@ const CommunityFeed = () => {
                     <ShareFat size={20} />
                   </button>
                 </div> */}
+                </div>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Right Sidebar */}
@@ -234,34 +294,93 @@ const CommunityFeed = () => {
                 </h3>
                 <CaretDownIcon size={16} />
               </div>
-              <div className="space-y-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
-                    <Heart weight="fill" size={20} />
-                  </div>
-                  <div className="flex-1">
-                    <div className="flex items-start justify-between">
-                      <h4 className="text-[15px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                        Green Roof Initiative
-                      </h4>
-                      <span className="text-[17px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                        40%
-                      </span>
+              <div className="space-y-5">
+                {campaignsLoading ? (
+                  [...Array(3)].map((_, i) => (
+                    <div key={i} className="animate-pulse space-y-4">
+                      <div className="flex items-start gap-3">
+                        <div className="h-10 w-10 rounded-full bg-gray-200" />
+
+                        <div className="flex-1 space-y-2">
+                          <div className="h-4 w-40 rounded bg-gray-200" />
+                          <div className="h-3 w-24 rounded bg-gray-200" />
+                        </div>
+                      </div>
+
+                      <div className="h-11 w-full rounded-full bg-gray-200" />
                     </div>
-                    <div className="mt-1 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
-                      <span>5 mins ago</span>
-                      <span className="text-[#12AA5B]">$320,000</span>
-                    </div>
-                  </div>
-                </div>
-                <Button className="h-11 w-full rounded-full border border-[#FFF2D5] bg-[#ECA50D] text-white hover:bg-[#c98d00]">
-                  Donate <ArrowUpRight className="ml-2 h-4 w-4 -rotate-45" />
-                </Button>
+                  ))
+                ) : (
+                  <>
+                    {communityCampaigns?.data?.items?.length === 0 ? (
+                      <div className="mt-6 flex flex-col items-center justify-center rounded-[8px] bg-white p-4">
+                        <img
+                          src={EmptyCampaigns}
+                          alt="empty-campaigns"
+                          className="mb-3 h-[72px] w-[72px]"
+                        />
+                        <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                          No campaign updates yet.
+                        </p>
+
+                        <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                          When campaign updates are available for this community, they will show up
+                          here.
+                        </p>
+                      </div>
+                    ) : (
+                      <>
+                        {communityCampaigns?.data?.items?.map((campaign: any, index: number) => (
+                          <div key={index} className="space-y-4">
+                            <div className="flex items-start gap-3">
+                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                <HandArrowUpIcon weight="duotone" size={20} />
+                              </div>
+                              <div className="flex-1">
+                                <div className="flex items-start justify-between">
+                                  <h4 className="line-clamp-1 text-[15px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                                    {campaign?.name}
+                                  </h4>
+                                  {/* <span className="text-[17px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                            40%
+                          </span> */}
+                                </div>
+                                <div className="mt-1 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
+                                  <span>{timeAgo(campaign?.createdAt)}</span>
+                                  <span className="text-[#12AA5B]">
+                                    {getCurrencySymbol(campaign?.goalCurrency || "")}
+                                    {(campaign?.goalAmountCents / 100)?.toLocaleString()}
+                                  </span>
+                                </div>
+                              </div>
+                            </div>
+                            <Button
+                              onClick={() => {
+                                setSelectedCampaign(campaign);
+                                setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                              }}
+                              className="h-11 w-full rounded-full border border-[#FFF2D5] bg-[#ECA50D] text-white hover:bg-[#c98d00]"
+                            >
+                              Donate <ArrowUpRight className="ml-2 h-4 w-4 -rotate-45" />
+                            </Button>
+                          </div>
+                        ))}
+                      </>
+                    )}
+                  </>
+                )}
               </div>
             </div>
           </div>
         </div>
       </div>
+      <DonationModal
+        currency={selectedCampaign?.goalCurrency}
+        open={isOpen}
+        onOpenChange={setIsOpen}
+        campaignName={selectedCampaign?.name}
+        endUserId={user?.id}
+      />
     </>
   );
 };

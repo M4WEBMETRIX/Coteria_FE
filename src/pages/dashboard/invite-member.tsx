@@ -39,7 +39,9 @@ const InviteMembersModal = ({
     }
   }, [id]);
 
-  const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${data?.data?.code}`;
+  const returnUrl = `${getBaseUrl()}/user/dashboard/community/${id}`;
+
+  const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${data?.data?.code}&returnUrl=${returnUrl}`;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(inviteLink);

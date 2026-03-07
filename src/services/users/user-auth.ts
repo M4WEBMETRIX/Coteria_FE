@@ -1,6 +1,7 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
 import { loginUser, registerUser, type UserLoginProps, type UserRegisterProps } from "./user-index";
+import { getFunctionUserEnd } from "../generics/user-generics/user-generic-index";
 // import { useNavigate } from "react-router-dom";
 
 export const useRegisterUser = () => {
@@ -37,5 +38,13 @@ export const useLoginUser = () => {
       //   console.log("err-from query", error);
       toast.error(error?.message);
     },
+  });
+};
+
+export const useGetReferralDetails = () => {
+  const URL = `/links/resolve`;
+  return useQuery({
+    queryKey: ["referral-details"],
+    queryFn: () => getFunctionUserEnd(URL),
   });
 };

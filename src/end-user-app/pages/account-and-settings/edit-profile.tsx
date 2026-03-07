@@ -130,6 +130,7 @@ const EditProfile = () => {
                 Email<span className="text-red-500">*</span>
               </label>
               <Input
+                disabled
                 value={user?.email}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"

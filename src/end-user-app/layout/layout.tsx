@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { User } from "@phosphor-icons/react";
 import UserAuthCarousel from "../pages/authentications/user-auth-carousel";
 import LogoSvgCode from "../pages/logo-svg-code";
+import { useGetReferralDetails } from "@/services/users/user-auth";
 
 const UserAuthLayout = ({
   children,
@@ -15,6 +16,9 @@ const UserAuthLayout = ({
   title: string;
   subTitle: string;
 }) => {
+  const { data } = useGetReferralDetails();
+  console.log(data);
+
   return (
     <main className="flex h-screen">
       {/* left panel */}
