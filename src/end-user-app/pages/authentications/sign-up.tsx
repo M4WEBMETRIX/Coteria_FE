@@ -10,9 +10,12 @@ import EmailVerificationFlow from "./sign-up-verify-modal";
 import { useQueryState } from "nuqs";
 import ExtendedLineageModal from "./referral-lineage-modal";
 import { useRegisterUser } from "@/services/users/user-auth";
+import { useSearchParams } from "react-router-dom";
 
 const UserSignUp = () => {
   const [isReferrer] = useQueryState("referral-code");
+  const [returnUrl] = useQueryState("returnUrl");
+  const [searchParams] = useSearchParams();
   const [isExtendedLineageOpen, setIsExtendedLineageOpen] = useState(false);
   const [showVerification, setShowVerification] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -56,7 +59,7 @@ const UserSignUp = () => {
       isReferrer={isReferrer ? true : false}
     >
       <div className="">
-        {isReferrer && (
+        {/* {isReferrer && (
           <div className="mt-2.5 mb-7.5 flex items-center justify-between">
             <div
               className="cursor-pointer text-xs leading-[160%] font-medium tracking-[0.1px] underline hover:text-blue-500"
@@ -75,7 +78,7 @@ const UserSignUp = () => {
               ))}
             </div>
           </div>
-        )}
+        )} */}
         <ExtendedLineageModal isOpen={isExtendedLineageOpen} setIsOpen={setIsExtendedLineageOpen} />
 
         <form onSubmit={handleSubmit} className="space-y-5">
@@ -198,7 +201,10 @@ const UserSignUp = () => {
 
         <p className="mt-5 text-left text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
           Already have an account?{" "}
-          <a href="/user/login" className="text-[#000000] hover:text-blue-600 hover:underline">
+          <a
+            href={`/user/login${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
+            className="text-[#000000] hover:text-blue-600 hover:underline"
+          >
             Log In Here
           </a>
         </p>
@@ -207,6 +213,7 @@ const UserSignUp = () => {
         email={formData.email}
         showVerification={showVerification}
         setShowVerification={setShowVerification}
+        returnUrl={returnUrl || undefined}
       />
     </UserAuthLayout>
   );
@@ -388,10 +395,10 @@ const UserSignUp = () => {
 
 export default UserSignUp;
 
-const lineageMembers = [
-  { id: 1, image: "https://i.pravatar.cc/150?img=1" },
-  { id: 2, image: "https://i.pravatar.cc/150?img=2" },
-  { id: 3, image: "https://i.pravatar.cc/150?img=3" },
-  { id: 4, image: "https://i.pravatar.cc/150?img=4" },
-  { id: 5, image: "https://i.pravatar.cc/150?img=5" },
-];
+// const lineageMembers = [
+//   { id: 1, image: "https://i.pravatar.cc/150?img=1" },
+//   { id: 2, image: "https://i.pravatar.cc/150?img=2" },
+//   { id: 3, image: "https://i.pravatar.cc/150?img=3" },
+//   { id: 4, image: "https://i.pravatar.cc/150?img=4" },
+//   { id: 5, image: "https://i.pravatar.cc/150?img=5" },
+// ];

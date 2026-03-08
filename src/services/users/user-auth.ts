@@ -41,8 +41,8 @@ export const useLoginUser = () => {
   });
 };
 
-export const useGetReferralDetails = () => {
-  const URL = `/links/resolve`;
+export const useGetReferralDetails = (code: string | null) => {
+  const URL = `/links/resolve?code=${code}`;
   return useQuery({
     queryKey: ["referral-details"],
     queryFn: () => getFunctionUserEnd(URL),

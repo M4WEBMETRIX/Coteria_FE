@@ -12,10 +12,12 @@ export default function EmailVerificationFlow({
   showVerification,
   setShowVerification,
   email,
+  returnUrl,
 }: {
   showVerification: boolean;
   setShowVerification: (show: boolean) => void;
   email: string;
+  returnUrl?: string;
 }) {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -68,15 +70,15 @@ export default function EmailVerificationFlow({
   const handleClick = () => {
     setLoading(true);
 
-    // setUserToLocalStorage({
-    //   id: "123",
-    //   name: getNameFromEmail(email),
-    //   email: email,
-    // });
-
     setTimeout(() => {
       setLoading(false);
-      navigate("/user/dashboard", { replace: true });
+      // Redirect to returnUrl if present, otherwise default dashboard
+      const destination = returnUrl || "/user/dashboard";
+      if (destination.startsWith("http")) {
+        window.location.href = destination;
+      } else {
+        navigate(destination, { replace: true });
+      }
     }, 2000);
   };
 

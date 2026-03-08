@@ -1,9 +1,12 @@
+import { useEffect } from "react";
 import { Button } from "@/components/ui/button";
 
 import { User } from "@phosphor-icons/react";
 import UserAuthCarousel from "../pages/authentications/user-auth-carousel";
 import LogoSvgCode from "../pages/logo-svg-code";
 import { useGetReferralDetails } from "@/services/users/user-auth";
+import { useQueryState } from "nuqs";
+import { useNavigate } from "react-router-dom";
 
 const UserAuthLayout = ({
   children,
@@ -16,8 +19,23 @@ const UserAuthLayout = ({
   title: string;
   subTitle: string;
 }) => {
-  const { data } = useGetReferralDetails();
-  console.log(data);
+  const navigate = useNavigate();
+  const [referralCode] = useQueryState("referral-code");
+  const [returnUrl] = useQueryState("returnUrl");
+  const { data } = useGetReferralDetails(referralCode);
+
+  // If user is already authenticated and has a returnUrl, redirect immediately
+  useEffect(() => {
+    const isAuthenticated = !!localStorage.getItem("userAccessToken");
+    if (returnUrl && isAuthenticated) {
+      // Handle both absolute URLs and relative paths
+      if (returnUrl.startsWith("http")) {
+        window.location.href = returnUrl;
+      } else {
+        navigate(returnUrl, { replace: true });
+      }
+    }
+  }, [returnUrl, navigate]);
 
   return (
     <main className="flex h-screen">
@@ -44,10 +62,10 @@ const UserAuthLayout = ({
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <p className="tracking-[0%]] text-2xl leading-[160%] font-medium tracking-[0.1px] text-[leading-[160%]">
-                    Adebayo Oludare
+                    {data?.data?.organization?.name}
                   </p>
                   <p className="text-sm leading-[160%] tracking-[0.1px] text-[#000000]">
-                    adebayooludare@gmail.com
+                    {data?.data?.organization?.email || "Email not available"}
                   </p>
                 </div>
               </div>

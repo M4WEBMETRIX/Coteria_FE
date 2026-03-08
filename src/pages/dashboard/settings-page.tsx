@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQueryState, parseAsString } from "nuqs";
 import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { useUpdateOrganisationProfile, useGetOrganisationProfile } from "@/services/generics/hooks";
+import { CircleNotch } from "@phosphor-icons/react";
 
 // Import all tab components
 import OrganizationProfileTab from "@/components/settings/organization-profile-tab";
@@ -35,10 +37,14 @@ const SettingsPage = () => {
     parseAsString.withDefault("organization-profile")
   );
 
+  const { mutate: updateOrgProfile, isPending: isUpdatingProfile } = useUpdateOrganisationProfile();
+  const { data: orgProfileResponse } = useGetOrganisationProfile();
+
   // Centralized form state for all tabs
   const [formData, setFormData] = useState({
     // Organization Profile
     organizationName: "",
+    logoUrl: "",
     industry: "",
     language: "en",
     currency: "CAD",
@@ -92,11 +98,39 @@ const SettingsPage = () => {
     ],
   });
 
+  useEffect(() => {
+    if (orgProfileResponse?.data) {
+      const profile = orgProfileResponse.data;
+      setFormData((prev) => ({
+        ...prev,
+        organizationName: profile.name || prev.organizationName,
+        logoUrl: profile.logoUrl || prev.logoUrl,
+        currency: profile.defaultCurrency || prev.currency,
+        addressStreet: profile.address?.line1 || prev.addressStreet,
+        addressCity: profile.address?.city || prev.addressCity,
+        addressState: profile.address?.region || prev.addressState,
+        addressCountry: profile.address?.countryCode || prev.addressCountry,
+        addressPostalCode: profile.address?.postalCode || prev.addressPostalCode,
+      }));
+    }
+  }, [orgProfileResponse]);
+
   const handleSaveChanges = () => {
-    // Handle saving all changes
-    console.log("Saving changes:", formData);
-    // You can add API calls here to save the data
-    alert("Changes saved successfully!");
+    if (activeTab === "organization-profile") {
+      updateOrgProfile({
+        name: formData.organizationName,
+        logoUrl: formData.logoUrl,
+        industry: formData.industry,
+        defaultCurrency: formData.currency,
+        address: {
+          line1: formData.addressStreet,
+          city: formData.addressCity,
+          region: formData.addressState,
+          countryCode: formData.addressCountry,
+          postalCode: formData.addressPostalCode,
+        },
+      });
+    }
   };
 
   const handleCancel = () => {
@@ -156,8 +190,18 @@ const SettingsPage = () => {
           <Button variant="outline" onClick={handleCancel}>
             Cancel
           </Button>
-          <Button onClick={handleSaveChanges} className="bg-[#079455] hover:bg-[#0E8A4A]">
-            Save Changes
+          <Button
+            onClick={handleSaveChanges}
+            disabled={isUpdatingProfile}
+            className="bg-[#079455] hover:bg-[#0E8A4A]"
+          >
+            {isUpdatingProfile ? (
+              <>
+                <CircleNotch className="mr-2 h-4 w-4 animate-spin" /> Saving...
+              </>
+            ) : (
+              "Save Changes"
+            )}
           </Button>
         </div>
       </div>

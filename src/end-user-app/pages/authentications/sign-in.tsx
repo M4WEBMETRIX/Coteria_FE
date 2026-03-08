@@ -4,16 +4,16 @@ import { Input } from "@/components/ui/input";
 import { EyeOff } from "lucide-react";
 
 import { Eye } from "@phosphor-icons/react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import UserAuthLayout from "@/end-user-app/layout/layout";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Field, FieldContent, FieldError, FieldLabel } from "@/components/ui/field";
-// import { getNameFromEmail, setUserToLocalStorage } from "@/end-user-app/services/local-storage";
 import { useLoginUser } from "@/services/users/user-auth";
 import EmailVerificationFlow from "./sign-up-verify-modal";
 import { useUserResendVerificationEmail } from "@/services/auth";
+import { useQueryState } from "nuqs";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -43,22 +43,23 @@ const UserSignIn = () => {
 
   const { mutate: userLoginMutate, isPending: loading, isSuccess, data } = useLoginUser();
   const { mutate: userResendVerificationEmailMutate } = useUserResendVerificationEmail();
+  const [returnUrl] = useQueryState("returnUrl");
+  const [searchParams] = useSearchParams();
 
-  console.log(data);
   useEffect(() => {
     if (isSuccess) {
       if (data?.data?.requiresEmailVerification) {
         setShowVerification(true);
         userResendVerificationEmailMutate({});
       } else {
-        navigate("/user/dashboard?tab=community");
+        // Redirect to returnUrl if present, otherwise default dashboard
+        const destination = returnUrl || "/user/dashboard?tab=community";
+        if (destination.startsWith("http")) {
+          window.location.href = destination;
+        } else {
+          navigate(destination, { replace: true });
+        }
       }
-
-      // setUserToLocalStorage({
-      //   id: "123",
-      //   name: getNameFromEmail(data?.email),
-      //   email: data?.email,
-      // });
     }
   }, [isSuccess]);
 
@@ -162,7 +163,10 @@ const UserSignIn = () => {
         {/* Sign In Link */}
         <p className="mt-5 text-left text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
           You don't have an account?{" "}
-          <Link to="/user/signup" className="text-[#000000] hover:text-blue-600 hover:underline">
+          <Link
+            to={`/user/signup${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
+            className="text-[#000000] hover:text-blue-600 hover:underline"
+          >
             Sign Up Here
           </Link>
         </p>
@@ -170,6 +174,7 @@ const UserSignIn = () => {
           email={data?.data?.email}
           showVerification={showVerification}
           setShowVerification={setShowVerification}
+          returnUrl={returnUrl || undefined}
         />
       </div>
     </UserAuthLayout>

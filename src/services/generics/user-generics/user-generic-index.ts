@@ -9,3 +9,8 @@ export const postFunctionUserEnd = async (payload: any, URL: string) => {
   const response = await userApi.post(URL, payload);
   return response.data;
 };
+
+export const putFunctionUserEnd = async (payload: any, URL: string) => {
+  const response = await userApi.put(URL, payload);
+  return response.data;
+};

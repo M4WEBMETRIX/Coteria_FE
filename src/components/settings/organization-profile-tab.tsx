@@ -7,14 +7,18 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-// import { Separator } from "../ui/separator";
-import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
-import { useEffect, useMemo } from "react";
-import { useGetCurrencies } from "@/services/generics/hooks";
+import { useGetCurrencies, useUpdateOrganisationProfile } from "@/services/generics/hooks";
+import { Separator } from "../ui/separator";
+import { useFileUpload } from "@/services/file-upload-hook";
+import { useRef, useState } from "react";
+import { Camera, CircleNotch } from "@phosphor-icons/react";
+import { toast } from "sonner";
+import { Button } from "@/components/ui/button";
 
 interface OrganizationProfileTabProps {
   formData: {
     organizationName: string;
+    logoUrl: string;
     industry: string;
     language: string;
     currency: string;
@@ -33,21 +37,51 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
   };
 
   const { data: currencies } = useGetCurrencies();
-  // console.log(currencies);
+  const { mutateAsync: uploadFile } = useFileUpload();
+  const { mutateAsync: updateOrgProfile } = useUpdateOrganisationProfile();
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const orgUser = useMemo(() => {
-    return getOrgUserFromLocalStorage();
-  }, []);
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  useEffect(() => {
-    if (orgUser) {
-      setFormData((prev: any) => ({
-        ...prev,
-        organizationName: orgUser?.name,
-        currency: orgUser?.defaultCurrency,
-      }));
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be less than 5MB");
+      e.target.value = "";
+      return;
     }
-  }, [orgUser]);
+
+    setIsUploading(true);
+    try {
+      const payload = new FormData();
+      payload.append("file", file);
+
+      const res = await uploadFile(payload);
+      const uploadedUrl = res?.url || res?.data?.url;
+      if (uploadedUrl) {
+        handleChange("logoUrl", uploadedUrl);
+        await updateOrgProfile({
+          name: formData.organizationName,
+          logoUrl: uploadedUrl,
+          industry: formData.industry,
+          defaultCurrency: formData.currency,
+          address: {
+            line1: formData.addressStreet,
+            city: formData.addressCity,
+            region: formData.addressState,
+            countryCode: formData.addressCountry,
+            postalCode: formData.addressPostalCode,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsUploading(false);
+      e.target.value = "";
+    }
+  };
 
   return (
     <div className="font-ubuntu">
@@ -64,6 +98,41 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
         </div>
 
         <div className="grid min-w-[532px] space-y-4">
+          <div className="flex flex-col space-y-3 pb-2">
+            <Label className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]">
+              Organization Logo
+            </Label>
+            <div className="flex items-center gap-5">
+              <div className="relative flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden rounded-full border border-gray-200 bg-gray-50">
+                {isUploading ? (
+                  <CircleNotch className="h-6 w-6 animate-spin text-gray-400" />
+                ) : formData.logoUrl ? (
+                  <img src={formData.logoUrl} alt="Logo" className="h-full w-full object-cover" />
+                ) : (
+                  <Camera className="h-6 w-6 text-gray-400" />
+                )}
+              </div>
+              <div>
+                <input
+                  type="file"
+                  accept="image/jpeg, image/png, image/webp"
+                  className="hidden"
+                  ref={fileInputRef}
+                  onChange={handleFileUpload}
+                />
+                <Button
+                  variant="outline"
+                  onClick={() => fileInputRef.current?.click()}
+                  disabled={isUploading}
+                  className="h-8 text-xs font-medium"
+                >
+                  Upload Logo
+                </Button>
+                <p className="mt-1 text-xs text-gray-500">Max 5MB, JPG/PNG</p>
+              </div>
+            </div>
+          </div>
+
           <div className="space-y-2">
             <Label
               htmlFor="organizationName"
@@ -132,9 +201,9 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
           </div>
         </div>
       </div>
-      {/* <Separator /> */}
+      <Separator />
       {/* Address Section */}
-      {/* <div className="flex justify-between p-6">
+      <div className="flex justify-between p-6">
         <div className="w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
             Address
@@ -230,7 +299,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
             </div>
           </div>
         </div>
-      </div> */}
+      </div>
     </div>
   );
 };

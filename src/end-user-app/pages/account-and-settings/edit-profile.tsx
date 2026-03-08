@@ -1,32 +1,97 @@
 import { Input } from "@/components/ui/input";
-// import { Switch } from "@/components/ui/switch";
-// import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
-import { PencilSimple, UserIcon } from "@phosphor-icons/react";
-// import {
-//   Select,
-//   SelectContent,
-//   SelectItem,
-//   SelectTrigger,
-//   SelectValue,
-// } from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { PencilSimple, UserIcon, CircleNotch } from "@phosphor-icons/react";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
 import { useNavigate } from "react-router-dom";
-import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
-// import { useState } from "react";
-// import { cn } from "@/lib/utils";
+import {
+  useGetEndUserProfile,
+  useUpdateEndUserProfile,
+} from "@/services/generics/user-generics/user-hooks";
+import { useFileUpload } from "@/services/file-upload-hook";
+import { useState, useEffect, useRef } from "react";
+import { toast } from "sonner";
 
 const EditProfile = () => {
-  // const [isChecked, setIsChecked] = useState<boolean>(true);
   const navigate = useNavigate();
-  // useUserAppBreadcrumb({
-  //   items: [
-  //     { label: "Account Settings", href: "/user/account-settings" },
-  //     { label: "Edit Profile", href: "/user/account-settings/edit", isCurrentPage: true },
-  //   ],
-  // });
 
   const { data } = useGetEndUserProfile();
   const user = data?.data;
+
+  const { mutateAsync: uploadFile } = useFileUpload();
+  const { mutateAsync: updateProfile, isPending: isUpdating } = useUpdateEndUserProfile();
+
+  const [isUploading, setIsUploading] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const [formData, setFormData] = useState({
+    firstName: "",
+    lastName: "",
+    middleName: "",
+    profileImageUrl: "",
+    address: "",
+  });
+
+  useEffect(() => {
+    if (user) {
+      setFormData((prev) => ({
+        ...prev,
+        firstName: user.firstName || prev.firstName,
+        lastName: user.lastName || prev.lastName,
+        middleName: user.middleName || prev.middleName,
+        profileImageUrl: user.profileImageUrl || prev.profileImageUrl,
+        address: user.address?.line1 || prev.address,
+      }));
+    }
+  }, [user]);
+
+  const handleChange = (field: string, value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (file.size > 5 * 1024 * 1024) {
+      toast.error("File size must be less than 5MB");
+      e.target.value = "";
+      return;
+    }
+
+    setIsUploading(true);
+    try {
+      const payload = new FormData();
+      payload.append("file", file);
+
+      const res = await uploadFile(payload);
+      const uploadedUrl = res?.url || res?.data?.url;
+      if (uploadedUrl) {
+        handleChange("profileImageUrl", uploadedUrl);
+        await updateProfile({
+          firstName: formData.firstName,
+          lastName: formData.lastName,
+          middleName: formData.middleName,
+          profileImageUrl: uploadedUrl,
+          address: formData.address ? { line1: formData.address } : null,
+        });
+      }
+    } catch (error) {
+      console.error("Upload error:", error);
+    } finally {
+      setIsUploading(false);
+      e.target.value = "";
+    }
+  };
+
+  const handleSaveChanges = () => {
+    updateProfile({
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      middleName: formData.middleName,
+      profileImageUrl: formData.profileImageUrl,
+      address: formData.address ? { line1: formData.address } : null,
+    });
+  };
 
   return (
     <>
@@ -39,14 +104,30 @@ const EditProfile = () => {
           </h3>
           <div className="relative mx-auto h-42 w-42">
             <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-pink-100">
-              {/* <img
-                src="https://placehold.co/128x128/png"
-                alt="Profile"
-                className="h-full w-full object-cover"
-              /> */}
-              <UserIcon size={64} color="#FFFFFF" />
+              {isUploading ? (
+                <CircleNotch className="h-10 w-10 animate-spin text-gray-400" />
+              ) : formData.profileImageUrl ? (
+                <img
+                  src={formData.profileImageUrl}
+                  alt="Profile"
+                  className="h-full w-full object-cover"
+                />
+              ) : (
+                <UserIcon size={64} color="#FFFFFF" />
+              )}
             </div>
-            <button className="absolute right-0 bottom-0 flex h-10 w-10 items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-50">
+            <input
+              type="file"
+              accept="image/jpeg, image/png, image/webp"
+              className="hidden"
+              ref={fileInputRef}
+              onChange={handleFileUpload}
+            />
+            <button
+              onClick={() => fileInputRef.current?.click()}
+              disabled={isUploading}
+              className="absolute right-0 bottom-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-full border border-gray-200 bg-white text-gray-600 shadow-sm hover:bg-gray-50"
+            >
               <PencilSimple size={20} />
             </button>
           </div>
@@ -87,9 +168,24 @@ const EditProfile = () => {
 
         {/* Detailed Information */}
         <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white px-5 py-4">
-          <h3 className="text-xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
-            Detailed Information
-          </h3>
+          <div className="flex items-center justify-between">
+            <h3 className="text-xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+              Detailed Information
+            </h3>
+            <Button
+              onClick={handleSaveChanges}
+              disabled={isUpdating}
+              className="bg-[#079455] hover:bg-[#0E8A4A]"
+            >
+              {isUpdating ? (
+                <>
+                  <CircleNotch className="mr-2 h-4 w-4 animate-spin" /> Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </Button>
+          </div>
 
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
             <div className="space-y-2">
@@ -97,7 +193,8 @@ const EditProfile = () => {
                 First Name<span className="text-red-500">*</span>
               </label>
               <Input
-                value={user?.firstName}
+                value={formData.firstName}
+                onChange={(e) => handleChange("firstName", e.target.value)}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
               />
@@ -107,23 +204,12 @@ const EditProfile = () => {
                 Last Name<span className="text-red-500">*</span>
               </label>
               <Input
-                value={user?.lastName}
+                value={formData.lastName}
+                onChange={(e) => handleChange("lastName", e.target.value)}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
               />
             </div>
-            {/* <div className="space-y-2">
-              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Birth Date<span className="text-red-500">*</span>
-              </label>
-              <div className="relative">
-                <span className="absolute top-1/2 left-3 -translate-y-1/2">🇺🇸 +1</span>
-                <Input
-                  placeholder="Enter your contact number"
-                  className="h-12 rounded-[10px] border-[#DFE1E7] bg-white pl-16"
-                />
-              </div>
-            </div> */}
 
             <div className="space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
@@ -131,33 +217,22 @@ const EditProfile = () => {
               </label>
               <Input
                 disabled
-                value={user?.email}
-                placeholder="Enter your name"
+                value={user?.email || ""}
+                placeholder="Enter your email"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
               />
             </div>
-            {/* 
-            <div className="w-full space-y-2">
-              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Birth Date<span className="text-red-500">*</span>
-              </label>
-              <Select>
-                <SelectTrigger className="h-12! w-full rounded-[10px] border-[#DFE1E7] bg-white text-gray-500">
-                  <SelectValue placeholder="Add Gender" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="female">Female</SelectItem>
-                  <SelectItem value="male">Male</SelectItem>
-                  <SelectItem value="other">Other</SelectItem>
-                </SelectContent>
-              </Select>
-            </div> */}
 
             <div className="space-y-2">
               <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
                 Address (For tax receipts etc)
               </label>
-              <Input className="h-12 rounded-[10px] border-[#DFE1E7] bg-white" />
+              <Input
+                value={formData.address}
+                onChange={(e) => handleChange("address", e.target.value)}
+                placeholder="Enter your address"
+                className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
+              />
             </div>
           </div>
         </div>

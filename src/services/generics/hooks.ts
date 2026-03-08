@@ -132,6 +132,22 @@ export const useGetOrganisationProfile = () => {
   });
 };
 
+export const useUpdateOrganisationProfile = () => {
+  const queryClient = useQueryClient();
+  const URL = "/org/profile";
+  return useMutation({
+    mutationFn: (payload: any) => putFunction(payload, URL),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_ORGANISATION_PROFILE_API],
+      });
+      toast.success("profile updated successfully");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error updating profile, please try again.!"),
+  });
+};
+
 export const useGetAllCommunities = (params?: { sort?: string; search?: string }) => {
   const URL = `/org/communities?sort=${params?.sort}&search=${params?.search}`;
   return useQuery({
