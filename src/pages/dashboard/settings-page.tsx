@@ -133,10 +133,10 @@ const SettingsPage = () => {
     }
   };
 
-  const handleCancel = () => {
-    // Reset form or navigate away
-    console.log("Changes cancelled");
-  };
+  // const handleCancel = () => {
+  //   // Reset form or navigate away
+  //   console.log("Changes cancelled");
+  // };
 
   const renderTabContent = () => {
     switch (activeTab) {
@@ -187,9 +187,9 @@ const SettingsPage = () => {
       <div className="mb-6 flex w-full items-center justify-between">
         <h1 className="text-2xl font-semibold text-[#0A0A0C]">Settings</h1>
         <div className="flex gap-3">
-          <Button variant="outline" onClick={handleCancel}>
+          {/* <Button variant="outline" onClick={handleCancel}>
             Cancel
-          </Button>
+          </Button> */}
           <Button
             onClick={handleSaveChanges}
             disabled={isUpdatingProfile}

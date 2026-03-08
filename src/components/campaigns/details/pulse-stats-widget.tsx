@@ -5,8 +5,8 @@ const PulseStatsWidget = () => {
   const stats = [
     {
       title: "Awareness",
-      value: "3,542",
-      badge: "+16.0",
+      value: "0",
+      badge: "0",
       badgeRole: "positive", // green
       hasChartIcon: true,
       chartIcon: Chart01Icon,
@@ -16,8 +16,8 @@ const PulseStatsWidget = () => {
     },
     {
       title: "Participation",
-      value: "429",
-      badge: "+10.0",
+      value: "0",
+      badge: "0",
       badgeRole: "positive",
       hasChartIcon: true,
       chartIcon: Chart01Icon,

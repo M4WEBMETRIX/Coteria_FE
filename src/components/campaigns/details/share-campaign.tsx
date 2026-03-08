@@ -3,7 +3,11 @@ import { useState, useRef, useEffect } from "react";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { Share01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
-import { CopyIcon, EnvelopeSimpleIcon, WhatsappLogoIcon } from "@phosphor-icons/react";
+import {
+  CopyIcon,
+  // EnvelopeSimpleIcon,
+  WhatsappLogoIcon,
+} from "@phosphor-icons/react";
 import { getBaseUrl } from "@/lib/utils";
 
 const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
@@ -25,13 +29,13 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
     setIsOpen(false);
   };
 
-  const shareOnEmail = () => {
-    const url = `mailto:?subject=${encodeURIComponent("Share Campaign")}&body=${encodeURIComponent(
-      shareUrl
-    )}`;
-    window.open(url, "_blank");
-    setIsOpen(false);
-  };
+  // const shareOnEmail = () => {
+  //   const url = `mailto:?subject=${encodeURIComponent("Share Campaign")}&body=${encodeURIComponent(
+  //     shareUrl
+  //   )}`;
+  //   window.open(url, "_blank");
+  //   setIsOpen(false);
+  // };
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -54,7 +58,7 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
         className="h-8 gap-2 border-[#E0E1E6] text-xs text-[#5E606A]"
       >
         <HugeiconsIcon icon={Share01Icon} size={14} />
-        Share | 517
+        Share
       </Button>
 
       {/* Share Menu Dropdown */}
@@ -79,11 +83,11 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
                   color="text-green-600"
                   onClick={() => shareOnWhatsApp()}
                 />
-                <MenuOption
+                {/* <MenuOption
                   icon={<EnvelopeSimpleIcon size={18} />}
                   text="Email"
                   onClick={() => shareOnEmail()}
-                />
+                /> */}
               </ul>
             </div>
           </div>

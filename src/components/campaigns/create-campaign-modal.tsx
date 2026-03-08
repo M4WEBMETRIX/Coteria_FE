@@ -282,6 +282,7 @@ const CreateCampaignModal = ({
                   <Textarea
                     id="description"
                     placeholder="Please enter description..."
+                    maxLength={400}
                     className="min-h-[120px] resize-none pb-8"
                     value={formData.description}
                     onChange={(e) =>
@@ -292,7 +293,7 @@ const CreateCampaignModal = ({
                     }
                   />
                   <div className="absolute right-2 bottom-2 text-xs text-gray-400">
-                    {formData?.description?.length}/200
+                    {formData?.description?.length}/400
                   </div>
                 </div>
               </div>
@@ -372,13 +373,16 @@ const CreateCampaignModal = ({
                         </div>
                       </div>
                     )}
-                    <button
-                      disabled={isDeletingUpload || isUploading}
-                      onClick={handleDeleteThumbnail}
-                      className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
-                    >
-                      <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
-                    </button>
+                    {!isUploading && (
+                      <button
+                        disabled={isDeletingUpload || isUploading}
+                        onClick={handleDeleteThumbnail}
+                        className="absolute top-2 right-2 flex h-6 w-6 cursor-pointer items-center justify-center rounded-full bg-white/80 transition-colors hover:bg-white"
+                      >
+                        <HugeiconsIcon icon={Cancel01Icon} size={14} className="text-gray-700" />
+                      </button>
+                    )}
+
                     <div className="absolute right-3 bottom-2 rounded bg-black/40 px-2 py-0.5 text-xs font-medium text-white">
                       {(formData.thumbnail.size / 1024 / 1024).toFixed(1)} MB
                     </div>
@@ -523,7 +527,7 @@ const CreateCampaignModal = ({
                       htmlFor="ongoing"
                       className="cursor-pointer text-sm font-normal text-gray-600"
                     >
-                      Toggle: Ongoing campaign
+                      Ongoing campaign
                     </Label>
                   </div>
                 </div>
@@ -558,7 +562,7 @@ const CreateCampaignModal = ({
 
               <div className="w-full space-y-2">
                 <Label htmlFor="community" className="text-sm font-medium text-[#344054]">
-                  Community <span className="text-red-500">*</span>
+                  Community
                 </Label>
 
                 {/* <>
@@ -593,7 +597,7 @@ const CreateCampaignModal = ({
                     </Combobox>
                   </> */}
                 <Select
-                  disabled={isCommunityPending}
+                  disabled={isCommunityPending || communityItems.length === 0}
                   value={formData.communityId}
                   onValueChange={(value) => {
                     console.log("value", value);
@@ -604,7 +608,15 @@ const CreateCampaignModal = ({
                   }}
                 >
                   <SelectTrigger className="w-full">
-                    <SelectValue placeholder="Select community" />
+                    <SelectValue
+                      placeholder={
+                        isCommunityPending
+                          ? "Loading..."
+                          : communityItems.length === 0
+                            ? "No communities found"
+                            : "Select community"
+                      }
+                    />
                   </SelectTrigger>
                   <SelectContent className="w-full">
                     {communityItems?.map((item: any, index: number) => (
@@ -626,7 +638,13 @@ const CreateCampaignModal = ({
                 Cancel
               </Button>
               <Button
-                disabled={isUploading || isDeletingUpload}
+                disabled={
+                  isUploading ||
+                  isDeletingUpload ||
+                  !formData.title ||
+                  !formData.description ||
+                  !formData.goal
+                }
                 onClick={handleNext}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
               >
@@ -639,7 +657,12 @@ const CreateCampaignModal = ({
                 Back
               </Button>
               <Button
-                disabled={isCreatingCampaign}
+                disabled={
+                  isCreatingCampaign ||
+                  !formData.category ||
+                  // !formData.communityId ||
+                  !formData.visibility
+                }
                 onClick={handleSubmit}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
               >

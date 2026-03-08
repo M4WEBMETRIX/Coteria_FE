@@ -23,7 +23,7 @@ export const useFileUpload = () => {
       queryClient.invalidateQueries({
         queryKey: [USE_FILE_UPLOAD_API],
       });
-      toast.success("File uploaded successfully");
+      // toast.success("File uploaded successfully");
       setUploadProgress(0);
     },
     onError: (err: any) => {
@@ -45,7 +45,7 @@ export const useDeleteUpload = (fileUrl: string) => {
       queryClient.invalidateQueries({
         queryKey: [USE_FILE_UPLOAD_API],
       });
-      toast.success("File deleted successfully");
+      // toast.success("File deleted successfully");
     },
     onError: (err: any) => toast.error(err?.message || "Error deleting file, please try again.!"),
   });

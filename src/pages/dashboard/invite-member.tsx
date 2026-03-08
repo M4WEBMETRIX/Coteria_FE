@@ -62,7 +62,10 @@ const InviteMembersModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton={false} className="gap-0 p-0 md:max-w-[783px]">
+      <DialogContent
+        showCloseButton={false}
+        className="gap-0 p-0 md:max-w-[783px] md:min-w-[783px]"
+      >
         {/* Header */}
         <DialogHeader>
           {/* <DialogTitle className="flex items-center justify-center">Invite Members</DialogTitle> */}
@@ -101,7 +104,7 @@ const InviteMembersModal = ({
                 <div className="h-12 w-[156px] rounded bg-gray-200" />
               </div>
             ) : ( */}
-            <div className="relative flex gap-2">
+            <div className="relative flex w-full gap-2">
               {isPending ? (
                 <div className="pointer-events-none h-12 flex-1 animate-pulse rounded bg-gray-200 opacity-70" />
               ) : (

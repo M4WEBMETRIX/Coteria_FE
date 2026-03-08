@@ -1,5 +1,9 @@
 import { HugeiconsIcon } from "@hugeicons/react";
-import { ArrowRight01Icon, Cancel01Icon, Checkmark } from "@hugeicons/core-free-icons";
+import {
+  // ArrowRight01Icon,
+  // Cancel01Icon,
+  Checkmark,
+} from "@hugeicons/core-free-icons";
 
 import PulseStatsWidget from "@/components/campaigns/details/pulse-stats-widget";
 import TodaysObjectivesWidget from "@/components/campaigns/details/todays-objectives-widget";
@@ -26,9 +30,10 @@ const CommandCenter = ({ data }: { data: any }) => {
             <h3 className="text-sm leading-[100%] font-semibold text-[#696A70]">
               {data?.categoryLabel}
             </h3>
-            <div className="flex cursor-pointer items-center gap-1 text-[10px] leading-[100%] text-[#C1C2C9]">
-              Last 14 days <HugeiconsIcon icon={ArrowRight01Icon} size={14} />
-            </div>
+            {/* <div className="flex cursor-pointer items-center gap-1 text-[10px] leading-[100%] text-[#C1C2C9]">
+              Last 14 days
+               <HugeiconsIcon icon={ArrowRight01Icon} size={14} />
+            </div> */}
           </div>
 
           {/* Campaign Title & Share */}
@@ -54,7 +59,7 @@ const CommandCenter = ({ data }: { data: any }) => {
           <PulseStatsWidget />
 
           {/* Alert Banner */}
-          <div className="mt-8 flex items-center justify-between rounded-[12px] border border-[#FFBE4C] bg-[#FFF6E0] px-4 py-[5.5px] text-xs leading-[150%] font-normal tracking-[2%] text-[#0D0D12]">
+          {/* <div className="mt-8 flex items-center justify-between rounded-[12px] border border-[#FFBE4C] bg-[#FFF6E0] px-4 py-[5.5px] text-xs leading-[150%] font-normal tracking-[2%] text-[#0D0D12]">
             <div className="flex items-center gap-2">
               <div className="flex h-4 w-4 items-center justify-center rounded-full bg-[#FDB022] text-[10px] text-white">
                 !
@@ -65,7 +70,7 @@ const CommandCenter = ({ data }: { data: any }) => {
               </span>
             </div>
             <HugeiconsIcon icon={Cancel01Icon} size={16} className="cursor-pointer" />
-          </div>
+          </div> */}
 
           {/* Objectives & Driver Analysis Row */}
           <div className="mt-10 grid grid-cols-12 gap-6">

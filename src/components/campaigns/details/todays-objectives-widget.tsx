@@ -1,6 +1,6 @@
-import { Button } from "@/components/ui/button";
-import { Share01Icon, UserAdd01Icon, Mail01Icon, ArrowDown } from "@hugeicons/core-free-icons";
-import { HugeiconsIcon } from "@hugeicons/react";
+// import { Button } from "@/components/ui/button";
+// import { Share01Icon, UserAdd01Icon, Mail01Icon, ArrowDown } from "@hugeicons/core-free-icons";
+// import { HugeiconsIcon } from "@hugeicons/react";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from "recharts";
 
 const data = [
@@ -22,7 +22,7 @@ const TodaysObjectivesWidget = () => {
           Today's Objectives
         </h3>
       </div>
-
+      {/* 
       <div className="flex max-h-[38px] gap-2">
         <Button
           variant="outline"
@@ -52,7 +52,7 @@ const TodaysObjectivesWidget = () => {
             </span>
           </Button>
         </div>
-      </div>
+      </div> */}
 
       <div className="h-[213px] flex-1 rounded-xl border border-[#E0E1E6] pt-4">
         {/* <span className="absolute top-2 left-2 text-xs text-[#8B8D98]">[od 8.2pr]</span> */}

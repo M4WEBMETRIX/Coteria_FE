@@ -22,8 +22,8 @@ import { useParams } from "react-router-dom";
 const CAMPAIGN_SETTINGS_TABS = [
   { id: "basic-setting", label: "Basic setting" },
   { id: "visibility-access", label: "Visibility & Access" },
-  { id: "engagement-rules", label: "Engagement Rules" },
-  { id: "notifications", label: "Notifications & updates" },
+  // { id: "engagement-rules", label: "Engagement Rules" },
+  // { id: "notifications", label: "Notifications & updates" },
   { id: "danger-zone", label: "Danger Zone" },
 ];
 
@@ -69,6 +69,7 @@ const BasicSettings = ({
           Short description <span className="text-[#DF1C41]">*</span>
         </Label>
         <Input
+          maxLength={400}
           disabled={
             data?.status?.toLowerCase() === "active" || data?.status?.toLowerCase() === "completed"
           }
