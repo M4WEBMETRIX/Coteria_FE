@@ -23,12 +23,12 @@ const SETTINGS_TABS = [
   { id: "my-account", label: "My Account" },
   { id: "billing-integration", label: "Billing & Integration" },
   // { id: "access-roles", label: "Access & Roles" },
-  { id: "privacy-data", label: "Privacy & Data" },
+  // { id: "privacy-data", label: "Privacy & Data" },
   // { id: "link-account", label: "Link Account" },
   // { id: "time-language", label: "Time & Language" },
   // { id: "notifications", label: "Notifications" },
-  { id: "password", label: "Password" },
-  { id: "danger-zone", label: "Danger Zone" },
+  // { id: "password", label: "Password" },
+  // { id: "danger-zone", label: "Danger Zone" },
 ];
 
 const SettingsPage = () => {

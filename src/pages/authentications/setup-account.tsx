@@ -232,7 +232,7 @@ const StepTwo: React.FC<IProps> = ({ data, setData, handleLogout, logoutPending 
             className="cursor-pointer rounded-full bg-[#12AA5B] px-11 py-6 text-base font-medium hover:bg-[#12AA5B]/90"
             onClick={handleSubmit}
           >
-            {isPending ? "Saving..." : "Save & Connect Stripe"}
+            {isPending ? "Saving..." : "Save & Continue"}
           </Button>
         </div>
         <button

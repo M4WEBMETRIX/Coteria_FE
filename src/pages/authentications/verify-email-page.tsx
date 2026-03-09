@@ -54,9 +54,9 @@ const VerifyEmailPage = () => {
     <AuthLayout>
       <div>
         <p className="mt-3.5 mb-7.5 text-center text-base leading-5.5 tracking-[0%] text-[#414143]">
-          After clicking "Verify email", you'll be redirected to set up your organisation account
-          once verification is successful. This usually takes 2–3 minutes. If you experience any
-          issues, click "Resend verification email".
+          After clicking “Verify Email,” you will be redirected to set up your organization account
+          once the verification is successful. This process usually takes about 2–3 minutes. If you
+          encounter any issues, please click “Resend Verification Email.”
         </p>
 
         <div className="mb-6 space-y-4">

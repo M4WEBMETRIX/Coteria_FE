@@ -57,15 +57,17 @@ const UserAuthLayout = ({
 
             {isReferrer ? (
               <div className="mt-5 flex h-25 items-center gap-3 rounded-[10px] border border-[#ECEFF3] px-5 py-3.5 shadow-[0_4px_6px_-2px_rgba(16,24,40,0.03),0_12px_16px_-4px_rgba(16,24,40,0.08)]">
-                <div className="flex h-18 w-18 items-center justify-center rounded-full bg-gray-200">
-                  <User size={48} />
+                <div>
+                  <div className="flex h-18 w-18 items-center justify-center rounded-full bg-gray-200">
+                    <User size={48} />
+                  </div>
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <p className="tracking-[0%]] text-2xl leading-[160%] font-medium tracking-[0.1px] text-[leading-[160%]">
                     {data?.data?.organization?.name}
                   </p>
-                  <p className="text-sm leading-[160%] tracking-[0.1px] text-[#000000]">
-                    {data?.data?.organization?.email || "Email not available"}
+                  <p className="line-clamp-1 text-sm leading-[160%] tracking-[0.1px] text-[#000000]">
+                    {data?.data?.community?.name || "Community name is private"}
                   </p>
                 </div>
               </div>
