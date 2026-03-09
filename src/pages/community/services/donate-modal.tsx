@@ -37,16 +37,20 @@ export function DonationModal({
   currency,
   campaignName = "",
   endUserId,
+  componentCampaignId,
 }: {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   currency: string;
   campaignName?: string;
   endUserId?: string;
+  componentCampaignId?: string;
 }) {
   const [userId] = useQueryState("userId");
   const navigate = useNavigate();
   const { campaignId } = useParams();
+
+  const passedID = campaignId || componentCampaignId;
 
   const {
     register,
@@ -79,20 +83,20 @@ export function DonationModal({
     isPending: createDonationPending,
     isSuccess,
     data,
-  } = useCreateDonation(campaignId);
+  } = useCreateDonation(passedID);
 
   const successUrl =
     userId || endUserId
       ? `${getBaseUrl()}/user/dashboard?tab=community`
-      : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
+      : `${getBaseUrl()}/community/public/campaign/${passedID}`;
   const cancelUrl =
     userId || endUserId
       ? `${getBaseUrl()}/user/dashboard?tab=community`
-      : `${getBaseUrl()}/community/public/campaign/${campaignId}`;
+      : `${getBaseUrl()}/community/public/campaign/${passedID}`;
 
   const onSubmit = (values: FormValues) => {
     const payload = {
-      slug: campaignId,
+      slug: passedID,
       amountCents: values.amount * 100,
       currency: currency || "CAD",
       ...(userId || endUserId

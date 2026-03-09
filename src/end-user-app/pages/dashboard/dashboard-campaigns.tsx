@@ -195,6 +195,7 @@ const DashboardCampaigns = () => {
                   <Button
                     onClick={() => {
                       setSelectedCampaign(campaign);
+                      console.log(campaign);
                       setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                     }}
                     className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
@@ -231,6 +232,7 @@ const DashboardCampaigns = () => {
 
       <DonationModal
         currency={selectedCampaign?.goalCurrency}
+        componentCampaignId={selectedCampaign?.id}
         open={isOpen}
         onOpenChange={setIsOpen}
         campaignName={selectedCampaign?.name}

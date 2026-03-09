@@ -376,6 +376,7 @@ const CommunityFeed = () => {
       </div>
       <DonationModal
         currency={selectedCampaign?.goalCurrency}
+        componentCampaignId={selectedCampaign?.id}
         open={isOpen}
         onOpenChange={setIsOpen}
         campaignName={selectedCampaign?.name}

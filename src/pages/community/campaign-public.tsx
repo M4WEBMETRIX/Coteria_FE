@@ -82,6 +82,7 @@ const CampaignPublic = () => {
     <>
       <DonationModal
         currency={publicCampaignData?.data?.goalCurrency}
+        componentCampaignId={publicCampaignData?.data?.campaignId}
         open={isOpen}
         onOpenChange={setIsOpen}
         campaignName={publicCampaignData?.data?.campaignName}

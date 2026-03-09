@@ -271,6 +271,7 @@ const CampaignDetails = () => {
 
       <DonationModal
         currency={campaign?.goalCurrency}
+        componentCampaignId={campaign?.id}
         open={isOpen}
         onOpenChange={setIsOpen}
         campaignName={campaign?.name}
