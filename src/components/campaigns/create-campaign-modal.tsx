@@ -562,7 +562,7 @@ const CreateCampaignModal = ({
 
               <div className="w-full space-y-2">
                 <Label htmlFor="community" className="text-sm font-medium text-[#344054]">
-                  Community
+                  Community <span className="text-red-500">*</span>
                 </Label>
 
                 {/* <>
@@ -660,7 +660,7 @@ const CreateCampaignModal = ({
                 disabled={
                   isCreatingCampaign ||
                   !formData.category ||
-                  // !formData.communityId ||
+                  !formData.communityId ||
                   !formData.visibility
                 }
                 onClick={handleSubmit}
