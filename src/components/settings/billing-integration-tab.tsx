@@ -3,7 +3,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
-import { Bell, Download, MoreHorizontal } from "lucide-react";
+import { Download, MoreHorizontal } from "lucide-react";
 import {
   useActivateBilling,
   useChangeBillingType,
@@ -137,9 +137,9 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
               {subscription?.data?.status?.toLowerCase() !== "active" && (
                 <ChangeBillingPopover billingCode={subscription?.data?.plan?.code} />
               )}
-              <Button variant="outline" size="icon" className="h-9 w-9">
+              {/* <Button variant="outline" size="icon" className="h-9 w-9">
                 <Bell className="h-4 w-4" />
-              </Button>
+              </Button> */}
             </div>
           </div>
 
@@ -394,7 +394,7 @@ const BillingCardEmptyState = () => (
         </div>
         <div className="space-y-0.5">
           <p className="text-sm font-medium text-[#0A0A0C]">No card record</p>
-          <p className="text-xs text-[#525866]">Billing method will be added after checkout</p>
+          <p className="text-xs text-[#525866]">Billing method will be added after subscription</p>
         </div>
       </div>
     </div>

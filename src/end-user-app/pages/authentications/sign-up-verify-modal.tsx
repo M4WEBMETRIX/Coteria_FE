@@ -25,6 +25,15 @@ export default function EmailVerificationFlow({
   const [code, setCode] = useState(["", "", "", "", "", ""]);
   const inputRefs = useRef<(HTMLInputElement | null)[]>([]);
 
+  const [countdown, setCountdown] = useState(0);
+
+  useEffect(() => {
+    if (countdown > 0) {
+      const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [countdown]);
+
   const { mutate: resendVerificationEmailMutate, isPending: resendVerificationEmailPending } =
     useUserResendVerificationEmail();
 
@@ -35,16 +44,37 @@ export default function EmailVerificationFlow({
   } = useUserVerifyEmail();
 
   const handleCodeChange = (index: number, value: string) => {
-    if (value.length > 1) return;
+    if (!/^\d?$/.test(value)) return;
 
     const newCode = [...code];
     newCode[index] = value;
     setCode(newCode);
 
-    // Auto-focus next input
     if (value && index < 5) {
       inputRefs.current[index + 1]?.focus();
     }
+  };
+
+  const handlePaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+
+    const pastedData = e.clipboardData.getData("text").trim();
+
+    if (!/^\d+$/.test(pastedData)) return; // allow only numbers
+
+    const pastedArray = pastedData.slice(0, 6).split("");
+
+    const newCode = [...code];
+
+    pastedArray.forEach((digit, index) => {
+      newCode[index] = digit;
+    });
+
+    setCode(newCode);
+
+    // focus last filled input
+    const nextIndex = Math.min(pastedArray.length, 5);
+    inputRefs.current[nextIndex]?.focus();
   };
 
   const handleKeyDown = (index: number, e: React.KeyboardEvent) => {
@@ -62,9 +92,15 @@ export default function EmailVerificationFlow({
   };
 
   const handleResend = () => {
-    setCode(["", "", "", "", "", ""]);
-    inputRefs.current[0]?.focus();
-    resendVerificationEmailMutate({});
+    if (countdown > 0 || resendVerificationEmailPending) return;
+    try {
+      setCode(["", "", "", "", "", ""]);
+      inputRefs.current[0]?.focus();
+      resendVerificationEmailMutate({});
+      setCountdown(60);
+    } catch (error) {
+      // Errors are handled by the mutation hook via toast
+    }
   };
 
   const handleClick = () => {
@@ -140,7 +176,7 @@ export default function EmailVerificationFlow({
             </p>
 
             {/* Code Input */}
-            <div className="mb-5 flex gap-5">
+            <div className="mb-5 flex gap-5" onPaste={handlePaste}>
               {code.map((digit, index) => (
                 <Input
                   key={index}
@@ -161,7 +197,11 @@ export default function EmailVerificationFlow({
             <p className="mb-5 text-base font-light text-[#6F6F6F]">
               Didn't receive the code?{" "}
               <button onClick={handleResend} className="font-medium text-[#000000] hover:underline">
-                {resendVerificationEmailPending ? "Resending..." : "Resend"}
+                {resendVerificationEmailPending
+                  ? "Resending..."
+                  : countdown > 0
+                    ? `Resend in ${countdown}s`
+                    : "Resend"}
               </button>
             </p>
 
@@ -196,9 +236,9 @@ export default function EmailVerificationFlow({
             </h2>
 
             {/* Description */}
-            <p className="mb-5 text-base leading-[160%] tracking-[0%] text-[#6F6F6F]">
+            {/* <p className="mb-5 text-base leading-[160%] tracking-[0%] text-[#6F6F6F]">
               Be ready to be part of our exploration where learning meets no limit
-            </p>
+            </p> */}
 
             {/* Log In Button */}
             <Button

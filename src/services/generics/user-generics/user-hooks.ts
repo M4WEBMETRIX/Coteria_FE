@@ -33,10 +33,16 @@ export const useUpdateEndUserProfile = () => {
   });
 };
 
-export const useGetUserCommunities = () => {
-  const URL = "/donor/communities/discover";
+export const useGetUserCommunities = (page?: number, limit?: number) => {
+  const queryParams = new URLSearchParams();
+  if (page) queryParams.append("page", page.toString());
+  if (limit) queryParams.append("limit", limit.toString());
+
+  const queryString = queryParams.toString();
+  const URL = `/donor/communities/discover${queryString ? `?${queryString}` : ""}`;
+
   return useQuery({
-    queryKey: [USE_GET_USER_COMMUNITIES_API],
+    queryKey: [USE_GET_USER_COMMUNITIES_API, page, limit],
     queryFn: () => getFunctionUserEnd(URL),
   });
 };
@@ -50,10 +56,16 @@ export const useGetUserSpecificCommunity = (communityId: string | undefined) => 
   });
 };
 
-export const useGetUserActiveCampaigns = () => {
-  const URL = "/campaigns";
+export const useGetUserActiveCampaigns = (page?: number, limit?: number) => {
+  const queryParams = new URLSearchParams();
+  if (page) queryParams.append("page", page.toString());
+  if (limit) queryParams.append("limit", limit.toString());
+
+  const queryString = queryParams.toString();
+  const URL = `/campaigns${queryString ? `?${queryString}` : ""}`;
+
   return useQuery({
-    queryKey: [USE_GET_USER_ACTIVE_CAMPAIGNS_API],
+    queryKey: [USE_GET_USER_ACTIVE_CAMPAIGNS_API, page, limit],
     queryFn: () => getFunctionUserEnd(URL),
   });
 };

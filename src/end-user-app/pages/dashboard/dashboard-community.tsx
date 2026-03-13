@@ -9,15 +9,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { useGetUserCommunities } from "@/services/generics/user-generics/user-hooks";
-import {
-  CaretRightIcon,
-  // Trophy,
-  // Sparkle,
-  // CheckCircle,
-  // BookmarkSimple,
-} from "@phosphor-icons/react";
+import { CaretRightIcon } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
+import { useState } from "react";
+import ManagePagination from "@/components/Manage-pagination";
 
 // const communities = [
 //   {
@@ -84,10 +80,14 @@ import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 
 const DashboardCommunity = () => {
   const navigate = useNavigate();
-  const { data, isPending } = useGetUserCommunities();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  const { data, isPending } = useGetUserCommunities(page, limit);
   // console.log(data);
 
   const communities = data?.data?.items;
+  const totalPages = data?.data?.totalPages || 1;
+  const totalItems = data?.data?.totalCount || data?.data?.totalItems || 0;
 
   return (
     <div className="w-full">
@@ -186,6 +186,20 @@ const DashboardCommunity = () => {
           )}
         </Table>
       </div>
+
+      {!isPending && communities?.length > 0 && (
+        <ManagePagination
+          totalItems={totalItems}
+          totalPages={totalPages}
+          currentPage={page}
+          setCurrentPage={setPage}
+          itemsPerPage={limit}
+          setItemsPerPage={(newLimit) => {
+            setLimit(newLimit);
+            setPage(1); // Reset to first page when changing limit
+          }}
+        />
+      )}
     </div>
   );
 };

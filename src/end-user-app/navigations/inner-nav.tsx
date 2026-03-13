@@ -1,6 +1,6 @@
-import { Input } from "@/components/ui/input";
-import { MagnifyingGlassIcon, UserIcon } from "@phosphor-icons/react";
-import { useRef, useState, type ReactElement, type ReactEventHandler } from "react";
+// import { Input } from "@/components/ui/input";
+import { UserIcon } from "@phosphor-icons/react";
+import { type ReactElement, type ReactEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 
 const InnerNav = ({
@@ -11,8 +11,8 @@ const InnerNav = ({
   onClick: ReactEventHandler;
 }) => {
   const navigate = useNavigate();
-  const [, setIsSearchOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const [, setIsSearchOpen] = useState(false);
+  // const inputRef = useRef<HTMLInputElement>(null);
   return (
     <div className="flex items-center justify-between py-10">
       <div onClick={onClick} className="flex cursor-pointer items-center gap-3">
@@ -35,7 +35,7 @@ const InnerNav = ({
 
       {/* Right Section: Search, Notifications, Profile */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
+        {/* <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
           <div className="flex items-center gap-3">
             <div>
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F8FAFB]">
@@ -51,7 +51,7 @@ const InnerNav = ({
               placeholder="Search campaign, schedule"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* NOT AVAILABLE FOR MVP  */}
         {/* <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">

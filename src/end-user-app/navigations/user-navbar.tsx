@@ -1,7 +1,7 @@
-import { useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
-import { MagnifyingGlassIcon, UserIcon } from "@phosphor-icons/react";
-import { Input } from "@/components/ui/input";
+import { UserIcon } from "@phosphor-icons/react";
+// import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 
 interface NavbarProps {
@@ -10,8 +10,8 @@ interface NavbarProps {
 
 const UserNavbar = ({ breadcrumbs }: NavbarProps) => {
   const navigate = useNavigate();
-  const [, setIsSearchOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const [, setIsSearchOpen] = useState(false);
+  // const inputRef = useRef<HTMLInputElement>(null);
 
   return (
     <nav className="font-inter sticky top-0 z-50 mt-10 flex h-[72px] w-full items-center justify-between bg-white">
@@ -20,7 +20,7 @@ const UserNavbar = ({ breadcrumbs }: NavbarProps) => {
 
       {/* Right Section: Search, Notifications, Profile */}
       <div className="flex items-center gap-3">
-        <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
+        {/* <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
           <div className="flex items-center gap-3">
             <div>
               <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F8FAFB]">
@@ -36,7 +36,7 @@ const UserNavbar = ({ breadcrumbs }: NavbarProps) => {
               placeholder="Search campaign, schedule"
             />
           </div>
-        </div>
+        </div> */}
 
         {/* NOT AVAILABLE FOR MVP  */}
         {/* <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">

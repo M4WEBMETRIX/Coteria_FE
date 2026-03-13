@@ -83,7 +83,7 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
             className="flex items-center justify-start gap-2 outline-none"
           >
             <Avatar className="h-12 w-12 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
-              <AvatarImage src={orgUser?.currentUser?.photo || ""} className="object-cover" />
+              <AvatarImage src={orgUser?.logoUrl || ""} className="object-cover" />
               <AvatarFallback>
                 {getNameAbbrev(orgUser?.currentUser?.firstName as any)}
               </AvatarFallback>

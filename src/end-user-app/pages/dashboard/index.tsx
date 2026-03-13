@@ -10,10 +10,10 @@ import { useMemo, useState } from "react";
 import {
   // CaretDownIcon,
   // CaretRightIcon,
-  MagnifyingGlassIcon,
+  // MagnifyingGlassIcon,
   UserIcon,
 } from "@phosphor-icons/react";
-import { Input } from "@/components/ui/input";
+// import { Input } from "@/components/ui/input";
 import DashboardImpact from "./dashboard-impact";
 // import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import { useNavigate } from "react-router-dom";
@@ -67,7 +67,7 @@ const DashboardIndex = () => {
             </div>
           )}
           <div className="flex items-center gap-3">
-            <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
+            {/* <div className="flex items-center justify-between rounded-[20px] border border-[#ECEFF3] px-3 py-1.5">
               <div className="flex items-center gap-3">
                 <div>
                   <div className="flex h-11 w-11 items-center justify-center rounded-full bg-[#F8FAFB]">
@@ -76,7 +76,7 @@ const DashboardIndex = () => {
                 </div>
                 <Input className="border-0 shadow-none" placeholder="Search campaign, schedule" />
               </div>
-            </div>
+            </div> */}
 
             {/* NOT AVAILABLE FOR MVP  */}
             {/* <div className="relative flex h-14 w-14 items-center justify-center gap-3 rounded-full border border-[#ECEFF3]">
@@ -219,9 +219,9 @@ const DashboardIndex = () => {
             <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
               Calendar
             </p>
-            <p className="text-xs leading-[155%] font-normal tracking-[0%] text-[#818898]">
+            {/* <p className="text-xs leading-[155%] font-normal tracking-[0%] text-[#818898]">
               See all
-            </p>
+            </p> */}
           </div>
           <Calendar
             mode="single"

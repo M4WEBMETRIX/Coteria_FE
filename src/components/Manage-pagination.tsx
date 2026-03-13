@@ -1,11 +1,11 @@
 import { Button } from "@/components/ui/button";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
+// import {
+//   Select,
+//   SelectContent,
+//   SelectItem,
+//   SelectTrigger,
+//   SelectValue,
+// } from "@/components/ui/select";
 import { ChevronLeft, ChevronRight, ChevronsLeft, ChevronsRight } from "lucide-react";
 import {
   Pagination,
@@ -22,13 +22,17 @@ interface PaginationComponentProps {
   setCurrentPage: (page: number) => void;
   itemsPerPage?: number;
   setItemsPerPage?: (items: number) => void;
+  totalItems?: number;
+  pageSizeOptions?: number[];
 }
 const ManagePagination = ({
   totalPages = 30,
   currentPage = 1,
   setCurrentPage,
   itemsPerPage = 10,
-  setItemsPerPage,
+  // setItemsPerPage,
+  totalItems = 0,
+  // pageSizeOptions = [10, 20, 50],
 }: PaginationComponentProps) => {
   const onPageChange = (page: number) => {
     setCurrentPage(page);
@@ -98,15 +102,22 @@ const ManagePagination = ({
     });
   };
   return (
-    <div className="flex items-center justify-between border-t border-[#DFE1E7] p-4">
+    <div className="flex flex-col gap-4 border-t border-[#DFE1E7] p-4 sm:flex-row sm:items-center sm:justify-between">
       <span className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-        Showing 1 to 10 of, 500 results
+        {totalItems > 0 ? (
+          <>
+            Showing {(currentPage - 1) * itemsPerPage + 1} to{" "}
+            {Math.min(currentPage * itemsPerPage, totalItems)} of {totalItems} results
+          </>
+        ) : (
+          "No results found"
+        )}
       </span>
-      <div className="flex items-center gap-4">
+      {/* <div className="flex items-center gap-4">
         <div className="flex items-center gap-2 rounded-[8px] border border-[#DFE1E7] text-sm">
           <div className="border-r border-[#DFE1E7] p-2">Per page</div>
           <Select
-            defaultValue={String(itemsPerPage)}
+            value={String(itemsPerPage)}
             onValueChange={(value) => setItemsPerPage && setItemsPerPage(Number(value))}
           >
             <SelectTrigger className="h-8 w-fit border-0">
@@ -114,13 +125,15 @@ const ManagePagination = ({
             </SelectTrigger>
 
             <SelectContent className="">
-              <SelectItem value="10">10</SelectItem>
-              <SelectItem value="20">20</SelectItem>
-              <SelectItem value="50">50</SelectItem>
+              {pageSizeOptions.map((size) => (
+                <SelectItem key={size} value={String(size)}>
+                  {size}
+                </SelectItem>
+              ))}
             </SelectContent>
           </Select>
         </div>
-      </div>{" "}
+      </div>{" "} */}
       <div className="flex items-center gap-1">
         {/* Simplified pagination for visual match */}
         <Pagination className="order-1 mx-0 flex w-auto justify-center sm:order-2">

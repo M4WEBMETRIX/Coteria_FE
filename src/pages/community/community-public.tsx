@@ -99,11 +99,16 @@ const CommunityPublic = () => {
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent">
           <div className="container mx-auto flex h-full max-w-7xl flex-col justify-center px-8">
             <div className="max-w-xl space-y-6">
-              <div className="flex h-16 w-86 items-center rounded-lg px-4">
-                <img src={publicCommunityData?.data?.logo} alt={publicCommunityData?.data?.name} />
-                {/* <h1 className="text-2xl font-bold text-[#1E1F24]">Atlantic Salmon Museum</h1> */}
-              </div>
-              <p className="max-w-md text-lg leading-relaxed text-[#24205C]">
+              {publicCommunityData?.data?.logoUrl && (
+                <div className="flex h-16 w-86 items-center rounded-lg px-4">
+                  <img
+                    src={publicCommunityData?.data?.logoUrl}
+                    alt={publicCommunityData?.data?.name}
+                  />
+                  {/* <h1 className="text-2xl font-bold text-[#1E1F24]">Atlantic Salmon Museum</h1> */}
+                </div>
+              )}
+              <p className="max-w-md text-lg leading-relaxed text-[#FFFFFF]">
                 {publicCommunityData?.data?.description}
               </p>
               <div className="flex gap-4">

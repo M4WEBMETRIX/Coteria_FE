@@ -12,6 +12,7 @@ import { getCurrencySymbol } from "@/lib/utils";
 import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { DonationModal } from "@/pages/community/services/donate-modal";
+import ManagePagination from "@/components/Manage-pagination";
 
 const DashboardCampaigns = () => {
   const navigate = useNavigate();
@@ -26,10 +27,19 @@ const DashboardCampaigns = () => {
 
   // console.log(endUser);
 
-  const { data: userActiveCampaigns, isPending: isLoading } = useGetUserActiveCampaigns();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+
+  const { data: userActiveCampaigns, isPending: isLoading } = useGetUserActiveCampaigns(
+    page,
+    limit
+  );
   // console.log(userActiveCampaigns);
 
   const campaignsData = userActiveCampaigns?.data?.items;
+  const totalPages = userActiveCampaigns?.data?.totalPages || 1;
+  const totalItems =
+    userActiveCampaigns?.data?.totalCount || userActiveCampaigns?.data?.totalItems || 0;
 
   return (
     <>
@@ -228,6 +238,20 @@ const DashboardCampaigns = () => {
             ))}
           </div>
         </div>
+      )}
+
+      {!isLoading && campaignsData?.length > 0 && (
+        <ManagePagination
+          totalItems={totalItems}
+          totalPages={totalPages}
+          currentPage={page}
+          setCurrentPage={setPage}
+          itemsPerPage={limit}
+          setItemsPerPage={(newLimit) => {
+            setLimit(newLimit);
+            setPage(1); // Reset to first page when changing limit
+          }}
+        />
       )}
 
       <DonationModal

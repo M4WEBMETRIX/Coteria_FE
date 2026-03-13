@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
-import { CaretDown, CaretRightIcon } from "@phosphor-icons/react";
+import { CaretRightIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import ReceiptModal from "@/components/receipts/receipt-modal";
 import { FaqTab } from "@/pages/dashboard/components/help-support/faq-tab";
@@ -59,12 +59,12 @@ const ReceiptAndTaxesIndex = () => {
             FAQ
           </button>
         </div>
-        <Button
+        {/* <Button
           variant="outline"
           className="h-10 gap-2 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] text-[#818898]"
         >
           Sort Latest <CaretDown size={14} />
-        </Button>
+        </Button> */}
       </div>
 
       {activeTab === "receipts" && (

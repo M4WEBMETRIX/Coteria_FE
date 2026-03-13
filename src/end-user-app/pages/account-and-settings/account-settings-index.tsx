@@ -10,11 +10,13 @@ import {
   CaretRightIcon,
   Leaf,
   ChartBar,
-  UserIcon,
+  // UserIcon,
 } from "@phosphor-icons/react";
 import { Link, useNavigate } from "react-router-dom";
 import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
 import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNameAbbrev } from "@/lib/utils";
 
 const AccountSettingsIndex = () => {
   const navigate = useNavigate();
@@ -34,15 +36,10 @@ const AccountSettingsIndex = () => {
         <div className="w-[300px] shrink-0 space-y-6">
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6 text-center">
             <div className="flex items-center gap-3">
-              <div className="flex h-20 w-20 items-center justify-center overflow-hidden rounded-full bg-gray-200">
-                {/* <img
-                  src="https://placehold.co/80x80/png"
-                  alt="Profile"
-                  className="h-full w-full object-cover"
-                /> */}
-
-                <UserIcon size={32} color="#FFFFFF" />
-              </div>
+              <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+                <AvatarImage src={user?.logoUrl || ""} className="object-cover" />
+                <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
+              </Avatar>
               <div className="flex flex-col items-start">
                 <h3 className="line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                   {user?.firstName} {user?.lastName}
@@ -177,7 +174,10 @@ const AccountSettingsIndex = () => {
                   Track community participation and shared effort
                 </li>
               </ul>
-              <Button className="h-12 w-78 rounded-full bg-[#12AA5B] px-6 text-base text-white hover:bg-[#0da055]">
+              <Button
+                onClick={() => navigate("/user/dashboard?tab=impact")}
+                className="h-12 w-78 rounded-full bg-[#12AA5B] px-6 text-base text-white hover:bg-[#0da055]"
+              >
                 Learn how impact works <CaretRightIcon className="ml-2" />
               </Button>
             </div>

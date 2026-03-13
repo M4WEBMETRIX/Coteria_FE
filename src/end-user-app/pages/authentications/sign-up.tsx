@@ -26,6 +26,44 @@ const UserSignUp = () => {
     password: "",
   });
 
+  const [errors, setErrors] = useState({
+    email: "",
+    firstName: "",
+    lastName: "",
+  });
+
+  const validateName = (name: string, field: string) => {
+    const nameRegex = /^[A-Za-zÀ-ÖØ-öø-ÿ' -]{1,50}$/;
+
+    if (!name.trim()) {
+      return `${field} is required`;
+    }
+
+    if (name.length > 50) {
+      return `${field} must be less than 50 characters`;
+    }
+
+    if (!nameRegex.test(name)) {
+      return `${field} can only contain letters, spaces, hyphens, or apostrophes`;
+    }
+
+    return "";
+  };
+
+  const validateEmail = (email: string) => {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if (!email) {
+      return "Email is required";
+    }
+
+    if (!emailRegex.test(email)) {
+      return "Please enter a valid email address";
+    }
+
+    return "";
+  };
+
   const password = formData.password;
 
   const passwordRequirements = [
@@ -42,7 +80,22 @@ const UserSignUp = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+
+    const firstNameError = validateName(formData.firstName, "First name");
+    const lastNameError = validateName(formData.lastName, "Last name");
+    const emailError = validateEmail(formData.email);
+
+    if (firstNameError || lastNameError || emailError) {
+      setErrors({
+        email: emailError,
+        firstName: firstNameError,
+        lastName: lastNameError,
+      });
+      return;
+    }
+
     if (!isPasswordValid) return;
+
     userMutate(formData);
   };
 
@@ -94,10 +147,23 @@ const UserSignUp = () => {
               id="firstName"
               type="text"
               value={formData.firstName}
-              onChange={(e) => setFormData({ ...formData, firstName: e.target.value })}
-              required
-              className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+              maxLength={50}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setFormData({ ...formData, firstName: value });
+
+                setErrors({
+                  ...errors,
+                  firstName: validateName(value, "First name"),
+                });
+              }}
+              className={`h-12.5 w-full rounded-[10px] border px-2 py-3 ${
+                errors.firstName ? "border-red-500" : "border-[#DFE1E7]"
+              }`}
             />
+
+            {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
           </div>
 
           {/* Last Name */}
@@ -112,10 +178,23 @@ const UserSignUp = () => {
               id="lastName"
               type="text"
               value={formData.lastName}
-              onChange={(e) => setFormData({ ...formData, lastName: e.target.value })}
-              required
-              className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+              maxLength={50}
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setFormData({ ...formData, lastName: value });
+
+                setErrors({
+                  ...errors,
+                  lastName: validateName(value, "Last name"),
+                });
+              }}
+              className={`h-12.5 w-full rounded-[10px] border px-2 py-3 ${
+                errors.lastName ? "border-red-500" : "border-[#DFE1E7]"
+              }`}
             />
+
+            {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
           </div>
 
           {/* Email */}
@@ -126,14 +205,27 @@ const UserSignUp = () => {
             >
               Email<span className="text-red-500">*</span>
             </Label>
+
             <Input
               id="email"
-              type="email"
+              type="text"
               value={formData.email}
-              onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-              required
-              className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+              onChange={(e) => {
+                const value = e.target.value;
+
+                setFormData({ ...formData, email: value });
+
+                setErrors({
+                  ...errors,
+                  email: validateEmail(value),
+                });
+              }}
+              className={`h-12.5 w-full rounded-[10px] border px-2 py-3 text-base ${
+                errors.email ? "border-red-500" : "border-[#DFE1E7]"
+              }`}
             />
+
+            {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
           </div>
 
           {/* Password */}

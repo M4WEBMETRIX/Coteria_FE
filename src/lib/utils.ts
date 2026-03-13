@@ -134,3 +134,9 @@ export function formatDateAndTime(dateString: string) {
     time: formattedTime,
   };
 }
+
+export function getNameAbbrev(name: string) {
+  if (!name) return;
+
+  return (name[0] + name[1]).toLocaleUpperCase();
+}

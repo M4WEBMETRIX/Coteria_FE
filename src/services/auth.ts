@@ -61,10 +61,10 @@ export const useUserResendVerificationEmail = () => {
   return useMutation({
     mutationFn: (payload: any) => postFunctionUserEnd(payload, "/auth/resend-verification"),
     onSuccess: () => {
-      toast.success("Please check your email for further instructions");
+      toast.success("Please check your email for OTP");
     },
     onError: (error) => {
-      //   console.log("err", error);
+      // console.log("err", error);
       showErrorToast(error);
     },
   });
@@ -77,11 +77,13 @@ export const useUserVerifyEmail = () => {
       toast.success("Please check your email for further instructions");
     },
     onError: (error) => {
-      if (error?.message?.toLocaleLowerCase() === "invalid or expired token") {
-        toast.error("Please click resend verification email to get a new link");
-      } else {
-        showErrorToast(error);
-      }
+      showErrorToast(error);
+
+      // if (error?.message?.toLocaleLowerCase() === "invalid or expired token") {
+      //   toast.error("Please click resend verification email to get a new link");
+      // } else {
+      //   showErrorToast(error);
+      // }
     },
   });
 };

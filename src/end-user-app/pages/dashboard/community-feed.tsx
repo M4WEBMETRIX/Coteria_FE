@@ -25,16 +25,18 @@ import {
   useGetEndUserProfile,
   useGetUserSpecificCommunity,
 } from "@/services/generics/user-generics/user-hooks";
-import { formatFullDate, getBaseUrl, getCurrencySymbol } from "@/lib/utils";
+import { cn, formatFullDate, getBaseUrl, getCurrencySymbol, getNameAbbrev } from "@/lib/utils";
 import { useGetPublicCommunityCampaigns } from "@/pages/community/services";
 import { timeAgo } from "@/pages/dashboard/community-table-list";
 import { DonationModal } from "@/pages/community/services/donate-modal";
 import { useState } from "react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const CommunityFeed = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState<any | null>(null);
+  const [showActiveCampaigns, setShowActiveCampaigns] = useState<boolean>(true);
   const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
 
   const { data: community, isPending: communityLoading } = useGetUserSpecificCommunity(id);
@@ -86,15 +88,12 @@ const CommunityFeed = () => {
             ) : (
               <div className="flex items-center gap-3">
                 {/* mb-14.5 */}
-                <div>
-                  <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-                    <img
-                      src="https://placehold.co/80x80/png"
-                      alt="Profile"
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                </div>
+
+                <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+                  <AvatarImage src={user?.logoUrl || ""} className="object-cover" />
+                  <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
+                </Avatar>
+
                 <div>
                   <h3 className="ml-4 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                     {user?.firstName} {user?.lastName}
@@ -288,88 +287,99 @@ const CommunityFeed = () => {
 
             {/* Active Campaigns Widget */}
             <div className="space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white px-4 py-5">
-              <div className="flex items-center justify-between border-b border-b-[#EFEFEF] pb-4">
+              <div
+                className={cn(
+                  "flex items-center justify-between",
+                  showActiveCampaigns && "border-b border-b-[#EFEFEF] pb-4"
+                )}
+              >
                 <h3 className="text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                   Active Campaigns
                 </h3>
-                <CaretDownIcon size={16} />
+                <CaretDownIcon
+                  className="cursor-pointer"
+                  onClick={() => setShowActiveCampaigns((prev) => !prev)}
+                  size={16}
+                />
               </div>
-              <div className="space-y-5">
-                {campaignsLoading ? (
-                  [...Array(3)].map((_, i) => (
-                    <div key={i} className="animate-pulse space-y-4">
-                      <div className="flex items-start gap-3">
-                        <div className="h-10 w-10 rounded-full bg-gray-200" />
+              {showActiveCampaigns && (
+                <div className="space-y-5">
+                  {campaignsLoading ? (
+                    [...Array(3)].map((_, i) => (
+                      <div key={i} className="animate-pulse space-y-4">
+                        <div className="flex items-start gap-3">
+                          <div className="h-10 w-10 rounded-full bg-gray-200" />
 
-                        <div className="flex-1 space-y-2">
-                          <div className="h-4 w-40 rounded bg-gray-200" />
-                          <div className="h-3 w-24 rounded bg-gray-200" />
+                          <div className="flex-1 space-y-2">
+                            <div className="h-4 w-40 rounded bg-gray-200" />
+                            <div className="h-3 w-24 rounded bg-gray-200" />
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="h-11 w-full rounded-full bg-gray-200" />
-                    </div>
-                  ))
-                ) : (
-                  <>
-                    {communityCampaigns?.data?.items?.length === 0 ? (
-                      <div className="mt-6 flex flex-col items-center justify-center rounded-[8px] bg-white p-4">
-                        <img
-                          src={EmptyCampaigns}
-                          alt="empty-campaigns"
-                          className="mb-3 h-[72px] w-[72px]"
-                        />
-                        <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
-                          No campaign updates yet.
-                        </p>
-
-                        <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
-                          When campaign updates are available for this community, they will show up
-                          here.
-                        </p>
+                        <div className="h-11 w-full rounded-full bg-gray-200" />
                       </div>
-                    ) : (
-                      <>
-                        {communityCampaigns?.data?.items?.map((campaign: any, index: number) => (
-                          <div key={index} className="space-y-4">
-                            <div className="flex items-start gap-3">
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
-                                <HandArrowUpIcon weight="duotone" size={20} />
-                              </div>
-                              <div className="flex-1">
-                                <div className="flex items-start justify-between">
-                                  <h4 className="line-clamp-1 text-[15px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                                    {campaign?.name}
-                                  </h4>
-                                  {/* <span className="text-[17px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                    ))
+                  ) : (
+                    <>
+                      {communityCampaigns?.data?.items?.length === 0 ? (
+                        <div className="mt-6 flex flex-col items-center justify-center rounded-[8px] bg-white p-4">
+                          <img
+                            src={EmptyCampaigns}
+                            alt="empty-campaigns"
+                            className="mb-3 h-[72px] w-[72px]"
+                          />
+                          <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                            No campaign updates yet.
+                          </p>
+
+                          <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                            When campaign updates are available for this community, they will show
+                            up here.
+                          </p>
+                        </div>
+                      ) : (
+                        <>
+                          {communityCampaigns?.data?.items?.map((campaign: any, index: number) => (
+                            <div key={index} className="space-y-4">
+                              <div className="flex items-start gap-3">
+                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                  <HandArrowUpIcon weight="duotone" size={20} />
+                                </div>
+                                <div className="flex-1">
+                                  <div className="flex items-start justify-between">
+                                    <h4 className="line-clamp-1 text-[15px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                                      {campaign?.name}
+                                    </h4>
+                                    {/* <span className="text-[17px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                             40%
                           </span> */}
-                                </div>
-                                <div className="mt-1 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
-                                  <span>{timeAgo(campaign?.createdAt)}</span>
-                                  <span className="text-[#12AA5B]">
-                                    {getCurrencySymbol(campaign?.goalCurrency || "")}
-                                    {(campaign?.goalAmountCents / 100)?.toLocaleString()}
-                                  </span>
+                                  </div>
+                                  <div className="mt-1 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
+                                    <span>{timeAgo(campaign?.createdAt)}</span>
+                                    <span className="text-[#12AA5B]">
+                                      {getCurrencySymbol(campaign?.goalCurrency || "")}
+                                      {(campaign?.goalAmountCents / 100)?.toLocaleString()}
+                                    </span>
+                                  </div>
                                 </div>
                               </div>
+                              <Button
+                                onClick={() => {
+                                  setSelectedCampaign(campaign);
+                                  setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                                }}
+                                className="h-11 w-full rounded-full border border-[#FFF2D5] bg-[#ECA50D] text-white hover:bg-[#c98d00]"
+                              >
+                                Donate <ArrowUpRight className="ml-2 h-4 w-4 -rotate-45" />
+                              </Button>
                             </div>
-                            <Button
-                              onClick={() => {
-                                setSelectedCampaign(campaign);
-                                setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
-                              }}
-                              className="h-11 w-full rounded-full border border-[#FFF2D5] bg-[#ECA50D] text-white hover:bg-[#c98d00]"
-                            >
-                              Donate <ArrowUpRight className="ml-2 h-4 w-4 -rotate-45" />
-                            </Button>
-                          </div>
-                        ))}
-                      </>
-                    )}
-                  </>
-                )}
-              </div>
+                          ))}
+                        </>
+                      )}
+                    </>
+                  )}
+                </div>
+              )}
             </div>
           </div>
         </div>
