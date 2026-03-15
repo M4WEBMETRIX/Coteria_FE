@@ -342,9 +342,19 @@ const CommunityFeed = () => {
                           {communityCampaigns?.data?.items?.map((campaign: any, index: number) => (
                             <div key={index} className="space-y-4">
                               <div className="flex items-start gap-3">
-                                <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
-                                  <HandArrowUpIcon weight="duotone" size={20} />
-                                </div>
+                                {campaign?.imageUrl ? (
+                                  <div>
+                                    <img
+                                      src={campaign?.imageUrl}
+                                      alt="campaign-image"
+                                      className="h-10 w-10 shrink-0 rounded-full"
+                                    />
+                                  </div>
+                                ) : (
+                                  <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-green-100 text-green-600">
+                                    <HandArrowUpIcon weight="duotone" size={20} />
+                                  </div>
+                                )}
                                 <div className="flex-1">
                                   <div className="flex items-start justify-between">
                                     <h4 className="line-clamp-1 text-[15px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
@@ -356,10 +366,12 @@ const CommunityFeed = () => {
                                   </div>
                                   <div className="mt-1 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
                                     <span>{timeAgo(campaign?.createdAt)}</span>
-                                    <span className="text-[#12AA5B]">
-                                      {getCurrencySymbol(campaign?.goalCurrency || "")}
-                                      {(campaign?.goalAmountCents / 100)?.toLocaleString()}
-                                    </span>
+                                    {campaign?.goalAmountCents && (
+                                      <span className="text-[#12AA5B]">
+                                        {getCurrencySymbol(campaign?.goalCurrency || "")}
+                                        {(campaign?.goalAmountCents / 100)?.toLocaleString()}
+                                      </span>
+                                    )}
                                   </div>
                                 </div>
                               </div>

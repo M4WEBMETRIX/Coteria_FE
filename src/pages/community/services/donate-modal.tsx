@@ -97,7 +97,8 @@ export function DonationModal({
   const onSubmit = (values: FormValues) => {
     const payload = {
       slug: passedID,
-      amountCents: values.amount * 100,
+      // amountCents: values.amount * 100,
+      amountCents: Number((values.amount * 100).toFixed(0)),
       currency: currency || "CAD",
       ...(userId || endUserId
         ? { donorUserId: userId || endUserId }
