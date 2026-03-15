@@ -7,17 +7,19 @@ import DashboardResources from "./dashboard-resources";
 import DashboardMember from "./dashboard-member";
 import { Calendar } from "@/components/ui/calendar";
 import { useMemo, useState } from "react";
-import {
-  // CaretDownIcon,
-  // CaretRightIcon,
-  // MagnifyingGlassIcon,
-  UserIcon,
-} from "@phosphor-icons/react";
+// import {
+// CaretDownIcon,
+// CaretRightIcon,
+// MagnifyingGlassIcon,
+// UserIcon,
+// } from "@phosphor-icons/react";
 // import { Input } from "@/components/ui/input";
 import DashboardImpact from "./dashboard-impact";
 // import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import { useNavigate } from "react-router-dom";
 import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNameAbbrev } from "@/lib/utils";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
 
@@ -130,9 +132,13 @@ const DashboardIndex = () => {
         <div className="w-full max-w-[324px] border-l border-l-[#ECEFF3] pt-[89.58px] pl-5">
           <div className="mb-5 flex items-start gap-5">
             <div className="">
-              <div className="flex h-[104.55px] w-[104.55px] items-center justify-center rounded-full bg-[#FDD8E1]">
+              <Avatar className="h-[104.55px] w-[104.55px] cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+                <AvatarImage src={endUser?.profileImageUrl || ""} className="object-cover" />
+                <AvatarFallback>{getNameAbbrev(endUser?.firstName as any)}</AvatarFallback>
+              </Avatar>
+              {/* <div className="flex h-[104.55px] w-[104.55px] items-center justify-center rounded-full bg-[#FDD8E1]">
                 <UserIcon size={64} color="#FFFFFF" />
-              </div>
+              </div> */}
             </div>
 
             <div className="w-full space-y-0.5">

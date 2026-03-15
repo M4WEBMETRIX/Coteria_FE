@@ -31,6 +31,9 @@ interface OrganizationProfileTabProps {
   setFormData: (data: any) => void;
 }
 
+const MAX_FILE_SIZE_MB = 1;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTabProps) => {
   const handleChange = (field: string, value: string) => {
     setFormData((prev: any) => ({ ...prev, [field]: value }));
@@ -46,8 +49,9 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size must be less than 5MB");
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      toast.error(`File size exceeds ${MAX_FILE_SIZE_MB}MB limit. Please choose a smaller file.`);
+
       e.target.value = "";
       return;
     }

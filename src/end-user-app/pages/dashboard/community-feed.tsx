@@ -90,7 +90,7 @@ const CommunityFeed = () => {
                 {/* mb-14.5 */}
 
                 <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
-                  <AvatarImage src={user?.logoUrl || ""} className="object-cover" />
+                  <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
                   <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
                 </Avatar>
 

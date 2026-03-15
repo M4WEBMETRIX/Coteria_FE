@@ -37,7 +37,7 @@ const AccountSettingsIndex = () => {
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6 text-center">
             <div className="flex items-center gap-3">
               <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
-                <AvatarImage src={user?.logoUrl || ""} className="object-cover" />
+                <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
                 <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
               </Avatar>
               <div className="flex flex-col items-start">

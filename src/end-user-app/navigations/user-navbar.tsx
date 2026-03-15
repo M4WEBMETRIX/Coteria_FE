@@ -1,8 +1,11 @@
 import { type ReactNode } from "react";
 
-import { UserIcon } from "@phosphor-icons/react";
+// import { UserIcon } from "@phosphor-icons/react";
 // import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNameAbbrev } from "@/lib/utils";
+import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
@@ -12,6 +15,9 @@ const UserNavbar = ({ breadcrumbs }: NavbarProps) => {
   const navigate = useNavigate();
   // const [, setIsSearchOpen] = useState(false);
   // const inputRef = useRef<HTMLInputElement>(null);
+
+  const { data } = useGetEndUserProfile();
+  const user = data?.data;
 
   return (
     <nav className="font-inter sticky top-0 z-50 mt-10 flex h-[72px] w-full items-center justify-between bg-white">
@@ -65,12 +71,19 @@ const UserNavbar = ({ breadcrumbs }: NavbarProps) => {
         </div> */}
 
         <div className="">
-          <div
+          <Avatar
+            onClick={() => navigate("/user/account-settings/edit")}
+            className="h-14 w-14 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200"
+          >
+            <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
+            <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
+          </Avatar>
+          {/* <div
             onClick={() => navigate("/user/account-settings/edit")}
             className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-[#45D884]"
           >
             <UserIcon size={32} color="#FFFFFF" />
-          </div>
+          </div> */}
         </div>
       </div>
     </nav>

@@ -161,8 +161,9 @@ export function DonationModal({
           <p className="text-sm text-gray-500">
             {" "}
             You are about to donate {formattedAmount} to{" "}
-            <span className="font-bold">{campaignName}</span>. Provide an email if you'd like a
-            receipt.{" "}
+            <span className="font-bold">{campaignName}</span>.
+            {/* Provide an email if you'd like a
+            receipt.{" "} */}
           </p>
 
           <DialogFooter>

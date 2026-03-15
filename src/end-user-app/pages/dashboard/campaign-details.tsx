@@ -1,21 +1,25 @@
 // import UserUpcomingEventCard from "@/components/end-users/events/user-upcoming-event-card";
 
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
-import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
-import { getCurrencySymbol } from "@/lib/utils";
+// import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { getCurrencySymbol, getNameAbbrev } from "@/lib/utils";
 import { DonationModal } from "@/pages/community/services/donate-modal";
-import { useGetUserSpecificCampaigns } from "@/services/generics/user-generics/user-hooks";
+import {
+  useGetEndUserProfile,
+  useGetUserSpecificCampaigns,
+} from "@/services/generics/user-generics/user-hooks";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import {
   CaretDownIcon,
   ChatCircleIcon,
   HeartIcon,
   ShareFatIcon,
-  Trophy,
+  // Trophy,
 } from "@phosphor-icons/react";
 import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
-import { useMemo, useState } from "react";
+import { useState } from "react";
 // import { campaigns } from "./dashboard-campaigns";
 import { useNavigate, useParams } from "react-router-dom";
 
@@ -27,10 +31,9 @@ const CampaignDetails = () => {
 
   const { data: userSpecificCampaigns } = useGetUserSpecificCampaigns(id);
 
-  // , isPending: isLoading
-  const endUser: any = useMemo(() => {
-    return getEndUserFromLocalStorage();
-  }, []);
+  const { data } = useGetEndUserProfile();
+
+  const endUser: any = data?.data;
 
   // console.log(userSpecificCampaigns);
 
@@ -61,21 +64,21 @@ const CampaignDetails = () => {
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 text-center">
             <div className="flex items-center gap-3">
               <div>
-                <div className="h-20 w-20 overflow-hidden rounded-full bg-gray-200">
-                  <img
-                    src="https://placehold.co/80x80/png"
-                    alt="Profile"
-                    className="h-full w-full object-cover"
-                  />
-                </div>
+                <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+                  <AvatarImage src={endUser?.profileImageUrl || ""} className="object-cover" />
+                  <AvatarFallback>{getNameAbbrev(endUser?.firstName as any)}</AvatarFallback>
+                </Avatar>
               </div>
               <div>
                 <h3 className="ml-2 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                   {endUser?.firstName} {endUser?.lastName}
                 </h3>
                 <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
-                  <Trophy weight="fill" /> Champion
+                  {endUser?.isFullyVerified ? "Verified" : "Not Verified"}
                 </div>
+                {/* <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
+                  <Trophy weight="fill" /> Champion
+                </div> */}
               </div>
             </div>
           </div>

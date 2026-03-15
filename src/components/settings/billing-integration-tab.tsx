@@ -6,6 +6,7 @@ import { Separator } from "@/components/ui/separator";
 import { Download, MoreHorizontal } from "lucide-react";
 import {
   useActivateBilling,
+  useCancelSubscription,
   useChangeBillingType,
   useGetSubscriptionInvoices,
   useGetSubscriptionPlans,
@@ -15,7 +16,8 @@ import EmptyCampaigns from "../../assets/icons/empty-campaigns.svg";
 import { useEffect, useMemo, useState } from "react";
 import { getOrgUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 import BillingIntegrationSkeleton from "./skeleton/billing-skeleton";
-import { CreditCardIcon } from "@phosphor-icons/react";
+import { CheckIcon, CreditCardIcon } from "@phosphor-icons/react";
+import { useNavigate } from "react-router-dom";
 
 interface BillingIntegrationTabProps {
   formData: {
@@ -56,6 +58,7 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
   const { data: subscription, isPending: isLoading } = useGetSubscriptionPlans();
   const { data: subscriptionInvoices, isPending: invoicesLoading } = useGetSubscriptionInvoices();
   const { mutate: activateMutate, isPending } = useActivateBilling();
+  const { mutate: cancelMutate, isPending: cancelPending } = useCancelSubscription();
 
   // console.log("invoices", subscriptionInvoices);
 
@@ -67,8 +70,14 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
     });
   };
 
+  const handleCancel = () => {
+    cancelMutate({
+      returnUrl: `${getBaseUrl()}/settings?tab=billing-integration`,
+    });
+  };
+
   const cardInfoJSON = JSON.parse(subscription?.data?.paymentMethodDetailsJson || "{}");
-  console.log("cardInfoJSON", cardInfoJSON);
+  // console.log("cardInfoJSON", cardInfoJSON);
 
   if (isLoading || invoicesLoading) {
     return <BillingIntegrationSkeleton />;
@@ -126,22 +135,26 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
         </div>
         <div className="w-[532px] space-y-6">
           {/* Billing Period Header */}
-          <div className="flex items-center justify-between">
-            <div className="space-y-1">
-              <h4 className="text-sm font-medium text-[#0A0A0C]">Billing Period</h4>
-              <p className="text-sm text-[#525866]">
-                Next billing on {formatFullDate(subscription?.data?.nextBillingAt)}
-              </p>
-            </div>
-            <div className="flex items-center gap-2">
-              {subscription?.data?.status?.toLowerCase() !== "active" && (
-                <ChangeBillingPopover billingCode={subscription?.data?.plan?.code} />
-              )}
-              {/* <Button variant="outline" size="icon" className="h-9 w-9">
+          {subscription?.data?.status?.toLowerCase() === "active" && (
+            <div className="flex items-center justify-between">
+              <div className="space-y-1">
+                <h4 className="text-sm font-medium text-[#0A0A0C]">Billing Period</h4>
+                <p className="text-sm text-[#525866]">
+                  Next billing on {formatFullDate(subscription?.data?.nextBillingAt)}
+                </p>
+              </div>
+              <div className="flex items-center gap-2">
+                <ChangeBillingPopover
+                  billingInterval={subscription?.data?.plan?.billingInterval}
+                  billingCode={subscription?.data?.plan?.code}
+                />
+
+                {/* <Button variant="outline" size="icon" className="h-9 w-9">
                 <Bell className="h-4 w-4" />
               </Button> */}
+              </div>
             </div>
-          </div>
+          )}
 
           {/* Plan Card */}
           <div className="rounded-xl border border-[#E1E4EA] bg-white p-5">
@@ -156,13 +169,26 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
                     {""}
                     {subscription?.data?.plan?.unitAmount / 100}
                   </span>
-                  <span className="text-sm text-[#525866]">/ month</span>
+                  <span className="text-sm text-[#525866]">
+                    / {subscription?.data?.plan?.billingInterval}
+                  </span>
                 </div>
                 <p className="text-sm text-[#525866]">{subscription?.data?.plan?.description}</p>
               </div>
               {subscription?.data?.status?.toLowerCase() === "active" ? (
                 <>
-                  <ChangeBillingPopover billingCode={subscription?.data?.plan?.code} />
+                  <Button
+                    onClick={handleCancel}
+                    disabled={cancelPending || subscription?.data?.cancelAtPeriodEnd}
+                    variant="outline"
+                    className="w-max text-red-500"
+                  >
+                    {cancelPending
+                      ? "Cancelling..."
+                      : subscription?.data?.cancelAtPeriodEnd
+                        ? "Cancelled"
+                        : "Cancel plan"}
+                  </Button>
                 </>
               ) : (
                 <Button
@@ -272,8 +298,15 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
   );
 };
 
-export function ChangeBillingPopover({ billingCode }: { billingCode: string }) {
-  const [selectedBilling, setSelectedBilling] = useState("");
+export function ChangeBillingPopover({
+  billingCode,
+  billingInterval,
+}: {
+  billingCode: string;
+  billingInterval?: string;
+}) {
+  const navigate = useNavigate();
+  const [selectedBilling, setSelectedBilling] = useState(billingInterval);
   const [open, setOpen] = useState(false);
 
   const billingType = [
@@ -282,7 +315,7 @@ export function ChangeBillingPopover({ billingCode }: { billingCode: string }) {
     { id: 3, label: "Annual", value: "annual" },
   ];
 
-  const { mutate, isPending } = useChangeBillingType();
+  const { mutate, isPending, isSuccess, data } = useChangeBillingType();
 
   const handleSelect = (value: string) => {
     setSelectedBilling(value);
@@ -295,18 +328,33 @@ export function ChangeBillingPopover({ billingCode }: { billingCode: string }) {
 
     mutate(payload);
 
-    console.log(selectedBilling);
+    // console.log(selectedBilling);
     setOpen(false);
   };
+
+  useEffect(() => {
+    setSelectedBilling(billingInterval);
+  }, [billingInterval]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      console.log(data);
+      navigate(data?.data?.url);
+      setOpen(false);
+    }
+  }, [isSuccess]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="h-9 min-w-[200px] text-sm font-medium">
+        <Button variant="outline" className="h-9 min-w-[200px] text-sm font-medium capitalize">
           {isPending ? (
             "Changing billing..."
           ) : (
-            <>{selectedBilling ? selectedBilling : "Change Billing Period"}</>
+            <>
+              Change Billing Period
+              {/* <>{selectedBilling ? selectedBilling : "Change Billing Period"}</> */}
+            </>
           )}
         </Button>
       </PopoverTrigger>
@@ -317,9 +365,10 @@ export function ChangeBillingPopover({ billingCode }: { billingCode: string }) {
             <button
               key={billing.id}
               onClick={() => handleSelect(billing.value)}
-              className="hover:bg-muted rounded-md px-3 py-2 text-left text-sm"
+              className="hover:bg-muted flex items-center justify-between rounded-md px-3 py-2 text-left text-sm"
             >
-              {billing.label}
+              {billing.label}{" "}
+              {billing.value === selectedBilling && <CheckIcon className="h-4 w-4" />}
             </button>
           ))}
         </div>

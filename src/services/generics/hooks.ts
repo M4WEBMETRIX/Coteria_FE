@@ -316,3 +316,30 @@ export const useActivateBilling = () => {
     onError: (err: any) => toast.error(err?.message || "Error checking out, please try again.!"),
   });
 };
+
+export const useCancelSubscription = () => {
+  const queryClient = useQueryClient();
+
+  const URL = `/org/subscription/cancel`;
+  return useMutation({
+    mutationFn: (payload: any) => postFunction(payload, URL),
+    onSuccess: (response) => {
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_SUBSCRIPTION_PLANS_API],
+      });
+
+      const checkoutUrl = response?.data?.url;
+
+      if (checkoutUrl) {
+        window.location.href = checkoutUrl;
+      }
+      toast.success("You are being redirected to Stripe");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error cancelling subscription, please try again.!"),
+  });
+};

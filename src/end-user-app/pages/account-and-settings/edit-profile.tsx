@@ -11,6 +11,9 @@ import { useFileUpload } from "@/services/file-upload-hook";
 import { useState, useEffect, useRef } from "react";
 import { toast } from "sonner";
 
+const MAX_FILE_SIZE_MB = 1;
+const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
+
 const EditProfile = () => {
   const navigate = useNavigate();
 
@@ -52,8 +55,9 @@ const EditProfile = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    if (file.size > 5 * 1024 * 1024) {
-      toast.error("File size must be less than 5MB");
+    if (file.size > MAX_FILE_SIZE_BYTES) {
+      toast.error(`File size exceeds ${MAX_FILE_SIZE_MB}MB limit. Please choose a smaller file.`);
+
       e.target.value = "";
       return;
     }
@@ -194,6 +198,7 @@ const EditProfile = () => {
               </label>
               <Input
                 value={formData.firstName}
+                maxLength={70}
                 onChange={(e) => handleChange("firstName", e.target.value)}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
@@ -205,6 +210,7 @@ const EditProfile = () => {
               </label>
               <Input
                 value={formData.lastName}
+                maxLength={70}
                 onChange={(e) => handleChange("lastName", e.target.value)}
                 placeholder="Enter your name"
                 className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"

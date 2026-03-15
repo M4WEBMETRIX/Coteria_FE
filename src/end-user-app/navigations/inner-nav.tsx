@@ -1,5 +1,8 @@
 // import { Input } from "@/components/ui/input";
-import { UserIcon } from "@phosphor-icons/react";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { getNameAbbrev } from "@/lib/utils";
+import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
+// import { UserIcon } from "@phosphor-icons/react";
 import { type ReactElement, type ReactEventHandler } from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -13,6 +16,9 @@ const InnerNav = ({
   const navigate = useNavigate();
   // const [, setIsSearchOpen] = useState(false);
   // const inputRef = useRef<HTMLInputElement>(null);
+
+  const { data } = useGetEndUserProfile();
+  const user = data?.data;
   return (
     <div className="flex items-center justify-between py-10">
       <div onClick={onClick} className="flex cursor-pointer items-center gap-3">
@@ -80,12 +86,19 @@ const InnerNav = ({
         </div> */}
 
         <div className="">
-          <div
+          <Avatar
+            onClick={() => navigate("/user/account-settings/edit")}
+            className="h-14 w-14 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200"
+          >
+            <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
+            <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
+          </Avatar>
+          {/* <div
             onClick={() => navigate("/user/account-settings/edit")}
             className="flex h-14 w-14 cursor-pointer items-center justify-center rounded-full bg-[#45D884]"
           >
             <UserIcon size={32} color="#FFFFFF" />
-          </div>
+          </div> */}
         </div>
       </div>
     </div>

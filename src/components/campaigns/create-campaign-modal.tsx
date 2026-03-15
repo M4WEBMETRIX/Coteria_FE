@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { toast } from "sonner";
 
-const MAX_FILE_SIZE_MB = 5;
+const MAX_FILE_SIZE_MB = 1;
 const MAX_FILE_SIZE_BYTES = MAX_FILE_SIZE_MB * 1024 * 1024;
 import {
   Dialog,
