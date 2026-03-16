@@ -309,20 +309,26 @@ const DangerZoneSettings = ({ data }: { data?: any }) => {
           <div className="flex items-center justify-between">
             <div>
               <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-                Activate campaign
+                {data?.status?.toLowerCase() === "completed"
+                  ? "Campaign completed"
+                  : "Activate campaign"}
               </p>
               <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-                Campaign will be active for new donations and engagement.
+                {data?.status?.toLowerCase() === "completed"
+                  ? "Campaign has been completed"
+                  : "Campaign will be active for new donations and engagement."}
               </p>
             </div>
             <Button
               onClick={handleActivateCampaign}
               variant="outline"
-              disabled={updateCampaignStatusPending}
+              disabled={updateCampaignStatusPending || data?.status?.toLowerCase() === "completed"}
             >
               {updateCampaignStatusPending && activateValue === "active"
                 ? "Activating..."
-                : "Activate"}
+                : data?.status?.toLowerCase() === "completed"
+                  ? "Completed"
+                  : "Activate"}
             </Button>
           </div>
         ) : (
@@ -340,11 +346,15 @@ const DangerZoneSettings = ({ data }: { data?: any }) => {
                 <Button
                   onClick={handleActivateCampaign}
                   variant="outline"
-                  disabled={updateCampaignStatusPending}
+                  disabled={
+                    updateCampaignStatusPending || data?.status?.toLowerCase() === "completed"
+                  }
                 >
                   {updateCampaignStatusPending && activateValue === "active"
                     ? "Activating..."
-                    : "Activate"}
+                    : data?.status?.toLowerCase() === "completed"
+                      ? "Completed"
+                      : "Activate"}
                 </Button>
               </div>
             ) : (

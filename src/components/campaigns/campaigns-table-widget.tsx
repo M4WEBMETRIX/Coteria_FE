@@ -277,19 +277,20 @@ export function ActionPopover({ id, status }: { id: string | number; status: str
             <EyeIcon size={18} />
             View
           </div>
-          {status?.toLocaleLowerCase() !== "active" && (
-            <div
-              onClick={() => updateCampaignStatus({ status: "active" })}
-              className="flex cursor-pointer items-center gap-2 text-sm text-green-600"
-            >
-              <ArrowsClockwiseIcon size={18} />
-              {updateCampaignStatusPending ? (
-                <Loader2Icon size={18} className="animate-spin" />
-              ) : (
-                "Activate"
-              )}
-            </div>
-          )}
+          {status?.toLocaleLowerCase() !== "active" &&
+            status?.toLocaleLowerCase() !== "completed" && (
+              <div
+                onClick={() => updateCampaignStatus({ status: "active" })}
+                className="flex cursor-pointer items-center gap-2 text-sm text-green-600"
+              >
+                <ArrowsClockwiseIcon size={18} />
+                {updateCampaignStatusPending ? (
+                  <Loader2Icon size={18} className="animate-spin" />
+                ) : (
+                  "Activate"
+                )}
+              </div>
+            )}
         </div>
       </PopoverContent>
     </Popover>

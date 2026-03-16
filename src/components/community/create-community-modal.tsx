@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -376,9 +377,11 @@ const CreateCommunityModal = ({
           </div>
 
           <div className="flex justify-end gap-3 border-t border-[#DFE1E7] bg-white px-6 py-5">
-            <Button type="button" variant="outline" onClick={() => setOpen(false)} className="px-6">
-              Cancel
-            </Button>
+            <DialogClose asChild>
+              <Button type="button" variant="outline" className="px-6">
+                Cancel
+              </Button>
+            </DialogClose>
             <Button
               type="submit"
               disabled={!isValid || isDeletingUpload || isUploading}

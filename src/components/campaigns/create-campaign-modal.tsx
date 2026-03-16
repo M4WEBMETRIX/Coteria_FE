@@ -32,6 +32,8 @@ import {
   useGetCampaignCategories,
 } from "@/services/generics/hooks";
 import { useDeleteUpload, useFileUpload } from "@/services/file-upload-hook";
+import { InfoIcon } from "@phosphor-icons/react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 // import {
 //   Combobox,
 //   ComboboxContent,
@@ -326,7 +328,7 @@ const CreateCampaignModal = ({
               {/* Goal Type */}
               <div className="space-y-2">
                 <Label htmlFor="type" className="text-sm font-medium text-[#344054]">
-                  Goal Type <span className="text-red-500">*</span>
+                  Goal Type <CampaignGoalTypeTooltip /> <span className="text-red-500">*</span>
                 </Label>
                 <Select
                   value={formData.campaignType}
@@ -675,5 +677,23 @@ const CreateCampaignModal = ({
     </Dialog>
   );
 };
+
+function CampaignGoalTypeTooltip() {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="flex cursor-pointer items-center gap-1 text-sm font-normal text-[#12AA5B]">
+          <InfoIcon className="h-4 w-4" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent className="bg-white shadow" side="right">
+        <p className="max-w-[300px] text-sm text-[#1E1F24]">
+          Goal Type – Choose whether the campaign goal is based on a target amount or a time
+          duration.
+        </p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
 
 export default CreateCampaignModal;

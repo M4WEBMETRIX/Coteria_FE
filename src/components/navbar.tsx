@@ -1,8 +1,8 @@
-import { Search } from "lucide-react";
+// import { Search } from "lucide-react";
 // import UserProfileMenu from "@/components/user-profile-menu";
-import { useRef, useState, type ReactNode } from "react";
+import { type ReactNode } from "react";
 
-import { cn } from "@/lib/utils";
+// import { cn } from "@/lib/utils";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useGetOrganisationProfile } from "@/services/generics/hooks";
 import { useNavigate } from "react-router-dom";
@@ -13,8 +13,8 @@ interface NavbarProps {
 
 const Navbar = ({ breadcrumbs }: NavbarProps) => {
   const navigate = useNavigate();
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
-  const inputRef = useRef<HTMLInputElement>(null);
+  // const [isSearchOpen, setIsSearchOpen] = useState(false);
+  // const inputRef = useRef<HTMLInputElement>(null);
 
   const { data: userData } = useGetOrganisationProfile();
   const orgUser = userData?.data;
@@ -37,7 +37,7 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
         {/* Right Section: Search, Notifications, Profile */}
         <div className="flex items-center gap-4">
           {/* Search Bar */}
-          <div
+          {/* <div
             className={cn(
               "relative flex h-12 items-center transition-all duration-300 ease-in-out",
               isSearchOpen
@@ -71,7 +71,7 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
                 setIsSearchOpen(false);
               }}
             />
-          </div>
+          </div> */}
           {/* Notifications */}
           {/* <button className="relative flex h-12 w-12 items-center justify-center rounded-full border border-[#DFE1E7] bg-[#FCFCFD] text-[#0A0A0C] transition-colors">
           <div className="absolute top-2 right-3 h-3 w-3 rounded-full bg-[#DF1C41]" />

@@ -38,7 +38,7 @@ export const useCreateDonation = (slug: string | undefined) => {
   return useMutation({
     mutationFn: (payload: any) => publicPostFunction(URL, payload),
     onSuccess: () => {
-      toast.success("Donation initiated successfully, proceeding to payment");
+      toast.success("Donation initiated, proceeding to stripe");
       queryClient.invalidateQueries({
         queryKey: [USE_GET_PUBLIC_CAMPAIGN_API],
       });
