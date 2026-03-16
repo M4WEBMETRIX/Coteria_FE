@@ -74,7 +74,7 @@ export const useUserVerifyEmail = () => {
   return useMutation({
     mutationFn: (payload: { token: string }) => postFunctionUserEnd(payload, "/auth/verify-email"),
     onSuccess: () => {
-      toast.success("Please check your email for further instructions");
+      // toast.success("Please check your email");
     },
     onError: (error) => {
       showErrorToast(error);

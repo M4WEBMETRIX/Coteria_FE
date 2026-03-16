@@ -13,7 +13,7 @@ export const useRegisterUser = () => {
       localStorage.setItem("userAccessToken", token);
       localStorage.setItem("userRefreshToken", refreshToken);
 
-      toast.success("You've successfully registered");
+      // toast.success("You've successfully registered");
     },
     onError: (error) => {
       console.log("err", error);

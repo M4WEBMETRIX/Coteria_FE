@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -406,22 +406,29 @@ const DangerZoneSettings = ({ data }: { data?: any }) => {
 const Settings = ({ data }: { data: any }) => {
   const { id } = useParams();
   const [activeTab, setActiveTab] = useQueryState("tab", { defaultValue: "basic-setting" });
-  const [formData, setFormData] = useState({
-    campaignName: "",
-    shortDescription: "",
-    visibility: "public",
-    isPrivate: false,
-    visibleInInsights: true,
-    eligibleForInfluencer: true,
-    allowRepeatDonations: false,
-    allowSharing: true,
-    includeInInfluenceScoring: true,
-    campaignUpdateReminder: true,
-    reminderFrequency: "14",
-    notifyOnUpdate: true,
-    notifyOnMilestone: true,
-    notifyOnEnding: true,
-  });
+
+  const initialFormData = useMemo(() => {
+    return {
+      campaignName: data?.name || "",
+      shortDescription: data?.description || "",
+      visibility: data?.visibility?.toLowerCase() || "public",
+      isPrivate: false,
+      visibleInInsights: true,
+      eligibleForInfluencer: true,
+      allowRepeatDonations: false,
+      allowSharing: true,
+      includeInInfluenceScoring: true,
+      campaignUpdateReminder: true,
+      reminderFrequency: "14",
+      notifyOnUpdate: true,
+      notifyOnMilestone: true,
+      notifyOnEnding: true,
+    };
+  }, [data]);
+
+  const [formData, setFormData] = useState(initialFormData);
+
+  const isDirty = JSON.stringify(formData) !== JSON.stringify(initialFormData);
 
   const { mutate: updateCampaign, isPending: updateCampaignLoading } = useUpdateCampaign(id);
 
@@ -439,43 +446,13 @@ const Settings = ({ data }: { data: any }) => {
   };
 
   const handleCancel = () => {
-    setFormData({
-      campaignName: data.name || "",
-      shortDescription: data.description || "",
-      visibility: data.visibility?.toLowerCase() || "public",
-      isPrivate: false,
-      visibleInInsights: true,
-      eligibleForInfluencer: true,
-      allowRepeatDonations: false,
-      allowSharing: true,
-      includeInInfluenceScoring: true,
-      campaignUpdateReminder: true,
-      reminderFrequency: "14",
-      notifyOnUpdate: true,
-      notifyOnMilestone: true,
-      notifyOnEnding: true,
-    });
+    setFormData(initialFormData);
   };
 
   useEffect(() => {
     if (!data) return;
-    setFormData({
-      campaignName: data.name || "",
-      shortDescription: data.description || "",
-      visibility: data.visibility?.toLowerCase() || "public",
-      isPrivate: false,
-      visibleInInsights: true,
-      eligibleForInfluencer: true,
-      allowRepeatDonations: false,
-      allowSharing: true,
-      includeInInfluenceScoring: true,
-      campaignUpdateReminder: true,
-      reminderFrequency: "14",
-      notifyOnUpdate: true,
-      notifyOnMilestone: true,
-      notifyOnEnding: true,
-    });
-  }, [data]);
+    setFormData(initialFormData);
+  }, [data, initialFormData]);
 
   const renderContent = () => {
     switch (activeTab) {
@@ -498,7 +475,7 @@ const Settings = ({ data }: { data: any }) => {
     <div className="font-ubuntu">
       <div className="mb-6 flex w-full items-center justify-between">
         <h2 className="text-xl font-semibold text-[#0A0A0C]">Settings</h2>
-        {data?.status?.toLowerCase() !== "active" && (
+        {data?.status?.toLowerCase() !== "active" && isDirty && (
           <div className="flex gap-3">
             <Button onClick={handleCancel} variant="outline">
               Cancel
