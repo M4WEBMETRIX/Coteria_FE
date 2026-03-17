@@ -1,14 +1,15 @@
-import { Route, Routes } from "react-router-dom";
+import { Routes } from "react-router-dom";
 import { Toaster } from "sonner";
-import { lazy, Suspense } from "react";
-import RouteErrorBoundary from "./pages/authentications/error-boundary";
+import { Suspense } from "react";
+// import RouteErrorBoundary from "./pages/authentications/error-boundary";
 import { ReloadPrompt } from "./components/ReloadPrompt";
 import Logo from "@/assets/icons/coterie.svg";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import AppRoutesWrapper from "./app-route-wrapper";
 
-const AllRoutes = lazy(() => import("./_routes"));
-const AccessProtection = lazy(() => import("./components/auth/access-protection"));
-const EndUserRoutes = lazy(() => import("./_end-user-routes"));
+// const AllRoutes = lazy(() => import("./_routes"));
+// const AccessProtection = lazy(() => import("./components/auth/access-protection"));
+// const EndUserRoutes = lazy(() => import("./_end-user-routes"));
 
 const queryClient = new QueryClient();
 
@@ -31,14 +32,15 @@ function App() {
           }
         >
           <Routes>
-            <Route element={<AccessProtection />}>
+            <AppRoutesWrapper />
+            {/* <Route element={<AccessProtection />}>
               <Route path="/*" element={<AllRoutes />} errorElement={<RouteErrorBoundary />} />
               <Route
                 path="/user/*"
                 element={<EndUserRoutes />}
                 errorElement={<RouteErrorBoundary />}
               />
-            </Route>
+            </Route> */}
           </Routes>
         </Suspense>
         <Toaster position="top-center" richColors />
