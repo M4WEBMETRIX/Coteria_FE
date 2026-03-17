@@ -1,4 +1,4 @@
-import { Routes } from "react-router-dom";
+// import { Routes } from "react-router-dom";
 import { Toaster } from "sonner";
 import { Suspense } from "react";
 // import RouteErrorBoundary from "./pages/authentications/error-boundary";
@@ -31,17 +31,18 @@ function App() {
             </div>
           }
         >
-          <Routes>
-            <AppRoutesWrapper />
-            {/* <Route element={<AccessProtection />}>
+          <AppRoutesWrapper />
+
+          {/* <Routes>
+            <Route element={<AccessProtection />}>
               <Route path="/*" element={<AllRoutes />} errorElement={<RouteErrorBoundary />} />
               <Route
                 path="/user/*"
                 element={<EndUserRoutes />}
                 errorElement={<RouteErrorBoundary />}
               />
-            </Route> */}
-          </Routes>
+            </Route>
+          </Routes> */}
         </Suspense>
         <Toaster position="top-center" richColors />
         <ReloadPrompt />
