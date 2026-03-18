@@ -168,7 +168,7 @@ const DashboardCommunity = () => {
                         {community?.visibility}
                       </TableCell>
                       <TableCell className="py-6 text-sm leading-[155%] font-normal">
-                        {community?.campaignsCount ? community?.campaignsCount : 0}
+                        {community?.totalCampaigns ? community?.totalCampaigns : 0}
                       </TableCell>
                       <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
                         <Button
