@@ -4,8 +4,6 @@ import RouteErrorBoundary from "./pages/authentications/error-boundary";
 const AllRoutes = lazy(() => import("./_routes"));
 const AccessProtection = lazy(() => import("./components/auth/access-protection"));
 const EndUserRoutes = lazy(() => import("./_end-user-routes"));
-const CommunityPublic = lazy(() => import("./pages/community/community-public"));
-const CampaignPublic = lazy(() => import("./pages/community/campaign-public"));
 
 function getSubdomain() {
   const host = window.location.hostname;
@@ -33,9 +31,6 @@ function AppRoutesWrapper() {
       <Route element={<AccessProtection />}>
         <Route path="/user/*" element={<EndUserRoutes />} errorElement={<RouteErrorBoundary />} />
         <Route path="/*" element={<AllRoutes />} errorElement={<RouteErrorBoundary />} />
-        {/* Public routes */}
-        <Route path="/community/public/:slug/:communityId" element={<CommunityPublic />} />
-        <Route path="/community/public/campaign/:campaignId" element={<CampaignPublic />} />
       </Route>
     </Routes>
   );

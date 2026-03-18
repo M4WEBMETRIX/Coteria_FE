@@ -23,7 +23,8 @@ const AccountSettingsIndex = lazy(
   () => import("./end-user-app/pages/account-and-settings/account-settings-index")
 );
 const EditProfile = lazy(() => import("./end-user-app/pages/account-and-settings/edit-profile"));
-
+const CommunityPublic = lazy(() => import("./pages/community/community-public"));
+const CampaignPublic = lazy(() => import("./pages/community/campaign-public"));
 import Logo from "@/assets/icons/coterie.svg";
 
 const EndUserRoutes = () => {
@@ -60,6 +61,10 @@ const EndUserRoutes = () => {
           <Route path="account-settings" element={<AccountSettingsIndex />} />
           <Route path="account-settings/edit" element={<EditProfile />} />
         </Route>
+
+        {/* Public routes */}
+        <Route path="community/public/:slug/:communityId" element={<CommunityPublic />} />
+        <Route path="community/public/campaign/:campaignId" element={<CampaignPublic />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
