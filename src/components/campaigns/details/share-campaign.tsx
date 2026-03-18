@@ -4,6 +4,7 @@ import { HugeiconsIcon } from "@hugeicons/react";
 import { Share01Icon } from "@hugeicons/core-free-icons";
 import { Button } from "@/components/ui/button";
 import {
+  CheckIcon,
   CopyIcon,
   // EnvelopeSimpleIcon,
   WhatsappLogoIcon,
@@ -12,15 +13,26 @@ import { getBaseUrl } from "@/lib/utils";
 
 const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [copied, setCopied] = useState(false);
   const menuRef = useRef<any>(null);
 
-  const communityUrl = `${getBaseUrl()}/community/public/${communitySlug}/${communityId}`;
+  // const communityUrl = `${getBaseUrl()}/community/public/${communitySlug}/${communityId}`;
+  // const shareUrl = communityId ? communityUrl : campaignUrl;
   const campaignUrl = `${getBaseUrl()}/community/public/campaign/${campaignSlug}`;
-  const shareUrl = communityId ? communityUrl : campaignUrl;
+  const shareUrl = campaignUrl;
+
+  // const copyLink = () => {
+  //   navigator.clipboard.writeText(shareUrl);
+  //   setIsOpen(false);
+  // };
 
   const copyLink = () => {
     navigator.clipboard.writeText(shareUrl);
-    setIsOpen(false);
+    setCopied(true);
+    setTimeout(() => {
+      setCopied(false);
+      setIsOpen(false);
+    }, 1500);
   };
 
   const shareOnWhatsApp = () => {
@@ -72,10 +84,10 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
               </p>
               <ul className="space-y-3">
                 <MenuOption
-                  icon={<CopyIcon size={18} />}
-                  text="Copy Link"
-                  color="text-orange-600"
-                  onClick={() => copyLink()}
+                  icon={copied ? <CheckIcon size={18} weight="bold" /> : <CopyIcon size={18} />}
+                  text={copied ? "Copied!" : "Copy Link"}
+                  color={copied ? "text-green-600" : "text-orange-600"}
+                  onClick={copyLink}
                 />
                 <MenuOption
                   icon={<WhatsappLogoIcon weight="duotone" size={18} />}

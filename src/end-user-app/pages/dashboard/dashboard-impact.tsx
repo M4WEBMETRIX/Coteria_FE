@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/button";
 import { CaretRightIcon, MapPin, Trophy } from "@phosphor-icons/react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
+import { useGetImpactScore } from "@/services/generics/user-generics/user-hooks";
 
 // const directReferrals = [
 //   {
@@ -49,6 +50,9 @@ import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 const directReferrals: any = [];
 
 const DashboardImpact = () => {
+  const { data: impactScore } = useGetImpactScore();
+  console.log("impactScore", impactScore);
+
   return (
     <div className="w-full space-y-8">
       <div className="flex w-full items-center justify-center">

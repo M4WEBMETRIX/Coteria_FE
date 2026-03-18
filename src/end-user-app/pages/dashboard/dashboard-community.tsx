@@ -150,8 +150,10 @@ const DashboardCommunity = () => {
                       <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
                         {community?.name}
                       </TableCell>
-                      <TableCell className="line-clamp-3 w-56 py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
-                        {community?.description}
+                      <TableCell className="w-56 overflow-hidden py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
+                        {community?.description?.length > 60
+                          ? community.description.slice(0, 60) + "..."
+                          : community?.description}
                         {/* <Badge
                     className={`hover:bg-opacity-80 rounded-full border-0 px-3.5 py-1.5 text-base leading-[155%] font-normal ${community.roleColor}`}
                   >

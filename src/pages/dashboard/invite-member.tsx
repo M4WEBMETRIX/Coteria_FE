@@ -112,7 +112,7 @@ const InviteMembersModal = ({
                   type="text"
                   value={inviteLink}
                   readOnly
-                  className="h-12 flex-1 border border-[#F0EEF4] bg-[#F7F5F9] text-[#7C7C8B]"
+                  className="h-12 border border-[#F0EEF4] bg-[#F7F5F9] text-[#7C7C8B]"
                 />
               )}
               <Button

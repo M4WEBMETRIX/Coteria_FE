@@ -8,6 +8,7 @@ export const USE_GET_USER_ACTIVE_CAMPAIGNS_API = "USE_GET_USER_ACTIVE_CAMPAIGNS_
 export const USE_GET_USER_SPECIFIC_CAMPAIGNS_API = "USE_GET_USER_SPECIFIC_CAMPAIGNS_API";
 export const USE_GET_USER_SPECIFIC_COMMUNITY_API = "USE_GET_USER_SPECIFIC_COMMUNITY_API";
 export const USE_GET_USER_DONATIONS_API = "USE_GET_USER_DONATIONS_API";
+export const USE_GET_IMPACT_SCORE_API = "USE_GET_IMPACT_SCORE_API";
 
 export const useGetEndUserProfile = () => {
   const URL = "/donor/profile";
@@ -93,5 +94,13 @@ export const useGetDonationById = (id: string | undefined) => {
     queryKey: [USE_GET_USER_DONATIONS_API, id],
     queryFn: () => getFunctionUserEnd(URL),
     enabled: !!id,
+  });
+};
+
+export const useGetImpactScore = () => {
+  const URL = `/donor/impact/score`;
+  return useQuery({
+    queryKey: [USE_GET_IMPACT_SCORE_API],
+    queryFn: () => getFunctionUserEnd(URL),
   });
 };
