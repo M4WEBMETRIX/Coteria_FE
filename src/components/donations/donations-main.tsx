@@ -177,7 +177,8 @@ export function DonationsMainTable({
                     {formatFullDate(donation?.createdAt)}
                   </TableCell>
                   <TableCell className="text-sm text-[#0D0D12]">
-                    {getCurrencySymbol(donation?.currency)}{" "}
+                    {getCurrencySymbol(donation?.currency)}
+                    {""}
                     {(donation?.amountCents / 100).toLocaleString()}
                   </TableCell>
                   <TableCell>

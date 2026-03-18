@@ -72,7 +72,7 @@ const CommunityStats = ({ data }: { data?: any }) => {
       />
       <StatCard
         title="Total Funds Raised"
-        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalFundsRaisedCents / 100)?.toLocaleString() : 0}`}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")}${data ? (data?.totalFundsRaisedCents / 100)?.toLocaleString() : 0}`}
         trend={data?.fundsRaisedSinceLastMonthCents + "%"}
         trendDirection="down"
         icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}
@@ -138,7 +138,7 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        title="Total Community"
+        title="Total Communities"
         value={data?.totalCommunities || 0}
         trend={(data?.communitiesSinceLastMonth || 0) + "%"}
         trendDirection="up"
@@ -148,7 +148,7 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
       />
       <StatCard
         title="Total Funds Raised"
-        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalFundsRaisedCents / 100)?.toLocaleString() : 0}`}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")}${data ? (data?.totalFundsRaisedCents / 100)?.toLocaleString() : 0}`}
         trend={(data?.fundsRaisedSinceLastMonthCents || 0) + "%"}
         trendDirection="up"
         icon={<HandHeartIcon size={20} weight="duotone" color={"#40C4AA"} />}

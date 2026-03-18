@@ -209,7 +209,8 @@ const DonationDetailPage = () => {
             <div className="flex items-center justify-between border-b border-[#DFE1E7] px-5 py-2.5">
               <span className="text-sm font-medium text-[#707281]">Amount</span>
               <span className="text-sm font-medium text-[#0B0D0C]">
-                {getCurrencySymbol(donationDetails?.data?.currency)}{" "}
+                {getCurrencySymbol(donationDetails?.data?.currency)}
+                {""}
                 {(donationDetails?.data?.amountCents ?? 0) / 100}
               </span>
             </div>

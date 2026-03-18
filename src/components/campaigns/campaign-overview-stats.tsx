@@ -64,7 +64,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       {/* 2. Total Raised - Icon: Minus/Dash in Green Circle */}
       <StatsCard
         title="Total Raised"
-        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalAmountRaisedCents / 100)?.toLocaleString() : 0}`}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")}${data ? (data?.totalAmountRaisedCents / 100)?.toLocaleString() : 0}`}
         icon={<ArrowCircleUpIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"
@@ -72,7 +72,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       {/* 3. Total Goal - Icon: Check in Green Circle */}
       <StatsCard
         title="Total Goal"
-        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")} ${data ? (data?.totalGoalAmountsCents / 100)?.toLocaleString() : 0}`}
+        value={`${getCurrencySymbol(orgUser?.defaultCurrency || "")}${data ? (data?.totalGoalAmountsCents / 100)?.toLocaleString() : 0}`}
         icon={<CheckCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
         iconColor="#12AA5B"

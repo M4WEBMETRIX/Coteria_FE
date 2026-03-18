@@ -18,6 +18,7 @@ import { StatusBadge } from "../campaigns-table-widget";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { useUpdateCampaign, useUpdateCampaignStatus } from "@/services/generics/hooks";
 import { useParams } from "react-router-dom";
+import EndCampaignModal from "./end-campaign-modal";
 
 const CAMPAIGN_SETTINGS_TABS = [
   { id: "basic-setting", label: "Basic setting" },
@@ -275,14 +276,24 @@ const DangerZoneSettings = ({ data }: { data?: any }) => {
   const [endValue, setEndValue] = useState("");
   const [pauseValue, setPauseValue] = useState("");
   const [activateValue, setActivateValue] = useState("");
+  const [isEndCampaignModalOpen, setIsEndCampaignModalOpen] = useState(false);
 
-  const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
-    useUpdateCampaignStatus(id);
+  const {
+    mutate: updateCampaignStatus,
+    isPending: updateCampaignStatusPending,
+    isSuccess,
+  } = useUpdateCampaignStatus(id);
 
   const handleEndCampaign = () => {
     setEndValue("end");
     updateCampaignStatus({ status: "completed" });
   };
+
+  useEffect(() => {
+    if (isSuccess) {
+      setIsEndCampaignModalOpen(false);
+    }
+  }, [isSuccess]);
 
   const handlePauseCampaign = () => {
     setPauseValue("paused");
@@ -297,107 +308,119 @@ const DangerZoneSettings = ({ data }: { data?: any }) => {
   console.log(data);
 
   return (
-    <div className="flex gap-8">
-      <div className="w-[300px] shrink-0">
-        <h3 className="text-base font-semibold text-[#0A0A0C]">Danger Zone</h3>
-        <p className="text-sm text-[#525866]">
-          These actions affect campaign availability and data.
-        </p>
-      </div>
-      <div className="flex-1 space-y-6">
-        {data?.status?.toLowerCase() === "completed" ? (
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-                {data?.status?.toLowerCase() === "completed"
-                  ? "Campaign completed"
-                  : "Activate campaign"}
-              </p>
-              <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-                {data?.status?.toLowerCase() === "completed"
-                  ? "Campaign has been completed"
-                  : "Campaign will be active for new donations and engagement."}
-              </p>
-            </div>
-            <Button
-              onClick={handleActivateCampaign}
-              variant="outline"
-              disabled={updateCampaignStatusPending || data?.status?.toLowerCase() === "completed"}
-            >
-              {updateCampaignStatusPending && activateValue === "active"
-                ? "Activating..."
-                : data?.status?.toLowerCase() === "completed"
-                  ? "Completed"
-                  : "Activate"}
-            </Button>
-          </div>
-        ) : (
-          <>
-            {data?.status?.toLowerCase() === "paused" ? (
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-                    Activate campaign
-                  </p>
-                  <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-                    Campaign will be active for new donations and engagement.
-                  </p>
-                </div>
-                <Button
-                  onClick={handleActivateCampaign}
-                  variant="outline"
-                  disabled={
-                    updateCampaignStatusPending || data?.status?.toLowerCase() === "completed"
-                  }
-                >
-                  {updateCampaignStatusPending && activateValue === "active"
-                    ? "Activating..."
-                    : data?.status?.toLowerCase() === "completed"
-                      ? "Completed"
-                      : "Activate"}
-                </Button>
-              </div>
-            ) : (
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-                    Pause campaign
-                  </p>
-                  <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-                    Temporarily stop donations and engagement.
-                  </p>
-                </div>
-                <Button
-                  onClick={handlePauseCampaign}
-                  variant="outline"
-                  disabled={updateCampaignStatusPending}
-                >
-                  {updateCampaignStatusPending && pauseValue === "paused" ? "Pausing..." : "Pause"}
-                </Button>
-              </div>
-            )}
+    <>
+      <div className="flex gap-8">
+        <div className="w-[300px] shrink-0">
+          <h3 className="text-base font-semibold text-[#0A0A0C]">Danger Zone</h3>
+          <p className="text-sm text-[#525866]">
+            These actions affect campaign availability and data.
+          </p>
+        </div>
+        <div className="flex-1 space-y-6">
+          {data?.status?.toLowerCase() === "completed" ? (
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-                  End campaign
+                  {data?.status?.toLowerCase() === "completed"
+                    ? "Campaign completed"
+                    : "Activate campaign"}
                 </p>
                 <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
-                  End this campaign permanently. No new donations.
+                  {data?.status?.toLowerCase() === "completed"
+                    ? "Campaign has been completed"
+                    : "Campaign will be active for new donations and engagement."}
                 </p>
               </div>
               <Button
-                onClick={handleEndCampaign}
-                disabled={updateCampaignStatusPending}
+                onClick={handleActivateCampaign}
                 variant="outline"
-                className="border-[#F3654A] px-5 text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
+                disabled={
+                  updateCampaignStatusPending || data?.status?.toLowerCase() === "completed"
+                }
               >
-                {updateCampaignStatusPending && endValue === "end" ? "Ending..." : "End"}
+                {updateCampaignStatusPending && activateValue === "active"
+                  ? "Activating..."
+                  : data?.status?.toLowerCase() === "completed"
+                    ? "Completed"
+                    : "Activate"}
               </Button>
             </div>
-          </>
-        )}
+          ) : (
+            <>
+              {data?.status?.toLowerCase() === "paused" ? (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                      Activate campaign
+                    </p>
+                    <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                      Campaign will be active for new donations and engagement.
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handleActivateCampaign}
+                    variant="outline"
+                    disabled={
+                      updateCampaignStatusPending || data?.status?.toLowerCase() === "completed"
+                    }
+                  >
+                    {updateCampaignStatusPending && activateValue === "active"
+                      ? "Activating..."
+                      : data?.status?.toLowerCase() === "completed"
+                        ? "Completed"
+                        : "Activate"}
+                  </Button>
+                </div>
+              ) : (
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                      Pause campaign
+                    </p>
+                    <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                      Temporarily stop donations and engagement.
+                    </p>
+                  </div>
+                  <Button
+                    onClick={handlePauseCampaign}
+                    variant="outline"
+                    disabled={updateCampaignStatusPending}
+                  >
+                    {updateCampaignStatusPending && pauseValue === "paused"
+                      ? "Pausing..."
+                      : "Pause"}
+                  </Button>
+                </div>
+              )}
+              <div className="flex items-center justify-between">
+                <div>
+                  <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
+                    End campaign
+                  </p>
+                  <p className="text-xs leading-[150%] tracking-[2%] text-[#666D80]">
+                    End this campaign permanently. No new donations.
+                  </p>
+                </div>
+                <Button
+                  onClick={() => setIsEndCampaignModalOpen(true)}
+                  variant="outline"
+                  className="border-[#F3654A] px-5 text-[#F3654A] hover:bg-orange-50 hover:text-[#F3654A]"
+                >
+                  End
+                </Button>
+              </div>
+            </>
+          )}
+        </div>
       </div>
-    </div>
+      <EndCampaignModal
+        open={isEndCampaignModalOpen}
+        onOpenChange={setIsEndCampaignModalOpen}
+        handleEndCampaign={handleEndCampaign}
+        isPending={updateCampaignStatusPending}
+        endValue={endValue}
+      />
+    </>
   );
 };
 

@@ -176,7 +176,7 @@ const DashboardCommunity = () => {
                           className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
                         >
                           <div className="flex items-center">
-                            Enter <CaretRightIcon size={14} weight="bold" className="text-white" />
+                            View <CaretRightIcon size={14} weight="bold" className="text-white" />
                           </div>
                         </Button>
                       </TableCell>
