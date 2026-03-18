@@ -45,7 +45,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
             {orgUser?.stripeOnboardingComplete === false && (
               <div className="mb-6 flex h-[72px] items-center justify-between rounded-[8px] border border-[#DAFFA2] bg-[#FFF3F6] px-6">
                 <p className="text-base font-medium text-[#3F3F46]">
-                  Your community cannot receive donations yet. Connect Stripe to start accepting
+                  Your organization cannot receive donations yet. Connect Stripe to start accepting
                   payments.
                 </p>
                 <Button

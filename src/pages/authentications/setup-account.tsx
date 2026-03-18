@@ -119,12 +119,12 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logout
           >
             Next
           </Button>
-          <button
+          {/* <button
             onClick={onNext}
             className="w-22.75 cursor-pointer text-center text-base font-medium text-[#12AA5B]"
           >
             Skip
-          </button>
+          </button> */}
         </div>
 
         <button
