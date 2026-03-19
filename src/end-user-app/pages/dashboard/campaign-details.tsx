@@ -4,21 +4,26 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import InnerNav from "@/end-user-app/navigations/inner-nav";
 // import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
-import { getCurrencySymbol, getNameAbbrev } from "@/lib/utils";
+import { getBaseUrl, getCurrencySymbol, getNameAbbrev } from "@/lib/utils";
 import { DonationModal } from "@/pages/community/services/donate-modal";
 import {
   useGetEndUserProfile,
   useGetUserSpecificCampaigns,
 } from "@/services/generics/user-generics/user-hooks";
 // import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+// import {
+//   CaretDownIcon,
+//   // ChatCircleIcon,
+//   // HeartIcon,
+//   // ShareFatIcon,
+//   // Trophy,
+// } from "@phosphor-icons/react";
 import {
-  CaretDownIcon,
-  ChatCircleIcon,
-  HeartIcon,
-  ShareFatIcon,
-  // Trophy,
-} from "@phosphor-icons/react";
-import { CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
+  CaretRightIcon,
+  LinkedinLogoIcon,
+  WhatsappLogoIcon,
+  XLogoIcon,
+} from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useState } from "react";
 // import { campaigns } from "./dashboard-campaigns";
 import { useNavigate, useParams } from "react-router-dom";
@@ -38,6 +43,24 @@ const CampaignDetails = () => {
   // console.log(userSpecificCampaigns);
 
   const campaign = userSpecificCampaigns?.data;
+
+  const shareUrl = `${getBaseUrl()}/community/public/campaign/${campaign?.slug}?referral-code=${endUser?.referralCode}`;
+
+  const shareOnWhatsApp = () => {
+    const url = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
+  };
+
+  const shareOnX = () => {
+    const text = `Check out this campaign: ${campaign?.name}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
+  };
+
+  const shareOnLinkedIn = () => {
+    const url = `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
+  };
 
   // const campaigns = [
   //   {
@@ -83,6 +106,48 @@ const CampaignDetails = () => {
             </div>
           </div>
 
+          {/* Invite Widget */}
+          <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
+            <div className="flex gap-2 rounded-lg bg-[#F8FAFB] p-3 text-xs text-[#6B6B6B]">
+              <span className="text-yellow-500">💡</span>
+              <p>
+                <span className="text-[#12AA5B]">Hint:</span> Invite others. Earn XP when you invite
+                people to donate to this campaign.
+              </p>
+            </div>
+
+            <div className="space-y-2.5">
+              <Button
+                onClick={() => shareOnWhatsApp()}
+                variant="outline"
+                className="h-10 w-full justify-start gap-3 rounded-[10px] border-[#EFEFEF] text-sm font-normal text-gray-600"
+              >
+                <WhatsappLogoIcon size={20} className="text-[#25D366]" weight="fill" /> Share on
+                Whatsapp
+              </Button>
+              <Button
+                onClick={() => shareOnLinkedIn()}
+                variant="outline"
+                className="h-10 w-full justify-start gap-3 rounded-[10px] border-[#EFEFEF] text-sm font-normal text-gray-600"
+              >
+                <LinkedinLogoIcon size={20} className="text-[#0077B5]" weight="fill" /> Share on
+                Linkedin
+              </Button>
+              <Button
+                onClick={() => shareOnX()}
+                variant="outline"
+                className="h-10 w-full justify-start gap-3 rounded-[10px] border-[#EFEFEF] text-sm font-normal text-gray-600"
+              >
+                <XLogoIcon size={20} className="text-black" weight="fill" /> Share on X
+              </Button>
+              {/* <Button
+                variant="outline"
+                className="h-10 w-full justify-center gap-2 rounded-[10px] border-[#EFEFEF] text-sm font-medium text-[#1E1F24]"
+              >
+                <Plus size={16} /> Add Social Links
+              </Button> */}
+            </div>
+          </div>
           {/* Invite Widget */}
           {/* <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
             <Button className="h-12 w-full justify-start gap-3 rounded-[10px] border border-[#EFEFEF] bg-white text-base font-normal text-[#000000] hover:bg-gray-50">
@@ -235,7 +300,7 @@ const CampaignDetails = () => {
               >
                 Campaign Information
               </button>
-              <button
+              {/* <button
                 onClick={() => setTab("completed")}
                 className={`flex cursor-pointer items-center gap-1.5 pb-1 text-sm leading-[155%] tracking-[-2%] transition-all ${
                   tab === "completed"
@@ -244,7 +309,7 @@ const CampaignDetails = () => {
                 }`}
               >
                 Members <CaretDownIcon size={16} className="" />
-              </button>
+              </button> */}
             </div>
 
             <div className="max-w-186.5 p-4">
@@ -252,7 +317,7 @@ const CampaignDetails = () => {
                 {campaign?.description}
               </p>
 
-              <div className="flex items-center justify-start gap-3 text-[#6B6B6B]">
+              {/* <div className="flex items-center justify-start gap-3 text-[#6B6B6B]">
                 <button className="flex items-center gap-1 hover:text-[#12AA5B]">
                   <ChatCircleIcon size={20} />
                 </button>
@@ -262,7 +327,7 @@ const CampaignDetails = () => {
                 <button className="flex items-center gap-1 hover:text-blue-500">
                   <ShareFatIcon size={20} />
                 </button>
-              </div>
+              </div> */}
             </div>
           </div>
 

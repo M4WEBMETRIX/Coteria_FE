@@ -47,7 +47,7 @@ const CommunityFeed = () => {
   const user = data?.data;
   // console.log("community campaigns", communityCampaigns);
 
-  const shareUrl = `${getBaseUrl()}/community/public/${community?.data?.slug}/${community?.data?.id}`;
+  const shareUrl = `${getBaseUrl()}/community/public/${community?.data?.slug}/${community?.data?.id}?referral-code=${user?.referralCode}`;
 
   const shareOnWhatsApp = () => {
     const url = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;

@@ -47,6 +47,7 @@ export function DonationModal({
   componentCampaignId?: string;
 }) {
   const [userId] = useQueryState("userId");
+  const [referralCode] = useQueryState("referral-code");
   const navigate = useNavigate();
   const { campaignId } = useParams();
 
@@ -100,6 +101,7 @@ export function DonationModal({
       // amountCents: values.amount * 100,
       amountCents: Number((values.amount * 100).toFixed(0)),
       currency: currency || "CAD",
+      ...(referralCode && { referralCode: referralCode }),
       ...(userId || endUserId
         ? { donorUserId: userId || endUserId }
         : { donorEmail: values.donorEmail }),

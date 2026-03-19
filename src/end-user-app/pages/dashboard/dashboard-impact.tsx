@@ -1,7 +1,13 @@
 import { Button } from "@/components/ui/button";
-import { CaretRightIcon, MapPin, Trophy } from "@phosphor-icons/react";
+import { CaretRightIcon, MapPin, UserIcon } from "@phosphor-icons/react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
-import { useGetImpactScore } from "@/services/generics/user-generics/user-hooks";
+import {
+  useGetEndUserProfile,
+  useGetImpactLeaderboard,
+  useGetImpactScore,
+} from "@/services/generics/user-generics/user-hooks";
+import { getBaseUrl } from "@/lib/utils";
+import { useState } from "react";
 
 // const directReferrals = [
 //   {
@@ -47,11 +53,26 @@ import { useGetImpactScore } from "@/services/generics/user-generics/user-hooks"
 //   },
 // ];
 
-const directReferrals: any = [];
-
 const DashboardImpact = () => {
+  const [copied, setCopied] = useState(false);
   const { data: impactScore } = useGetImpactScore();
+  const { data: impactLeaderboard } = useGetImpactLeaderboard();
+
+  const { data } = useGetEndUserProfile();
+
+  const endUser: any = data?.data;
+
+  const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${endUser?.referralCode}`;
+
   console.log("impactScore", impactScore);
+  console.log("impactLeaderboard", impactLeaderboard);
+  const directReferrals: any = impactLeaderboard?.data?.items;
+
+  const handleCopyLink = () => {
+    navigator.clipboard.writeText(inviteLink);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <div className="w-full space-y-8">
@@ -73,20 +94,23 @@ const DashboardImpact = () => {
           {/* Referred Donations Card */}
           <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
             <div className="space-y-1">
-              <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">CA$0</h3>
+              <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">
+                CA${(impactScore?.data?.totalDonatedCents / 100)?.toLocaleString()}
+              </h3>
               <p className="text-2xl leading-[150%] font-normal text-[#888787]">
                 Referred Donations
               </p>
             </div>
-            <Button className="h-14 w-full max-w-102.75 justify-center rounded-[20px] border border-[#BDFFCA] bg-[#DCFFE3] text-lg leading-[150%] font-medium text-[#02B128] hover:bg-[#d0fbe4]">
+            {/* <Button className="h-14 w-full max-w-102.75 justify-center rounded-[20px] border border-[#BDFFCA] bg-[#DCFFE3] text-lg leading-[150%] font-medium text-[#02B128] hover:bg-[#d0fbe4]">
               <div className="flex items-center gap-4">
                 <Trophy size={24} weight="fill" />
                 Reach Milestones
                 <CaretRightIcon size={24} className="ml-2" />
               </div>
-            </Button>
+            </Button> */}
             <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-              0 referrals away from reaching the next level
+              You have impact score of {impactScore?.data?.totalScore}
+              {/* 0 referrals away from reaching the next level */}
             </p>
           </div>
 
@@ -94,13 +118,15 @@ const DashboardImpact = () => {
           <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
             <div className="space-y-1">
               <div className="flex items-center gap-2">
-                <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">0</h3>
+                <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">
+                  {impactScore?.data?.referralCount?.toLocaleString()}
+                </h3>
                 <p className="text-2xl leading-[150%] font-normal text-[#888787]">
                   People Referred
                 </p>
               </div>
             </div>
-            <div className="space-y-1">
+            {/* <div className="space-y-1">
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
                 <div className="h-full w-[0%] rounded-full bg-[#12AA5B]" />
               </div>
@@ -108,12 +134,15 @@ const DashboardImpact = () => {
             <div className="flex items-center justify-between text-2xl leading-[150%] font-normal text-[#888787]">
               <span className="flex items-center gap-6">
                 Amplifier Badge Earned
-                {/* + $280 <span className="text-gray-400">Bonus Earned</span> */}
               </span>
               <span>0 Days</span>
-            </div>
-            <Button className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]">
-              Refer More Family <CaretRightIcon className="ml-2 h-4 w-4" />
+            </div> */}
+            <Button
+              onClick={handleCopyLink}
+              className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]"
+            >
+              {copied ? "Referral Link Copied to clipboard" : "Refer More Family"}
+              {!copied && <CaretRightIcon className="ml-2 h-4 w-4" />}
             </Button>
           </div>
         </div>
@@ -142,50 +171,58 @@ const DashboardImpact = () => {
               <div className="p-6">
                 {directReferrals?.map((referral: any) => (
                   <div
-                    key={referral.id}
+                    key={referral?.id}
                     className={`flex items-center justify-between border-b py-6 last:border-b-0`}
                   >
                     <div className="flex items-start gap-4">
                       <div
-                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
+                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral?.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
                       >
-                        {referral.avatar ? (
+                        {referral?.avatar ? (
                           <img
-                            src={referral.avatar}
-                            alt={referral.name}
+                            src={referral?.avatar}
+                            alt={referral?.donorName}
                             className="h-full w-full object-cover"
                           />
                         ) : (
-                          <div className="h-full w-full rounded-full bg-[#FFD3D8]" />
+                          <div className="flex h-full w-full items-center justify-center rounded-full bg-[#FFD3D8]">
+                            <UserIcon size={24} color="#000000" />
+                          </div>
                         )}
-                        {referral.id === 1 && (
+                        {referral?.id === 1 && (
                           <div className="absolute -right-1 -bottom-1">
                             {/* Status dot or icon if needed */}
                           </div>
                         )}
                       </div>
-                      <div className="space-y-1">
+                      <div className="space-y-0">
                         <div className="flex items-center gap-2">
-                          <p className="text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
-                            {referral.name}
+                          <p className="line-clamp-1 text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
+                            {referral?.donorName}
                           </p>
-                          {referral.location && (
+
+                          {referral?.location && (
                             <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
                               <MapPin size={16} weight="fill" className="text-gray-400" />
-                              {referral.location}
+                              {referral?.location}
                             </div>
                           )}
-                          {referral.status && (
+                          {referral?.status && (
                             <span
-                              className={`rounded px-2 py-0.5 text-xs font-normal ${referral.status.color}`}
+                              className={`rounded px-2 py-0.5 text-xs font-normal ${referral?.status?.color}`}
                             >
-                              {referral.status.label}
+                              {referral?.status?.label}
                             </span>
                           )}
                         </div>
-                        {referral.subText && (
+                        {referral?.donationCount && (
+                          <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
+                            Donation count: {referral?.donationCount}
+                          </div>
+                        )}
+                        {referral?.subText && (
                           <div className="flex items-center gap-2 text-sm text-gray-500">
-                            {referral.referredUsers && (
+                            {referral?.referredUsers && (
                               <div className="flex -space-x-2">
                                 {[1, 2, 3].map((i) => (
                                   <div
@@ -196,9 +233,9 @@ const DashboardImpact = () => {
                               </div>
                             )}
                             <p className="text-base leading-[150%] font-normal text-[#888787]">
-                              {referral.id === 1
-                                ? `${referral.boosts} Boosts D234`
-                                : referral.id === 3
+                              {referral?.id === 1
+                                ? `${referral?.boosts} Boosts D234`
+                                : referral?.id === 3
                                   ? "CA$0 referred"
                                   : "CA$0 referred"}
                             </p>
@@ -209,17 +246,18 @@ const DashboardImpact = () => {
 
                     <div className="text-right">
                       <p
-                        className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral.id === 1 || referral.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
+                        className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral?.id === 1 || referral?.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
                       >
-                        ${referral.amount.toLocaleString()}
+                        ${(referral?.totalScore / 100)?.toLocaleString()}
                         {/* <CaretRightIcon size={14} color="#000000" /> */}
                       </p>
                       <p className="text-sm font-medium text-[#888787]">
-                        {referral.id === 1
+                        Referred {referral?.referralCount?.toLocaleString()} Friends
+                        {/* {referral?.id === 1
                           ? "0 Boosts"
-                          : referral.id === 3
+                          : referral?.id === 3
                             ? "0 Friends Referred"
-                            : "Referred 0 Friends"}
+                            : "Referred 0 Friends"} */}
                       </p>
                     </div>
                   </div>
@@ -227,7 +265,7 @@ const DashboardImpact = () => {
               </div>
             )}
             {/* Volunteer Highlight Card */}
-            <div className="space-y-4 rounded-b-[10px] border-t border-t-[#F6F6F6] bg-[#EEFFF1] p-6">
+            {/* <div className="space-y-4 rounded-b-[10px] border-t border-t-[#F6F6F6] bg-[#EEFFF1] p-6">
               <div className="flex items-start gap-4">
                 <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-200">
                   <img
@@ -255,7 +293,7 @@ const DashboardImpact = () => {
               <p className="text-base leading-[150%] font-normal text-[#595959]">
                 — Liz Jacob - Volunteer.
               </p>
-            </div>
+            </div> */}
           </div>
         </div>
       </div>
