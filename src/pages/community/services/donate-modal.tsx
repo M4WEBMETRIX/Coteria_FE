@@ -97,12 +97,12 @@ export function DonationModal({
 
   const successUrl =
     userId || endUserId
-      ? `${getBaseUrl()}/user/donation-success`
-      : `${getBaseUrl()}/campaign/public/donation-success`;
+      ? `${getBaseUrl({ target: "donor" })}/user/donation-success`
+      : `${getBaseUrl({ target: "donor" })}/campaign/public/donation-success`;
   const cancelUrl =
     userId || endUserId
-      ? `${getBaseUrl()}/user/dashboard?tab=community`
-      : `${getBaseUrl()}/community/public/campaign/${passedID}`;
+      ? `${getBaseUrl({ target: "donor" })}/user/dashboard?tab=community`
+      : `${getBaseUrl({ target: "donor" })}/community/public/campaign/${passedID}`;
 
   const onSubmit = (values: FormValues) => {
     const payload = {

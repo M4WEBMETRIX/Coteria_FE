@@ -66,13 +66,13 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
 
   const handleActivate = () => {
     activateMutate({
-      successUrl: `${getBaseUrl()}/settings?tab=billing-integration`,
+      successUrl: `${getBaseUrl({ target: "org" })}/settings?tab=billing-integration`,
     });
   };
 
   const handleCancel = () => {
     cancelMutate({
-      returnUrl: `${getBaseUrl()}/settings?tab=billing-integration`,
+      returnUrl: `${getBaseUrl({ target: "org" })}/settings?tab=billing-integration`,
     });
   };
 
@@ -323,7 +323,7 @@ export function ChangeBillingPopover({
     const payload = {
       planCode: billingCode,
       billingInterval: value,
-      returnUrl: `${getBaseUrl()}/settings?tab=billing-integration`,
+      returnUrl: `${getBaseUrl({ target: "org" })}/settings?tab=billing-integration`,
     };
 
     mutate(payload);

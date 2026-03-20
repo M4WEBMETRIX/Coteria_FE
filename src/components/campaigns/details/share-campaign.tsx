@@ -20,7 +20,7 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug, campaign }: a
   console.log(communitySlug, communityId);
   // const communityUrl = `${getBaseUrl()}/community/public/${communitySlug}/${communityId}`;
   // const shareUrl = communityId ? communityUrl : campaignUrl;
-  const campaignUrl = `${getBaseUrl()}/community/public/campaign/${campaignSlug}`;
+  const campaignUrl = `${getBaseUrl({ target: "donor" })}/community/public/campaign/${campaignSlug}`;
   const shareUrl = campaignUrl;
 
   // const copyLink = () => {

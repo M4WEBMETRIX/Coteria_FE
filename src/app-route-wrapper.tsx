@@ -18,7 +18,7 @@ function AppRoutesWrapper() {
 
   useEffect(() => {
     if (subdomain?.toLowerCase() === "donor-stage" && !location.pathname.startsWith("/user")) {
-      navigate(`/user${location.pathname}`, { replace: true });
+      navigate(`/${location.pathname}`, { replace: true });
     }
 
     if (subdomain?.toLowerCase() === "org-stage" && location.pathname.startsWith("/user")) {

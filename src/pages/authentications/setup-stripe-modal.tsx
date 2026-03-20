@@ -23,8 +23,8 @@ export function StripeOnboardingModal({
 
   const handleConnectStripe = () => {
     connectStripeMutate({
-      returnUrl: `${getBaseUrl()}/community`,
-      refreshUrl: `${getBaseUrl()}/community`,
+      returnUrl: `${getBaseUrl({ target: "org" })}/community`,
+      refreshUrl: `${getBaseUrl({ target: "org" })}/community`,
     });
   };
 

@@ -44,7 +44,7 @@ const CampaignDetails = () => {
 
   const campaign = userSpecificCampaigns?.data;
 
-  const shareUrl = `${getBaseUrl()}/community/public/campaign/${campaign?.slug}?referral-code=${endUser?.referralCode}`;
+  const shareUrl = `${getBaseUrl({ target: "donor" })}/community/public/campaign/${campaign?.slug}?referral-code=${endUser?.referralCode}`;
 
   const shareOnWhatsApp = () => {
     const url = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;

@@ -276,7 +276,7 @@ export const useCreateInviteToCommunity = (id: string | undefined) => {
   });
 };
 
-export const useCreateShortenedInviteToCommunity = () => {
+export const useCreateShortenedUrl = () => {
   //   const queryClient = useQueryClient();
 
   const URL = `/url-short-links`;

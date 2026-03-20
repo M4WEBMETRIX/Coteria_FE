@@ -15,7 +15,51 @@ export function maskEmail(email: string) {
   return `${visible}***@${domain}`;
 }
 
-export const getBaseUrl = () => window.location.origin;
+// export const getBaseUrl = () => window.location.origin;
+type AppTarget = "org" | "donor";
+type AppContext = "org" | "donor" | "unknown";
+
+interface GetBaseUrlOptions {
+  target?: AppTarget; // where you want to go
+  fallbackToCurrent?: boolean; // optional fallback
+}
+
+export const getBaseUrl = ({
+  target,
+  fallbackToCurrent = false,
+}: GetBaseUrlOptions = {}): string => {
+  const ORG = import.meta.env.VITE_ORG_BASE_URL;
+  const DONOR = import.meta.env.VITE_DONOR_BASE_URL;
+
+  if (!ORG || !DONOR) {
+    throw new Error("Missing VITE_ORG_BASE_URL or VITE_DONOR_BASE_URL");
+  }
+
+  // detect current app safely
+  let current: AppContext = "unknown";
+
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+
+    if (host.includes("org")) current = "org";
+    else if (host.includes("donor")) current = "donor";
+  }
+
+  //  1. If explicit target is provided → ALWAYS use it
+  if (target) {
+    return target === "org" ? ORG : DONOR;
+  }
+
+  //  2. If fallback enabled → use current app
+  if (fallbackToCurrent) {
+    if (current === "org") return ORG;
+    if (current === "donor") return DONOR;
+  }
+
+  // 3. Edge cases (portal, vercel, localhost, unknown)
+  // default to ORG
+  return ORG;
+};
 
 export const formatFullDate = (dateString: string): string => {
   return new Date(dateString).toLocaleDateString("en-US", {

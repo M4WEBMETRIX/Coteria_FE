@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
-import { CheckIcon, CopyIcon, MapPin, UserIcon } from "@phosphor-icons/react";
+// import { Button } from "@/components/ui/button";
+import { MapPin, UserIcon } from "@phosphor-icons/react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import {
   useGetEndUserProfile,
@@ -7,9 +7,11 @@ import {
   useGetImpactScore,
 } from "@/services/generics/user-generics/user-hooks";
 import { getBaseUrl } from "@/lib/utils";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DashboardImpactSkeleton from "./impact-skeleton";
 import ManagePagination from "@/components/Manage-pagination";
+import { ShareDialog } from "./share-modal";
+import { useCreateShortenedUrl } from "@/services/generics/hooks";
 
 // const directReferrals = [
 //   {
@@ -56,7 +58,7 @@ import ManagePagination from "@/components/Manage-pagination";
 // ];
 
 const DashboardImpact = () => {
-  const [copied, setCopied] = useState(false);
+  // const [copied, setCopied] = useState(false);
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(10);
   // const { data, isPending } = useGetUserCommunities(page, limit);
@@ -66,10 +68,21 @@ const DashboardImpact = () => {
     limit
   );
   const { data: profileData, isPending: profileLoading } = useGetEndUserProfile();
+  const {
+    mutate: generateShortenedReferral,
+    isPending: isPendingShortened,
+    data: dataShortened,
+  } = useCreateShortenedUrl();
 
   const endUser: any = profileData?.data;
 
-  const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${endUser?.referralCode}`;
+  const inviteLink = `${getBaseUrl({ target: "donor" })}/user/signup?referral-code=${endUser?.referralCode}`;
+
+  useEffect(() => {
+    if (inviteLink) {
+      generateShortenedReferral({ Url: inviteLink });
+    }
+  }, [inviteLink]);
 
   const directReferrals: any = impactLeaderboard?.data?.items;
 
@@ -77,69 +90,64 @@ const DashboardImpact = () => {
   const totalItems =
     impactLeaderboard?.data?.totalCount || impactLeaderboard?.data?.totalItems || 0;
 
-  const handleCopyLink = () => {
-    navigator.clipboard.writeText(inviteLink);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  };
-
   const isLoading = scoreLoading || leaderboardLoading || profileLoading;
 
   if (isLoading) return <DashboardImpactSkeleton />;
 
   return (
-    <div className="w-full space-y-8">
-      <div className="flex w-full items-center justify-center">
-        <div className="max-w-159.5 gap-4 space-y-1 text-center">
-          <h2 className="text-center text-[32px] leading-[100%] font-bold tracking-[0%] text-[#000000]">
-            Referral Lineage
-          </h2>
-          <div className="w-full">
-            <p className="text-2xl leading-[30.92px] font-normal tracking-[0%] text-[#82828A]">
-              See how your referrals have spread and the impact they have inspired.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <div className="rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] p-6">
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-          {/* Referred Donations Card */}
-          <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
-            <div className="space-y-1">
-              <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">
-                CA${(impactScore?.data?.totalDonatedCents / 100)?.toLocaleString()}
-              </h3>
-              <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-                Referred Donations
+    <>
+      <div className="w-full space-y-8">
+        <div className="flex w-full items-center justify-center">
+          <div className="max-w-159.5 gap-4 space-y-1 text-center">
+            <h2 className="text-center text-[32px] leading-[100%] font-bold tracking-[0%] text-[#000000]">
+              Referral Lineage
+            </h2>
+            <div className="w-full">
+              <p className="text-2xl leading-[30.92px] font-normal tracking-[0%] text-[#82828A]">
+                See how your referrals have spread and the impact they have inspired.
               </p>
             </div>
-            {/* <Button className="h-14 w-full max-w-102.75 justify-center rounded-[20px] border border-[#BDFFCA] bg-[#DCFFE3] text-lg leading-[150%] font-medium text-[#02B128] hover:bg-[#d0fbe4]">
+          </div>
+        </div>
+
+        <div className="rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] p-6">
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+            {/* Referred Donations Card */}
+            <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
+              <div className="space-y-1">
+                <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">
+                  CA${(impactScore?.data?.totalDonatedCents / 100)?.toLocaleString()}
+                </h3>
+                <p className="text-2xl leading-[150%] font-normal text-[#888787]">
+                  Referred Donations
+                </p>
+              </div>
+              {/* <Button className="h-14 w-full max-w-102.75 justify-center rounded-[20px] border border-[#BDFFCA] bg-[#DCFFE3] text-lg leading-[150%] font-medium text-[#02B128] hover:bg-[#d0fbe4]">
               <div className="flex items-center gap-4">
                 <Trophy size={24} weight="fill" />
                 Reach Milestones
                 <CaretRightIcon size={24} className="ml-2" />
               </div>
             </Button> */}
-            <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-              You have impact score of {impactScore?.data?.totalScore}
-              {/* 0 referrals away from reaching the next level */}
-            </p>
-          </div>
-
-          {/* People Referred Card */}
-          <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">
-                  {impactScore?.data?.referralCount?.toLocaleString()}
-                </h3>
-                <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-                  People Referred
-                </p>
-              </div>
+              <p className="text-2xl leading-[150%] font-normal text-[#888787]">
+                You have impact score of {impactScore?.data?.totalScore}
+                {/* 0 referrals away from reaching the next level */}
+              </p>
             </div>
-            {/* <div className="space-y-1">
+
+            {/* People Referred Card */}
+            <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
+              <div className="space-y-1">
+                <div className="flex items-center gap-2">
+                  <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">
+                    {impactScore?.data?.referralCount?.toLocaleString()}
+                  </h3>
+                  <p className="text-2xl leading-[150%] font-normal text-[#888787]">
+                    People Referred
+                  </p>
+                </div>
+              </div>
+              {/* <div className="space-y-1">
               <div className="h-2 w-full overflow-hidden rounded-full bg-gray-100">
                 <div className="h-full w-[0%] rounded-full bg-[#12AA5B]" />
               </div>
@@ -150,153 +158,143 @@ const DashboardImpact = () => {
               </span>
               <span>0 Days</span>
             </div> */}
-            <Button
-              onClick={handleCopyLink}
-              className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]"
-            >
-              {copied ? "Referral Link Copied" : "Copy Referral Link"}
-              {copied ? (
-                <CheckIcon className="ml-1 h-6 w-6" />
-              ) : (
-                <CopyIcon className="ml-1 h-6 w-6" />
-              )}
-            </Button>
+              <ShareDialog isPending={isPendingShortened} url={dataShortened?.data?.short_url} />
+            </div>
           </div>
-        </div>
 
-        <div className="mt-10 space-y-6">
-          <h3 className="text-[30px] leading-[150%] font-medium tracking-[0%] text-[#000000]">
-            Direct Referrals
-          </h3>
-          <div className="rounded-[10px] border border-[#ECEFF3] bg-white">
-            {directReferrals?.length === 0 ? (
-              <div className="mt-6 flex h-[25vh] flex-col items-center justify-center">
-                <img
-                  src={EmptyCampaigns}
-                  alt="empty-campaigns"
-                  className="mb-3 h-[72px] w-[72px]"
-                />
-                <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
-                  No referrals yet.
-                </p>
+          <div className="mt-10 space-y-6">
+            <h3 className="text-[30px] leading-[150%] font-medium tracking-[0%] text-[#000000]">
+              Direct Referrals
+            </h3>
+            <div className="rounded-[10px] border border-[#ECEFF3] bg-white">
+              {directReferrals?.length === 0 ? (
+                <div className="mt-6 flex h-[25vh] flex-col items-center justify-center">
+                  <img
+                    src={EmptyCampaigns}
+                    alt="empty-campaigns"
+                    className="mb-3 h-[72px] w-[72px]"
+                  />
+                  <p className="trackin-[-2%] pb-2 text-center text-base leading-6 font-semibold text-[#1E1F24]">
+                    No referrals yet.
+                  </p>
 
-                <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
-                  When you refer someone, they will show up here.
-                </p>
-              </div>
-            ) : (
-              <div className="p-6">
-                {directReferrals?.map((referral: any) => (
-                  <div
-                    key={referral?.id}
-                    className={`flex items-center justify-between border-b py-6 last:border-b-0`}
-                  >
-                    <div className="flex items-start gap-4">
-                      <div
-                        className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral?.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
-                      >
-                        {referral?.avatar ? (
-                          <img
-                            src={referral?.avatar}
-                            alt={referral?.donorName}
-                            className="h-full w-full object-cover"
-                          />
-                        ) : (
-                          <div className="flex h-full w-full items-center justify-center rounded-full bg-[#FFD3D8]">
-                            <UserIcon size={24} color="#000000" />
-                          </div>
-                        )}
-                        {referral?.id === 1 && (
-                          <div className="absolute -right-1 -bottom-1">
-                            {/* Status dot or icon if needed */}
-                          </div>
-                        )}
-                      </div>
-                      <div className="space-y-0">
-                        <div className="flex items-center gap-2">
-                          <p className="line-clamp-1 text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
-                            {referral?.donorName}
-                          </p>
-
-                          {referral?.location && (
-                            <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
-                              <MapPin size={16} weight="fill" className="text-gray-400" />
-                              {referral?.location}
+                  <p className="max-w-[552px] pb-6 text-center text-sm leading-5 font-medium tracking-[-1%] text-[#8B8D98]">
+                    When you refer someone, they will show up here.
+                  </p>
+                </div>
+              ) : (
+                <div className="p-6">
+                  {directReferrals?.map((referral: any) => (
+                    <div
+                      key={referral?.id}
+                      className={`flex items-center justify-between border-b py-6 last:border-b-0`}
+                    >
+                      <div className="flex items-start gap-4">
+                        <div
+                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral?.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
+                        >
+                          {referral?.avatar ? (
+                            <img
+                              src={referral?.avatar}
+                              alt={referral?.donorName}
+                              className="h-full w-full object-cover"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center rounded-full bg-[#FFD3D8]">
+                              <UserIcon size={24} color="#000000" />
                             </div>
                           )}
-                          {referral?.status && (
-                            <span
-                              className={`rounded px-2 py-0.5 text-xs font-normal ${referral?.status?.color}`}
-                            >
-                              {referral?.status?.label}
-                            </span>
+                          {referral?.id === 1 && (
+                            <div className="absolute -right-1 -bottom-1">
+                              {/* Status dot or icon if needed */}
+                            </div>
                           )}
                         </div>
-                        {referral?.donationCount && (
-                          <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
-                            Donation count: {referral?.donationCount}
-                          </div>
-                        )}
-                        {referral?.subText && (
-                          <div className="flex items-center gap-2 text-sm text-gray-500">
-                            {referral?.referredUsers && (
-                              <div className="flex -space-x-2">
-                                {[1, 2, 3].map((i) => (
-                                  <div
-                                    key={i}
-                                    className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
-                                  />
-                                ))}
+                        <div className="space-y-0">
+                          <div className="flex items-center gap-2">
+                            <p className="line-clamp-1 text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
+                              {referral?.donorName}
+                            </p>
+
+                            {referral?.location && (
+                              <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
+                                <MapPin size={16} weight="fill" className="text-gray-400" />
+                                {referral?.location}
                               </div>
                             )}
-                            <p className="text-base leading-[150%] font-normal text-[#888787]">
-                              {referral?.id === 1
-                                ? `${referral?.boosts} Boosts D234`
-                                : referral?.id === 3
-                                  ? "CA$0 referred"
-                                  : "CA$0 referred"}
-                            </p>
+                            {referral?.status && (
+                              <span
+                                className={`rounded px-2 py-0.5 text-xs font-normal ${referral?.status?.color}`}
+                              >
+                                {referral?.status?.label}
+                              </span>
+                            )}
                           </div>
-                        )}
+                          {referral?.donationCount && (
+                            <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
+                              Donation count: {referral?.donationCount}
+                            </div>
+                          )}
+                          {referral?.subText && (
+                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                              {referral?.referredUsers && (
+                                <div className="flex -space-x-2">
+                                  {[1, 2, 3].map((i) => (
+                                    <div
+                                      key={i}
+                                      className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
+                                    />
+                                  ))}
+                                </div>
+                              )}
+                              <p className="text-base leading-[150%] font-normal text-[#888787]">
+                                {referral?.id === 1
+                                  ? `${referral?.boosts} Boosts D234`
+                                  : referral?.id === 3
+                                    ? "CA$0 referred"
+                                    : "CA$0 referred"}
+                              </p>
+                            </div>
+                          )}
+                        </div>
                       </div>
-                    </div>
 
-                    <div className="text-right">
-                      <p
-                        className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral?.id === 1 || referral?.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
-                      >
-                        ${(referral?.totalScore / 100)?.toLocaleString()}
-                        {/* <CaretRightIcon size={14} color="#000000" /> */}
-                      </p>
-                      <p className="text-sm font-medium text-[#888787]">
-                        Referred {referral?.referralCount?.toLocaleString()} Friends
-                        {/* {referral?.id === 1
+                      <div className="text-right">
+                        <p
+                          className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral?.id === 1 || referral?.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
+                        >
+                          ${(referral?.totalScore / 100)?.toLocaleString()}
+                          {/* <CaretRightIcon size={14} color="#000000" /> */}
+                        </p>
+                        <p className="text-sm font-medium text-[#888787]">
+                          Referred {referral?.referralCount?.toLocaleString()} Friends
+                          {/* {referral?.id === 1
                           ? "0 Boosts"
                           : referral?.id === 3
                             ? "0 Friends Referred"
                             : "Referred 0 Friends"} */}
-                      </p>
+                        </p>
+                      </div>
                     </div>
-                  </div>
-                ))}
+                  ))}
 
-                {!leaderboardLoading && directReferrals?.length > 0 && (
-                  <ManagePagination
-                    totalItems={totalItems}
-                    totalPages={totalPages}
-                    currentPage={page}
-                    setCurrentPage={setPage}
-                    itemsPerPage={limit}
-                    setItemsPerPage={(newLimit) => {
-                      setLimit(newLimit);
-                      setPage(1); // Reset to first page when changing limit
-                    }}
-                  />
-                )}
-              </div>
-            )}
-            {/* Volunteer Highlight Card */}
-            {/* <div className="space-y-4 rounded-b-[10px] border-t border-t-[#F6F6F6] bg-[#EEFFF1] p-6">
+                  {!leaderboardLoading && directReferrals?.length > 0 && (
+                    <ManagePagination
+                      totalItems={totalItems}
+                      totalPages={totalPages}
+                      currentPage={page}
+                      setCurrentPage={setPage}
+                      itemsPerPage={limit}
+                      setItemsPerPage={(newLimit) => {
+                        setLimit(newLimit);
+                        setPage(1); // Reset to first page when changing limit
+                      }}
+                    />
+                  )}
+                </div>
+              )}
+              {/* Volunteer Highlight Card */}
+              {/* <div className="space-y-4 rounded-b-[10px] border-t border-t-[#F6F6F6] bg-[#EEFFF1] p-6">
               <div className="flex items-start gap-4">
                 <div className="h-12 w-12 shrink-0 overflow-hidden rounded-full bg-gray-200">
                   <img
@@ -325,10 +323,11 @@ const DashboardImpact = () => {
                 — Liz Jacob - Volunteer.
               </p>
             </div> */}
+            </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
 

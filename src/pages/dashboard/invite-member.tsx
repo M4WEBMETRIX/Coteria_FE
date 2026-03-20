@@ -6,10 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowsClockwiseIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useParams } from "react-router-dom";
-import {
-  useCreateInviteToCommunity,
-  useCreateShortenedInviteToCommunity,
-} from "@/services/generics/hooks";
+import { useCreateInviteToCommunity, useCreateShortenedUrl } from "@/services/generics/hooks";
 import { getBaseUrl } from "@/lib/utils";
 
 const InviteMembersModal = ({
@@ -28,7 +25,7 @@ const InviteMembersModal = ({
     mutate: generateShortenedReferral,
     isPending: isPendingShortened,
     data: dataShortened,
-  } = useCreateShortenedInviteToCommunity();
+  } = useCreateShortenedUrl();
 
   // ✅ Only run when modal opens
   useEffect(() => {
@@ -37,12 +34,12 @@ const InviteMembersModal = ({
     }
   }, [open, id, generateReferral]);
 
-  const returnUrl = `${getBaseUrl()}/user/dashboard/community/${id}`;
-  const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${
+  const returnUrl = `${getBaseUrl({ target: "donor" })}/user/dashboard/community/${id}`;
+  const inviteLink = `${getBaseUrl({ target: "donor" })}/user/signup?referral-code=${
     data?.data?.code
   }&returnUrl=${returnUrl}`;
 
-  const visibleLink = `${getBaseUrl()}${dataShortened?.data?.short_url}`;
+  const visibleLink = `${getBaseUrl({ target: "donor" })}${dataShortened?.data?.short_url}`;
 
   useEffect(() => {
     if (open && inviteLink) {

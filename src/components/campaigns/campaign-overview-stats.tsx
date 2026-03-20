@@ -55,7 +55,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       {/* 1. Campaign Active - Icon: Dollar Sign in Green Circle */}
       <StatsCard
-        title="Campaign Active"
+        title="Active Campaigns"
         value={data?.activeCampaigns}
         icon={<CurrencyCircleDollarIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
@@ -79,7 +79,7 @@ const CampaignOverviewStats = ({ data }: { data: any }) => {
       />
       {/* 4. Campaign Closed - Icon: X in Green Circle */}
       <StatsCard
-        title="Campaign Closed"
+        title="Closed Campaigns"
         value={data?.completedCampaigns}
         icon={<XCircleIcon weight="fill" color={"#40C4AA"} />}
         iconBg="#E7F6EC"
