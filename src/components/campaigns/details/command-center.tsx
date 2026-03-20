@@ -56,7 +56,7 @@ const CommandCenter = ({ data }: { data: any }) => {
           </div>
 
           {/* Pulse Stats Widgets */}
-          <PulseStatsWidget />
+          <PulseStatsWidget id={data?.id} />
 
           {/* Alert Banner */}
           {/* <div className="mt-8 flex items-center justify-between rounded-[12px] border border-[#FFBE4C] bg-[#FFF6E0] px-4 py-[5.5px] text-xs leading-[150%] font-normal tracking-[2%] text-[#0D0D12]">

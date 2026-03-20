@@ -17,6 +17,7 @@ const USE_GET_CAMPAIGN_DETAILS_API = "USE_GET_CAMPAIGN_DETAILS_API";
 const USE_GET_CAMPAIGNS_STATS_API = "USE_GET_CAMPAIGNS_STATS_API";
 const USE_GET_ORGANISATION_DONATIONS_API = "USE_GET_ORGANISATION_DONATIONS_API";
 const USE_GET_ORGANISATION_DONATION_DETAILS_API = "USE_GET_ORGANISATION_DONATION_DETAILS_API";
+const USE_GET_CAMPAIGN_ENGAGEMENT_API = "USE_GET_CAMPAIGN_ENGAGEMENT_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -35,6 +36,10 @@ export const useCreateCampaign = () => {
 
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGN_DETAILS_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API],
       });
       toast.success("campaign created successfully");
     },
@@ -60,6 +65,10 @@ export const useUpdateCampaign = (id: string | number | undefined) => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGN_DETAILS_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API],
+      });
       toast.success("campaign updated successfully");
     },
     onError: (err: any) => showErrorToast(err, "Error updating campaign, please try again.!"),
@@ -84,6 +93,10 @@ export const useUpdateCampaignStatus = (id: string | number | undefined) => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGN_DETAILS_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API],
+      });
       toast.success("campaign status updated successfully");
     },
     onError: (err: any) =>
@@ -95,6 +108,15 @@ export const useCampaignDetails = (id: string | number | undefined) => {
   const URL = `/org/campaigns/${id}`;
   return useQuery({
     queryKey: [USE_GET_CAMPAIGN_DETAILS_API, id],
+    queryFn: () => getFunction(URL),
+    enabled: !!id,
+  });
+};
+
+export const useGetCampaignEngagement = (id: string | number | undefined) => {
+  const URL = `/org/campaigns/${id}/engagement`;
+  return useQuery({
+    queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API, id],
     queryFn: () => getFunction(URL),
     enabled: !!id,
   });

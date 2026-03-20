@@ -1,12 +1,33 @@
 import { Chart01Icon, ChartHistogramIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
+import { useGetCampaignEngagement } from "@/services/generics/hooks";
 
-const PulseStatsWidget = () => {
+const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
+  const { data: engagementData } = useGetCampaignEngagement(id);
+
+  console.log(engagementData, "engagementData");
+
+  //   {
+  //     "success": true,
+  //     "data": {
+  //         "campaignViews": 3,
+  //         "sharedLinkOpens": 0,
+  //         "referralClicks": 0,
+  //         "impressionsTotal": 3,
+  //         "participationDonations": 0,
+  //         "participationSharingInvites": 0,
+  //         "participationTotal": 0,
+  //         "momentumStatus": "flat",
+  //         "momentumCurrentParticipationTotal": 0,
+  //         "momentumPreviousParticipationTotal": 0
+  //     }
+  // }
+
   const stats = [
     {
       title: "Awareness",
-      value: "0",
-      badge: "0",
+      value: engagementData?.data?.campaignViews,
+      badge: engagementData?.data?.impressionsTotal,
       badgeRole: "positive", // green
       hasChartIcon: true,
       chartIcon: Chart01Icon,
@@ -16,8 +37,8 @@ const PulseStatsWidget = () => {
     },
     {
       title: "Participation",
-      value: "0",
-      badge: "0",
+      value: engagementData?.data?.participationTotal,
+      badge: engagementData?.data?.participationSharingInvites,
       badgeRole: "positive",
       hasChartIcon: true,
       chartIcon: Chart01Icon,
@@ -36,7 +57,7 @@ const PulseStatsWidget = () => {
     // },
     {
       title: "Momentum",
-      value: "Growing",
+      value: engagementData?.data?.momentumStatus,
       badge: null,
       hasChartIcon: true,
       chartIcon: ChartHistogramIcon,
@@ -63,7 +84,7 @@ const PulseStatsWidget = () => {
               {stat.value}
             </span>
 
-            {stat.badge && (
+            {(stat.badge || stat.badge === 0) && (
               <span
                 className={`rounded-full px-1.5 py-0.5 text-xs font-semibold ${
                   stat.badgeRole === "info"
