@@ -24,6 +24,7 @@ const ReportsPage = lazy(() => import("./pages/dashboard/reports-page"));
 const DonorDetailsPage = lazy(() => import("./pages/dashboard/donation-details"));
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
+import DonationSuccess from "./pages/community/services/donation-success";
 const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-detail-page"));
 const VerifyEmailPage = lazy(() => import("./pages/authentications/verify-email-page"));
 const OrgCommunityDetailPage = lazy(() => import("./pages/dashboard/org-community-detail-page"));
@@ -83,6 +84,7 @@ const AllRoutes = () => {
         {/* Public routes */}
         <Route path="community/public/:slug/:communityId" element={<CommunityPublic />} />
         <Route path="community/public/campaign/:campaignId" element={<CampaignPublic />} />
+        <Route path="campaign/public/donation-success" element={<DonationSuccess />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

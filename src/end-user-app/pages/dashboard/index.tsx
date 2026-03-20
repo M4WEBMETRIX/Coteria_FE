@@ -19,7 +19,7 @@ import DashboardImpact from "./dashboard-impact";
 import { useNavigate } from "react-router-dom";
 import { useGetEndUserProfile } from "@/services/generics/user-generics/user-hooks";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { getNameAbbrev } from "@/lib/utils";
+import { cn, getNameAbbrev } from "@/lib/utils";
 
 const TAB_VALUES = ["home", "community", "campaigns", "resources", "impact", "member"] as const;
 
@@ -56,7 +56,12 @@ const DashboardIndex = () => {
 
   return (
     <div className="flex w-full gap-4">
-      <div className="w-full py-8.5">
+      <div
+        className={cn(
+          "py-8.5",
+          activeTab === "community" || activeTab === "home" ? "w-[calc(100%-324px)]" : "w-full"
+        )}
+      >
         <nav className="mb-13.75 flex items-center justify-between">
           {!isPending && (
             <div className="space-y-0.75">

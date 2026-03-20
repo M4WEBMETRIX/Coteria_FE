@@ -106,10 +106,15 @@ export const useGetImpactScore = () => {
   });
 };
 
-export const useGetImpactLeaderboard = () => {
-  const URL = `/impact/leaderboard`;
+export const useGetImpactLeaderboard = (page?: number, limit?: number) => {
+  const queryParams = new URLSearchParams();
+  if (page) queryParams.append("page", page.toString());
+  if (limit) queryParams.append("limit", limit.toString());
+
+  const queryString = queryParams.toString();
+  const URL = `/impact/leaderboard${queryString ? `?${queryString}` : ""}`;
   return useQuery({
-    queryKey: [USE_GET_IMPACT_LEADERBOARD_API],
+    queryKey: [USE_GET_IMPACT_LEADERBOARD_API, page, limit],
     queryFn: () => getFunctionUserEnd(URL),
   });
 };

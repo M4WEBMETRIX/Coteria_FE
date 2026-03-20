@@ -284,6 +284,7 @@ const CreateCampaignModal = ({
                   <Textarea
                     id="description"
                     placeholder="Please enter description..."
+                    minLength={250}
                     maxLength={400}
                     className="min-h-[120px] resize-none pb-8"
                     value={formData.description}
@@ -298,6 +299,11 @@ const CreateCampaignModal = ({
                     {formData?.description?.length}/400
                   </div>
                 </div>
+                <p className="text-sm text-red-500">
+                  {formData?.description?.length < 250 && formData?.description?.length > 0
+                    ? "Minimum of 250 characters required"
+                    : ""}
+                </p>
               </div>
 
               {/* Goals */}

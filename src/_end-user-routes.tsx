@@ -26,6 +26,7 @@ const EditProfile = lazy(() => import("./end-user-app/pages/account-and-settings
 const CommunityPublic = lazy(() => import("./pages/community/community-public"));
 const CampaignPublic = lazy(() => import("./pages/community/campaign-public"));
 import Logo from "@/assets/icons/coterie.svg";
+import DonationSuccess from "./pages/community/services/donation-success";
 
 const EndUserRoutes = () => {
   return (
@@ -60,11 +61,13 @@ const EndUserRoutes = () => {
           <Route path="receipt-taxes" element={<ReceiptAndTaxesIndex />} />
           <Route path="account-settings" element={<AccountSettingsIndex />} />
           <Route path="account-settings/edit" element={<EditProfile />} />
+          <Route path="donation-success" element={<DonationSuccess />} />
         </Route>
 
         {/* Public routes */}
         <Route path="community/public/:slug/:communityId" element={<CommunityPublic />} />
         <Route path="community/public/campaign/:campaignId" element={<CampaignPublic />} />
+        <Route path="campaign/public/donation-success" element={<DonationSuccess />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>

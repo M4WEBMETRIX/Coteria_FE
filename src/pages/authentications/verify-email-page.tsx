@@ -28,6 +28,12 @@ const VerifyEmailPage = () => {
   const [countdown, setCountdown] = useState(0);
 
   useEffect(() => {
+    if (token) {
+      verifyEmail({ token });
+    }
+  }, [token]);
+
+  useEffect(() => {
     if (countdown > 0) {
       const timer = setTimeout(() => setCountdown(countdown - 1), 1000);
       return () => clearTimeout(timer);

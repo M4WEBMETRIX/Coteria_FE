@@ -41,7 +41,10 @@ interface CreateCommunityModalProps {
 
 const communitySchema = z.object({
   title: z.string().min(1, "Title is required").max(200, "Title must be 200 characters or less"),
-  description: z.string().min(1, "Description is required").max(400, "Max 400 characters"),
+  description: z
+    .string()
+    .min(250, "Minimum of 250 characters required")
+    .max(400, "Maximum of 400 characters"),
   visibility: z.string().min(1, "Visibility is required"),
   management: z.string().min(1, "Management preference is required"),
   logo: z
@@ -242,6 +245,7 @@ const CreateCommunityModal = ({
                       id="description"
                       placeholder="Placeholder"
                       maxLength={400}
+                      minLength={250}
                       className="h-[151px] max-h-[151px] resize-none border-[#D0D5DD] pb-8"
                       {...register("description")}
                     />

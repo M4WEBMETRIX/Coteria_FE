@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import { CaretRightIcon, MapPin, UserIcon } from "@phosphor-icons/react";
+import { CheckIcon, CopyIcon, MapPin, UserIcon } from "@phosphor-icons/react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import {
   useGetEndUserProfile,
@@ -8,6 +8,8 @@ import {
 } from "@/services/generics/user-generics/user-hooks";
 import { getBaseUrl } from "@/lib/utils";
 import { useState } from "react";
+import DashboardImpactSkeleton from "./impact-skeleton";
+import ManagePagination from "@/components/Manage-pagination";
 
 // const directReferrals = [
 //   {
@@ -55,24 +57,35 @@ import { useState } from "react";
 
 const DashboardImpact = () => {
   const [copied, setCopied] = useState(false);
-  const { data: impactScore } = useGetImpactScore();
-  const { data: impactLeaderboard } = useGetImpactLeaderboard();
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(10);
+  // const { data, isPending } = useGetUserCommunities(page, limit);
+  const { data: impactScore, isPending: scoreLoading } = useGetImpactScore();
+  const { data: impactLeaderboard, isPending: leaderboardLoading } = useGetImpactLeaderboard(
+    page,
+    limit
+  );
+  const { data: profileData, isPending: profileLoading } = useGetEndUserProfile();
 
-  const { data } = useGetEndUserProfile();
-
-  const endUser: any = data?.data;
+  const endUser: any = profileData?.data;
 
   const inviteLink = `${getBaseUrl()}/user/signup?referral-code=${endUser?.referralCode}`;
 
-  console.log("impactScore", impactScore);
-  console.log("impactLeaderboard", impactLeaderboard);
   const directReferrals: any = impactLeaderboard?.data?.items;
+
+  const totalPages = impactLeaderboard?.data?.totalPages || 1;
+  const totalItems =
+    impactLeaderboard?.data?.totalCount || impactLeaderboard?.data?.totalItems || 0;
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(inviteLink);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
+
+  const isLoading = scoreLoading || leaderboardLoading || profileLoading;
+
+  if (isLoading) return <DashboardImpactSkeleton />;
 
   return (
     <div className="w-full space-y-8">
@@ -141,8 +154,12 @@ const DashboardImpact = () => {
               onClick={handleCopyLink}
               className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]"
             >
-              {copied ? "Referral Link Copied to clipboard" : "Refer More Family"}
-              {!copied && <CaretRightIcon className="ml-2 h-4 w-4" />}
+              {copied ? "Referral Link Copied" : "Copy Referral Link"}
+              {copied ? (
+                <CheckIcon className="ml-1 h-6 w-6" />
+              ) : (
+                <CopyIcon className="ml-1 h-6 w-6" />
+              )}
             </Button>
           </div>
         </div>
@@ -262,6 +279,20 @@ const DashboardImpact = () => {
                     </div>
                   </div>
                 ))}
+
+                {!leaderboardLoading && directReferrals?.length > 0 && (
+                  <ManagePagination
+                    totalItems={totalItems}
+                    totalPages={totalPages}
+                    currentPage={page}
+                    setCurrentPage={setPage}
+                    itemsPerPage={limit}
+                    setItemsPerPage={(newLimit) => {
+                      setLimit(newLimit);
+                      setPage(1); // Reset to first page when changing limit
+                    }}
+                  />
+                )}
               </div>
             )}
             {/* Volunteer Highlight Card */}

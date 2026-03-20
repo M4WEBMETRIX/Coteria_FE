@@ -86,10 +86,19 @@ export function DonationModal({
     data,
   } = useCreateDonation(passedID);
 
+  // const successUrl =
+  //   userId || endUserId
+  //     ? `${getBaseUrl()}/user/dashboard?tab=community`
+  //     : `${getBaseUrl()}/community/public/campaign/${passedID}`;
+  // const cancelUrl =
+  //   userId || endUserId
+  //     ? `${getBaseUrl()}/user/dashboard?tab=community`
+  //     : `${getBaseUrl()}/community/public/campaign/${passedID}`;
+
   const successUrl =
     userId || endUserId
-      ? `${getBaseUrl()}/user/dashboard?tab=community`
-      : `${getBaseUrl()}/community/public/campaign/${passedID}`;
+      ? `${getBaseUrl()}/user/donation-success`
+      : `${getBaseUrl()}/campaign/public/donation-success`;
   const cancelUrl =
     userId || endUserId
       ? `${getBaseUrl()}/user/dashboard?tab=community`

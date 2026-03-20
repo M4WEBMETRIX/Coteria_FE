@@ -45,7 +45,7 @@ export const useOrganisationVerifyEmail = () => {
   return useMutation({
     mutationFn: (payload: { token: string }) => postFunction(payload, "/auth/verify-email"),
     onSuccess: () => {
-      toast.success("Please check your email for further instructions");
+      // toast.success("Please check your email for further instructions");
     },
     onError: (error) => {
       if (error?.message?.toLocaleLowerCase() === "invalid or expired token") {
@@ -92,7 +92,7 @@ export const useOrganisationResendVerificationEmail = () => {
   return useMutation({
     mutationFn: (payload: any) => postFunction(payload, "/auth/resend-verification"),
     onSuccess: () => {
-      toast.success("Please check your email for further instructions");
+      toast.success("Please check your email for verification link");
     },
     onError: (error) => {
       //   console.log("err", error);

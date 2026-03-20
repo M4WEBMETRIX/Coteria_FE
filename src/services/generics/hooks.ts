@@ -254,6 +254,23 @@ export const useCreateInviteToCommunity = (id: string | undefined) => {
   });
 };
 
+export const useCreateShortenedInviteToCommunity = () => {
+  //   const queryClient = useQueryClient();
+
+  const URL = `/url-short-links`;
+  return useMutation({
+    mutationFn: (payload: { Url: string }) => postFunction(payload, URL),
+    onSuccess: () => {
+      //   queryClient.invalidateQueries({
+      //     queryKey: [USE_GET_ALL_COMMUNITIES_API],
+      //   });
+      // toast.success("Referral code generated");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error generating referral, please try again.!"),
+  });
+};
+
 export const useGetSubscriptionPlans = () => {
   const URL = `/org/subscription`;
   return useQuery({
