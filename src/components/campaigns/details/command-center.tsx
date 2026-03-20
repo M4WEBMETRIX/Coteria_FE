@@ -52,6 +52,7 @@ const CommandCenter = ({ data }: { data: any }) => {
               communitySlug={data?.community?.slug}
               campaignSlug={data?.slug}
               communityId={data?.communityId}
+              campaign={data}
             />
           </div>
 

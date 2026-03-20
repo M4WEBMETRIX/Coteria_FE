@@ -8,10 +8,11 @@ import {
   CopyIcon,
   // EnvelopeSimpleIcon,
   WhatsappLogoIcon,
+  XLogoIcon,
 } from "@phosphor-icons/react";
 import { getBaseUrl } from "@/lib/utils";
 
-const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
+const ShareCampaign = ({ communitySlug, communityId, campaignSlug, campaign }: any) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const menuRef = useRef<any>(null);
@@ -40,6 +41,12 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
     const url = `https://wa.me/?text=${encodeURIComponent(shareUrl)}`;
     window.open(url, "_blank");
     setIsOpen(false);
+  };
+
+  const shareOnX = () => {
+    const text = `Check out this campaign: ${campaign?.name}`;
+    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(shareUrl)}`;
+    window.open(url, "_blank");
   };
 
   // const shareOnEmail = () => {
@@ -96,11 +103,7 @@ const ShareCampaign = ({ communitySlug, communityId, campaignSlug }: any) => {
                   color="text-green-600"
                   onClick={() => shareOnWhatsApp()}
                 />
-                {/* <MenuOption
-                  icon={<EnvelopeSimpleIcon size={18} />}
-                  text="Email"
-                  onClick={() => shareOnEmail()}
-                /> */}
+                <MenuOption icon={<XLogoIcon size={18} />} text="X" onClick={() => shareOnX()} />
               </ul>
             </div>
           </div>
