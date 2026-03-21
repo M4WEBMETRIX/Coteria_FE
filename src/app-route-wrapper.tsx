@@ -16,13 +16,26 @@ function AppRoutesWrapper() {
   const location = useLocation();
   const subdomain = getSubdomain();
 
+  // useEffect(() => {
+  //   if (subdomain?.toLowerCase() === "donor-stage" && !location.pathname.startsWith("/user")) {
+  //     navigate(`/${location.pathname}`, { replace: true });
+  //   }
+
+  //   if (subdomain?.toLowerCase() === "org-stage" && location.pathname.startsWith("/user")) {
+  //     navigate(location.pathname.replace("/user", ""), { replace: true });
+  //   }
+  // }, [subdomain, location.pathname, navigate]);
+
   useEffect(() => {
     if (subdomain?.toLowerCase() === "donor-stage" && !location.pathname.startsWith("/user")) {
-      navigate(`/${location.pathname}`, { replace: true });
+      const nextPath = location.pathname === "/" ? "/user" : `/user${location.pathname}`;
+
+      navigate(nextPath, { replace: true });
     }
 
     if (subdomain?.toLowerCase() === "org-stage" && location.pathname.startsWith("/user")) {
-      navigate(location.pathname.replace("/user", ""), { replace: true });
+      const nextPath = location.pathname.replace("/user", "") || "/";
+      navigate(nextPath, { replace: true });
     }
   }, [subdomain, location.pathname, navigate]);
 
