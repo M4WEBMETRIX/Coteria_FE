@@ -19,6 +19,16 @@ export const isEmailVerified = () => {
 };
 
 const ProtectedRoute = () => {
+  const getSubdomain = () => {
+    const host = window.location.hostname;
+    const parts = host.split(".");
+    return parts.length > 2 ? parts[0] : null;
+  };
+
+  const subdomain = getSubdomain();
+
+  const isDonor = subdomain?.includes("donor");
+
   const { data: userData, isLoading } = useGetOrganisationProfile();
 
   useEffect(() => {
@@ -28,7 +38,7 @@ const ProtectedRoute = () => {
   }, [userData]);
 
   if (!isAuthenticated()) {
-    return <Navigate to="/auth/login" replace />;
+    return <Navigate to={isDonor ? "/user/login" : "/auth/login"} replace />;
   }
 
   if (isLoading) {

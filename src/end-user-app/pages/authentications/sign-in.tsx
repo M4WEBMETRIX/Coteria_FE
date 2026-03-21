@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { EyeOff } from "lucide-react";
 
 import { Eye } from "@phosphor-icons/react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
+import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import UserAuthLayout from "@/end-user-app/layout/layout";
 import { useForm } from "react-hook-form";
 import z from "zod";
@@ -21,6 +21,10 @@ const loginSchema = z.object({
 });
 
 type LoginFormValues = z.infer<typeof loginSchema>;
+
+const isAuthenticated = () => {
+  return !!localStorage.getItem("userAccessToken");
+};
 
 const UserSignIn = () => {
   const navigate = useNavigate();
@@ -70,6 +74,9 @@ const UserSignIn = () => {
     userLoginMutate(data);
   };
 
+  if (isAuthenticated() && !isSuccess) {
+    return <Navigate to="/user/dashboard?tab=community" replace />;
+  }
   // useEffect(() => {
   //   if (data?.data?.requiresEmailVerification || data?.data?.emailVerified) {
   //     setShowVerification(true);

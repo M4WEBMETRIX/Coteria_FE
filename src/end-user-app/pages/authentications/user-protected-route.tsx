@@ -7,8 +7,18 @@ const isAuthenticated = () => {
 };
 
 const UserProtectedRoute = () => {
+  const getSubdomain = () => {
+    const host = window.location.hostname;
+    const parts = host.split(".");
+    return parts.length > 2 ? parts[0] : null;
+  };
+
+  const subdomain = getSubdomain();
+
+  const isDonor = subdomain?.includes("donor");
+
   if (!isAuthenticated()) {
-    return <Navigate to="/user/login" replace />;
+    return <Navigate to={isDonor ? "/user/login" : "/auth/login"} replace />;
   }
 
   return (

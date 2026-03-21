@@ -19,7 +19,7 @@ const InviteMembersModal = ({
   const { id } = useParams();
   const [copied, setCopied] = useState(false);
 
-  const { mutate: generateReferral, isPending, data } = useCreateInviteToCommunity(id);
+  const { mutate: generateReferral, isPending, data, isSuccess } = useCreateInviteToCommunity(id);
 
   const {
     mutate: generateShortenedReferral,
@@ -39,13 +39,13 @@ const InviteMembersModal = ({
     data?.data?.code
   }&returnUrl=${returnUrl}`;
 
-  const visibleLink = `${getBaseUrl({ target: "donor" })}${dataShortened?.data?.short_url}`;
+  const visibleLink = `${dataShortened?.data?.short_url}`;
 
   useEffect(() => {
-    if (open && inviteLink) {
+    if (open && inviteLink && isSuccess) {
       generateShortenedReferral({ Url: inviteLink });
     }
-  }, [open, inviteLink, generateShortenedReferral]);
+  }, [open, inviteLink, generateShortenedReferral, isSuccess]);
 
   const handleCopyLink = () => {
     navigator.clipboard.writeText(visibleLink);
