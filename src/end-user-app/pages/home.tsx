@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 const UserHome = () => {
   const navigate = useNavigate();
   useEffect(() => {
-    navigate("/user/signup");
+    navigate("/user/login");
   }, []);
   return null;
 };
