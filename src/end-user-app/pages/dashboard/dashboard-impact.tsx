@@ -7,11 +7,10 @@ import {
   useGetImpactScore,
 } from "@/services/generics/user-generics/user-hooks";
 import { getBaseUrl } from "@/lib/utils";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DashboardImpactSkeleton from "./impact-skeleton";
 import ManagePagination from "@/components/Manage-pagination";
 import { ShareDialog } from "./share-modal";
-import { useCreateShortenedUrl } from "@/services/generics/hooks";
 
 // const directReferrals = [
 //   {
@@ -68,21 +67,10 @@ const DashboardImpact = () => {
     limit
   );
   const { data: profileData, isPending: profileLoading } = useGetEndUserProfile();
-  const {
-    mutate: generateShortenedReferral,
-    isPending: isPendingShortened,
-    data: dataShortened,
-  } = useCreateShortenedUrl();
 
   const endUser: any = profileData?.data;
 
   const inviteLink = `${getBaseUrl({ target: "donor" })}/user/signup?referral-code=${endUser?.referralCode}`;
-
-  useEffect(() => {
-    if (inviteLink) {
-      generateShortenedReferral({ Url: inviteLink });
-    }
-  }, [inviteLink]);
 
   const directReferrals: any = impactLeaderboard?.data?.items;
 
@@ -158,7 +146,7 @@ const DashboardImpact = () => {
               </span>
               <span>0 Days</span>
             </div> */}
-              <ShareDialog isPending={isPendingShortened} url={dataShortened?.data?.short_url} />
+              <ShareDialog url={inviteLink} />
             </div>
           </div>
 

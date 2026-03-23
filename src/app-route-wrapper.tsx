@@ -11,6 +11,18 @@ function getSubdomain() {
   return parts.length > 2 ? parts[0] : null;
 }
 
+function isEndUserSubdomain(subdomain: string | null) {
+  if (!subdomain) return false;
+  const s = subdomain.toLowerCase();
+  return s === "donor" || s === "donor-stage";
+}
+
+function isOrgSubdomain(subdomain: string | null) {
+  if (!subdomain) return false;
+  const s = subdomain.toLowerCase();
+  return s === "org" || s === "org-stage";
+}
+
 function AppRoutesWrapper() {
   const navigate = useNavigate();
   const location = useLocation();
@@ -27,13 +39,13 @@ function AppRoutesWrapper() {
   // }, [subdomain, location.pathname, navigate]);
 
   useEffect(() => {
-    if (subdomain?.toLowerCase() === "donor-stage" && !location.pathname.startsWith("/user")) {
+    if (isEndUserSubdomain(subdomain) && !location.pathname.startsWith("/user")) {
       const nextPath = location.pathname === "/" ? "/user" : `/user${location.pathname}`;
 
       navigate(nextPath, { replace: true });
     }
 
-    if (subdomain?.toLowerCase() === "org-stage" && location.pathname.startsWith("/user")) {
+    if (isOrgSubdomain(subdomain) && location.pathname.startsWith("/user")) {
       const nextPath = location.pathname.replace("/user", "") || "/";
       navigate(nextPath, { replace: true });
     }

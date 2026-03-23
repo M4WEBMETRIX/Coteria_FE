@@ -16,19 +16,34 @@ import {
 } from "@phosphor-icons/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
+import { useCreateShortenedUrl } from "@/services/generics/hooks";
 // import { FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 
 interface ShareDialogProps {
   url: string;
-  isPending?: boolean;
 }
 
-export function ShareDialog({ url, isPending }: ShareDialogProps) {
+export function ShareDialog({ url }: ShareDialogProps) {
+  const [open, setOpen] = useState(false);
   const [copied, setCopied] = useState(false);
 
-  const encodedUrl = encodeURIComponent(url);
+  const {
+    mutate: generateShortenedReferral,
+    isPending: isPendingShortened,
+    data: dataShortened,
+  } = useCreateShortenedUrl();
+
+  useEffect(() => {
+    if (url && open) {
+      generateShortenedReferral({
+        Url: `${url}`,
+      });
+    }
+  }, [url, open]);
+
+  const encodedUrl = encodeURIComponent(dataShortened?.data?.short_url || url);
 
   const handleShareWhatsApp = () => {
     const message = `Join Coterie through my referral link.\nHere's the link: ${encodedUrl}`;
@@ -56,7 +71,7 @@ export function ShareDialog({ url, isPending }: ShareDialogProps) {
   };
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button className="h-14 w-full rounded-[20px] border border-[#BDFFCA] bg-[#12AA5B] text-lg font-medium text-white hover:bg-[#0da055]">
           Refer others
@@ -83,11 +98,11 @@ export function ShareDialog({ url, isPending }: ShareDialogProps) {
           <Label className="text-base text-[#64646E]">Invite link</Label>
 
           <div className="flex">
-            {isPending ? (
+            {isPendingShortened ? (
               <div className="h-12 flex-1 animate-pulse rounded bg-gray-200" />
             ) : (
               <Input
-                value={url}
+                value={encodedUrl}
                 readOnly
                 className="h-12 min-w-0 flex-1 rounded-r-none border border-[#F0EEF4] bg-[#F7F5F9] pr-0"
               />
