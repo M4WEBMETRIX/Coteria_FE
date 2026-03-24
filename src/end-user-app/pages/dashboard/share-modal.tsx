@@ -45,6 +45,8 @@ export function ShareDialog({ url }: ShareDialogProps) {
 
   const encodedUrl = encodeURIComponent(dataShortened?.data?.short_url || url);
 
+  const rawUrl = dataShortened?.data?.short_url || url;
+
   const handleShareWhatsApp = () => {
     const message = `Join Coterie through my referral link.\nHere's the link: ${encodedUrl}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
@@ -65,7 +67,7 @@ export function ShareDialog({ url }: ShareDialogProps) {
   };
 
   const copyToClipboard = () => {
-    navigator.clipboard.writeText(url);
+    navigator.clipboard.writeText(rawUrl);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -102,7 +104,7 @@ export function ShareDialog({ url }: ShareDialogProps) {
               <div className="h-12 flex-1 animate-pulse rounded bg-gray-200" />
             ) : (
               <Input
-                value={encodedUrl}
+                value={rawUrl}
                 readOnly
                 className="h-12 min-w-0 flex-1 rounded-r-none border border-[#F0EEF4] bg-[#F7F5F9] pr-0"
               />
