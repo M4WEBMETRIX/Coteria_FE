@@ -18,7 +18,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
-import { useCreateShortenedUrl } from "@/services/generics/hooks";
+import { useCreateShortenedUrlUserEnd } from "@/services/generics/hooks";
 // import { FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 
 interface ShareDialogProps {
@@ -33,7 +33,7 @@ export function ShareDialog({ url }: ShareDialogProps) {
     mutate: generateShortenedReferral,
     isPending: isPendingShortened,
     data: dataShortened,
-  } = useCreateShortenedUrl();
+  } = useCreateShortenedUrlUserEnd();
 
   useEffect(() => {
     if (url && open) {

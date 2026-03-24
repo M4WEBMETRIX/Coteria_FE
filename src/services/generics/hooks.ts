@@ -3,6 +3,7 @@ import { getFunction, patchFunction, postFunction, putFunction } from "./generic
 import type { createCampaignProps, createCommunityProps } from "./types";
 import { toast } from "sonner";
 import { showErrorToast } from "@/lib/utils";
+import { postFunctionUserEnd } from "./user-generics/user-generic-index";
 
 const USE_GET_ORGANISATION_PROFILE_API = "USE_GET_ORGANISATION_PROFILE_API";
 const USE_GET_ALL_COMMUNITIES_API = "USE_GET_ALL_COMMUNITIES_API";
@@ -282,6 +283,23 @@ export const useCreateShortenedUrl = () => {
   const URL = `/url-short-links`;
   return useMutation({
     mutationFn: (payload: { Url: string }) => postFunction(payload, URL),
+    onSuccess: () => {
+      //   queryClient.invalidateQueries({
+      //     queryKey: [USE_GET_ALL_COMMUNITIES_API],
+      //   });
+      // toast.success("Referral code generated");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error generating referral, please try again.!"),
+  });
+};
+
+export const useCreateShortenedUrlUserEnd = () => {
+  //   const queryClient = useQueryClient();
+
+  const URL = `/url-short-links`;
+  return useMutation({
+    mutationFn: (payload: { Url: string }) => postFunctionUserEnd(payload, URL),
     onSuccess: () => {
       //   queryClient.invalidateQueries({
       //     queryKey: [USE_GET_ALL_COMMUNITIES_API],

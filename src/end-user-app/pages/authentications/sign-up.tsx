@@ -10,7 +10,7 @@ import EmailVerificationFlow from "./sign-up-verify-modal";
 import { useQueryState } from "nuqs";
 import ExtendedLineageModal from "./referral-lineage-modal";
 import { useRegisterUser } from "@/services/users/user-auth";
-import { useSearchParams } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 
 const UserSignUp = () => {
   const [isReferrer] = useQueryState("referral-code");
@@ -280,6 +280,25 @@ const UserSignUp = () => {
               </div>
             )}
           </div>
+
+          {/* Terms */}
+          <p className="text-sm leading-[100%] font-light tracking-[1%] text-[#414143]">
+            By creating an account, you agree to Coterie's{" "}
+            <Link
+              to="https://usecoterie.com/terms-of-use"
+              className="text-[#12AA5B] hover:underline"
+            >
+              Terms of Service
+            </Link>{" "}
+            and confirming that you have reviewed and accepted the{" "}
+            <Link
+              to="https://usecoterie.com/privacy-policy"
+              className="text-[#12AA5B] hover:underline"
+            >
+              Privacy Policy
+            </Link>
+            .
+          </p>
 
           {/* Submit */}
           <Button
