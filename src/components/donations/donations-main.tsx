@@ -27,7 +27,6 @@ import { Button } from "../ui/button";
 import { EyeIcon } from "@phosphor-icons/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-// import { useGetOrganisationDonations } from "@/services/generics/hooks";
 
 export function DonationsMainTable({
   donationsData,
