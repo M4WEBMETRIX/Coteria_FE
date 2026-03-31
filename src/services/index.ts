@@ -34,6 +34,16 @@ export const registerOrganisation = async (payload: RegisterProps) => {
   return response.data;
 };
 
+export const forgotPasswordOrganisation = async (payload: { email: string }) => {
+  const response = await api.post("/auth/forgot-password", payload);
+  return response.data;
+};
+
+export const resetPasswordOrganisation = async (payload: { token: any; newPassword: string }) => {
+  const response = await api.post("/auth/reset-password", payload);
+  return response.data;
+};
+
 export const loginOrganisation = async (payload: LoginProps) => {
   const response = await api.post("/org/auth/login", payload);
   return response.data;

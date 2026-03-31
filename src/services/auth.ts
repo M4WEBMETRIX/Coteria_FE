@@ -1,10 +1,12 @@
 import { useMutation } from "@tanstack/react-query";
 import {
   connectStripe,
+  forgotPasswordOrganisation,
   loginOrganisation,
   logoutOrganisation,
   onboardOrganisation,
   registerOrganisation,
+  resetPasswordOrganisation,
   type ConnectStripeProps,
   type LoginProps,
   type LogoutProps,
@@ -37,6 +39,45 @@ export const useRegisterOrganisation = () => {
     onError: (error) => {
       //   console.log("err", error);
       showErrorToast(error);
+    },
+  });
+};
+
+export const useForgotPassword = () => {
+  //   const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (payload: { email: string }) => forgotPasswordOrganisation(payload),
+    onSuccess: () => {
+      // const { token, refreshToken } = response.data;
+
+      // localStorage.setItem("userAccessToken", token);
+      // localStorage.setItem("userRefreshToken", refreshToken);
+
+      toast.success("Please check your mail to reset");
+    },
+    onError: (error) => {
+      //   console.log("err-from query", error);
+      showErrorToast(error?.message);
+    },
+  });
+};
+
+export const useResetPassword = () => {
+  //   const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (payload: { token: any; newPassword: string }) =>
+      resetPasswordOrganisation(payload),
+    onSuccess: () => {
+      // const { token, refreshToken } = response.data;
+
+      // localStorage.setItem("userAccessToken", token);
+      // localStorage.setItem("userRefreshToken", refreshToken);
+
+      toast.success("Password reset successfully, please try login.");
+    },
+    onError: (error) => {
+      //   console.log("err-from query", error);
+      showErrorToast(error?.message);
     },
   });
 };
