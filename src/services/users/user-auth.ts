@@ -1,7 +1,15 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { toast } from "sonner";
-import { loginUser, registerUser, type UserLoginProps, type UserRegisterProps } from "./user-index";
+import {
+  forgotPasswordUser,
+  loginUser,
+  registerUser,
+  resetPasswordUser,
+  type UserLoginProps,
+  type UserRegisterProps,
+} from "./user-index";
 import { getFunctionUserEnd } from "../generics/user-generics/user-generic-index";
+import { showErrorToast } from "@/lib/utils";
 // import { useNavigate } from "react-router-dom";
 
 export const useRegisterUser = () => {
@@ -18,6 +26,31 @@ export const useRegisterUser = () => {
     onError: (error) => {
       console.log("err", error);
       toast.error(error?.message);
+    },
+  });
+};
+
+export const useUserForgotPassword = () => {
+  return useMutation({
+    mutationFn: (payload: { email: string }) => forgotPasswordUser(payload),
+    onSuccess: () => {
+      toast.success("Please check your mail to reset");
+    },
+    onError: (error) => {
+      //   console.log("err-from query", error);
+      showErrorToast(error?.message);
+    },
+  });
+};
+
+export const useUserResetPassword = () => {
+  return useMutation({
+    mutationFn: (payload: { token: any; newPassword: string }) => resetPasswordUser(payload),
+    onSuccess: () => {
+      toast.success("Password reset successfully, please try login.");
+    },
+    onError: (error) => {
+      showErrorToast(error?.message);
     },
   });
 };
@@ -46,5 +79,6 @@ export const useGetReferralDetails = (code: string | null) => {
   return useQuery({
     queryKey: ["referral-details"],
     queryFn: () => getFunctionUserEnd(URL),
+    enabled: !!code,
   });
 };

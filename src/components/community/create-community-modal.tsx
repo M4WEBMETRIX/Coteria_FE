@@ -245,7 +245,7 @@ const CreateCommunityModal = ({
                       id="description"
                       placeholder="Placeholder"
                       maxLength={400}
-                      minLength={250}
+                      minLength={5}
                       className="h-[151px] max-h-[151px] resize-none border-[#D0D5DD] pb-8"
                       {...register("description")}
                     />

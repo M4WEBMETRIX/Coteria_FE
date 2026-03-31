@@ -186,24 +186,26 @@ const SettingsPage = () => {
       {/* Header */}
       <div className="mb-6 flex w-full items-center justify-between">
         <h1 className="text-2xl font-semibold text-[#0A0A0C]">Settings</h1>
-        <div className="flex gap-3">
-          {/* <Button variant="outline" onClick={handleCancel}>
+        {activeTab === "my-account" || activeTab === "billing-integration" ? null : (
+          <div className="flex gap-3">
+            {/* <Button variant="outline" onClick={handleCancel}>
             Cancel
           </Button> */}
-          <Button
-            onClick={handleSaveChanges}
-            disabled={isUpdatingProfile}
-            className="bg-[#079455] hover:bg-[#0E8A4A]"
-          >
-            {isUpdatingProfile ? (
-              <>
-                <CircleNotch className="mr-2 h-4 w-4 animate-spin" /> Saving...
-              </>
-            ) : (
-              "Save Changes"
-            )}
-          </Button>
-        </div>
+            <Button
+              onClick={handleSaveChanges}
+              disabled={isUpdatingProfile}
+              className="bg-[#079455] hover:bg-[#0E8A4A]"
+            >
+              {isUpdatingProfile ? (
+                <>
+                  <CircleNotch className="mr-2 h-4 w-4 animate-spin" /> Saving...
+                </>
+              ) : (
+                "Save Changes"
+              )}
+            </Button>
+          </div>
+        )}
       </div>
 
       {/* Main Content */}

@@ -27,6 +27,7 @@ const CommunityPublic = lazy(() => import("./pages/community/community-public"))
 const CampaignPublic = lazy(() => import("./pages/community/campaign-public"));
 import Logo from "@/assets/icons/coterie.svg";
 import DonationSuccess from "./pages/community/services/donation-success";
+import UserResetPassword from "./end-user-app/pages/authentications/reset-password";
 
 const EndUserRoutes = () => {
   return (
@@ -50,6 +51,7 @@ const EndUserRoutes = () => {
           <Route path="signup" element={<UserSignUp />} />
           <Route path="login" element={<UserSignIn />} />
           <Route path="forgot-password" element={<UserForgotPassword />} />
+          <Route path="reset-password" element={<UserResetPassword />} />
         </Route>
 
         {/* Protected routes */}

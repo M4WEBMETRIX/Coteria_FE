@@ -57,6 +57,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
                 First Name <span className="text-sm text-[#DF1C41]">*</span>
               </Label>
               <Input
+                disabled
                 id="firstName"
                 className="w-full"
                 value={formData.firstName}
@@ -72,6 +73,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
                 Last Name <span className="text-sm text-[#DF1C41]">*</span>
               </Label>
               <Input
+                disabled
                 id="lastName"
                 value={formData.lastName}
                 onChange={(e) => handleChange("lastName", e.target.value)}

@@ -284,7 +284,7 @@ const CreateCampaignModal = ({
                   <Textarea
                     id="description"
                     placeholder="Please enter description..."
-                    minLength={250}
+                    minLength={5}
                     maxLength={400}
                     className="min-h-[120px] resize-none pb-8"
                     value={formData.description}

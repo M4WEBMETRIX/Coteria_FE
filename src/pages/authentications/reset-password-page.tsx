@@ -38,8 +38,6 @@ const ResetPasswordPage = () => {
 
   const [token] = useQueryState("token");
 
-  console.log("token", token);
-
   const {
     register,
     handleSubmit,
@@ -70,13 +68,10 @@ const ResetPasswordPage = () => {
   const { mutate, isPending, isSuccess } = useResetPassword();
 
   const onSubmit = (data: ResetPasswordValues) => {
-    // console.log(data);
     mutate({
       token,
       newPassword: data?.password,
     });
-    // setLoading(true);
-    // setTimeout(() => setLoading(false), 3000);
   };
 
   useEffect(() => {

@@ -34,12 +34,11 @@ const ForgotPasswordPage = () => {
 
   const onSubmit = (data: ForgotPasswordValues) => {
     forgotPasswordMutate(data);
-    // After sending the link, navigate to the check-email page
   };
 
   useEffect(() => {
     if (isSuccess) {
-      navigate("/auth/check-email");
+      navigate("/auth/login");
     }
   }, [isSuccess]);
 
