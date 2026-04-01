@@ -63,11 +63,17 @@ const UserAuthLayout = ({
                   </div>
                 </div>
                 <div className="flex flex-col gap-0.5">
-                  <p className="tracking-[0%]] text-2xl leading-[160%] font-medium tracking-[0.1px] text-[leading-[160%]">
+                  <p
+                    title={data?.data?.organization?.name}
+                    className="tracking-[0%]] line-clamp-1 text-2xl leading-[160%] font-medium tracking-[0.1px] text-[leading-[160%]"
+                  >
                     {data?.data?.organization?.name}
                   </p>
-                  <p className="line-clamp-1 text-sm leading-[160%] tracking-[0.1px] text-[#000000]">
-                    {data?.data?.community?.name || "Community name is private"}
+                  <p
+                    title={data?.data?.community?.name || "Private details"}
+                    className="line-clamp-1 text-sm leading-[160%] tracking-[0.1px] text-[#000000]"
+                  >
+                    {data?.data?.community?.name || "Private details"}
                   </p>
                 </div>
               </div>

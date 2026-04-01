@@ -41,6 +41,8 @@ const DashboardCampaigns = () => {
   const totalItems =
     userActiveCampaigns?.data?.totalCount || userActiveCampaigns?.data?.totalItems || 0;
 
+  const campaignsWithImages = campaignsData?.filter((campaign: any) => campaign?.imageUrl);
+
   return (
     <>
       {isLoading ? (
@@ -102,7 +104,7 @@ const DashboardCampaigns = () => {
             ]}
           >
             <CarouselContent>
-              {campaignsData?.map((banner: any) => (
+              {campaignsWithImages?.map((banner: any) => (
                 <CarouselItem key={banner.id}>
                   <div
                     onClick={() => navigate(`/user/dashboard/campaign/${banner?.id}`)}
@@ -136,7 +138,10 @@ const DashboardCampaigns = () => {
                         <h1 className="text-[22px] leading-[140%] font-medium tracking-[-2%]">
                           {banner?.name}
                         </h1>
-                        <p className="line-clamp-1 text-sm leading-[150%] font-normal tracking-[-2%] opacity-90">
+                        <p
+                          title={banner?.description}
+                          className="line-clamp-1 max-w-[850px] text-sm leading-[150%] font-normal tracking-[-2%] opacity-90"
+                        >
                           {banner?.description}
                         </p>
                       </div>
