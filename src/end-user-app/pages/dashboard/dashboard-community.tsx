@@ -150,7 +150,7 @@ const DashboardCommunity = () => {
                       <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
                         {community?.name}
                       </TableCell>
-                      <TableCell className="w-56 max-w-56 overflow-hidden bg-[red] py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
+                      <TableCell className="w-56 max-w-56 overflow-hidden py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
                         {community?.description?.length > 60
                           ? community.description.slice(0, 60) + "..."
                           : community?.description}
