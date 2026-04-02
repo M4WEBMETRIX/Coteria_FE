@@ -22,7 +22,7 @@ import { useNavigate } from "react-router-dom";
 import { formatDistanceToNowStrict } from "date-fns";
 import CommunityTableBodySkeleton from "./components/skeletons/community-table-skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { EyeIcon } from "@phosphor-icons/react";
+import { CopyIcon, EyeIcon } from "@phosphor-icons/react";
 import {
   Select,
   SelectContent,
@@ -30,9 +30,22 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import { getBaseUrl } from "@/lib/utils";
 
-export function ActionPopover({ id }: { id: string | number }) {
+export function ActionPopover({ id, slug }: { id: string | number; slug?: string }) {
   const navigate = useNavigate();
+
+  const PUBLIC_URL = `${getBaseUrl({ target: "donor" })}/community/public/${slug}/${id}`;
+  const handlePublicLinkCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(PUBLIC_URL);
+      toast.success("Link copied to clipboard");
+    } catch (err) {
+      toast.error("Failed to copy link");
+    }
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -48,6 +61,13 @@ export function ActionPopover({ id }: { id: string | number }) {
           >
             <EyeIcon size={18} />
             View
+          </div>
+          <div
+            onClick={handlePublicLinkCopy}
+            className="flex cursor-pointer items-center gap-2 text-sm"
+          >
+            <CopyIcon size={18} />
+            Copy public link
           </div>
           {/* <div className="flex items-center gap-2 text-sm text-[red]">
             <TrashIcon size={18} />
@@ -268,7 +288,7 @@ const CommunityTableList = ({
                         <StatusBadge status={community?.isActive ? "Active" : "Draft"} />
                       </TableCell>
                       <TableCell onClick={(e) => e.stopPropagation()}>
-                        <ActionPopover id={community?.id} />
+                        <ActionPopover id={community?.id} slug={community?.slug} />
                       </TableCell>
                     </TableRow>
                   ))}

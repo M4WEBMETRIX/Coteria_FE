@@ -49,6 +49,22 @@ export const useGetUserCommunities = (page?: number, limit?: number) => {
   });
 };
 
+export const useJoinCommunity = (id: string | any) => {
+  // const queryClient = useQueryClient();
+  const URL = `/donor/communities/${id}/join`;
+  return useMutation({
+    mutationFn: (payload: any) => putFunctionUserEnd(payload, URL),
+    onSuccess: () => {
+      // queryClient.invalidateQueries({
+      //   queryKey: [USE_GET_USER_PROFILE_API],
+      // });
+      toast.success("You've joined this community");
+    },
+    onError: (err: any) =>
+      toast.error(err?.message || "Error joining community, please try again.!"),
+  });
+};
+
 export const useGetUserSpecificCommunity = (communityId: string | undefined) => {
   const URL = `/communities/${communityId}`;
   return useQuery({

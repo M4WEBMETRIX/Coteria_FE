@@ -8,9 +8,11 @@ import PUBLIC_COMMUNITY_IMAGE_1 from "@/assets/images/public-community-image-1.p
 import SAMPLE_PUB_COM_IMAGE_1 from "@/assets/images/pub-com-1.png";
 import SAMPLE_PUB_COM_IMAGE_2 from "@/assets/images/pub-com-2.png";
 import { useGetPublicCommunity, useGetPublicCommunityCampaigns } from "./services";
-import { getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
+import { getBaseUrl, getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
 import CommunityPublicSkeleton from "./community-public-skeleton";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
+import { useJoinCommunity } from "@/services/generics/user-generics/user-hooks";
+import { useQueryState } from "nuqs";
 
 // Mock data - would come from API in production
 const communityData = {
@@ -70,12 +72,17 @@ const CommunityPublic = () => {
   const navigate = useNavigate();
   const { slug } = useParams();
   const { communityId } = useParams();
+  const [referralCode] = useQueryState("referral-code");
 
+  const isAuthenticated = !!localStorage.getItem("userAccessToken");
+
+  console.log(isAuthenticated);
   const { data: publicCommunityCampaignsData, isPending: publicCommunityCampaignsPending } =
     useGetPublicCommunityCampaigns(communityId);
   const { data: publicCommunityData, isPending: publicCommunityPending } =
     useGetPublicCommunity(slug);
-  // console.log("publicCommunityData", publicCommunityData);
+
+  const { mutate, isPending } = useJoinCommunity(communityId);
 
   const scrollToCampaigns = () => {
     document.getElementById("campaigns")?.scrollIntoView({ behavior: "smooth" });
@@ -118,12 +125,29 @@ const CommunityPublic = () => {
                 >
                   Donate <CaretRightIcon className="ml-2" />
                 </Button>
-                <Button
-                  variant="outline"
-                  className="h-12 w-50 rounded-[10px] bg-white px-8 hover:bg-white/10"
-                >
-                  Join Community <CaretRightIcon className="ml-2" />
-                </Button>
+                {isAuthenticated ? (
+                  <Button
+                    onClick={() => mutate({ referralCode })}
+                    variant="outline"
+                    className="h-12 w-50 rounded-[10px] bg-white px-8 hover:bg-white/10"
+                  >
+                    {isPending ? (
+                      "Joining..."
+                    ) : (
+                      <>
+                        Join Community <CaretRightIcon className="ml-2" />
+                      </>
+                    )}
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={() => navigate(`${getBaseUrl({ target: "donor" })}/user/signup`)}
+                    variant="outline"
+                    className="h-12 w-50 rounded-[10px] bg-white px-8 hover:bg-white/10"
+                  >
+                    Signup <CaretRightIcon className="ml-2" />
+                  </Button>
+                )}
               </div>
             </div>
           </div>
