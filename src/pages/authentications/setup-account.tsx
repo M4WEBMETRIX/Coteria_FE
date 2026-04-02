@@ -29,7 +29,7 @@ interface IProps {
   logoutPending?: boolean;
 }
 
-const roles = ["Designer", "Fundraiser", "Developer", "Executive"];
+const roles = ["Fundraiser", "Executive", "Community manager"];
 
 const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logoutPending }) => {
   const [errors, setErrors] = React.useState({ firstName: "", lastName: "" });
@@ -115,7 +115,7 @@ const StepOne: React.FC<IProps> = ({ onNext, data, setData, handleLogout, logout
           <Button
             className="w-30.75 cursor-pointer rounded-full bg-[#12AA5B] py-6 text-base font-medium hover:bg-[#12AA5B]/90"
             onClick={onNext}
-            disabled={!!errors.firstName || !!errors.lastName}
+            disabled={!data.firstName || !data.lastName || !data.jobTitle}
           >
             Next
           </Button>

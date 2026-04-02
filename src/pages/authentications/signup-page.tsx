@@ -276,7 +276,7 @@ const SignupPage = () => {
                     />
                     <Label
                       htmlFor="newsletter"
-                      className="mt-0.5 cursor-pointer text-sm leading-[100%] font-normal tracking-[1%] text-[#414143]"
+                      className="mt-0.5 cursor-pointer text-sm leading-[100%] font-light tracking-[1%] text-[#414143]"
                     >
                       I'd like to receive product updates and best practices from Coterie
                     </Label>
@@ -310,7 +310,7 @@ const SignupPage = () => {
               /> */}
 
               {/* Terms */}
-              <p className="text-sm leading-[100%] font-light tracking-[1%] text-[#414143]">
+              <p className="pt-2 text-sm leading-[100%] font-light tracking-[1%] text-[#414143]">
                 By creating an account, you agree to Coterie's{" "}
                 <Link
                   to="https://usecoterie.com/terms-of-use"

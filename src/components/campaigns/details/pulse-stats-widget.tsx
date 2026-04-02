@@ -1,6 +1,8 @@
 import { Chart01Icon, ChartHistogramIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useGetCampaignEngagement } from "@/services/generics/hooks";
+import { InfoIcon } from "@phosphor-icons/react";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
   const { data: engagementData } = useGetCampaignEngagement(id);
@@ -34,6 +36,28 @@ const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
       chartIconColor: "text-[#12AA5B]",
       footer: ["Impression", "vs Last 7 Days"],
       footerColor: "text-[#31AB93]",
+      toolTipDesc: (
+        <div>
+          <p className="font-semibold text-gray-900">Campaign Awareness (Impressions)</p>
+          <p className="mt-1">
+            Measures how many people have seen or been exposed to the campaign.
+          </p>
+
+          <p className="mt-2 font-medium text-gray-900">What counts:</p>
+          <ul className="mt-1 ml-4 list-disc space-y-1">
+            <li>Link views</li>
+            <li>Shared links opened</li>
+            <li>Campaign page visits</li>
+            <li>Referral clicks</li>
+          </ul>
+
+          <p className="mt-2 font-medium text-gray-900">Why it matters:</p>
+          <p className="mt-1">
+            Awareness reflects reach. If awareness is high but participation is low, the issue is
+            likely messaging or trust.
+          </p>
+        </div>
+      ),
     },
     {
       title: "Participation",
@@ -45,6 +69,23 @@ const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
       chartIconColor: "text-[#12AA5B]",
       footer: ["Participant", "Conversion rate"],
       footerColor: "text-[#8B8D98]",
+      toolTipDesc: (
+        <div>
+          <p className="font-semibold text-gray-900">Campaign Participation</p>
+          <p className="mt-1">Tracks how many people take action after seeing the campaign.</p>
+
+          <p className="mt-2 font-medium text-gray-900">Actions include:</p>
+          <ul className="mt-1 ml-4 list-disc space-y-1">
+            <li>Donating</li>
+            <li>Voting</li>
+            <li>RSVPing or attending events</li>
+            <li>Sharing or inviting others</li>
+          </ul>
+
+          <p className="mt-2 font-medium text-gray-900">Why it matters:</p>
+          <p className="mt-1">Participation shows real engagement, not just interest.</p>
+        </div>
+      ),
     },
     // {
     //   title: "Influence",
@@ -64,6 +105,26 @@ const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
       chartIconColor: "text-[#2E90FA]",
       footer: [],
       footerColor: "",
+      toolTipDesc: (
+        <div>
+          <p className="font-semibold text-gray-900">Campaign Momentum</p>
+          <p className="mt-1">Shows whether a campaign is gaining or losing energy over time.</p>
+
+          <p className="mt-2 font-medium text-gray-900">How it’s calculated:</p>
+          <ul className="mt-1 ml-4 list-disc space-y-1">
+            <li>Rate of new participants</li>
+            <li>Frequency of shares and referrals</li>
+            <li>Donation velocity (not just total raised)</li>
+            <li>Update activity from organizers</li>
+          </ul>
+
+          <p className="mt-2 font-medium text-gray-900">Why it matters:</p>
+          <p className="mt-1">
+            Momentum helps you decide when to push, intervene, or identify when a campaign is
+            stalling.
+          </p>
+        </div>
+      ),
     },
   ];
 
@@ -78,6 +139,10 @@ const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
             <span className="text-[12px] leading-[150%] font-normal tracking-[2%] text-[#666D80]">
               {stat.title}
             </span>
+            <div>
+              <ReusableTooltip content={stat.toolTipDesc} />
+              {/* <InfoIcon /> */}
+            </div>
           </div>
           <div className="mb-1 flex items-center gap-2">
             <span className="text-2xl leading-[150%] font-medium tracking-[0%] text-[#0D0D12]">
@@ -117,5 +182,20 @@ const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
     </div>
   );
 };
+
+function ReusableTooltip({ content }: any) {
+  return (
+    <Tooltip>
+      <TooltipTrigger asChild>
+        <span className="flex cursor-pointer items-center gap-1 text-sm font-normal text-[#12AA5B]">
+          <InfoIcon className="h-4 w-4" />
+        </span>
+      </TooltipTrigger>
+      <TooltipContent className="bg-white shadow" side="bottom">
+        <p className="max-w-[300px] text-sm text-[#1E1F24]">{content}</p>
+      </TooltipContent>
+    </Tooltip>
+  );
+}
 
 export default PulseStatsWidget;

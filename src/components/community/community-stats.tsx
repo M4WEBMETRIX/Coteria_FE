@@ -138,7 +138,7 @@ export const CommunityDashboardStats = ({ data }: { data?: any }) => {
   return (
     <div className="grid w-full grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
       <StatCard
-        title="Total Communities"
+        title="Community"
         value={data?.totalCommunities || 0}
         trend={(data?.communitiesSinceLastMonth || 0) + "%"}
         trendDirection="up"

@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/select";
 
 const MONTHS = [
+  "All time",
   "January",
   "February",
   "March",

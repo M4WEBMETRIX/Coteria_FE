@@ -160,7 +160,7 @@ const CommunityTableList = ({
       {/* Header Controls */}
       <div className="flex flex-col items-center justify-between gap-4 border-b border-[#E0E1E6] p-4 md:flex-row">
         <h3 className="mr-auto text-base leading-[150%] font-bold tracking-[2%] whitespace-nowrap text-[#0D0D12] md:mr-0">
-          Community Table
+          Your Community
         </h3>
 
         <div className="flex w-full items-center gap-3 md:w-auto">
