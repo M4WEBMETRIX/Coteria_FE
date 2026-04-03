@@ -96,7 +96,12 @@ const UserSignUp = () => {
 
     if (!isPasswordValid) return;
 
-    userMutate(formData);
+    // const payload = {formData, ...(isReferrer ? referralCode: isReferrer : {})}
+    const payload = {
+      ...formData,
+      ...(isReferrer ? { referralCode: isReferrer } : {}),
+    };
+    userMutate(payload);
   };
 
   useEffect(() => {
