@@ -20,13 +20,14 @@ import {
 import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { timeAgo } from "@/pages/dashboard/community-table-list";
-import { getCurrencySymbol } from "@/lib/utils";
+import { getBaseUrl, getCurrencySymbol } from "@/lib/utils";
 import CommunityTableBodySkeleton from "@/pages/dashboard/components/skeletons/community-table-skeleton";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
-import { ArrowsClockwiseIcon, EyeIcon } from "@phosphor-icons/react";
+import { ArrowsClockwiseIcon, CopyIcon, EyeIcon } from "@phosphor-icons/react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "../ui/select";
 import { useUpdateCampaignStatus } from "@/services/generics/hooks";
 import { Loader2Icon } from "lucide-react";
+import { toast } from "sonner";
 
 // const campaignsData = [
 //   {
@@ -244,7 +245,11 @@ const CampaignsTableWidget = ({
                     <StatusBadge status={campaign?.status} />
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>
-                    <ActionPopover status={campaign?.status} id={campaign?.id} />
+                    <ActionPopover
+                      status={campaign?.status}
+                      id={campaign?.id}
+                      slug={campaign?.slug}
+                    />
                   </TableCell>
                 </TableRow>
               ))}
@@ -257,10 +262,28 @@ const CampaignsTableWidget = ({
   );
 };
 
-export function ActionPopover({ id, status }: { id: string | number; status: string }) {
+export function ActionPopover({
+  id,
+  status,
+  slug,
+}: {
+  id: string | number;
+  status: string;
+  slug: string;
+}) {
   const navigate = useNavigate();
   const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
     useUpdateCampaignStatus(id);
+
+  const PUBLIC_URL = `${getBaseUrl({ target: "donor" })}/community/public/campaign/${slug}`;
+  const handlePublicLinkCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(PUBLIC_URL);
+      toast.success("Link copied to clipboard");
+    } catch (err) {
+      toast.error("Failed to copy link");
+    }
+  };
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -291,6 +314,13 @@ export function ActionPopover({ id, status }: { id: string | number; status: str
                 )}
               </div>
             )}
+          <div
+            onClick={handlePublicLinkCopy}
+            className="flex cursor-pointer items-center gap-2 text-sm"
+          >
+            <CopyIcon size={18} />
+            Copy public link
+          </div>
         </div>
       </PopoverContent>
     </Popover>

@@ -13,6 +13,7 @@ import CommunityPublicSkeleton from "./community-public-skeleton";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { useJoinCommunity } from "@/services/generics/user-generics/user-hooks";
 import { useQueryState } from "nuqs";
+import { useEffect } from "react";
 
 // Mock data - would come from API in production
 const communityData = {
@@ -82,13 +83,19 @@ const CommunityPublic = () => {
   const { data: publicCommunityData, isPending: publicCommunityPending } =
     useGetPublicCommunity(slug);
 
-  const { mutate, isPending } = useJoinCommunity(communityId);
+  const { mutate, isPending, isSuccess } = useJoinCommunity(communityId);
 
   const scrollToCampaigns = () => {
     document.getElementById("campaigns")?.scrollIntoView({ behavior: "smooth" });
   };
 
   const isLoading = publicCommunityPending || publicCommunityCampaignsPending;
+
+  useEffect(() => {
+    if (isSuccess) {
+      navigate(`/user/dashboard/community/${communityId}`);
+    }
+  }, [isSuccess]);
 
   if (isLoading) {
     return <CommunityPublicSkeleton />;

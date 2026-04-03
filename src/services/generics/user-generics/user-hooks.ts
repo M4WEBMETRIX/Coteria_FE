@@ -1,5 +1,5 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { getFunctionUserEnd, putFunctionUserEnd } from "./user-generic-index";
+import { getFunctionUserEnd, postFunctionUserEnd, putFunctionUserEnd } from "./user-generic-index";
 import { toast } from "sonner";
 
 export const USE_GET_USER_PROFILE_API = "USE_GET_USER_PROFILE_API";
@@ -53,7 +53,7 @@ export const useJoinCommunity = (id: string | any) => {
   // const queryClient = useQueryClient();
   const URL = `/donor/communities/${id}/join`;
   return useMutation({
-    mutationFn: (payload: any) => putFunctionUserEnd(payload, URL),
+    mutationFn: (payload: any) => postFunctionUserEnd(payload, URL),
     onSuccess: () => {
       // queryClient.invalidateQueries({
       //   queryKey: [USE_GET_USER_PROFILE_API],
