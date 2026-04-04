@@ -82,7 +82,7 @@ const CampaignDetails = () => {
       />
       <div className="flex w-full gap-6">
         {/* Left Sidebar */}
-        <div className="w-[350px] space-y-6 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 pt-[38.5px] pb-5">
+        <div className="hidden w-[350px] space-y-6 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 pt-[38.5px] pb-5 lg:block">
           {/* Profile Card */}
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 text-center">
             <div className="flex items-center gap-3">
@@ -211,24 +211,26 @@ const CampaignDetails = () => {
                 className="h-full w-full object-cover"
               />
               <div className="absolute bottom-6 left-6 flex items-center gap-3.5">
-                <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#00D06C]">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      fill-rule="evenodd"
-                      clip-rule="evenodd"
-                      d="M2.783 5.573C3.887 4.537 5.39 4 7 4C8.34 4 9.524 4.557 10.443 5.22C11.083 5.682 11.614 6.209 12 6.671C12.4576 6.12508 12.9805 5.63743 13.557 5.219C14.476 4.557 15.66 4 17 4C18.61 4 20.113 4.537 21.217 5.573C22.327 6.613 23 8.124 23 10C23 11.893 21.94 14.748 20.081 17.12C18.212 19.505 15.457 21.5 12 21.5C8.543 21.5 5.788 19.505 3.919 17.12C2.059 14.749 1 11.894 1 10C1 8.124 1.674 6.613 2.783 5.573ZM6 10C6 10.993 6.29 12.461 7.188 13.71C8.124 15.007 9.674 16 12 16C14.326 16 15.876 15.008 16.811 13.71C17.711 12.46 18 10.992 18 10H16C16 10.673 15.79 11.706 15.188 12.54C14.624 13.326 13.675 14 12 14C10.326 14 9.376 13.325 8.812 12.54C8.21 11.707 8 10.674 8 10H6Z"
-                      fill="white"
-                    />
-                  </svg>
+                <div>
+                  <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#00D06C]">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        clip-rule="evenodd"
+                        d="M2.783 5.573C3.887 4.537 5.39 4 7 4C8.34 4 9.524 4.557 10.443 5.22C11.083 5.682 11.614 6.209 12 6.671C12.4576 6.12508 12.9805 5.63743 13.557 5.219C14.476 4.557 15.66 4 17 4C18.61 4 20.113 4.537 21.217 5.573C22.327 6.613 23 8.124 23 10C23 11.893 21.94 14.748 20.081 17.12C18.212 19.505 15.457 21.5 12 21.5C8.543 21.5 5.788 19.505 3.919 17.12C2.059 14.749 1 11.894 1 10C1 8.124 1.674 6.613 2.783 5.573ZM6 10C6 10.993 6.29 12.461 7.188 13.71C8.124 15.007 9.674 16 12 16C14.326 16 15.876 15.008 16.811 13.71C17.711 12.46 18 10.992 18 10H16C16 10.673 15.79 11.706 15.188 12.54C14.624 13.326 13.675 14 12 14C10.326 14 9.376 13.325 8.812 12.54C8.21 11.707 8 10.674 8 10H6Z"
+                        fill="white"
+                      />
+                    </svg>
+                  </div>
                 </div>
                 <div className="text-white">
-                  <h1 className="text-[22px] leading-[140%] font-medium tracking-[-2%]">
+                  <h1 className="line-clamp-1 text-[22px] leading-[140%] font-medium tracking-[-2%]">
                     {campaign?.name}
                   </h1>
                   <p className="text-sm leading-[150%] font-normal tracking-[-2%] opacity-90">
@@ -249,17 +251,19 @@ const CampaignDetails = () => {
 
                 <div className="flex items-center justify-between">
                   <div className="flex w-full items-center gap-3">
-                    <div className="flex items-center leading-[155%] font-normal tracking-[0%]">
-                      <span className="text-lg font-medium text-[#6B6B6B]">
-                        {getCurrencySymbol(campaign?.goalCurrency)}{" "}
-                        {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
-                      </span>
-                      <span className="text-[#A3A3A3]">
-                        /{getCurrencySymbol(campaign?.goalCurrency)}{" "}
-                        {campaign?.goalAmountCents
-                          ? (campaign?.goalAmountCents / 100)?.toLocaleString()
-                          : "0"}
-                      </span>
+                    <div>
+                      <div className="flex items-center leading-[155%] font-normal tracking-[0%]">
+                        <span className="text-lg font-medium text-nowrap text-[#6B6B6B]">
+                          {getCurrencySymbol(campaign?.goalCurrency)}{" "}
+                          {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
+                        </span>
+                        <span className="text-nowrap text-[#A3A3A3]">
+                          /{getCurrencySymbol(campaign?.goalCurrency)}{" "}
+                          {campaign?.goalAmountCents
+                            ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                            : "0"}
+                        </span>
+                      </div>
                     </div>
                     {/* Progress Bar Custom */}
                     <div className="h-2 w-full max-w-138.75 overflow-hidden rounded-full bg-[#D9D9D9]">
@@ -273,7 +277,7 @@ const CampaignDetails = () => {
                   </div>
                   <Button
                     onClick={() => setIsOpen(true)}
-                    className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
+                    className="hidden h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:inline-block"
                   >
                     <div className="flex items-center text-sm font-medium">
                       Donate
@@ -283,11 +287,21 @@ const CampaignDetails = () => {
                 </div>
               </div>
             </div>
+
             <p className="max-w-110 text-xs leading-[155%] font-medium tracking-[0%] text-[#000000]">
               If you are interested in donating an item to our collection, please contact us at{" "}
               <span className="underline"> (506) 365-7787 </span> or{" "}
               <span className="underline"> museum@nbnet.nb.ca</span>
             </p>
+            <Button
+              onClick={() => setIsOpen(true)}
+              className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:hidden"
+            >
+              <div className="flex items-center text-sm font-medium">
+                Donate
+                <CaretRightIcon size={14} weight="bold" className="text-white" />
+              </div>
+            </Button>
             {/* Tabs */}
             <div className="flex items-center gap-7">
               <button

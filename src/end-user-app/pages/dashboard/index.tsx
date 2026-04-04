@@ -59,7 +59,9 @@ const DashboardIndex = () => {
       <div
         className={cn(
           "py-8.5",
-          activeTab === "community" || activeTab === "home" ? "w-[calc(100%-324px)]" : "w-full"
+          activeTab === "community" || activeTab === "home"
+            ? "w-full lg:w-[calc(100%-324px)]"
+            : "w-full"
         )}
       >
         <nav className="mb-13.75 flex items-center justify-between">
@@ -134,7 +136,7 @@ const DashboardIndex = () => {
       </div>
 
       {(activeTab === "home" || activeTab === "community") && (
-        <div className="w-full max-w-[324px] border-l border-l-[#ECEFF3] pt-[89.58px] pl-5">
+        <div className="hidden w-full border-l border-l-[#ECEFF3] pt-[89.58px] pl-5 lg:block lg:max-w-[324px]">
           <div className="mb-5 flex items-start gap-5">
             <div className="">
               <Avatar className="h-[104.55px] w-[104.55px] cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">

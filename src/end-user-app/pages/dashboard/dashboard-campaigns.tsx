@@ -117,25 +117,27 @@ const DashboardCampaigns = () => {
                     />
                     {/* image black overlay */}
                     <div className="absolute inset-0 bg-black/20" />
-                    <div className="absolute bottom-6 left-6 flex items-center gap-3.5">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#00D06C]">
-                        <svg
-                          width="24"
-                          height="24"
-                          viewBox="0 0 24 24"
-                          fill="none"
-                          xmlns="http://www.w3.org/2000/svg"
-                        >
-                          <path
-                            fillRule="evenodd"
-                            clipRule="evenodd"
-                            d="M2.783 5.573C3.887 4.537 5.39 4 7 4C8.34 4 9.524 4.557 10.443 5.22C11.083 5.682 11.614 6.209 12 6.671C12.4576 6.12508 12.9805 5.63743 13.557 5.219C14.476 4.557 15.66 4 17 4C18.61 4 20.113 4.537 21.217 5.573C22.327 6.613 23 8.124 23 10C23 11.893 21.94 14.748 20.081 17.12C18.212 19.505 15.457 21.5 12 21.5C8.543 21.5 5.788 19.505 3.919 17.12C2.059 14.749 1 11.894 1 10C1 8.124 1.674 6.613 2.783 5.573ZM6 10C6 10.993 6.29 12.461 7.188 13.71C8.124 15.007 9.674 16 12 16C14.326 16 15.876 15.008 16.811 13.71C17.711 12.46 18 10.992 18 10H16C16 10.673 15.79 11.706 15.188 12.54C14.624 13.326 13.675 14 12 14C10.326 14 9.376 13.325 8.812 12.54C8.21 11.707 8 10.674 8 10H6Z"
-                            fill="white"
-                          />
-                        </svg>
+                    <div className="absolute bottom-4 left-4 flex items-center gap-3.5 lg:bottom-6 lg:left-6">
+                      <div>
+                        <div className="flex h-12 w-12 items-center justify-center rounded-lg bg-[#00D06C]">
+                          <svg
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            xmlns="http://www.w3.org/2000/svg"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              clipRule="evenodd"
+                              d="M2.783 5.573C3.887 4.537 5.39 4 7 4C8.34 4 9.524 4.557 10.443 5.22C11.083 5.682 11.614 6.209 12 6.671C12.4576 6.12508 12.9805 5.63743 13.557 5.219C14.476 4.557 15.66 4 17 4C18.61 4 20.113 4.537 21.217 5.573C22.327 6.613 23 8.124 23 10C23 11.893 21.94 14.748 20.081 17.12C18.212 19.505 15.457 21.5 12 21.5C8.543 21.5 5.788 19.505 3.919 17.12C2.059 14.749 1 11.894 1 10C1 8.124 1.674 6.613 2.783 5.573ZM6 10C6 10.993 6.29 12.461 7.188 13.71C8.124 15.007 9.674 16 12 16C14.326 16 15.876 15.008 16.811 13.71C17.711 12.46 18 10.992 18 10H16C16 10.673 15.79 11.706 15.188 12.54C14.624 13.326 13.675 14 12 14C10.326 14 9.376 13.325 8.812 12.54C8.21 11.707 8 10.674 8 10H6Z"
+                              fill="white"
+                            />
+                          </svg>
+                        </div>
                       </div>
                       <div className="text-white">
-                        <h1 className="text-[22px] leading-[140%] font-medium tracking-[-2%]">
+                        <h1 className="line-clamp-1 text-[22px] leading-[140%] font-medium tracking-[-2%]">
                           {banner?.name}
                         </h1>
                         <p
@@ -213,7 +215,7 @@ const DashboardCampaigns = () => {
                       console.log(campaign);
                       setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                     }}
-                    className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
+                    className="hidden h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:block"
                   >
                     <div className="flex items-center text-sm font-medium">
                       Donate
@@ -231,6 +233,20 @@ const DashboardCampaigns = () => {
                     Learn more.
                   </span>
                 </p>
+
+                <Button
+                  onClick={() => {
+                    setSelectedCampaign(campaign);
+                    console.log(campaign);
+                    setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                  }}
+                  className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:hidden"
+                >
+                  <div className="flex items-center text-sm font-medium">
+                    Donate
+                    <CaretRightIcon size={14} weight="bold" className="text-white" />
+                  </div>
+                </Button>
 
                 <div className="h-26.5 w-full overflow-hidden rounded-[10px] bg-gray-100">
                   <img

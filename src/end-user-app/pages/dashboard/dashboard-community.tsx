@@ -90,7 +90,7 @@ const DashboardCommunity = () => {
   const totalItems = data?.data?.totalCount || data?.data?.totalItems || 0;
 
   return (
-    <div className="w-full">
+    <div className="overflow-x-auto lg:w-full">
       <div className="">
         <Table>
           <TableHeader className="rounded-t-[10px]! border border-[#EBEBEB] bg-[#FCFCFC]">
@@ -150,7 +150,7 @@ const DashboardCommunity = () => {
                       <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
                         {community?.name}
                       </TableCell>
-                      <TableCell className="w-56 max-w-56 overflow-hidden py-6 text-base leading-[155%] font-normal text-wrap text-[#000000]">
+                      <TableCell className="overflow-hidden py-6 text-base leading-[155%] font-normal text-wrap text-[#000000] lg:w-56 lg:max-w-56">
                         {community?.description?.length > 60
                           ? community.description.slice(0, 60) + "..."
                           : community?.description}

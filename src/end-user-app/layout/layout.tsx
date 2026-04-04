@@ -41,16 +41,16 @@ const UserAuthLayout = ({
     <main className="flex h-screen">
       {/* left panel */}
       {/* max-w-151.5 */}
-      <div className="mx-auto w-full flex-1 overflow-y-auto p-4">
+      <div className="mx-auto w-full flex-1 overflow-y-auto p-[25px] lg:p-4">
         {" "}
-        <aside className="no-scrollbar mx-auto w-full max-w-[80%]">
-          <LogoSvgCode className="pl-7.5" />
-          <div className="mx-auto w-full p-7.5">
-            <div className="mt-10">
-              <p className="text-4xl leading-[120%] font-bold tracking-[-2%]">
+        <aside className="no-scrollbar mx-auto w-full lg:max-w-[80%]">
+          <LogoSvgCode className="lg:pl-7.5" />
+          <div className="mx-auto w-full lg:p-7.5">
+            <div className="mt-6 lg:mt-10">
+              <p className="text-2xl leading-[120%] font-bold tracking-[-2%] lg:text-4xl">
                 {isReferrer ? "You’ve been invited" : title}
               </p>
-              <p className="mt-3 text-sm leading-[160%] tracking-[0%] text-[#6F6F6F]">
+              <p className="mt-3 w-[225px] text-sm leading-[160%] tracking-[0%] text-[#6F6F6F] lg:w-full">
                 {isReferrer ? "Someone you know thought you should be part of this." : subTitle}
               </p>
             </div>
@@ -120,7 +120,7 @@ const UserAuthLayout = ({
         </aside>
       </div>
       {/* right panel */}
-      <div className="w-full max-w-[60%]">
+      <div className="hidden w-full lg:block lg:max-w-[60%]">
         <UserAuthCarousel />
       </div>
     </main>

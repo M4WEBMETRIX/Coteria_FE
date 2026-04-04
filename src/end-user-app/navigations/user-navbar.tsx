@@ -20,7 +20,7 @@ const UserNavbar = ({ breadcrumbs }: NavbarProps) => {
   const user = data?.data;
 
   return (
-    <nav className="font-inter sticky top-0 z-50 mt-10 flex h-[72px] w-full items-center justify-between bg-white">
+    <nav className="font-inter top-0 z-50 mt-10 flex hidden h-[72px] w-full items-center justify-between bg-white lg:sticky">
       {/* Breadcrumb */}
       <div className="flex items-center">{breadcrumbs}</div>
 

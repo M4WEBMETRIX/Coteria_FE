@@ -225,9 +225,7 @@ const CommunityTableList = ({
                 <Checkbox className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]" />
               </TableHead>
               <TableHead className="w-[60px] font-medium text-[#666D80]">No</TableHead>
-              <TableHead className="min-w-[200px] font-medium text-[#666D80]">
-                Community Title
-              </TableHead>
+              <TableHead className="min-w-[200px] font-medium text-[#666D80]">Community</TableHead>
               <TableHead className="min-w-[250px] font-medium text-[#666D80]">
                 Description
               </TableHead>
