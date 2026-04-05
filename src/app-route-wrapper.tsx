@@ -1,5 +1,5 @@
-import { useEffect, lazy } from "react";
-import { useNavigate, useLocation, Routes, Route } from "react-router-dom";
+import { lazy } from "react";
+import { useLocation, Routes, Route, Navigate } from "react-router-dom";
 import RouteErrorBoundary from "./pages/authentications/error-boundary";
 const AllRoutes = lazy(() => import("./_routes"));
 const AccessProtection = lazy(() => import("./components/auth/access-protection"));
@@ -24,33 +24,24 @@ function isOrgSubdomain(subdomain: string | null) {
 }
 
 function AppRoutesWrapper() {
-  const navigate = useNavigate();
   const location = useLocation();
   const subdomain = getSubdomain();
 
-  // useEffect(() => {
-  //   if (subdomain?.toLowerCase() === "donor-stage" && !location.pathname.startsWith("/user")) {
-  //     navigate(`/${location.pathname}`, { replace: true });
-  //   }
+  // --- Synchronous subdomain redirects (must happen before route tree renders) ---
 
-  //   if (subdomain?.toLowerCase() === "org-stage" && location.pathname.startsWith("/user")) {
-  //     navigate(location.pathname.replace("/user", ""), { replace: true });
-  //   }
-  // }, [subdomain, location.pathname, navigate]);
+  // On donor subdomain: if not already under /user, redirect there immediately
+  if (isEndUserSubdomain(subdomain) && !location.pathname.startsWith("/user")) {
+    const rest = location.pathname === "/" ? "" : location.pathname;
+    const nextPath = `/user${rest}${location.search}${location.hash}`;
+    return <Navigate to={nextPath} replace />;
+  }
 
-  useEffect(() => {
-    if (isEndUserSubdomain(subdomain) && !location.pathname.startsWith("/user")) {
-      const rest = location.pathname === "/" ? "" : location.pathname;
-      const nextPath = `/user${rest}${location.search}${location.hash}`;
-      navigate(nextPath, { replace: true });
-    }
-
-    if (isOrgSubdomain(subdomain) && location.pathname.startsWith("/user")) {
-      const nextPath = (location.pathname.replace("/user", "") || "/") + location.search + location.hash;
-      navigate(nextPath, { replace: true });
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []); // run only on mount — subdomain is derived from hostname and never changes
+  // On org subdomain: strip /user prefix if somehow landed there
+  if (isOrgSubdomain(subdomain) && location.pathname.startsWith("/user")) {
+    const nextPath =
+      (location.pathname.replace("/user", "") || "/") + location.search + location.hash;
+    return <Navigate to={nextPath} replace />;
+  }
 
   return (
     <Routes>
