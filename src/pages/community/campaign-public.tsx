@@ -91,25 +91,25 @@ const CampaignPublic = () => {
       <div className="min-h-screen bg-white">
         {/* Header */}
         <div className="border-b border-gray-100 bg-white">
-          <div className="container mx-auto max-w-7xl px-8 py-4">
+          <div className="container mx-auto max-w-7xl px-4 py-4 lg:px-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
                 <div
-                  className="h-10 w-48 bg-contain bg-left bg-no-repeat"
+                  className="h-10 bg-contain bg-left bg-no-repeat lg:w-48"
                   style={{ backgroundImage: `url(${publicCampaignData?.data?.logo})` }}
                 />
               </div>
               <div className="flex items-center gap-2.5">
                 <button
                   onClick={() => navigate(-1)}
-                  className="flex cursor-pointer items-center gap-2 text-sm text-[#969294] hover:text-[#12AA5B]"
+                  className="flex cursor-pointer items-center gap-2 text-sm text-nowrap text-[#969294] hover:text-[#12AA5B]"
                 >
                   {/* <ArrowLeftIcon size={16} /> */}
                   Switch back
                 </button>
                 <Button
                   onClick={() => setIsOpen(true)}
-                  className="h-12 w-32 rounded-[10px] bg-[#307941] px-8 text-white hover:bg-[#0da055]"
+                  className="h-12 rounded-[10px] bg-[#307941] px-8 text-white hover:bg-[#0da055] lg:w-32"
                 >
                   Donate <CaretRightIcon className="ml-1.5" />
                 </Button>
@@ -127,21 +127,21 @@ const CampaignPublic = () => {
           />
 
           {/* Floating Stats Card */}
-          <div className="relative mx-auto w-full max-w-7xl px-8">
-            <div className="absolute right-0 bottom-0 m-8 w-100 rounded-xl bg-white p-6 shadow-xl">
+          <div className="relative mx-auto w-full px-4 lg:max-w-7xl lg:px-8">
+            <div className="absolute right-0 bottom-0 m-8 w-80 rounded-xl bg-white p-6 shadow-xl lg:w-100">
               <div className="space-y-4">
                 <div className="flex items-baseline justify-between">
                   <div className="flex items-center gap-1">
-                    <span className="leading-[] text-[25px] font-normal text-[#444243]">
+                    <span className="leading-[] text-lg font-normal text-[#444243] lg:text-[25px]">
                       {getCurrencySymbol(publicCampaignData?.data?.goalCurrency)}{" "}
                       {publicCampaignData?.data?.totalRaisedCents
                         ? (publicCampaignData?.data?.totalRaisedCents / 100)?.toLocaleString()
                         : "0"}
                     </span>
-                    <span className="ml-2 text-[15px] text-[#868486]">raised</span>
+                    <span className="text-sm text-[#868486] lg:ml-2 lg:text-[15px]">raised</span>
                   </div>
                   <div>
-                    <span className="text-[20px] leading-[100%] text-[#6B9671]">
+                    <span className="text-base leading-[100%] text-[#6B9671] lg:text-[20px]">
                       {getCurrencySymbol(publicCampaignData?.data?.goalCurrency)}{" "}
                       {publicCampaignData?.data?.goalAmountCents
                         ? (publicCampaignData?.data?.goalAmountCents / 100)?.toLocaleString()
@@ -203,15 +203,15 @@ const CampaignPublic = () => {
         </div>
 
         {/* Main Content */}
-        <div className="container mx-auto max-w-7xl px-8 py-12">
-          <div className="flex gap-8">
+        <div className="container mx-auto max-w-7xl px-4 py-12 lg:px-8">
+          <div className="gap-8 lg:flex">
             {/* Left Column - Campaign Details */}
             <div className="flex-1 space-y-8">
               <div>
-                <h1 className="mb-6 text-[26px] font-bold text-[#414041]">
+                <h1 className="mb-6 text-lg font-bold text-[#414041] lg:text-[26px]">
                   {publicCampaignData?.data?.campaignName}
                 </h1>
-                <div className="prose max-w-none text-[19px] text-[#7C797B]">
+                <div className="prose max-w-none text-base text-[#7C797B] lg:text-[19px]">
                   {publicCampaignData?.data?.campaignDescription
                     ?.split("\n\n")
                     ?.map((paragraph: any, index: number) => (
@@ -224,13 +224,15 @@ const CampaignPublic = () => {
 
               {/* Impact Highlights */}
               <div className="">
-                <h3 className="mb-6 text-[25px] font-normal text-[#424042]">Impact Highlights</h3>
-                <div className="grid grid-cols-2 gap-6">
+                <h3 className="mb-3 text-lg font-normal text-[#424042] lg:mb-6 lg:text-[25px]">
+                  Impact Highlights
+                </h3>
+                <div className="mb-5 grid grid-cols-2 gap-6 lg:mb-0">
                   <div className="flex items-center gap-4">
                     <div className="">
                       <UsersIcon size={24} className="text-[#12AA5B]" weight="fill" />
                     </div>
-                    <div className="flex items-center gap-2.25 text-[21px] font-normal text-[#676567]">
+                    <div className="flex items-center gap-2.25 text-base font-normal text-[#676567] lg:text-[21px]">
                       <div className="">{publicCampaignData?.data?.donationsCount}</div>
                       <div className="">
                         Donor
@@ -242,7 +244,7 @@ const CampaignPublic = () => {
                     <div className="">
                       <ChartLineUpIcon size={24} className="text-[#12AA5B]" weight="fill" />
                     </div>
-                    <div className="flex items-center gap-2.25 text-[21px] font-normal text-[#676567]">
+                    <div className="flex items-center gap-2.25 text-base font-normal text-[#676567] lg:text-[21px]">
                       <div className="">0</div>
                       <div className="">Actions Taken</div>
                     </div>

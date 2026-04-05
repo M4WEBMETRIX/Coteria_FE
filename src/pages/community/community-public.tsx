@@ -111,7 +111,7 @@ const CommunityPublic = () => {
           className="h-full w-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-r from-black/60 to-transparent">
-          <div className="container mx-auto flex h-full max-w-7xl flex-col justify-center px-8">
+          <div className="container mx-auto flex h-full max-w-7xl flex-col justify-center px-4 lg:px-8">
             <div className="max-w-xl space-y-6">
               {publicCommunityData?.data?.logoUrl && (
                 <div className="flex h-16 w-86 items-center rounded-lg px-4">
@@ -136,7 +136,7 @@ const CommunityPublic = () => {
                   <Button
                     onClick={() => mutate({ referralCode })}
                     variant="outline"
-                    className="h-12 w-50 rounded-[10px] bg-white px-8 hover:bg-white/10"
+                    className="h-12 rounded-[10px] bg-white px-8 hover:bg-white/10 lg:w-50"
                   >
                     {isPending ? (
                       "Joining..."
@@ -150,7 +150,7 @@ const CommunityPublic = () => {
                   <Button
                     onClick={() => navigate(`${getBaseUrl({ target: "donor" })}/user/signup`)}
                     variant="outline"
-                    className="h-12 w-50 rounded-[10px] bg-white px-8 hover:bg-white/10"
+                    className="h-12 rounded-[10px] bg-white px-8 hover:bg-white/10 lg:w-50"
                   >
                     Signup <CaretRightIcon className="ml-2" />
                   </Button>
@@ -163,7 +163,7 @@ const CommunityPublic = () => {
 
       {/* Main Content */}
       <div className="container mx-auto max-w-7xl px-8 py-12">
-        <div className="flex gap-8">
+        <div className="gap-8 lg:flex">
           {/* Left Column - Campaigns */}
           <div className="flex-1 space-y-8">
             <div>
@@ -246,7 +246,7 @@ const CommunityPublic = () => {
           </div>
 
           {/* Right Sidebar */}
-          <div className="w-[350px] shrink-0 space-y-6">
+          <div className="shrink-0 space-y-6 lg:w-[350px]">
             {/* Volunteer Card */}
             <div className="space-y-4 bg-white p-6">
               <div className="flex items-center gap-3">
