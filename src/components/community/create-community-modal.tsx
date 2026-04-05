@@ -204,7 +204,7 @@ const CreateCommunityModal = ({
 
       <DialogContent
         showCloseButton={false}
-        className="max-h-[85vh] gap-0 overflow-hidden border-none bg-white p-0 lg:max-h-[95vh] lg:w-[700px] lg:min-w-[700px]"
+        className="max-h-[75vh] gap-0 overflow-hidden border-none bg-white p-0 lg:max-h-[95vh] lg:w-[700px] lg:min-w-[700px]"
       >
         <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-lg leading-[135%] font-semibold tracking-[0.01em] text-[#0D0D12]">
