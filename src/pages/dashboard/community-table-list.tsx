@@ -217,7 +217,7 @@ const CommunityTableList = ({
       </div>
 
       {/* Table */}
-      <div className="overflow-x-auto">
+      <div className="min-h-[45vh] overflow-x-auto">
         <Table>
           <TableHeader className="border border-[#DFE1E7] bg-[#F6F8FA]">
             <TableRow className="border-b border-[#E0E1E6] text-sm leading-[150%] text-[#666D80] hover:bg-transparent">

@@ -154,7 +154,7 @@ const InviteMembersModal = ({
           <Button
             variant="ghost"
             onClick={() => onOpenChange(false)}
-            className="h-10 w-[100px] gap-2 rounded-[7px] border border-[#DDDDE8] bg-[#FAF9FC] text-base leading-[100%] font-normal tracking-[0%] text-[#6E6E78]"
+            className="hidden h-10 w-[100px] gap-2 rounded-[7px] border border-[#DDDDE8] bg-[#FAF9FC] text-base leading-[100%] font-normal tracking-[0%] text-[#6E6E78] lg:flex"
           >
             <X size={24} /> Close{" "}
           </Button>
@@ -180,7 +180,13 @@ const InviteMembersModal = ({
               </svg>{" "}
               Share via Email
             </Button>
-
+            <Button
+              variant="ghost"
+              onClick={() => onOpenChange(false)}
+              className="h-10 w-[100px] gap-2 rounded-[7px] border border-[#DDDDE8] bg-[#FAF9FC] text-base leading-[100%] font-normal tracking-[0%] text-[#6E6E78] lg:hidden"
+            >
+              <X size={24} /> Close{" "}
+            </Button>
             <Button onClick={() => generateReferral({})} className="flex items-center gap-2">
               <ArrowsClockwiseIcon size={16} />
               {isPending ? "Generating..." : "Create link"}

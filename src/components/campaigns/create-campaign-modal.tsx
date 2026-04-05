@@ -248,7 +248,8 @@ const CreateCampaignModal = ({
       <DialogContent
         // onInteractOutside={(e) => e.preventDefault()}
         // showCloseButton={false}
-        className="max-h-[95vh] w-full gap-0 overflow-hidden bg-white p-0 lg:min-w-[700px]"
+        showCloseButton={false}
+        className="max-h-[85vh] w-full gap-0 overflow-hidden bg-white p-0 lg:max-h-[95vh] lg:min-w-[700px]"
       >
         <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-xl font-bold text-[#0A0A0C]">Campaign Details</DialogTitle>

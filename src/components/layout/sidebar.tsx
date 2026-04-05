@@ -42,7 +42,7 @@ const Sidebar = ({ isMobileOpen = false, onMobileClose }: SidebarProps) => {
 
       <aside
         className={cn(
-          "font-inter relative z-[70] flex h-screen flex-col border-r border-[#DFE1E7] bg-[#F6F8FA] transition-all duration-300",
+          "font-inter relative z-[70] flex h-screen flex-col border-r border-[#DFE1E7] bg-[#F6F8FA] transition-all duration-300 lg:z-[10]",
           // Desktop: always visible, respects collapse state
           "hidden lg:flex",
           isSidebarOpen ? "lg:w-64" : "lg:w-16",

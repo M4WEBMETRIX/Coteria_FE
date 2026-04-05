@@ -40,16 +40,17 @@ function AppRoutesWrapper() {
 
   useEffect(() => {
     if (isEndUserSubdomain(subdomain) && !location.pathname.startsWith("/user")) {
-      const nextPath = location.pathname === "/" ? "/user" : `/user${location.pathname}`;
-
+      const rest = location.pathname === "/" ? "" : location.pathname;
+      const nextPath = `/user${rest}${location.search}${location.hash}`;
       navigate(nextPath, { replace: true });
     }
 
     if (isOrgSubdomain(subdomain) && location.pathname.startsWith("/user")) {
-      const nextPath = location.pathname.replace("/user", "") || "/";
+      const nextPath = (location.pathname.replace("/user", "") || "/") + location.search + location.hash;
       navigate(nextPath, { replace: true });
     }
-  }, [subdomain, location.pathname, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // run only on mount — subdomain is derived from hostname and never changes
 
   return (
     <Routes>
