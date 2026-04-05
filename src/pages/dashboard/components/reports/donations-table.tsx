@@ -47,7 +47,7 @@ const donations = [
 
 export function DonationsTable() {
   return (
-    <div className="w-full flex-1 overflow-hidden rounded-xl border border-[#DFE1E7] bg-white lg:col-span-8">
+    <div className="w-full flex-1 overflow-auto rounded-xl border border-[#DFE1E7] bg-white lg:col-span-8">
       <div className="flex items-center justify-between border-b border-[#DFE1E7] p-4">
         <h3 className="leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
           Recent Donations Table
@@ -62,6 +62,7 @@ export function DonationsTable() {
         </div>
       </div>
 
+      <div className="overflow-x-auto">
       <Table>
         <TableHeader className="bg-[#F6F8FA]">
           <TableRow>
@@ -107,6 +108,7 @@ export function DonationsTable() {
           ))}
         </TableBody>
       </Table>
+      </div>
     </div>
   );
 }

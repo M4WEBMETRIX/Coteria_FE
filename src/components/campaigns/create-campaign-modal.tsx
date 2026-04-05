@@ -248,13 +248,13 @@ const CreateCampaignModal = ({
       <DialogContent
         // onInteractOutside={(e) => e.preventDefault()}
         // showCloseButton={false}
-        className="max-h-[95vh] w-full min-w-[700px] gap-0 overflow-hidden bg-white p-0"
+        className="max-h-[95vh] w-full gap-0 overflow-hidden bg-white p-0 lg:min-w-[700px]"
       >
         <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-xl font-bold text-[#0A0A0C]">Campaign Details</DialogTitle>
         </DialogHeader>
 
-        <div className="no-scrollbar max-h-[70vh] overflow-y-auto p-6">
+        <div className="no-scrollbar max-h-[70vh] overflow-y-auto p-3 lg:p-6">
           {step === 1 ? (
             <div className="space-y-6">
               {/* Title */}
@@ -639,7 +639,7 @@ const CreateCampaignModal = ({
           )}
         </div>
 
-        <div className="flex justify-end gap-3 border-t border-[#DFE1E7] px-6 py-5">
+        <div className="flex justify-end gap-3 border-t border-[#DFE1E7] px-3 py-5 lg:px-6">
           {step === 1 ? (
             <>
               <Button variant="outline" onClick={() => setOpen(false)} className="px-6">

@@ -31,9 +31,9 @@ const AccountSettingsIndex = () => {
 
   return (
     <div className="mx-auto w-full space-y-8">
-      <div className="flex items-start gap-8">
+      <div className="items-start gap-8 lg:flex">
         {/* Left Sidebar - Profile Summary */}
-        <div className="w-[300px] shrink-0 space-y-6">
+        <div className="mb-6 w-full shrink-0 space-y-6 lg:mb-0 lg:w-[300px]">
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6 text-center">
             <div className="flex items-center gap-3">
               <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">

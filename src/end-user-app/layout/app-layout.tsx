@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 import { cn } from "@/lib/utils";
 import UserNavbar from "../navigations/user-navbar";
 import { LayoutContext } from "@/components/layout/dashboard-layout";
+import MobileNav from "../navigations/mobile-nav";
 // import Navbar from "../navbar";
 // import Sidebar from "./sidebar";
 
@@ -32,19 +33,22 @@ const AppLayout = ({ children }: AppLayoutProps) => {
         <UserSidebar />
 
         {/* Main Content */}
-        <div className="flex flex-1 flex-col px-8">
-          {/* <Navbar breadcrumbs={breadcrumbComponent} /> */}
-          {showNavbar ? null : <UserNavbar breadcrumbs={breadcrumbComponent} />}
+        <div className="relative min-w-0 flex-1">
+          <div className="flex flex-1 flex-col px-4 lg:px-8">
+            {/* <Navbar breadcrumbs={breadcrumbComponent} /> */}
+            {showNavbar ? null : <UserNavbar breadcrumbs={breadcrumbComponent} />}
 
-          <main
-            className={cn(
-              "no-scrollbar h-[calc(100vh-150px)] min-w-0 flex-1 overflow-auto bg-white",
-              showNavbar ? "py-0" : "py-4"
-            )}
-          >
-            {children}
-          </main>
-          {/* Removed redundant Outlet */}
+            <main
+              className={cn(
+                "no-scrollbar mb-[80px] h-[calc(100vh-150px)] min-w-0 flex-1 overflow-auto bg-white lg:pb-0",
+                showNavbar ? "py-0" : "py-4"
+              )}
+            >
+              {children}
+            </main>
+            {/* Removed redundant Outlet */}
+          </div>
+          <MobileNav />
         </div>
       </div>
     </LayoutContext.Provider>

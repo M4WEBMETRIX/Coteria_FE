@@ -209,16 +209,16 @@ const SettingsPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="flex">
+      <div className="lg:flex">
         {/* Sidebar Navigation */}
-        <div className="w-[200px] shrink-0 rounded-l-[16px] border p-4">
-          <nav className="space-y-3">
+        <div className="w-full shrink-0 rounded-l-[16px] p-4 lg:w-[200px] lg:border">
+          <nav className="flex flex-nowrap overflow-x-auto lg:flex-col lg:space-y-3">
             {SETTINGS_TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "flex w-full cursor-pointer items-center rounded-lg px-3 py-2.5 text-left text-sm leading-[150%] font-medium tracking-[2%] transition-colors",
+                  "flex w-full cursor-pointer items-center rounded-lg px-3 py-2.5 text-left text-sm leading-[150%] font-medium tracking-[2%] text-nowrap transition-colors",
                   activeTab === tab.id
                     ? "border border-[#DFE1E7] bg-[#F6F8FA] text-[#0D0D12]"
                     : "text-[#525866] hover:bg-gray-100 hover:text-[#666D80]"
@@ -231,7 +231,7 @@ const SettingsPage = () => {
         </div>
 
         {/* Tab Content */}
-        <div className="flex-1 rounded-r-[16px] border border-l-0 border-[#E1E4EA] bg-white">
+        <div className="rounded-r-[16px] border-l-0 border-[#E1E4EA] bg-white lg:flex-1 lg:border">
           {renderTabContent()}
         </div>
       </div>

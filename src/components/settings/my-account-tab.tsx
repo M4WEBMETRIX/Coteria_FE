@@ -36,7 +36,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
 
   return (
     <div className="font-ubuntu">
-      <div className="flex justify-between p-6">
+      <div className="justify-between p-3 lg:flex lg:p-6">
         <div className="w-[300px]">
           {" "}
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
@@ -47,7 +47,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
             others.
           </p>
         </div>
-        <div className="grid min-w-[532px] space-y-4">
+        <div className="grid space-y-4 lg:min-w-[532px]">
           <div className="flex w-full items-start gap-4">
             <div className="w-full space-y-2">
               <Label

@@ -90,7 +90,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
   return (
     <div className="font-ubuntu">
       {/* Account Details Section */}
-      <div className="flex justify-between p-6">
+      <div className="justify-between p-3 lg:flex lg:p-6">
         <div className="w-[300px]">
           {" "}
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
@@ -101,7 +101,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
           </p>
         </div>
 
-        <div className="grid min-w-[532px] space-y-4">
+        <div className="grid space-y-4 lg:min-w-[532px]">
           <div className="flex flex-col space-y-3 pb-2">
             <Label className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]">
               Organization Logo
@@ -207,8 +207,8 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
       </div>
       <Separator />
       {/* Address Section */}
-      <div className="flex justify-between p-6">
-        <div className="w-[300px]">
+      <div className="justify-between p-3 lg:flex lg:p-6">
+        <div className="w-full lg:w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
             Address
           </h3>
@@ -217,7 +217,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
           </p>
         </div>
 
-        <div className="grid w-[532px] space-y-4">
+        <div className="w-full space-y-4 lg:grid lg:w-[532px]">
           <div className="col-span-2 space-y-2">
             <Label
               htmlFor="addressStreet"
@@ -270,8 +270,8 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               placeholder="Please enter your city"
             />
           </div>
-          <div className="flex w-full gap-6">
-            <div className="flex-2 space-y-2">
+          <div className="flex w-full gap-3 lg:gap-6">
+            <div className="w-full flex-2 space-y-2">
               <Label
                 htmlFor="addressFull"
                 className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
@@ -280,13 +280,13 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               </Label>
               <Input
                 id="addressFull"
-                className="w-[372px]"
+                className="w-full lg:w-[372px]"
                 value={formData.addressStreet}
                 onChange={(e) => handleChange("addressStreet", e.target.value)}
                 placeholder="Please enter your address"
               />
             </div>
-            <div className="space-y-2">
+            <div className="w-[40%] space-y-2 lg:w-full">
               <Label
                 htmlFor="addressPostalCode"
                 className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
@@ -295,7 +295,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               </Label>
               <Input
                 id="addressPostalCode"
-                className="min-w-[110px]"
+                className="lg:min-w-[110px]"
                 value={formData.addressPostalCode}
                 onChange={(e) => handleChange("addressPostalCode", e.target.value)}
                 placeholder="Please enter your postal code"

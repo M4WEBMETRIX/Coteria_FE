@@ -90,8 +90,8 @@ const DashboardCommunity = () => {
   const totalItems = data?.data?.totalCount || data?.data?.totalItems || 0;
 
   return (
-    <div className="overflow-x-auto lg:w-full">
-      <div className="">
+    <div className="w-full overflow-x-auto">
+      <div className="min-w-[800px] lg:min-w-full">
         <Table>
           <TableHeader className="rounded-t-[10px]! border border-[#EBEBEB] bg-[#FCFCFC]">
             <TableRow className="">
@@ -189,7 +189,7 @@ const DashboardCommunity = () => {
         </Table>
       </div>
 
-      {!isPending && communities?.length > 0 && (
+      {!isPending && communities?.length > 0 && totalPages > 1 && (
         <ManagePagination
           totalItems={totalItems}
           totalPages={totalPages}

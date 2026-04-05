@@ -68,7 +68,7 @@ const InviteMembersModal = ({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent showCloseButton={false} className="w-full min-w-[783px] gap-0 p-0">
+      <DialogContent showCloseButton={false} className="w-full gap-0 p-0 lg:min-w-[783px]">
         {/* Header */}
         <DialogHeader>
           <DialogClose className="absolute top-4 right-4 rounded-sm opacity-70 hover:opacity-100">

@@ -261,7 +261,7 @@ const DashboardCampaigns = () => {
         </div>
       )}
 
-      {!isLoading && campaignsData?.length > 0 && (
+      {!isLoading && campaignsData?.length > 0 && totalPages > 1 && (
         <ManagePagination
           totalItems={totalItems}
           totalPages={totalPages}

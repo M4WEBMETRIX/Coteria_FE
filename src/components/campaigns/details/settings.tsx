@@ -39,12 +39,12 @@ const BasicSettings = ({
   handleChange: (field: string, value: any) => void;
   data: any;
 }) => (
-  <div className="flex gap-8">
-    <div className="w-[300px] shrink-0">
+  <div className="gap-8 lg:flex">
+    <div className="w-full shrink-0 lg:w-[300px]">
       <h3 className="text-base font-semibold text-[#0A0A0C]">Campaign Details</h3>
       <p className="text-sm text-[#525866]">Control how this campaign behaves</p>
     </div>
-    <div className="flex-1 space-y-6">
+    <div className="mt-3 flex-1 space-y-6 lg:mt-0">
       <div className="flex w-full justify-between">
         <p className="text-sm font-medium text-[#1E1F24]">Status</p>
         <StatusBadge status={data?.status} />
@@ -91,12 +91,12 @@ const VisibilitySettings = ({
   formData: any;
   handleChange: (field: string, value: any) => void;
 }) => (
-  <div className="flex gap-8">
-    <div className="w-[300px] shrink-0">
+  <div className="gap-8 lg:flex">
+    <div className="w-full shrink-0 lg:w-[300px]">
       <h3 className="text-base font-semibold text-[#0A0A0C]">Visibility & Access Details</h3>
       <p className="text-sm text-[#525866]">Turning this off removes the campaign from insights</p>
     </div>
-    <div className="flex-1 space-y-6">
+    <div className="mt-3 flex-1 space-y-6 lg:mt-0">
       <RadioGroup
         value={formData.visibility}
         onValueChange={(value) => handleChange("visibility", value)}
@@ -137,12 +137,12 @@ const EngagementRules = ({
   formData: any;
   handleChange: (field: string, value: any) => void;
 }) => (
-  <div className="flex gap-8">
-    <div className="w-[300px] shrink-0">
+  <div className="gap-8 lg:flex">
+    <div className="w-full shrink-0 lg:w-[300px]">
       <h3 className="text-base font-semibold text-[#0A0A0C]">Engagement Rules Details</h3>
       <p className="text-sm text-[#525866]">Turning this off removes the campaign from insights</p>
     </div>
-    <div className="flex-1 space-y-6">
+    <div className="mt-3 flex-1 space-y-6 lg:mt-0">
       <div className="flex items-center justify-between">
         <div>
           <p className="text-sm font-medium text-[#344054]">Allow repeat donations</p>
@@ -191,14 +191,14 @@ const NotificationSettings = ({
   handleChange: (field: string, value: any) => void;
 }) => (
   <div>
-    <div className="flex gap-8">
-      <div className="w-[300px] shrink-0">
+    <div className="gap-8 lg:flex">
+      <div className="w-full shrink-0 lg:w-[300px]">
         <h3 className="text-base font-semibold text-[#0A0A0C]">Update reminder</h3>
         <p className="text-sm leading-[150%] tracking-[2%] text-[#666D80]">
           Helps keep donors engaged with regular updates
         </p>
       </div>
-      <div className="flex-1 space-y-8">
+      <div className="mt-3 flex-1 space-y-8 lg:mt-0">
         <div className="space-y-6">
           <div className="flex items-center justify-between">
             <div>
@@ -309,14 +309,14 @@ const DangerZoneSettings = ({ data }: { data?: any }) => {
 
   return (
     <>
-      <div className="flex gap-8">
-        <div className="w-[300px] shrink-0">
+      <div className="gap-8 lg:flex">
+        <div className="w-full shrink-0 lg:w-[300px]">
           <h3 className="text-base font-semibold text-[#0A0A0C]">Danger Zone</h3>
           <p className="text-sm text-[#525866]">
             These actions affect campaign availability and data.
           </p>
         </div>
-        <div className="flex-1 space-y-6">
+        <div className="mt-3 flex-1 space-y-6 lg:mt-0">
           {data?.status?.toLowerCase() === "completed" ? (
             <div className="flex items-center justify-between">
               <div>
@@ -514,15 +514,15 @@ const Settings = ({ data }: { data: any }) => {
         )}
       </div>
 
-      <div className="flex overflow-hidden rounded-xl border border-[#E1E4EA] bg-white">
-        <div className="w-[240px] shrink-0 border-r border-[#E1E4EA] bg-white p-4">
-          <nav className="space-y-1">
+      <div className="overflow-hidden bg-white lg:flex lg:rounded-xl lg:border lg:border-[#E1E4EA]">
+        <div className="w-full shrink-0 border-[#E1E4EA] bg-white lg:w-[240px] lg:border-r lg:p-4">
+          <nav className="flex flex-nowrap overflow-x-auto lg:flex-col lg:space-y-1">
             {CAMPAIGN_SETTINGS_TABS.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
                 className={cn(
-                  "flex w-full cursor-pointer items-center rounded-lg px-3 py-2.5 text-left text-sm leading-[150%] font-medium tracking-[2%] transition-colors",
+                  "flex w-full cursor-pointer items-center rounded-lg px-3 py-2.5 text-left text-sm leading-[150%] font-medium tracking-[2%] text-nowrap transition-colors",
                   activeTab === tab.id
                     ? "border border-[#DFE1E7] bg-[#F6F8FA] text-[#0D0D12]"
                     : "text-[#525866] hover:bg-gray-100 hover:text-[#666D80]"
@@ -534,7 +534,7 @@ const Settings = ({ data }: { data: any }) => {
           </nav>
         </div>
 
-        <div className="flex-1 p-6">{renderContent()}</div>
+        <div className="mt-6 flex-1 lg:mt-0 lg:p-6">{renderContent()}</div>
       </div>
     </div>
   );

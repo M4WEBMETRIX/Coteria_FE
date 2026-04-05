@@ -204,7 +204,7 @@ const CreateCommunityModal = ({
 
       <DialogContent
         showCloseButton={false}
-        className="max-h-[95vh] w-[700px] min-w-[700px] gap-0 overflow-hidden border-none bg-white p-0"
+        className="max-h-[95vh] gap-0 overflow-hidden border-none bg-white p-0 lg:w-[700px] lg:min-w-[700px]"
       >
         <DialogHeader className="border-b border-[#DFE1E7] p-6">
           <DialogTitle className="text-lg leading-[135%] font-semibold tracking-[0.01em] text-[#0D0D12]">
@@ -213,7 +213,7 @@ const CreateCommunityModal = ({
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="no-scrollbar max-h-[70vh] overflow-y-auto p-6">
+          <div className="no-scrollbar max-h-[70vh] overflow-y-auto p-3 lg:p-6">
             <div className="space-y-6">
               {/* Title */}
               <Field className="flex items-center gap-2">
@@ -380,7 +380,7 @@ const CreateCommunityModal = ({
             </div>
           </div>
 
-          <div className="flex justify-end gap-3 border-t border-[#DFE1E7] bg-white px-6 py-5">
+          <div className="flex justify-end gap-3 border-t border-[#DFE1E7] bg-white px-3 py-5 lg:px-6">
             <DialogClose asChild>
               <Button type="button" variant="outline" className="px-6">
                 Cancel

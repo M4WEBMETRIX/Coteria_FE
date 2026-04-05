@@ -6,12 +6,14 @@ import { type ReactNode } from "react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useGetOrganisationProfile } from "@/services/generics/hooks";
 import { useNavigate } from "react-router-dom";
+import { ListIcon } from "@phosphor-icons/react";
 
 interface NavbarProps {
   breadcrumbs: ReactNode;
+  onMenuClick?: () => void;
 }
 
-const Navbar = ({ breadcrumbs }: NavbarProps) => {
+const Navbar = ({ breadcrumbs, onMenuClick }: NavbarProps) => {
   const navigate = useNavigate();
   // const [isSearchOpen, setIsSearchOpen] = useState(false);
   // const inputRef = useRef<HTMLInputElement>(null);
@@ -31,8 +33,19 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
     <>
       {/* <StripeOnboardingModal isOpen={isStripeModalOpen} onOpenChange={setIsStripeModalOpen} /> */}
       <nav className="font-inter sticky top-0 z-50 flex h-[72px] w-full items-center justify-between border-b border-[#DFE1E7] bg-white">
-        {/* Breadcrumb */}
-        <div className="flex items-center">{breadcrumbs}</div>
+        {/* Mobile menu button */}
+        <div className="flex items-center gap-3">
+          <button
+            onClick={onMenuClick}
+            className="flex h-8 w-8 cursor-pointer items-center justify-center rounded-[8px] border border-[#DFE1E7] transition-colors hover:bg-gray-100 lg:hidden"
+            aria-label="Open menu"
+          >
+            <ListIcon size={24} weight="bold" color="#818898" />
+          </button>
+
+          {/* Breadcrumb - hidden on mobile */}
+          <div className="hidden items-center lg:flex">{breadcrumbs}</div>
+        </div>
 
         {/* Right Section: Search, Notifications, Profile */}
         <div className="flex items-center gap-4">
@@ -84,11 +97,11 @@ const Navbar = ({ breadcrumbs }: NavbarProps) => {
           >
             <Avatar className="h-12 w-12 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
               <AvatarImage src={orgUser?.logoUrl || ""} className="object-cover" />
-              <AvatarFallback>
+              <AvatarFallback className="bg-[#B2DECA] text-xs font-semibold text-[#079455]">
                 {getNameAbbrev(orgUser?.currentUser?.firstName as any)}
               </AvatarFallback>
             </Avatar>
-            <div className="flex flex-col items-start justify-start text-left">
+            <div className="hidden flex-col items-start justify-start text-left lg:flex">
               <p className="max-w-[150px] truncate text-left text-xs leading-[150%] font-semibold tracking-[2%] text-[#0D0D12]">
                 {orgUser?.currentUser?.firstName}
               </p>

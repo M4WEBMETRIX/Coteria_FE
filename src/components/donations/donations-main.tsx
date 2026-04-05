@@ -27,7 +27,6 @@ import { Button } from "../ui/button";
 import { EyeIcon } from "@phosphor-icons/react";
 import { HugeiconsIcon } from "@hugeicons/react";
 
-
 export function DonationsMainTable({
   donationsData,
   isPending,
@@ -75,8 +74,8 @@ export function DonationsMainTable({
   return (
     <div className="space-y-4">
       {/* Controls */}
-      <div className="flex items-center justify-between">
-        <h2 className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0A0A0C]">
+      <div className="items-center justify-between lg:flex">
+        <h2 className="mb-3 text-sm leading-[150%] font-medium tracking-[2%] text-[#0A0A0C] lg:mb-0">
           Donation Table
         </h2>
         <div className="flex items-center gap-3">
@@ -90,7 +89,7 @@ export function DonationsMainTable({
               value={search}
               onChange={(e) => setSearch(e.target.value)}
               placeholder="Search"
-              className="h-10 w-[250px] border-[#DFE1E7] bg-white pl-9"
+              className="h-10 w-full border-[#DFE1E7] bg-white pl-9 lg:w-[250px]"
             />
           </div>
 

@@ -86,8 +86,8 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
   return (
     <div className="font-ubuntu">
       {/* API Integration / Payment Methods Section */}
-      <div className="flex justify-between p-6">
-        <div className="w-[300px]">
+      <div className="justify-between p-3 lg:flex lg:p-6">
+        <div className="lg:w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
             API integration
           </h3>
@@ -96,7 +96,7 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
           </p>
         </div>
         {subscription?.data?.paymentMethodDetailsJson ? (
-          <div className="w-[532px]">
+          <div className="mt-6 lg:mt-0 lg:w-[532px]">
             <div className="flex items-center justify-between rounded-xl border border-[#E1E4EA] bg-white p-4">
               <div className="flex items-center gap-4">
                 <div className="flex h-8 w-12 items-center justify-center rounded border border-[#E1E4EA] bg-white text-xs font-bold text-[#00579F]">
@@ -124,8 +124,8 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
       <Separator />
 
       {/* Billing Section */}
-      <div className="flex justify-between p-6">
-        <div className="w-[300px]">
+      <div className="justify-between p-3 lg:flex lg:p-6">
+        <div className="lg:w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
             Billing
           </h3>
@@ -133,17 +133,17 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
             Review and update your billing information to ensure accurate and timely payments.
           </p>
         </div>
-        <div className="w-[532px] space-y-6">
+        <div className="mt-6 space-y-6 lg:mt-0 lg:w-[532px]">
           {/* Billing Period Header */}
           {subscription?.data?.status?.toLowerCase() === "active" && (
-            <div className="flex items-center justify-between">
+            <div className="items-center justify-between lg:flex">
               <div className="space-y-1">
                 <h4 className="text-sm font-medium text-[#0A0A0C]">Billing Period</h4>
                 <p className="text-sm text-[#525866]">
                   Next billing on {formatFullDate(subscription?.data?.nextBillingAt)}
                 </p>
               </div>
-              <div className="flex items-center gap-2">
+              <div className="mt-4 flex items-center gap-2 lg:mt-0">
                 <ChangeBillingPopover
                   billingInterval={subscription?.data?.plan?.billingInterval}
                   billingCode={subscription?.data?.plan?.code}
@@ -271,8 +271,8 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
       <Separator />
 
       {/* Email Address Section */}
-      <div className="flex justify-between p-6">
-        <div className="w-[300px]">
+      <div className="justify-between p-3 lg:flex lg:p-6">
+        <div className="lg:w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
             Email address
           </h3>
@@ -347,7 +347,10 @@ export function ChangeBillingPopover({
   return (
     <Popover open={open} onOpenChange={setOpen}>
       <PopoverTrigger asChild>
-        <Button variant="outline" className="h-9 min-w-[200px] text-sm font-medium capitalize">
+        <Button
+          variant="outline"
+          className="h-9 w-full text-sm font-medium capitalize lg:w-max lg:min-w-[200px]"
+        >
           {isPending ? (
             "Changing billing..."
           ) : (

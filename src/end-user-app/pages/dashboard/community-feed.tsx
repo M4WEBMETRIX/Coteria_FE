@@ -73,7 +73,7 @@ const CommunityFeed = () => {
       />
       <div className="flex w-full gap-6">
         {/* Left Sidebar */}
-        <div className="w-[350px] space-y-6 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 pt-[38.5px] pb-5">
+        <div className="hidden w-[350px] space-y-6 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 pt-[38.5px] pb-5 lg:block">
           {/* Profile Card */}
           <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 text-center">
             {userLoading ? (
@@ -190,14 +190,14 @@ const CommunityFeed = () => {
           </div>
         </div>
 
-        <div className="flex w-full items-start gap-4 rounded-[10px] border border-[#F6F6F6] bg-[#FCFCFC] px-4 py-3.5">
+        <div className="block w-full items-start gap-4 rounded-[10px] lg:flex lg:border lg:border-[#F6F6F6] lg:bg-[#FCFCFC] lg:px-4 lg:py-3.5">
           {/* Main Feed */}
           <div className="flex-1 space-y-6">
             <h2 className="text-2xl font-bold text-[#1E1F24]">Community Feed</h2>
 
             {/* Post Mock */}
             {communityLoading ? (
-              <div className="animate-pulse space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
+              <div className="animate-pulse space-y-4 rounded-[16px] bg-white lg:border lg:border-[#ECEFF3] lg:p-6">
                 <div className="flex items-center gap-3">
                   <div className="h-12 w-12 rounded-full bg-gray-200" />
                   <div className="space-y-2">
@@ -212,7 +212,7 @@ const CommunityFeed = () => {
                 <div className="h-[180px] w-full rounded-xl bg-gray-200" />
               </div>
             ) : (
-              <div className="flex-1 space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6">
+              <div className="flex-1 space-y-4 rounded-[16px] bg-white lg:border lg:border-[#ECEFF3] lg:p-6">
                 <div className="flex items-center gap-3">
                   <div className="flex h-12 w-12 items-center justify-center rounded-full bg-pink-100 text-xl font-bold text-pink-500">
                     CA
@@ -257,7 +257,7 @@ const CommunityFeed = () => {
           </div>
 
           {/* Right Sidebar */}
-          <div className="w-[300px] space-y-6">
+          <div className="w-full space-y-6 lg:w-[300px]">
             {/* Events Widget (Mocked for now based on image) */}
             {/* NO EVENT FOR MVP  */}
             {/* <div className="space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white px-4 py-5">
@@ -286,7 +286,7 @@ const CommunityFeed = () => {
             </div> */}
 
             {/* Active Campaigns Widget */}
-            <div className="space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white px-4 py-5">
+            <div className="mt-6 space-y-4 rounded-[10px] border border-[#F6F6F6] bg-white lg:mt-0 lg:px-4 lg:py-5">
               <div
                 className={cn(
                   "flex items-center justify-between",
