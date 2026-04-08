@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import COTERIE_IMAGE_1 from "../../../assets/images/coterie-img-1.png";
+import COTERIE_IMAGE_1 from "../../../assets/images/coterie-img-1.jpg";
 // @/assets/images/coterie-image-1.png
 
 const slides = [
