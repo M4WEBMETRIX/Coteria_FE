@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { User } from "@phosphor-icons/react";
 import UserAuthCarousel from "../pages/authentications/user-auth-carousel";
 import LogoSvgCode from "../pages/logo-svg-code";
-import { useGetReferralDetails } from "@/services/users/user-auth";
+import { useGetReferralDetails, useUserGoogleAuth } from "@/services/users/user-auth";
 import { useQueryState } from "nuqs";
 import { useNavigate } from "react-router-dom";
 
@@ -19,10 +19,14 @@ const UserAuthLayout = ({
   title: string;
   subTitle: string;
 }) => {
+  const URL = window.location.href;
+  const isNotUser = URL.includes("returnUrl");
+  const idToken = import.meta.env.VITE_GOOGLE_ID_TOKEN;
   const navigate = useNavigate();
   const [referralCode] = useQueryState("referral-code");
   const [returnUrl] = useQueryState("returnUrl");
   const { data } = useGetReferralDetails(referralCode);
+  const { mutate: userGoogleAuthMutate, isPending } = useUserGoogleAuth();
 
   // If user is already authenticated and has a returnUrl, redirect immediately
   useEffect(() => {
@@ -58,27 +62,44 @@ const UserAuthLayout = ({
             {isReferrer ? (
               <div className="mt-5 flex h-25 items-center gap-3 rounded-[10px] border border-[#ECEFF3] px-5 py-3.5 shadow-[0_4px_6px_-2px_rgba(16,24,40,0.03),0_12px_16px_-4px_rgba(16,24,40,0.08)]">
                 <div>
-                  <div className="flex h-18 w-18 items-center justify-center rounded-full bg-gray-200">
-                    <User size={48} />
-                  </div>
+                  {isNotUser ? (
+                    <div className="flex h-18 w-18 items-center justify-center rounded-full bg-gray-200">
+                      <User size={48} />
+                    </div>
+                  ) : (
+                    <img
+                      src={data?.data?.referrer?.profileImageUrl}
+                      alt="Logo"
+                      className="h-18 w-18 rounded-full bg-center bg-no-repeat object-cover"
+                    />
+                  )}
                 </div>
                 <div className="flex flex-col gap-0.5">
                   <p
-                    title={data?.data?.organization?.name}
+                    title={
+                      isNotUser ? data?.data?.organization?.name : data?.data?.referrer?.displayName
+                    }
                     className="tracking-[0%]] line-clamp-1 text-2xl leading-[160%] font-medium tracking-[0.1px] text-[leading-[160%]"
                   >
-                    {data?.data?.organization?.name}
+                    {isNotUser ? data?.data?.organization?.name : data?.data?.referrer?.displayName}
                   </p>
                   <p
-                    title={data?.data?.community?.name || "Private details"}
+                    title={
+                      isNotUser ? data?.data?.community?.name : data?.data?.referrer?.communityName
+                    }
                     className="line-clamp-1 text-sm leading-[160%] tracking-[0.1px] text-[#000000]"
                   >
-                    {data?.data?.community?.name || "Private details"}
+                    {isNotUser ? data?.data?.community?.name : data?.data?.referrer?.communityName}
                   </p>
                 </div>
               </div>
             ) : (
               <Button
+                onClick={() => {
+                  userGoogleAuthMutate({ idToken: idToken || "" });
+                }}
+                disabled={isPending}
+                loading={isPending}
                 variant="outline"
                 className="mt-5 h-12 w-full border-gray-300 leading-[155%] tracking-[0%] hover:bg-gray-50"
                 type="button"
@@ -101,7 +122,7 @@ const UserAuthLayout = ({
                     d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
                   />
                 </svg>
-                Sign In with Google
+                {isPending ? "Signing in..." : "Sign In with Google"}
               </Button>
             )}
 

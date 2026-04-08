@@ -20,6 +20,11 @@ export const registerUser = async (payload: UserRegisterProps) => {
   return response.data;
 };
 
+export const userGoogleAuth = async (payload: { idToken: string }) => {
+  const response = await userApi.post("/donor/auth/google", payload);
+  return response.data;
+};
+
 export const forgotPasswordUser = async (payload: { email: string }) => {
   const response = await userApi.post("/auth/forgot-password", payload);
   return response.data;

@@ -5,6 +5,7 @@ import {
   loginUser,
   registerUser,
   resetPasswordUser,
+  userGoogleAuth,
   type UserLoginProps,
   type UserRegisterProps,
 } from "./user-index";
@@ -15,6 +16,24 @@ import { showErrorToast } from "@/lib/utils";
 export const useRegisterUser = () => {
   return useMutation({
     mutationFn: (payload: UserRegisterProps) => registerUser(payload),
+    onSuccess: (response) => {
+      const { token, refreshToken } = response.data;
+
+      localStorage.setItem("userAccessToken", token);
+      localStorage.setItem("userRefreshToken", refreshToken);
+
+      // toast.success("You've successfully registered");
+    },
+    onError: (error) => {
+      console.log("err", error);
+      toast.error(error?.message);
+    },
+  });
+};
+
+export const useUserGoogleAuth = () => {
+  return useMutation({
+    mutationFn: (payload: { idToken: string }) => userGoogleAuth(payload),
     onSuccess: (response) => {
       const { token, refreshToken } = response.data;
 

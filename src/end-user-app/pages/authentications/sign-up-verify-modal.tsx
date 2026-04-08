@@ -232,7 +232,7 @@ export default function EmailVerificationFlow({
 
             {/* Title */}
             <h2 className="mb-2 text-2xl leading-[150%] font-medium tracking-[-2%]">
-              You're All Set
+              You're all set
             </h2>
 
             {/* Description */}
