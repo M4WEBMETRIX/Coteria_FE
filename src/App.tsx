@@ -6,6 +6,7 @@ import { ReloadPrompt } from "./components/ReloadPrompt";
 import Logo from "@/assets/icons/coterie.svg";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import AppRoutesWrapper from "./app-route-wrapper";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 // const AllRoutes = lazy(() => import("./_routes"));
 // const AccessProtection = lazy(() => import("./components/auth/access-protection"));
@@ -17,23 +18,24 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <Suspense
-          fallback={
-            <div className="flex min-h-screen items-center justify-center">
-              <div className="relative flex flex-col items-center gap-4">
-                <div className="h-48 w-48 animate-spin rounded-full border-4 border-[#12AA5B] border-t-transparent" />{" "}
-                <img
-                  src={Logo}
-                  alt="Coterie"
-                  className="absolute top-1/2 left-1/2 h-auto w-[120px] -translate-x-1/2 -translate-y-1/2 transform animate-pulse"
-                />
+        <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_ID_TOKEN}>
+          <Suspense
+            fallback={
+              <div className="flex min-h-screen items-center justify-center">
+                <div className="relative flex flex-col items-center gap-4">
+                  <div className="h-48 w-48 animate-spin rounded-full border-4 border-[#12AA5B] border-t-transparent" />{" "}
+                  <img
+                    src={Logo}
+                    alt="Coterie"
+                    className="absolute top-1/2 left-1/2 h-auto w-[120px] -translate-x-1/2 -translate-y-1/2 transform animate-pulse"
+                  />
+                </div>
               </div>
-            </div>
-          }
-        >
-          <AppRoutesWrapper />
+            }
+          >
+            <AppRoutesWrapper />
 
-          {/* <Routes>
+            {/* <Routes>
             <Route element={<AccessProtection />}>
               <Route path="/*" element={<AllRoutes />} errorElement={<RouteErrorBoundary />} />
               <Route
@@ -43,9 +45,10 @@ function App() {
               />
             </Route>
           </Routes> */}
-        </Suspense>
-        <Toaster position="top-center" richColors />
-        <ReloadPrompt />
+          </Suspense>
+          <Toaster position="top-center" richColors />
+          <ReloadPrompt />
+        </GoogleOAuthProvider>
       </QueryClientProvider>
     </>
   );

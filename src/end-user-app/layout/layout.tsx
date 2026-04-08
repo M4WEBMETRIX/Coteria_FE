@@ -7,6 +7,7 @@ import LogoSvgCode from "../pages/logo-svg-code";
 import { useGetReferralDetails, useUserGoogleAuth } from "@/services/users/user-auth";
 import { useQueryState } from "nuqs";
 import { useNavigate } from "react-router-dom";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const UserAuthLayout = ({
   children,
@@ -21,12 +22,20 @@ const UserAuthLayout = ({
 }) => {
   const URL = window.location.href;
   const isNotUser = URL.includes("returnUrl");
-  const idToken = import.meta.env.VITE_GOOGLE_ID_TOKEN;
+  // const idToken = import.meta.env.VITE_GOOGLE_ID_TOKEN;
   const navigate = useNavigate();
   const [referralCode] = useQueryState("referral-code");
+
   const [returnUrl] = useQueryState("returnUrl");
   const { data } = useGetReferralDetails(referralCode);
   const { mutate: userGoogleAuthMutate, isPending } = useUserGoogleAuth();
+
+  const login = useGoogleLogin({
+    onSuccess: (tokenResponse) => {
+      console.log(tokenResponse);
+      userGoogleAuthMutate({ idToken: tokenResponse.access_token });
+    },
+  });
 
   // If user is already authenticated and has a returnUrl, redirect immediately
   useEffect(() => {
@@ -96,7 +105,7 @@ const UserAuthLayout = ({
             ) : (
               <Button
                 onClick={() => {
-                  userGoogleAuthMutate({ idToken: idToken || "" });
+                  login();
                 }}
                 disabled={isPending}
                 loading={isPending}

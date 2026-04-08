@@ -1,24 +1,26 @@
 import { useEffect, useState } from "react";
+import COTERIE_IMAGE_1 from "../../../assets/images/coterie-img-1.png";
+// @/assets/images/coterie-image-1.png
 
 const slides = [
   {
     id: 1,
-    image: "https://images.unsplash.com/photo-1521737604893-d14cc237f11d?q=80&w=1600",
+    image: COTERIE_IMAGE_1,
     quote:
       "A total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
   },
-  {
-    id: 2,
-    image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1600",
-    quote:
-      "It feels different here. A total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
-  },
-  {
-    id: 3,
-    image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600",
-    quote:
-      "I didn’t expect a total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
-  },
+  // {
+  //   id: 2,
+  //   image: "https://images.unsplash.com/photo-1529156069898-49953e39b3ac?q=80&w=1600",
+  //   quote:
+  //     "It feels different here. A total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
+  // },
+  // {
+  //   id: 3,
+  //   image: "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?q=80&w=1600",
+  //   quote:
+  //     "I didn’t expect a total game-changer. I came for the networking but stayed for the people. It’s rare to find a community that feels this supportive and high-energy.",
+  // },
 ];
 
 export default function UserAuthCarousel() {
@@ -42,7 +44,7 @@ export default function UserAuthCarousel() {
           }`}
         >
           {/* Background image */}
-          <img src={slide.image} alt="" className="h-full w-full object-cover" />
+          <img src={slide.image} alt="" className="h-full w-full object-cover object-center" />
 
           {/* Bottom caption box */}
           <div className="absolute right-0 bottom-0 left-0 h-[182px] bg-[#282828]/60 backdrop-blur-xs">
