@@ -83,14 +83,13 @@ const UserSignIn = () => {
   //   }
   // }, [data?.data?.requiresEmailVerification, data?.data?.emailVerified]);
 
+  // Your communities have been active while you were away
+  // Welcome back
   return (
-    <UserAuthLayout
-      title="Welcome back"
-      subTitle="Your communities have been active while you were away"
-    >
-      <div className="w-full">
+    <UserAuthLayout title="" subTitle="">
+      <div className="flex h-[80vh] w-full flex-col items-center justify-center">
         {/* Form */}
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-5">
+        <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
           {/* Name Field */}
 
           <Field className="space-y-1.5">
