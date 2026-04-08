@@ -16,7 +16,7 @@ const PasswordTab = ({ formData, setFormData }: PasswordTabProps) => {
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       <div className="flex justify-between p-6">
         <div className="w-[300px]">
           {" "}

@@ -15,7 +15,7 @@ const ReportsPage = () => {
   });
 
   return (
-    <div className="font-ubuntu flex flex-col gap-6">
+    <div className="font-inter flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-2xl font-bold text-[#0A0A0C]">Report</h1>
         <Button variant="outline" className="border-[#DFE1E7] bg-white">

@@ -26,7 +26,7 @@ const DeleteAccountModal = ({ open, onOpenChange }: DeleteAccountModalProps) => 
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="font-ubuntu w-full max-w-[450px] gap-0 overflow-hidden rounded-2xl border-0 bg-white p-0 shadow-xl"
+        className="font-inter w-full max-w-[450px] gap-0 overflow-hidden rounded-2xl border-0 bg-white p-0 shadow-xl"
       >
         <div className="flex flex-col items-center px-8 pt-8 pb-6">
           {/* Icon Container */}

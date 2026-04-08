@@ -49,7 +49,7 @@ export function DonorsMainTable() {
   };
 
   return (
-    <div className="font-ubuntu space-y-4">
+    <div className="font-inter space-y-4">
       {/* Controls */}
       <div className="flex items-center justify-between">
         <h2 className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0A0A0C]">

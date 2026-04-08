@@ -24,7 +24,7 @@ const StatsCard = ({
   iconBg = "#E7F6EC",
 }: StatsCardProps) => {
   return (
-    <div className="font-ubuntu h-[107px] w-full rounded-xl border border-[#DFE1E7] bg-[#FFFFFF] p-4 shadow-sm">
+    <div className="font-inter h-[107px] w-full rounded-xl border border-[#DFE1E7] bg-[#FFFFFF] p-4 shadow-sm">
       <div className="flex h-full flex-col justify-between gap-2">
         <div className="flex items-start justify-between">
           <span className="traxcking-[2%] text-xs leading-[150%] font-normal text-[#8B8D98]">

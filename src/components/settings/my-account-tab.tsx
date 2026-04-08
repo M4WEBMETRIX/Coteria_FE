@@ -35,7 +35,7 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
   }, [orgUser?.businessEmail]);
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       <div className="justify-between p-3 lg:flex lg:p-6">
         <div className="w-[300px]">
           {" "}

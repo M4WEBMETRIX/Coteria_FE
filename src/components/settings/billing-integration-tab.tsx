@@ -84,7 +84,7 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
   }
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       {/* API Integration / Payment Methods Section */}
       <div className="justify-between p-3 lg:flex lg:p-6">
         <div className="lg:w-[300px]">

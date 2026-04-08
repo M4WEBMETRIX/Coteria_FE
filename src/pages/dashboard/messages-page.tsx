@@ -70,7 +70,7 @@ const MessagesPage = () => {
   }
 
   return (
-    <div className="font-ubuntu flex h-[calc(100vh-100px)] flex-col">
+    <div className="font-inter flex h-[calc(100vh-100px)] flex-col">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="">
         <TabsList className="flex gap-2 bg-transparent">
           {tabs.map((tab) => (

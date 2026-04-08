@@ -52,7 +52,7 @@ const ActivityItem = ({
 
 const ActivitySummaryWidget = () => {
   return (
-    <div className="font-ubuntu flex h-full w-full flex-col rounded-xl border border-[#DFE1E7] bg-[#FCFCFD] shadow-sm">
+    <div className="font-inter flex h-full w-full flex-col rounded-xl border border-[#DFE1E7] bg-[#FCFCFD] shadow-sm">
       <div className="flex items-center justify-between p-4">
         <h3 className="text-base leading-[28px] font-medium tracking-[-3%] text-[#4A4C54]">
           Last 7 Days Activity Summary

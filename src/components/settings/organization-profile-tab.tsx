@@ -88,7 +88,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       {/* Account Details Section */}
       <div className="justify-between p-3 lg:flex lg:p-6">
         <div className="w-[300px]">

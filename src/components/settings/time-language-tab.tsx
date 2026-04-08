@@ -22,7 +22,7 @@ const TimeLanguageTab = ({ formData, setFormData }: TimeLanguageTabProps) => {
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       {/* Time Section */}
       <div className="flex justify-between p-6">
         <div className="w-[300px]">

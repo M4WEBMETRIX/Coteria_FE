@@ -26,7 +26,7 @@ const HelpSupport = () => {
   });
 
   return (
-    <div className="font-ubuntu flex h-[calc(100vh-100px)] flex-col">
+    <div className="font-inter flex h-[calc(100vh-100px)] flex-col">
       {/* Header (optional if needed, but tabs handle the view) */}
       {/* <div className="flex items-center justify-between">
             <h1 className="text-2xl font-bold text-[#0A0A0C]">Help & Support</h1>

@@ -47,7 +47,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         />
       </div>
 
-      <div className="font-ubuntu mx-auto grid h-screen w-full max-w-130 place-content-center">
+      <div className="font-inter mx-auto grid h-screen w-full max-w-130 place-content-center">
         {children}
       </div>
     </div>

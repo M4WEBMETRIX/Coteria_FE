@@ -24,7 +24,7 @@ const StatCard = ({
 }: StatCardProps) => {
   const isPositive = trendDirection === "up";
   return (
-    <div className="font-ubuntu flex h-full w-full flex-col justify-between rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
+    <div className="font-inter flex h-full w-full flex-col justify-between rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
       <div className="flex items-start justify-between">
         <span className="text-xs font-normal tracking-[2%] text-[#8B8D98]">{title}</span>
         <div
@@ -103,7 +103,7 @@ const CommunityStats = ({ data }: { data?: any }) => {
 
 export const StatCardSkeleton = () => {
   return (
-    <div className="font-ubuntu flex h-full w-full flex-col justify-between rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
+    <div className="font-inter flex h-full w-full flex-col justify-between rounded-xl border border-[#DFE1E7] bg-white p-4 shadow-sm">
       {/* Top Section */}
       <div className="flex items-start justify-between">
         {/* Title */}

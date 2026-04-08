@@ -66,7 +66,7 @@ const LogoutModal = ({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         showCloseButton={false}
-        className="font-ubuntu z-[99] h-fit max-h-[315px] w-full max-w-[450px] gap-0 overflow-hidden rounded-2xl border-0 bg-white p-8 shadow-xl"
+        className="font-inter z-[99] h-fit max-h-[315px] w-full max-w-[450px] gap-0 overflow-hidden rounded-2xl border-0 bg-white p-8 shadow-xl"
       >
         <div className="flex flex-col items-center pb-6">
           {/* Icon Container */}

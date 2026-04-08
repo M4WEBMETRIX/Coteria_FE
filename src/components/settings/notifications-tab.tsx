@@ -55,7 +55,7 @@ const NotificationsTab = ({ formData, setFormData }: NotificationsTabProps) => {
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-interu">
       <div className="flex justify-between p-6">
         <div className="w-[300px]">
           {" "}

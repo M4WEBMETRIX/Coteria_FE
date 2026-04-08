@@ -182,7 +182,7 @@ const SettingsPage = () => {
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       {/* Header */}
       <div className="mb-6 flex w-full items-center justify-between">
         <h1 className="text-2xl font-semibold text-[#0A0A0C]">Settings</h1>

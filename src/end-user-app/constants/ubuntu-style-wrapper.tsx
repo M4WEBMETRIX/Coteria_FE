@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 
 const UbuntuLayout = () => {
   return (
-    <div className="font-ubuntu min-h-screen">
+    <div className="font-inter min-h-screen">
       <Outlet />
     </div>
   );

@@ -69,7 +69,7 @@ const Story = () => {
   };
 
   return (
-    <div className="font-ubuntu h-full">
+    <div className="font-inter h-full">
       <div className="flex items-center justify-between">
         <h2 className="text-lg leading-[135%] font-normal tracking-[-2%] text-[#1E1F24]">
           Campaign Story

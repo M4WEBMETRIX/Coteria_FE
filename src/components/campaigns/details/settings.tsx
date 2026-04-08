@@ -495,7 +495,7 @@ const Settings = ({ data }: { data: any }) => {
   };
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       <div className="mb-6 flex w-full items-center justify-between">
         <h2 className="text-xl font-semibold text-[#0A0A0C]">Settings</h2>
         {data?.status?.toLowerCase() !== "active" && isDirty && (

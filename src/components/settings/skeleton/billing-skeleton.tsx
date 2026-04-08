@@ -1,7 +1,7 @@
 // BillingIntegrationSkeleton.tsx
 const BillingIntegrationSkeleton = () => {
   return (
-    <div className="font-ubuntu animate-pulse">
+    <div className="font-inter animate-pulse">
       {/* API Integration Section */}
       <div className="flex justify-between p-6">
         <div className="w-[300px] space-y-3">

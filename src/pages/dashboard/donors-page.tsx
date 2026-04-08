@@ -11,7 +11,7 @@ const DonorsPage = () => {
   });
 
   return (
-    <div className="font-ubuntu flex flex-col gap-6">
+    <div className="font-inter flex flex-col gap-6">
       <div className="flex items-center justify-between">
         <h1 className="text-xl leading-[135%] font-medium tracking-[0%] text-[#0D0D12]">
           All members

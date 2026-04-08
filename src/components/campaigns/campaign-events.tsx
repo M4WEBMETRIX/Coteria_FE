@@ -99,7 +99,7 @@ const CampaignsEvents = () => {
   const navigate = useNavigate();
 
   return (
-    <div className="font-ubuntu">
+    <div className="font-inter">
       <div className="flex items-center justify-end">
         <Button onClick={() => navigate(`/campaigns/${id}/create-event`)} className="mb-2 h-9 w-50">
           Create Event

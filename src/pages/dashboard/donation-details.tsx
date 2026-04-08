@@ -80,7 +80,7 @@ const DonationDetailsPage = () => {
   };
 
   return (
-    <div className="font-ubuntu mt-12 flex flex-col gap-6">
+    <div className="font-inter mt-12 flex flex-col gap-6">
       {/* Top Section if any, breadcrumbs are handled by hook */}
 
       <div className="flex items-start justify-start gap-6">
