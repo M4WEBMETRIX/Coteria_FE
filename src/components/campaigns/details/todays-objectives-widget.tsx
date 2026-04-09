@@ -16,7 +16,7 @@ const data = [
 
 const TodaysObjectivesWidget = () => {
   return (
-    <div className="flex h-[260px] w-full flex-col space-y-4">
+    <div className="flex h-[280px] w-full flex-col space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-base leading-[100%] font-semibold tracking-[0%] text-[#68686F]">
           Campaign Giving - Direct vs. Ripple

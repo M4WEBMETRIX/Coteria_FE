@@ -8,23 +8,24 @@ import {
 import PulseStatsWidget from "@/components/campaigns/details/pulse-stats-widget";
 import TodaysObjectivesWidget from "@/components/campaigns/details/todays-objectives-widget";
 import ShareCampaign from "./share-campaign";
-// import DriverAnalysisWidget from "@/components/campaigns/details/driver-analysis-widget";
+import DriverAnalysisWidget from "@/components/campaigns/details/driver-analysis-widget";
 // import CampaignMomentumTimeline from "@/components/campaigns/details/campaign-momentum-timeline";
-// import {
-// WhatsHappeningWidget,
-// RequestParticipantsWidget,
-// } from "@/components/campaigns/details/sidebar-widgets";
-// import ActivityFeedWidget from "@/components/campaigns/details/activity-feed-widget";
-// import AiInsightWidget from "@/components/campaigns/details/ai-insight-widget";
+import {
+  WhatsHappeningWidget,
+  // RequestParticipantsWidget,
+} from "@/components/campaigns/details/sidebar-widgets";
+import ActivityFeedWidget from "@/components/campaigns/details/activity-feed-widget";
+import AiInsightWidget from "@/components/campaigns/details/ai-insight-widget";
 
 const CommandCenter = ({ data }: { data: any }) => {
   return (
     <div>
       {" "}
+      {/* for mvp - flex gap-6 */}
       {/* Content Grid */}
       <div className="flex gap-6">
         {/* Main Column (Left - 8 cols) */}
-        <div className="flex w-full flex-1 flex-col">
+        <div className="flex-1 flex-col">
           {/* Live Campaign Pulse Header */}
           <div className="mb-4 flex items-center justify-between">
             <h3 className="text-sm leading-[100%] font-semibold text-[#696A70]">
@@ -77,7 +78,7 @@ const CommandCenter = ({ data }: { data: any }) => {
           <div className="mt-10 grid grid-cols-12 gap-6">
             {/* Objectives (Larger) */}
             {/* lg:col-span-9 - removed for mvp */}
-            <div className="col-span-12 flex-1 space-y-5">
+            <div className="col-span-9 flex-1 space-y-5">
               <TodaysObjectivesWidget />
 
               {/* COMMENTED OUT FOR MVC  */}
@@ -85,20 +86,20 @@ const CommandCenter = ({ data }: { data: any }) => {
               {/* <CampaignMomentumTimeline /> */}
             </div>
             {/* Driver Analysis (Smaller) */}
-            {/* <div className="col-span-12 h-full lg:col-span-3">
-              <DriverAnalysisWidget />
-            </div> */}
+            <div className="col-span-12 h-full lg:col-span-3">
+              <DriverAnalysisWidget data={data} />
+            </div>
           </div>
         </div>
-
         {/* Sidebar Column (Right - 4 cols) */}
         {/* COMMENTED OUT FOR MVC  */}
-        {/* <aside className="flex w-[256px] flex-col gap-4">
+        {/* mvp - w-[256px] */}
+        <aside className="flex max-w-[300px] flex-col gap-4">
           <WhatsHappeningWidget />
-          <RequestParticipantsWidget />
+          {/* <RequestParticipantsWidget /> */}
           <ActivityFeedWidget />
           <AiInsightWidget />
-        </aside> */}
+        </aside>
       </div>
     </div>
   );

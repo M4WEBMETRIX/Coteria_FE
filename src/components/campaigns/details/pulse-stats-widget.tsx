@@ -1,8 +1,9 @@
 import { Chart01Icon, ChartHistogramIcon } from "@hugeicons/core-free-icons";
 import { HugeiconsIcon } from "@hugeicons/react";
 import { useGetCampaignEngagement } from "@/services/generics/hooks";
-import { InfoIcon } from "@phosphor-icons/react";
+// import { InfoIcon } from "@phosphor-icons/react";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
+import { HelpCircle } from "lucide-react";
 
 const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
   const { data: engagementData } = useGetCampaignEngagement(id);
@@ -188,7 +189,7 @@ function ReusableTooltip({ content }: any) {
     <Tooltip>
       <TooltipTrigger asChild>
         <span className="flex cursor-pointer items-center gap-1 text-sm font-normal text-[#12AA5B]">
-          <InfoIcon className="h-4 w-4" />
+          why <HelpCircle className="h-4 w-4" />
         </span>
       </TooltipTrigger>
       <TooltipContent className="bg-white shadow" side="bottom">

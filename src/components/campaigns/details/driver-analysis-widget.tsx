@@ -5,7 +5,11 @@ import ContactInfluencerModal from "./contact-influencer-modal";
 import { useState } from "react";
 import InviteInfluencerModal from "./invite-influencer-modal";
 
-const DriverAnalysisWidget = () => {
+const DriverAnalysisWidget = ({
+  data,
+}: {
+  data: { name: string; description: string; imageUrl: string };
+}) => {
   // const [, setTab] = useQueryState("view");
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isInfluencerInvited, setIsInfluencerInvited] = useState(false);
@@ -14,17 +18,25 @@ const DriverAnalysisWidget = () => {
     <>
       <div className="rounded-xl border border-[#E0E1E6]">
         <div>
-          <img src={IMAGE} className="h-[114px] w-full" alt="img" />
+          <img
+            src={data?.imageUrl || IMAGE}
+            className="h-[140px] w-full rounded-t-xl object-cover"
+            alt="img"
+          />
         </div>
-        <div className="w-full p-2">
+        <div className="flex h-full w-full flex-col justify-between p-2">
           <div className="my-1">
-            <p className="text-sm font-medium text-[#4A4C54]">Housing Support Drive</p>
-            <p className="text-[10px] leading-[17.7px] font-normal text-[#838880]">
-              Help families access sate and stable housing through community support.
+            <p className="line-clamp-1 text-sm font-medium text-[#4A4C54]">{data?.name}</p>
+            <p className="line-clamp-3 min-h-[53px] text-[10px] leading-[17.7px] font-normal text-[#838880]">
+              {data?.description}
             </p>
           </div>
 
-          <Button onClick={() => setIsInfluencerInvited(true)} className="bg-primary mb-6.5 w-full">
+          <Button
+            disabled
+            onClick={() => setIsInfluencerInvited(true)}
+            className="bg-primary mt-2 w-full"
+          >
             Post Announcement
           </Button>
 

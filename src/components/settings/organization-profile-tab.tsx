@@ -227,7 +227,22 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
 
         <div className="w-full space-y-4 lg:grid lg:w-[532px]">
           <div className="col-span-2 space-y-2">
-            <Label
+            <div className="w-full flex-2 space-y-2">
+              <Label
+                htmlFor="addressFull"
+                className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
+              >
+                Address <span className="text-sm text-[#DF1C41]">*</span>
+              </Label>
+              <Input
+                id="addressFull"
+                className="w-full"
+                value={formData.addressStreet}
+                onChange={(e) => handleChange("addressStreet", e.target.value)}
+                placeholder="Please enter your address"
+              />
+            </div>
+            {/* <Label
               htmlFor="addressStreet"
               className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
             >
@@ -238,7 +253,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               value={formData.addressStreet}
               onChange={(e) => handleChange("addressStreet", e.target.value)}
               placeholder="House"
-            />
+            /> */}
           </div>
 
           <div className="col-span-2 w-full space-y-2">
@@ -281,8 +296,65 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
             />
           </div>
           <div className="flex w-full gap-3 lg:gap-6">
-            <div className="w-full flex-2 space-y-2">
+            <div className="flex-2 space-y-2">
+              {/* <div className="w-full"> */}
               <Label
+                htmlFor="addressState"
+                className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
+              >
+                Province <span className="text-sm text-[#DF1C41]">*</span>
+              </Label>
+              <Select
+                value={formData.addressState}
+                onValueChange={(value) => handleChange("addressState", value)}
+              >
+                <SelectTrigger className="w-full lg:w-[372px]">
+                  <SelectValue placeholder="Select province" />
+                </SelectTrigger>
+                <SelectContent className="w-full lg:w-[372px]">
+                  <SelectItem className="cursor-pointer" value="AB">
+                    Alberta
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="BC">
+                    British Columbia
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="MB">
+                    Manitoba
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="NB">
+                    New Brunswick
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="NL">
+                    Newfoundland and Labrador
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="NS">
+                    Nova Scotia
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="NT">
+                    Northwest Territories
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="NU">
+                    Nunavut
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="ON">
+                    Ontario
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="PE">
+                    Prince Edward Island
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="QC">
+                    Quebec
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="SK">
+                    Saskatchewan
+                  </SelectItem>
+                  <SelectItem className="cursor-pointer" value="YT">
+                    Yukon
+                  </SelectItem>
+                </SelectContent>
+              </Select>
+              {/* </div> */}
+              {/* <Label
                 htmlFor="addressFull"
                 className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
               >
@@ -294,7 +366,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
                 value={formData.addressStreet}
                 onChange={(e) => handleChange("addressStreet", e.target.value)}
                 placeholder="Please enter your address"
-              />
+              /> */}
             </div>
             <div className="w-[40%] space-y-2 lg:w-full">
               <Label

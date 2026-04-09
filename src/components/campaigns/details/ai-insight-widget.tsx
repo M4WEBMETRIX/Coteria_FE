@@ -16,12 +16,16 @@ const AiInsightWidget = () => {
             🤖
             {/* Placeholder for AI Robot Icon */}
           </div>
+          {/* Based on current activity, here are the most effective actions to take today: */}
           <div className="rounded-tr-xl rounded-br-xl rounded-bl-xl bg-[#F2F4F7] p-3 text-xs leading-5 text-[#1E1F24]">
-            Based on current activity, here are the most effective actions to take today:
+            Coterie AI is currently offline
           </div>
         </div>
 
-        <Button className="h-9 w-full bg-[#12AA5B] text-xs font-medium text-white hover:bg-[#12AA5B]/90">
+        <Button
+          disabled
+          className="h-9 w-full bg-[#12AA5B] text-xs font-medium text-white hover:bg-[#12AA5B]/90"
+        >
           Get More Insight
           <SparklesIcon className="ml-2 h-3 w-3" />
         </Button>
