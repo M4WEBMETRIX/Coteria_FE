@@ -221,12 +221,12 @@ const CreateCommunityModal = ({
                   htmlFor="title"
                   className="text-sm leading-[150%] font-medium tracking-[0%] text-[#666D80]"
                 >
-                  Title <span className="text-red-500">*</span>
+                  Community Name <span className="text-red-500">*</span>
                 </FieldLabel>
                 <FieldContent>
                   <Input
                     id="title"
-                    placeholder="Placeholder"
+                    placeholder=""
                     className="border-[#D0D5DD]"
                     {...register("title")}
                   />
@@ -237,13 +237,13 @@ const CreateCommunityModal = ({
               {/* Description */}
               <Field className="flex items-center gap-2">
                 <FieldLabel htmlFor="description" className="text-sm font-medium text-[#666D80]">
-                  Description <span className="text-red-500">*</span>
+                  About the Community <span className="text-red-500">*</span>
                 </FieldLabel>
                 <FieldContent>
                   <div className="relative">
                     <Textarea
                       id="description"
-                      placeholder="Placeholder"
+                      placeholder=""
                       maxLength={400}
                       minLength={5}
                       className="h-[151px] max-h-[151px] resize-none border-[#D0D5DD] pb-8"

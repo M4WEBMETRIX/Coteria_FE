@@ -1,43 +1,39 @@
 import { Button } from "@/components/ui/button";
-import IMAGE from "@/assets/images/Image-22.png";
+import IMAGE from "@/assets/images/send-update.png";
 // import { useQueryState } from "nuqs";
 import ContactInfluencerModal from "./contact-influencer-modal";
 import { useState } from "react";
 import InviteInfluencerModal from "./invite-influencer-modal";
 
-const DriverAnalysisWidget = ({
-  data,
-}: {
-  data: { name: string; description: string; imageUrl: string };
-}) => {
+const DriverAnalysisWidget = () => {
   // const [, setTab] = useQueryState("view");
   const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const [isInfluencerInvited, setIsInfluencerInvited] = useState(false);
-
+  // console.log(data)
   return (
     <>
       <div className="rounded-xl border border-[#E0E1E6]">
         <div>
           <img
-            src={data?.imageUrl || IMAGE}
-            className="h-[140px] w-full rounded-t-xl object-cover"
+            src={IMAGE}
+            className="h-[210px] w-full rounded-t-xl object-cover object-center"
             alt="img"
           />
         </div>
         <div className="flex h-full w-full flex-col justify-between p-2">
           <div className="my-1">
-            <p className="line-clamp-1 text-sm font-medium text-[#4A4C54]">{data?.name}</p>
-            <p className="line-clamp-3 min-h-[53px] text-[10px] leading-[17.7px] font-normal text-[#838880]">
-              {data?.description}
+            <p className="line-clamp-1 text-sm font-medium text-[#4A4C54]">Got news to share?</p>
+            <p className="line-clamp-3 min-h-[25px] text-[10px] leading-[17.7px] font-normal text-[#838880]">
+              Keep your donors informed and engaged — send a message to your entire network now.
             </p>
           </div>
 
           <Button
             disabled
             onClick={() => setIsInfluencerInvited(true)}
-            className="bg-primary mt-2 w-full"
+            className="bg-primary mt-1 w-full"
           >
-            Post Announcement
+            Send Update
           </Button>
 
           {/* COMMENTED OUT FOR MVC  */}

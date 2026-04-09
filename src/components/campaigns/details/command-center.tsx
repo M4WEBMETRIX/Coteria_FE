@@ -23,7 +23,7 @@ const CommandCenter = ({ data }: { data: any }) => {
       {" "}
       {/* for mvp - flex gap-6 */}
       {/* Content Grid */}
-      <div className="flex gap-6">
+      <div className="flex flex-col gap-6 lg:flex-row">
         {/* Main Column (Left - 8 cols) */}
         <div className="flex-1 flex-col">
           {/* Live Campaign Pulse Header */}
@@ -42,7 +42,7 @@ const CommandCenter = ({ data }: { data: any }) => {
             <div className="flex flex-col gap-[6px]">
               <h1 className="text-2xl font-bold text-[#1E1F24]">{data?.name}</h1>
               <div className="mt-1 flex items-center gap-2">
-                <div className="flex h-5 w-5 items-center justify-center rounded-full bg-[#D5FEF3CC]">
+                <div className="hidden h-5 w-5 items-center justify-center rounded-full bg-[#D5FEF3CC] lg:flex">
                   <HugeiconsIcon icon={Checkmark} color="#31AB93" size={14} />
                 </div>
                 <span className="text-xs text-[#8B8D98]">{data?.description}</span>
@@ -78,7 +78,7 @@ const CommandCenter = ({ data }: { data: any }) => {
           <div className="mt-10 grid grid-cols-12 gap-6">
             {/* Objectives (Larger) */}
             {/* lg:col-span-9 - removed for mvp */}
-            <div className="col-span-9 flex-1 space-y-5">
+            <div className="col-span-12 flex-1 space-y-5 lg:col-span-9">
               <TodaysObjectivesWidget />
 
               {/* COMMENTED OUT FOR MVC  */}
@@ -87,14 +87,14 @@ const CommandCenter = ({ data }: { data: any }) => {
             </div>
             {/* Driver Analysis (Smaller) */}
             <div className="col-span-12 h-full lg:col-span-3">
-              <DriverAnalysisWidget data={data} />
+              <DriverAnalysisWidget />
             </div>
           </div>
         </div>
         {/* Sidebar Column (Right - 4 cols) */}
         {/* COMMENTED OUT FOR MVC  */}
         {/* mvp - w-[256px] */}
-        <aside className="flex max-w-[300px] flex-col gap-4">
+        <aside className="flex flex-col gap-4 lg:max-w-[300px]">
           <WhatsHappeningWidget />
           {/* <RequestParticipantsWidget /> */}
           <ActivityFeedWidget />
