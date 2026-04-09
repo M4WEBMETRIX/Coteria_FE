@@ -2,9 +2,9 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
 import {
-  DeviceMobileSpeakerIcon,
+  // DeviceMobileSpeakerIcon,
   EnvelopeSimpleIcon,
-  WhatsappLogoIcon,
+  // WhatsappLogoIcon,
 } from "@phosphor-icons/react";
 import { cn } from "@/lib/utils";
 
