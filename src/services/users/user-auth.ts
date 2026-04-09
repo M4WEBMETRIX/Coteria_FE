@@ -11,6 +11,7 @@ import {
 } from "./user-index";
 import { getFunctionUserEnd } from "../generics/user-generics/user-generic-index";
 import { showErrorToast } from "@/lib/utils";
+import { useNavigate } from "react-router-dom";
 // import { useNavigate } from "react-router-dom";
 
 export const useRegisterUser = () => {
@@ -32,13 +33,16 @@ export const useRegisterUser = () => {
 };
 
 export const useUserGoogleAuth = () => {
+  const navigate = useNavigate();
   return useMutation({
-    mutationFn: (payload: { idToken: string }) => userGoogleAuth(payload),
+    mutationFn: (payload: { idToken: string | any }) => userGoogleAuth(payload),
     onSuccess: (response) => {
       const { token, refreshToken } = response.data;
 
       localStorage.setItem("userAccessToken", token);
       localStorage.setItem("userRefreshToken", refreshToken);
+
+      navigate("/user/dashboard?tab=community");
 
       // toast.success("You've successfully registered");
     },
