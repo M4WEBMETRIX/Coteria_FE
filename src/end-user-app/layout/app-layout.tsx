@@ -28,26 +28,27 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <LayoutContext.Provider value={{ setBreadcrumbComponent }}>
-      <div className="relative flex h-screen bg-white">
-        {/* Sidebar */}
+      <div className="flex h-screen overflow-hidden bg-white">
+        {/* Sidebar — fixed height, no grow */}
         <UserSidebar />
 
-        {/* Main Content */}
-        <div className="relative min-w-0 flex-1">
-          <div className="flex flex-1 flex-col px-4 lg:px-8">
-            {/* <Navbar breadcrumbs={breadcrumbComponent} /> */}
+        {/* Main Content — takes remaining width, locked to screen height */}
+        <div className="flex min-w-0 flex-1 flex-col overflow-hidden">
+          <div className="flex h-full flex-col px-4 lg:px-8">
             {showNavbar ? null : <UserNavbar breadcrumbs={breadcrumbComponent} />}
 
+            {/* Scrollable content area */}
             <main
               className={cn(
-                "no-scrollbar mb-[80px] h-[calc(100vh-150px)] min-w-0 flex-1 overflow-auto bg-white lg:pb-0",
+                "no-scrollbar min-w-0 flex-1 overflow-y-auto bg-white pb-[80px] lg:pb-0",
                 showNavbar ? "py-0" : "py-4"
               )}
             >
               {children}
             </main>
-            {/* Removed redundant Outlet */}
           </div>
+
+          {/* Mobile nav sits at the bottom of this column */}
           <MobileNav />
         </div>
       </div>
