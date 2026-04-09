@@ -47,7 +47,7 @@ const DonationDetailPage = () => {
       pdf.setTextColor(255, 255, 255);
       pdf.setFontSize(22);
       pdf.setFont("helvetica", "bold");
-      pdf.text("Donation Receipt", margin, 26);
+      pdf.text("Donation Details", margin, 26);
 
       // ── Subheader ────────────────────────────────────────────────────
       pdf.setFontSize(10);
@@ -101,7 +101,11 @@ const DonationDetailPage = () => {
       pdf.setFontSize(9);
       pdf.setFont("helvetica", "normal");
       pdf.setTextColor(160, 160, 160);
-      pdf.text("Thank you for your donation.", margin, y + 16);
+      pdf.text(
+        "This donation is part of your community’s impact. Use this insight to deepen engagement and grow support.",
+        margin,
+        y + 16
+      );
 
       const filename = `receipt-${reference}.pdf`;
       pdf.save(filename);

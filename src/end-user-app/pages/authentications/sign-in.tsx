@@ -87,7 +87,7 @@ const UserSignIn = () => {
   // Welcome back
   return (
     <UserAuthLayout title="" subTitle="">
-      <div className="flex h-[80vh] w-full flex-col items-center justify-center">
+      <div className="w-full">
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
           {/* Name Field */}
@@ -95,7 +95,7 @@ const UserSignIn = () => {
           <Field className="space-y-1.5">
             <FieldLabel
               htmlFor="name"
-              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
             >
               Name/Email<span className="text-red-500">*</span>
             </FieldLabel>
@@ -119,7 +119,7 @@ const UserSignIn = () => {
           <Field className="space-y-1.5">
             <FieldLabel
               htmlFor="password"
-              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
             >
               Password<span className="text-red-500">*</span>
             </FieldLabel>
@@ -150,7 +150,7 @@ const UserSignIn = () => {
 
           <Link
             to="/user/forgot-password"
-            className="flex items-center justify-end text-right text-base leading-[160%] tracking-[0%] text-[#6F6F6F] hover:text-blue-600 hover:underline"
+            className="flex items-center justify-end text-right text-sm leading-[160%] tracking-[0%] text-[#6F6F6F] hover:text-[#059669] hover:underline"
           >
             Forgot Password?
           </Link>
@@ -171,7 +171,7 @@ const UserSignIn = () => {
           You don't have an account?{" "}
           <Link
             to={`/user/signup${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
-            className="text-[#000000] hover:text-blue-600 hover:underline"
+            className="text-[#000000] hover:text-[#059669] hover:underline"
           >
             Sign Up Here
           </Link>

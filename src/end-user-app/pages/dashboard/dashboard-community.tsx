@@ -101,16 +101,16 @@ const DashboardCommunity = () => {
               <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
                 Community
               </TableHead>
-              <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
+              <TableHead className="w-max text-lg leading-[155%] font-normal text-[#000000]">
                 Description
               </TableHead>
               {/* <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
                 Joined
               </TableHead> */}
-              <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
+              <TableHead className="text-right text-lg leading-[155%] font-normal text-[#000000]">
                 Visibility
               </TableHead>
-              <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
+              <TableHead className="text-center text-lg leading-[155%] font-normal text-[#000000]">
                 Campaigns
               </TableHead>
               <TableHead className="text-right"></TableHead>
@@ -148,12 +148,14 @@ const DashboardCommunity = () => {
                         {index + 1}
                       </TableCell>
                       <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
-                        {community?.name}
+                        <p className="line-clamp-1 max-w-[200px]">{community?.name}</p>
                       </TableCell>
-                      <TableCell className="overflow-hidden py-6 text-base leading-[155%] font-normal text-wrap text-[#000000] lg:w-56 lg:max-w-56">
-                        {community?.description?.length > 60
-                          ? community.description.slice(0, 60) + "..."
-                          : community?.description}
+                      <TableCell className="max-w-[200px] overflow-hidden py-6 text-left text-base leading-[155%] font-normal text-wrap text-[#000000]">
+                        <p className="truncate">
+                          {community?.description?.length > 50
+                            ? community.description.slice(0, 50) + "..."
+                            : community?.description}
+                        </p>
                         {/* <Badge
                     className={`hover:bg-opacity-80 rounded-full border-0 px-3.5 py-1.5 text-base leading-[155%] font-normal ${community.roleColor}`}
                   >
@@ -164,10 +166,10 @@ const DashboardCommunity = () => {
                       {/* <TableCell className="py-6 text-sm leading-[155%] font-normal">
                   {community.joined}
                 </TableCell> */}
-                      <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                      <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
                         {community?.visibility}
                       </TableCell>
-                      <TableCell className="py-6 text-sm leading-[155%] font-normal">
+                      <TableCell className="py-6 text-center text-sm leading-[155%] font-normal">
                         {community?.totalCampaigns ? community?.totalCampaigns : 0}
                       </TableCell>
                       <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">

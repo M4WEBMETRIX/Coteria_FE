@@ -47,8 +47,7 @@ export default function UserAuthCarousel() {
           <img src={slide.image} alt="" className="h-full w-full object-cover object-center" />
 
           {/* Bottom caption box */}
-          <div className="absolute right-0 bottom-0 left-0 h-[182px] bg-[#282828]/60 backdrop-blur-xs">
-            {/* Pagination dots */}
+          {/* <div className="absolute right-0 bottom-0 left-0 h-[182px] bg-[#282828]/60 backdrop-blur-xs">
             <div className="flex items-center justify-center gap-2 pt-4.5">
               {slides.map((_, dotIndex) => (
                 <button
@@ -61,10 +60,9 @@ export default function UserAuthCarousel() {
               ))}
             </div>
             <div className="flex h-full flex-col justify-between px-10 py-8 text-white">
-              {/* Quote */}
               <p className="w-full text-lg leading-relaxed">“{slide.quote}”</p>
             </div>
-          </div>
+          </div> */}
         </div>
       ))}
     </div>

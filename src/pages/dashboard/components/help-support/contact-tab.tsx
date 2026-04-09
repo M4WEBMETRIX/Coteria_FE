@@ -71,11 +71,11 @@ export function ContactTab() {
 
       <ContactItem
         icon={<EnvelopeSimpleIcon size={16} weight="duotone" />}
-        text="info@coteries.com"
+        text="help@usecoterie.com"
         actionType="copy"
-        onAction={() => handleCopy("info@coteries.com")}
+        onAction={() => handleCopy("help@usecoterie.com")}
       />
-
+      {/* 
       <ContactItem
         icon={<DeviceMobileSpeakerIcon size={16} weight="duotone" />}
         text="02013306352"
@@ -88,7 +88,7 @@ export function ContactTab() {
         text="08137272091"
         actionType="chat"
         onAction={() => window.open("https://wa.me/2348137272091", "_blank")}
-      />
+      /> */}
     </div>
   );
 }

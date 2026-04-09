@@ -39,7 +39,7 @@ const UserSidebar = () => {
   return (
     <aside
       className={cn(
-        "font-inter relative z-50 flex hidden h-screen flex-col border-r border-[#ECEFF3] bg-[#F6F8FA] transition-all duration-300 lg:block",
+        "font-inter relative z-50 flex hidden h-screen flex-col border-r border-[#ECEFF3] bg-[#F6F8FA] transition-all duration-300 lg:flex",
         isSidebarOpen ? "w-64" : "w-16"
       )}
     >

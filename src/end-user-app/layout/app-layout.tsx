@@ -28,7 +28,7 @@ const AppLayout = ({ children }: AppLayoutProps) => {
 
   return (
     <LayoutContext.Provider value={{ setBreadcrumbComponent }}>
-      <div className="flex h-screen bg-white">
+      <div className="relative flex h-screen bg-white">
         {/* Sidebar */}
         <UserSidebar />
 

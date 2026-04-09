@@ -178,16 +178,20 @@ const DashboardCampaigns = () => {
           </div>
 
           {/* Content */}
-          <div className="space-y-8">
+          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
             {campaignsData?.map((campaign: any) => (
-              <div key={campaign.id} className="space-y-6">
+              <div
+                onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
+                key={campaign.id}
+                className="cursor-pointer space-y-6"
+              >
                 <div className="flex items-center justify-between">
                   <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
                     {campaign?.name}
                   </h2>
                 </div>
 
-                <div className="flex items-center justify-between">
+                <div className="flex items-center justify-between gap-4">
                   <div className="flex w-full items-center gap-3">
                     <div className="flex items-center leading-[155%] font-normal tracking-[0%]">
                       <span className="text-lg font-medium text-[#6B6B6B]">
@@ -210,7 +214,8 @@ const DashboardCampaigns = () => {
                     </div>
                   </div>
                   <Button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.stopPropagation();
                       setSelectedCampaign(campaign);
                       console.log(campaign);
                       setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
@@ -224,10 +229,10 @@ const DashboardCampaigns = () => {
                   </Button>
                 </div>
 
-                <p className="max-w-149.5 leading-[155%] font-normal text-[#6B6B6B]">
+                <p className="line-clamp-4 min-h-24 max-w-149.5 leading-[155%] font-normal text-[#6B6B6B]">
                   {campaign?.description}{" "}
                   <span
-                    onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
+                    // onClick={() => handleShowMoreDescription(campaign?.description)}
                     className="cursor-pointer text-[#12AA5B]"
                   >
                     Learn more.

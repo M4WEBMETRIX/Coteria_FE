@@ -40,11 +40,11 @@ const MyAccountTab = ({ formData, setFormData }: MyAccountTabProps) => {
         <div className="w-[300px]">
           {" "}
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
-            Account Setting
+            Account Owner Details
           </h3>
           <p className="mb-6 text-sm leading-[150%] tracking-[2%] text-[#666D80]">
-            This is your info that will be linked/connected to your account details, profile, and
-            others.
+            This information is linked to your organization account and used for access,
+            communication, and administrative actions.
           </p>
         </div>
         <div className="grid space-y-4 lg:min-w-[532px]">

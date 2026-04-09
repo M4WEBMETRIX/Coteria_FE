@@ -10,25 +10,29 @@ import { SparkleIcon } from "@phosphor-icons/react";
 
 const faqs = [
   {
-    question: "What types of campaign do you offer?",
+    question: "What makes Coterie different from other fundraising tools?",
     answer:
-      "At Khabibeq Real Estate, we offer a variety of luxury properties including duplexes, terraces, detached and semi-detached homes in prime locations such as Lekki, Ikoyi, Victoria Island, and Ajah",
+      "Coterie goes beyond tracking donations. It helps you understand why people give, what they care about, and who is driving growth so you can increase repeat donations and build stronger long-term relationships.",
   },
   {
-    question: "How do I update my profile?",
-    answer: "You can update your profile by navigating to Settings > Profile.",
+    question: "What should I do first after onboarding?",
+    answer:
+      "Create your first campaign, invite your community, and connect Stripe to start receiving donations.",
   },
   {
-    question: "Can I cancel my subscription?",
-    answer: "Yes, you can cancel your subscription at any time from the billing settings.",
+    question: "Why do I need to connect Stripe?",
+    answer:
+      "Stripe allows you to securely receive donations and event payments directly in your organization's bank account. Coterie does not hold funds.",
   },
   {
-    question: "How do I contact support?",
-    answer: "You can reach out to us via the Contact Us tab or email support@coterie.com.",
+    question: "How do I create a campaign?",
+    answer:
+      'Go to Campaigns and click “Create Campaign". Add a title, description, goal, and resources.',
   },
   {
-    question: "Where can I find my reports?",
-    answer: "Reports are located in the Reports tab on the sidebar.",
+    question: "Direct vs Ripple: What do the bars mean?",
+    answer:
+      "Green — Donations Received: Direct donations.\n Yellow — Donations Inspired: Donations driven by your supporters’ influence.",
   },
 ];
 
@@ -57,7 +61,7 @@ export function FaqTab({ isUser }: { isUser?: boolean }) {
                 value={`item-${index}`}
                 className="rounded-t-[10px] border border-[#DFE1E7] bg-white px-4 data-[state=open]:bg-gray-50"
               >
-                <AccordionTrigger className="py-4 text-sm font-medium text-[#000000] hover:no-underline">
+                <AccordionTrigger className="cursor-pointer py-4 text-sm font-medium text-[#000000] hover:no-underline">
                   {faq.question}
                 </AccordionTrigger>
                 <AccordionContent className="pb-4 text-xs leading-[22px] text-[#5A5D63]">

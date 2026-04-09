@@ -51,7 +51,7 @@ const SettingsPage = () => {
     addressStreet: "",
     addressCity: "",
     addressState: "",
-    addressCountry: "",
+    addressCountry: "ca",
     addressPostalCode: "",
 
     // My Account

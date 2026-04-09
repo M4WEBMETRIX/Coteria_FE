@@ -188,7 +188,7 @@ export default function EmailVerificationFlow({
                   value={digit}
                   onChange={(e) => handleCodeChange(index, e.target.value)}
                   onKeyDown={(e) => handleKeyDown(index, e)}
-                  className="h-17.5 w-[61.8px] text-center text-lg leading-[155%] font-medium tracking-[0%] focus-visible:ring-[#45D884]"
+                  className="h-10 w-[40px] text-center text-lg leading-[155%] font-medium tracking-[0%] focus-visible:ring-[#45D884] lg:h-17.5 lg:w-[61.8px]"
                 />
               ))}
             </div>

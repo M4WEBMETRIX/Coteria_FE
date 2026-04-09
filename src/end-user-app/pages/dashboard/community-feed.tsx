@@ -193,7 +193,9 @@ const CommunityFeed = () => {
         <div className="block w-full items-start gap-4 rounded-[10px] lg:flex lg:border lg:border-[#F6F6F6] lg:bg-[#FCFCFC] lg:px-4 lg:py-3.5">
           {/* Main Feed */}
           <div className="flex-1 space-y-6">
-            <h2 className="text-2xl font-bold text-[#1E1F24]">Community Feed</h2>
+            {communityLoading ? null : (
+              <h2 className="text-2xl font-bold text-[#1E1F24]">{community?.data?.name}'s Feed</h2>
+            )}
 
             {/* Post Mock */}
             {communityLoading ? (
@@ -341,7 +343,10 @@ const CommunityFeed = () => {
                         <>
                           {communityCampaigns?.data?.items?.map((campaign: any, index: number) => (
                             <div key={index} className="space-y-4">
-                              <div className="flex items-start gap-3">
+                              <div
+                                onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
+                                className="flex cursor-pointer items-start gap-3"
+                              >
                                 {campaign?.imageUrl ? (
                                   <div>
                                     <img

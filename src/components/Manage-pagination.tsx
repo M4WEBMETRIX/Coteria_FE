@@ -85,7 +85,7 @@ const ManagePagination = ({
             className={cn(
               "h-9 w-9 border-[#E1E4EA]",
               page === currentPage
-                ? "border-[#0D6EFD] bg-[#0D6EFD] text-white hover:bg-[#0b5ed7] hover:text-white"
+                ? "bg-primary text-white hover:bg-[#059669] hover:text-white"
                 : "border text-[#525866] hover:bg-gray-50"
             )}
             onClick={(e) => {

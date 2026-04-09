@@ -11,9 +11,11 @@ import { useGetCurrencies, useUpdateOrganisationProfile } from "@/services/gener
 import { Separator } from "../ui/separator";
 import { useFileUpload } from "@/services/file-upload-hook";
 import { useRef, useState } from "react";
-import { Camera, CircleNotch } from "@phosphor-icons/react";
+import { Camera, CaretDownIcon, CircleNotch } from "@phosphor-icons/react";
 import { toast } from "sonner";
 import { Button } from "@/components/ui/button";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Checkbox } from "@/components/ui/checkbox";
 
 interface OrganizationProfileTabProps {
   formData: {
@@ -94,11 +96,11 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
         <div className="w-[300px]">
           {" "}
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
-            Account Details
+            Organization Details
           </h3>
-          <p className="mb-6 text-sm leading-[150%] tracking-[2%] text-[#666D80]">
+          {/* <p className="mb-6 text-sm leading-[150%] tracking-[2%] text-[#666D80]">
             Your users will use this information to contact you.
-          </p>
+          </p> */}
         </div>
 
         <div className="grid space-y-4 lg:min-w-[532px]">
@@ -142,7 +144,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               htmlFor="organizationName"
               className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
             >
-              Company Name <span className="text-sm text-[#DF1C41]">*</span>
+              Organization Name <span className="text-sm text-[#DF1C41]">*</span>
             </Label>
             <Input
               id="organizationName"
@@ -152,12 +154,16 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
             />
           </div>
 
-          <div className="w-full space-y-2">
+          <MultiSelectField
+            value={formData.industry ? formData.industry.split(",") : []} // store as CSV
+            onChange={(vals) => handleChange("industry", vals.join(","))}
+          />
+          {/* <div className="w-full space-y-2">
             <Label
               htmlFor="industry"
               className="text-sm leading-[150%] font-medium tracking-[2%] text-[#666D80]"
             >
-              Industry<span className="text-sm text-[#DF1C41]">*</span>
+              Focus Types<span className="text-sm text-[#DF1C41]">*</span>
             </Label>
             <Select
               value={formData.industry}
@@ -174,7 +180,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
                 <SelectItem value="nonprofit">Non-profit</SelectItem>
               </SelectContent>
             </Select>
-          </div>
+          </div> */}
 
           <div className="w-full space-y-2">
             <Label
@@ -184,6 +190,8 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               Currency <span className="text-sm text-[#DF1C41]">*</span>
             </Label>
             <Select
+              defaultValue="cad"
+              disabled
               value={formData.currency}
               onValueChange={(value) => handleChange("currency", value)}
             >
@@ -241,6 +249,8 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               Country/Region <span className="text-sm text-[#DF1C41]">*</span>
             </Label>
             <Select
+              defaultValue="ca"
+              disabled
               value={formData.addressCountry}
               onValueChange={(value) => handleChange("addressCountry", value)}
             >
@@ -248,9 +258,9 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
                 <SelectValue placeholder="Select country" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="us">United States</SelectItem>
+                {/* <SelectItem value="us">United States</SelectItem>
                 <SelectItem value="uk">United Kingdom</SelectItem>
-                <SelectItem value="ng">Nigeria</SelectItem>
+                <SelectItem value="ng">Nigeria</SelectItem> */}
                 <SelectItem value="ca">Canada</SelectItem>
               </SelectContent>
             </Select>
@@ -310,16 +320,84 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
 
 export function getCurrencyName(code: string) {
   const currencies: Record<string, string> = {
-    usd: "US Dollar",
+    // usd: "US Dollar",
     cad: "CAD Dollar",
-    eur: "Euro",
-    gbp: "British Pound",
-    ngn: "Nigerian Naira",
+    // eur: "Euro",
+    // gbp: "British Pound",
+    // ngn: "Nigerian Naira",
   };
 
   if (!code) return "";
 
   return currencies[code.toLowerCase()] || code;
+}
+
+const focusTypes = [
+  "Community & Social Services",
+  "Education & Youth Development",
+  "Health & Wellness",
+  "Environment & Sustainability",
+  "Arts, Culture & Heritage",
+  "Faith-Based & Religious Organizations",
+  "Humanitarian & International Aid",
+  "Housing & Homelessness",
+  "Food Security & Agriculture",
+  "Sports & Recreation",
+  "Advocacy & Public Policy",
+  "Animal Welfare",
+  "Economic Empowerment",
+  "Technology & Innovation (Nonprofit)",
+];
+
+interface MultiSelectFieldProps {
+  value: string[]; // selected items from formData
+  onChange: (values: string[]) => void;
+}
+
+function MultiSelectField({ value, onChange }: MultiSelectFieldProps) {
+  const toggleItem = (item: string) => {
+    const newValue = value.includes(item) ? value.filter((i) => i !== item) : [...value, item];
+    onChange(newValue);
+  };
+
+  return (
+    <div className="w-full space-y-2">
+      <Label className="text-sm font-medium text-[#666D80]">
+        Focus Types <span className="text-[#DF1C41]">*</span>
+      </Label>
+
+      <Popover>
+        <PopoverTrigger asChild>
+          <Button variant="outline" className="w-full justify-between">
+            {value.length > 0 ? `${value.length} selected` : "Select focus types"}
+            <CaretDownIcon className="cursor-pointer" size={16} color="#c4bdbbff" />
+          </Button>
+        </PopoverTrigger>
+
+        <PopoverContent
+          align="start"
+          className="no-scrollbar max-h-64 w-[var(--radix-popover-trigger-width)] overflow-y-auto"
+          // style={{ width: "auto" }}
+        >
+          <div className="space-y-2">
+            {focusTypes.map((item) => (
+              <div key={item} className="flex items-center space-x-2 py-1">
+                <Checkbox
+                  id={item}
+                  className="cursor-pointer"
+                  checked={value.includes(item)}
+                  onCheckedChange={() => toggleItem(item)}
+                />
+                <label htmlFor={item} className="cursor-pointer text-sm">
+                  {item}
+                </label>
+              </div>
+            ))}
+          </div>
+        </PopoverContent>
+      </Popover>
+    </div>
+  );
 }
 
 export default OrganizationProfileTab;

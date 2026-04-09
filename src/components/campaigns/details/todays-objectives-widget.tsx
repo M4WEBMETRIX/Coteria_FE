@@ -19,7 +19,7 @@ const TodaysObjectivesWidget = () => {
     <div className="flex h-[260px] w-full flex-col space-y-4">
       <div className="flex items-center justify-between">
         <h3 className="text-base leading-[100%] font-semibold tracking-[0%] text-[#68686F]">
-          Today's Objectives
+          Campaign Giving - Direct vs. Ripple
         </h3>
       </div>
       {/* 
@@ -101,8 +101,20 @@ const TodaysObjectivesWidget = () => {
                 tickFormatter={(value) => `${value / 1000}K`}
               />
               <Tooltip cursor={{ fill: "transparent" }} />
-              <Bar dataKey="green" fill="#12AA5B" radius={[4, 4, 0, 0]} barSize={12} />
-              <Bar dataKey="yellow" fill="#FDB022" radius={[4, 4, 0, 0]} barSize={12} />
+              <Bar
+                dataKey="green"
+                name="Direct Donations"
+                fill="#12AA5B"
+                radius={[4, 4, 0, 0]}
+                barSize={12}
+              />
+              <Bar
+                dataKey="yellow"
+                name="Ripple Donations"
+                fill="#FDB022"
+                radius={[4, 4, 0, 0]}
+                barSize={12}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>

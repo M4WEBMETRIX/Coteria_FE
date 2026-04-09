@@ -89,10 +89,10 @@ const BillingIntegrationTab = ({ formData, setFormData }: BillingIntegrationTabP
       <div className="justify-between p-3 lg:flex lg:p-6">
         <div className="lg:w-[300px]">
           <h3 className="mb-1 text-lg leading-[135%] font-semibold tracking-[0%] text-[#0D0D12]">
-            API integration
+            Payment Method
           </h3>
           <p className="text-sm leading-[150%] tracking-[2%] text-[#666D80]">
-            Manage your payment methods securely. Add, update, or remove your credit/debit cards.
+            Update the card used for your account billing. Changes take effect immediately.
           </p>
         </div>
         {subscription?.data?.paymentMethodDetailsJson ? (

@@ -111,11 +111,7 @@ const UserSignUp = () => {
   }, [data?.data?.requiresEmailVerification]);
 
   return (
-    <UserAuthLayout
-      title="Your world is just beginning"
-      subTitle="A place where people gather, participate, and build trust together."
-      isReferrer={isReferrer ? true : false}
-    >
+    <UserAuthLayout title="" subTitle="" isReferrer={isReferrer ? true : false}>
       <div className="">
         {/* {isReferrer && (
           <div className="mt-2.5 mb-7.5 flex items-center justify-between">
@@ -319,7 +315,7 @@ const UserSignUp = () => {
           Already have an account?{" "}
           <a
             href={`/user/login${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
-            className="text-[#000000] hover:text-blue-600 hover:underline"
+            className="text-[#000000] hover:text-[#059669] hover:underline"
           >
             Log In Here
           </a>
