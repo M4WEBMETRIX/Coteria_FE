@@ -3,14 +3,16 @@ import { MapPin, UserIcon } from "@phosphor-icons/react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import {
   useGetEndUserProfile,
-  useGetImpactLeaderboard,
+  // useGetImpactLeaderboard,
   useGetImpactScore,
+  useGetImpactReferralTree,
 } from "@/services/generics/user-generics/user-hooks";
-import { getBaseUrl } from "@/lib/utils";
+import { generateColorFromSeed, getBaseUrl } from "@/lib/utils";
 import { useState } from "react";
 import DashboardImpactSkeleton from "./impact-skeleton";
 import ManagePagination from "@/components/Manage-pagination";
 import { ShareDialog } from "./share-modal";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 // const directReferrals = [
 //   {
@@ -62,7 +64,11 @@ const DashboardImpact = () => {
   const [limit, setLimit] = useState(10);
   // const { data, isPending } = useGetUserCommunities(page, limit);
   const { data: impactScore, isPending: scoreLoading } = useGetImpactScore();
-  const { data: impactLeaderboard, isPending: leaderboardLoading } = useGetImpactLeaderboard(
+  // const { data: impactLeaderboard, isPending: leaderboardLoading } = useGetImpactLeaderboard(
+  //   page,
+  //   limit
+  // );
+  const { data: impactReferralTree, isPending: referralTreeLoading } = useGetImpactReferralTree(
     page,
     limit
   );
@@ -72,13 +78,34 @@ const DashboardImpact = () => {
 
   const inviteLink = `${getBaseUrl({ target: "donor" })}/user/signup?referral-code=${endUser?.referralCode}`;
 
-  const directReferrals: any = impactLeaderboard?.data?.items;
+  // const directReferrals;
+  // const directReferrals1: any = impactLeaderboard?.data?.items;
+  const directReferrals: any = impactReferralTree?.data?.referrals;
+  const getAllDonations = (referrals: any) => {
+    let total = 0;
 
-  const totalPages = impactLeaderboard?.data?.totalPages || 1;
+    const traverse = (users: any) => {
+      users.forEach((user: any) => {
+        total += user.totalDonatedCents;
+
+        if (user.referredUsers?.length) {
+          traverse(user.referredUsers);
+        }
+      });
+    };
+
+    traverse(referrals);
+
+    return total / 100;
+  };
+
+  // console.log(directReferrals, "impactReferralTree");
+
+  const totalPages = impactReferralTree?.data?.totalPages || 1;
   const totalItems =
-    impactLeaderboard?.data?.totalCount || impactLeaderboard?.data?.totalItems || 0;
+    impactReferralTree?.data?.totalCount || impactReferralTree?.data?.totalItems || 0;
 
-  const isLoading = scoreLoading || leaderboardLoading || profileLoading;
+  const isLoading = scoreLoading || referralTreeLoading || profileLoading;
 
   if (isLoading) return <DashboardImpactSkeleton />;
 
@@ -104,7 +131,10 @@ const DashboardImpact = () => {
             <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white p-6">
               <div className="space-y-1">
                 <h3 className="text-[50px] leading-[150%] font-medium text-[#12AA5B]">
-                  CA${(impactScore?.data?.totalDonatedCents / 100)?.toLocaleString()}
+                  CA$
+                  {(
+                    impactReferralTree?.data?.summary?.totalDonatedByReferredUsersCents / 100
+                  )?.toLocaleString()}
                 </h3>
                 <p className="text-2xl leading-[150%] font-normal text-[#888787]">
                   Referred Donations
@@ -128,10 +158,13 @@ const DashboardImpact = () => {
               <div className="space-y-1">
                 <div className="flex items-center gap-2">
                   <h3 className="text-[50px] leading-[150%] font-medium text-[#000000]">
-                    {impactScore?.data?.referralCount?.toLocaleString()}
+                    {impactReferralTree?.data?.summary?.totalReferredUsersCount?.toLocaleString()}
                   </h3>
                   <p className="text-2xl leading-[150%] font-normal text-[#888787]">
-                    People Referred
+                    {impactReferralTree?.data?.summary?.totalReferredUsersCount <= 1
+                      ? "Person"
+                      : "People"}{" "}
+                    Referred
                   </p>
                 </div>
               </div>
@@ -171,25 +204,30 @@ const DashboardImpact = () => {
                   </p>
                 </div>
               ) : (
-                <div className="p-6">
+                <div className="p-4 lg:p-6">
                   {directReferrals?.map((referral: any) => (
                     <div
                       key={referral?.id}
-                      className={`flex items-center justify-between border-b py-6 last:border-b-0`}
+                      className={`items-center justify-between border-b py-6 last:border-b-0 lg:flex`}
                     >
                       <div className="flex items-start gap-4">
                         <div
-                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral?.avatar ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
+                          className={`flex h-12 w-12 shrink-0 items-center justify-center rounded-full ${referral?.imageUrl ? "overflow-hidden" : "bg-[#FFD3D8]"}`}
                         >
-                          {referral?.avatar ? (
+                          {referral?.imageUrl ? (
                             <img
-                              src={referral?.avatar}
-                              alt={referral?.donorName}
+                              src={referral?.imageUrl}
+                              alt={referral?.name}
                               className="h-full w-full object-cover"
                             />
                           ) : (
-                            <div className="flex h-full w-full items-center justify-center rounded-full bg-[#FFD3D8]">
-                              <UserIcon size={24} color="#000000" />
+                            <div
+                              style={{
+                                backgroundColor: generateColorFromSeed(referral?.name),
+                              }}
+                              className="flex h-full w-full items-center justify-center rounded-full bg-[#FFD3D8]"
+                            >
+                              <UserIcon size={24} color="#FFFFFF" />
                             </div>
                           )}
                           {referral?.id === 1 && (
@@ -201,7 +239,7 @@ const DashboardImpact = () => {
                         <div className="space-y-0">
                           <div className="flex items-center gap-2">
                             <p className="line-clamp-1 text-lg leading-[150%] font-normal tracking-[0%] text-[#000000]">
-                              {referral?.donorName}
+                              {referral?.name}
                             </p>
 
                             {referral?.location && (
@@ -218,21 +256,42 @@ const DashboardImpact = () => {
                               </span>
                             )}
                           </div>
-                          {referral?.donationCount && (
-                            <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
-                              Donation count: {referral?.donationCount}
-                            </div>
-                          )}
-                          {referral?.subText && (
-                            <div className="flex items-center gap-2 text-sm text-gray-500">
+                          {/* {referral?.donationCount && ( */}
+                          <div className="flex items-center gap-1 text-base leading-[150%] font-normal text-[#888787]">
+                            Donation count: {referral?.donationCount}
+                          </div>
+                          <div className="mb-2 block lg:hidden">
+                            <p
+                              className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral?.id === 1 || referral?.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
+                            >
+                              CA${(referral?.totalDonatedCents / 100)?.toLocaleString()}
+                            </p>
+                            <p className="text-sm font-medium text-[#888787]">
+                              Referred {referral?.referralCount?.toLocaleString()} Friends
+                            </p>
+                          </div>
+                          {/* )} */}
+                          {referral?.referredUsers?.length > 0 && (
+                            <div className="items-center text-sm text-gray-500 lg:flex">
                               {referral?.referredUsers && (
-                                <div className="flex -space-x-2">
-                                  {[1, 2, 3].map((i) => (
-                                    <div
-                                      key={i}
-                                      className="h-6 w-6 rounded-full border-2 border-white bg-gray-200"
-                                    />
-                                  ))}
+                                <div className="pt-1">
+                                  <div className="flex">
+                                    {referral?.referredUsers?.map((user: any) => (
+                                      <>
+                                        <Avatar className="-mr-3 last:mr-0">
+                                          <AvatarImage src={user?.imageUrl} />
+                                          <AvatarFallback
+                                            className="h-7 w-7 rounded-full text-white"
+                                            style={{
+                                              backgroundColor: generateColorFromSeed(user?.name),
+                                            }}
+                                          >
+                                            {user?.name?.charAt(0)}
+                                          </AvatarFallback>
+                                        </Avatar>
+                                      </>
+                                    ))}
+                                  </div>
                                 </div>
                               )}
                               <p className="text-base leading-[150%] font-normal text-[#888787]">
@@ -240,18 +299,18 @@ const DashboardImpact = () => {
                                   ? `${referral?.boosts} Boosts D234`
                                   : referral?.id === 3
                                     ? "CA$0 referred"
-                                    : "CA$0 referred"}
+                                    : `CA$${getAllDonations(referral?.referredUsers)?.toLocaleString()} referred`}
                               </p>
                             </div>
                           )}
                         </div>
                       </div>
 
-                      <div className="text-right">
+                      <div className="hidden lg:block lg:text-right">
                         <p
                           className={`text-lg leading-[150%] font-normal tracking-[0%] ${referral?.id === 1 || referral?.id === 3 ? "text-[#12AA5B]" : "text-[#12AA5B]"}`}
                         >
-                          ${(referral?.totalScore / 100)?.toLocaleString()}
+                          CA${(referral?.totalDonatedCents / 100)?.toLocaleString()}
                           {/* <CaretRightIcon size={14} color="#000000" /> */}
                         </p>
                         <p className="text-sm font-medium text-[#888787]">
@@ -266,7 +325,7 @@ const DashboardImpact = () => {
                     </div>
                   ))}
 
-                  {!leaderboardLoading && directReferrals?.length > 0 && (
+                  {!referralTreeLoading && totalPages > 1 && (
                     <ManagePagination
                       totalItems={totalItems}
                       totalPages={totalPages}

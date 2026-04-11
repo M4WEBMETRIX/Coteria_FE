@@ -26,7 +26,7 @@ const UserSidebar = () => {
   const location = useLocation();
 
   const { data: userData } = useGetEndUserProfile();
-  console.log("user data", userData?.data);
+  // console.log("user data", userData?.data);
 
   useEffect(() => {
     setEndUserToLocalStorage(userData?.data);

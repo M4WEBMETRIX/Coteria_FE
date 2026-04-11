@@ -10,6 +10,7 @@ export const USE_GET_USER_SPECIFIC_COMMUNITY_API = "USE_GET_USER_SPECIFIC_COMMUN
 export const USE_GET_USER_DONATIONS_API = "USE_GET_USER_DONATIONS_API";
 export const USE_GET_IMPACT_SCORE_API = "USE_GET_IMPACT_SCORE_API";
 export const USE_GET_IMPACT_LEADERBOARD_API = "USE_GET_IMPACT_LEADERBOARD_API";
+export const USE_GET_IMPACT_REFERRAL_TREE_API = "USE_GET_IMPACT_REFERRAL_TREE_API";
 
 export const useGetEndUserProfile = () => {
   const URL = "/donor/profile";
@@ -131,6 +132,20 @@ export const useGetImpactLeaderboard = (page?: number, limit?: number) => {
   const URL = `/impact/leaderboard${queryString ? `?${queryString}` : ""}`;
   return useQuery({
     queryKey: [USE_GET_IMPACT_LEADERBOARD_API, page, limit],
+    queryFn: () => getFunctionUserEnd(URL),
+  });
+};
+
+export const useGetImpactReferralTree = (page?: number, limit?: number) => {
+  const queryParams = new URLSearchParams();
+  if (page) queryParams.append("page", page.toString());
+  if (limit) queryParams.append("limit", limit.toString());
+
+  const queryString = queryParams.toString();
+  // /v1/donor/referrals/tree
+  const URL = `/donor/referrals/tree${queryString ? `?${queryString}` : ""}`;
+  return useQuery({
+    queryKey: [USE_GET_IMPACT_REFERRAL_TREE_API, page, limit],
     queryFn: () => getFunctionUserEnd(URL),
   });
 };

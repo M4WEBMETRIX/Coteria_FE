@@ -13,6 +13,7 @@ import {
   // useGoogleOneTapLogin,
 } from "@react-oauth/google";
 import { toast } from "sonner";
+import { generateColorFromSeed } from "@/lib/utils";
 // import { Button } from "@/components/ui/button";
 
 const UserAuthLayout = ({
@@ -76,9 +77,18 @@ const UserAuthLayout = ({
             {isReferrer ? (
               <div className="mt-5 flex h-25 items-center gap-3 rounded-[10px] border border-[#ECEFF3] px-5 py-3.5 shadow-[0_4px_6px_-2px_rgba(16,24,40,0.03),0_12px_16px_-4px_rgba(16,24,40,0.08)]">
                 <div>
-                  {isNotUser ? (
-                    <div className="flex h-18 w-18 items-center justify-center rounded-full bg-gray-200">
-                      <User size={48} />
+                  {isNotUser || !data?.data?.referrer?.profileImageUrl ? (
+                    <div
+                      style={{
+                        backgroundColor: generateColorFromSeed(
+                          isNotUser
+                            ? data?.data?.organization?.name
+                            : data?.data?.referrer?.displayName
+                        ),
+                      }}
+                      className="flex h-18 w-18 items-center justify-center rounded-full bg-gray-200"
+                    >
+                      <User color="white" size={32} />
                     </div>
                   ) : (
                     <img
@@ -109,14 +119,20 @@ const UserAuthLayout = ({
               </div>
             ) : (
               <>
-                <GoogleLogin
-                  onSuccess={(credentialResponse) => {
-                    userGoogleAuthMutate({ idToken: credentialResponse.credential });
-                  }}
-                  onError={() => {
-                    toast.error("Login Failed, try again");
-                  }}
-                />
+                <div className="mt-5 [&>div]:w-full [&>div>div]:w-full">
+                  <GoogleLogin
+                    onSuccess={(credentialResponse) => {
+                      userGoogleAuthMutate({ idToken: credentialResponse.credential });
+                    }}
+                    onError={() => {
+                      toast.error("Login Failed, try again");
+                    }}
+                    useOneTap
+                    theme="outline"
+                    size="large"
+                    width="100%"
+                  />
+                </div>
                 {/* <Button
                   onClick={() => {
                     login();

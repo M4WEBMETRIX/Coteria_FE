@@ -106,7 +106,7 @@ export const debounce = (func: (...args: any[]) => any, delay: number) => {
 };
 
 export const showErrorToast = (error: any, fallback?: string) => {
-  console.log("showErrorToast received:", error);
+  // console.log("showErrorToast received:", error);
   // Extract validation errors either from the direct property (if attached by interceptor)
   // or deeply nested inside the response data
   const validationErrors =
@@ -184,3 +184,42 @@ export function getNameAbbrev(name: string) {
 
   return (name[0] + name[1]).toLocaleUpperCase();
 }
+
+export const generateRandomColor = (seed: string) => {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const colors = ["#FF0000", "#00FF00", "#0000FF", "#FFFF00", "#FF00FF", "#00FFFF"];
+  return colors[Math.floor(Math.abs(hash % colors.length))];
+};
+
+export const generateRandomLightColor = (seed: string) => {
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) {
+    hash = seed.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  const colors = [
+    "#FEE2E2", // red-100
+    "#FEF3C7", // amber-100
+    "#ECFCCB", // lime-100
+    "#D1FAE5", // green-100
+    "#DBEAFE", // blue-100
+    "#E0E7FF", // indigo-100
+    "#F3E8FF", // purple-100
+    "#FAE8FF", // pink-100
+  ];
+  return colors[Math.floor(Math.abs(hash % colors.length))];
+};
+
+export const generateColorFromSeed = (seed: string) => {
+  let hash = 0;
+
+  for (let i = 0; i < seed?.length; i++) {
+    hash = seed?.charCodeAt(i) + ((hash << 5) - hash);
+  }
+
+  const hue = Math.abs(hash) % 360;
+
+  return `hsl(${hue}, 70%, 85%)`; // 🎯 soft pastel
+};

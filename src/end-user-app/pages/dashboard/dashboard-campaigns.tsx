@@ -176,14 +176,19 @@ const DashboardCampaigns = () => {
           Completed Campaigns
         </button> */}
           </div>
-
+          {/* {
+    border: 1px #e5e5e5 solid;
+    padding: 50px;
+    border-radius: 10px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+} */}
           {/* Content */}
-          <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
             {campaignsData?.map((campaign: any) => (
               <div
                 onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
                 key={campaign.id}
-                className="cursor-pointer space-y-6"
+                className="cursor-pointer space-y-6 rounded-[6px] border border-[#e5e5e5] p-[20px] shadow-[0_10px_25px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-[100.2%] lg:rounded-[10px] lg:p-[50px]"
               >
                 <div className="flex items-center justify-between">
                   <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
@@ -217,7 +222,7 @@ const DashboardCampaigns = () => {
                     onClick={(e) => {
                       e.stopPropagation();
                       setSelectedCampaign(campaign);
-                      console.log(campaign);
+                      // console.log(campaign);
                       setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                     }}
                     className="hidden h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:block"
@@ -242,7 +247,7 @@ const DashboardCampaigns = () => {
                 <Button
                   onClick={() => {
                     setSelectedCampaign(campaign);
-                    console.log(campaign);
+                    // console.log(campaign);
                     setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                   }}
                   className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:hidden"

@@ -116,7 +116,7 @@ const SuccessStep: React.FC<{ onLogin: () => void }> = ({ onLogin }) => {
 };
 
 const UserResetPassword = () => {
-  const [step, setStep] = React.useState(0);
+  const [step, setStep] = React.useState(2);
 
   const navigate = useNavigate();
 
