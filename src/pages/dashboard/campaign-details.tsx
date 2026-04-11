@@ -9,6 +9,7 @@ import Settings from "@/components/campaigns/details/settings";
 import { cn } from "@/lib/utils";
 import { useCampaignDetails } from "@/services/generics/hooks";
 import { useParams } from "react-router-dom";
+import CampaignsEvents from "@/components/campaigns/campaign-events";
 // import CampaignsEvents from "@/components/campaigns/campaign-events";
 // import CampaignResources from "@/components/campaigns/campaign-resources";
 
@@ -46,11 +47,11 @@ const Campaigndetails = () => {
 
     //
     //BROUGHT IN FOR MVC
-    // {
-    //   value: "events",
-    //   label: "Events",
-    //   component: <CampaignsEvents />,
-    // },
+    {
+      value: "events",
+      label: "Events",
+      component: <CampaignsEvents />,
+    },
     // { value: "resources", label: "Resources", component: <CampaignResources /> },
 
     { value: "settings", label: "Settings", component: <Settings data={campaignDetails?.data} /> },

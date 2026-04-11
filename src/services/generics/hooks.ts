@@ -19,6 +19,7 @@ const USE_GET_CAMPAIGNS_STATS_API = "USE_GET_CAMPAIGNS_STATS_API";
 const USE_GET_ORGANISATION_DONATIONS_API = "USE_GET_ORGANISATION_DONATIONS_API";
 const USE_GET_ORGANISATION_DONATION_DETAILS_API = "USE_GET_ORGANISATION_DONATION_DETAILS_API";
 const USE_GET_CAMPAIGN_ENGAGEMENT_API = "USE_GET_CAMPAIGN_ENGAGEMENT_API";
+const USE_GET_ORGANISATION_EVENTS_API = "USE_GET_ORGANISATION_EVENTS_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -398,5 +399,30 @@ export const useCancelSubscription = () => {
     },
     onError: (err: any) =>
       toast.error(err?.message || "Error cancelling subscription, please try again.!"),
+  });
+};
+
+export const useGetOrganisationEvents = (params?: {
+  page?: number;
+  limit?: number;
+  search?: string;
+  sort?: string;
+}) => {
+  const queryParams = new URLSearchParams();
+  if (params?.page) queryParams.append("page", params.page.toString());
+  if (params?.limit) queryParams.append("limit", params.limit.toString());
+  if (params?.search) queryParams.append("search", params.search);
+  if (params?.sort) queryParams.append("sort", params.sort);
+
+  const URL = `/org/events${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
+  return useQuery({
+    queryKey: [
+      USE_GET_ORGANISATION_EVENTS_API,
+      params?.page,
+      params?.limit,
+      params?.search,
+      params?.sort,
+    ],
+    queryFn: () => getFunction(URL),
   });
 };

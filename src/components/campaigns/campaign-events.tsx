@@ -14,49 +14,51 @@ import { Input } from "@/components/ui/input";
 import { useNavigate } from "react-router-dom";
 import { ArrowDownIcon, ArrowsDownUpIcon, ArrowUpIcon, FunnelIcon } from "@phosphor-icons/react";
 import { useParams } from "react-router-dom";
+import { useGetOrganisationEvents } from "@/services/generics/hooks";
+import EmptyState from "../reusable/empty-state";
 
-const campaignsData = [
-  {
-    id: "1",
-    title: "Strength in Unity: Cancer Patient Support Program",
-    participants: 126,
-    rsvp: "up",
-    lastActivity: "2h ago",
-    date: "24th May 2020",
-    eventType: "-",
-    status: "Draft",
-  },
-  {
-    id: "2",
-    title: "Journey of Hope: Empowering Cancer Survivors",
-    participants: 32,
-    rsvp: "down",
-    lastActivity: "3 days ago",
-    date: "24th August 2020",
-    eventType: "Virtual",
-    status: "Active",
-  },
-  {
-    id: "3",
-    title: "Light of Hope: Cancer Awareness and Support",
-    participants: 126,
-    rsvp: "up",
-    lastActivity: "2h ago",
-    date: "N/A",
-    eventType: "-",
-    status: "Paused",
-  },
-  {
-    id: "4",
-    title: "Radiant Futures: A Cancer Support Initiative",
-    participants: 0,
-    rsvp: "down",
-    lastActivity: "50 days ago",
-    date: "25th December 2025",
-    eventType: "Physical",
-    status: "Suspended",
-  },
-];
+// const campaignsData = [
+//   {
+//     id: "1",
+//     title: "Strength in Unity: Cancer Patient Support Program",
+//     participants: 126,
+//     rsvp: "up",
+//     lastActivity: "2h ago",
+//     date: "24th May 2020",
+//     eventType: "-",
+//     status: "Draft",
+//   },
+//   {
+//     id: "2",
+//     title: "Journey of Hope: Empowering Cancer Survivors",
+//     participants: 32,
+//     rsvp: "down",
+//     lastActivity: "3 days ago",
+//     date: "24th August 2020",
+//     eventType: "Virtual",
+//     status: "Active",
+//   },
+//   {
+//     id: "3",
+//     title: "Light of Hope: Cancer Awareness and Support",
+//     participants: 126,
+//     rsvp: "up",
+//     lastActivity: "2h ago",
+//     date: "N/A",
+//     eventType: "-",
+//     status: "Paused",
+//   },
+//   {
+//     id: "4",
+//     title: "Radiant Futures: A Cancer Support Initiative",
+//     participants: 0,
+//     rsvp: "down",
+//     lastActivity: "50 days ago",
+//     date: "25th December 2025",
+//     eventType: "Physical",
+//     status: "Suspended",
+//   },
+// ];
 
 const StatusBadge = ({ status }: { status: string }) => {
   let styles = "";
@@ -98,10 +100,16 @@ const CampaignsEvents = () => {
   const { id } = useParams();
   const navigate = useNavigate();
 
+  const { data: eventsData, isLoading: eventsLoading } = useGetOrganisationEvents();
+
   return (
     <div className="font-inter">
       <div className="flex items-center justify-end">
-        <Button onClick={() => navigate(`/campaigns/${id}/create-event`)} className="mb-2 h-9 w-50">
+        <Button
+          disabled
+          onClick={() => navigate(`/campaigns/${id}/create-event`)}
+          className="mb-2 h-9 w-50"
+        >
           Create Event
         </Button>
       </div>
@@ -119,11 +127,13 @@ const CampaignsEvents = () => {
               className="absolute top-1/2 left-3 -translate-y-1/2 text-[#8B8D98]"
             />
             <Input
+              disabled
               placeholder="Search"
               className="h-10 w-full rounded-lg border-[#E0E1E6] bg-white pl-10"
             />
           </div>
           <Button
+            disabled
             variant="outline"
             className="h-10 gap-2 rounded-lg border-[#E0E1E6] bg-white text-[#5E606A] hover:bg-gray-50"
           >
@@ -131,6 +141,7 @@ const CampaignsEvents = () => {
             Filter
           </Button>
           <Button
+            disabled
             variant="outline"
             className="h-10 gap-2 rounded-lg border-[#E0E1E6] bg-white text-[#5E606A] hover:bg-gray-50"
           >
@@ -161,56 +172,85 @@ const CampaignsEvents = () => {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {campaignsData.map((campaign) => (
-              <TableRow
-                key={campaign.id}
-                className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
-              >
-                <TableCell className="py-4 pl-4">
-                  <Checkbox
-                    onClick={(e) => e.stopPropagation()}
-                    className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
-                  />
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.id}
-                </TableCell>
-                <TableCell className="max-w-[300px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.title}
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-10">
-                    <span className="w-30 text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                      {campaign.participants} participants
-                    </span>
-                    <div className="">
-                      {campaign.rsvp === "up" ? (
-                        <ArrowUpIcon size={10} className="text-[#12AA5B]" />
-                      ) : (
-                        <ArrowDownIcon size={10} className="text-[#F04438]" />
-                      )}
-                    </div>
-                  </div>
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.lastActivity}
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.date}
-                </TableCell>
-                <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
-                  {campaign.eventType}
-                </TableCell>
-                <TableCell>
-                  <StatusBadge status={campaign.status} />
-                </TableCell>
-                <TableCell onClick={(e) => e.stopPropagation()}>
-                  <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8B8D98]">
-                    <HugeiconsIcon icon={MoreHorizontalIcon} size={20} color="#666D80" />
-                  </Button>
+            {eventsLoading ? (
+              <TableRow>
+                <TableCell
+                  colSpan={9}
+                  className="h-30 border-x border-b border-[#DFE1E7] border-[#E0E1E6] text-center"
+                >
+                  <EmptyState title="Loading..." description="Please wait..." />
                 </TableCell>
               </TableRow>
-            ))}
+            ) : (
+              <>
+                {eventsData?.data?.items?.length === 0 ? (
+                  <TableRow>
+                    <TableCell
+                      colSpan={9}
+                      className="h-30 border-x border-b border-[#DFE1E7] border-[#E0E1E6] text-center"
+                    >
+                      <EmptyState
+                        title="No Events"
+                        description="You haven't created any events yet."
+                      />
+                    </TableCell>
+                  </TableRow>
+                ) : (
+                  <>
+                    {eventsData?.data?.items?.map((campaign: any) => (
+                      <TableRow
+                        key={campaign.id}
+                        className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
+                      >
+                        <TableCell className="py-4 pl-4">
+                          <Checkbox
+                            onClick={(e) => e.stopPropagation()}
+                            className="border-[#CDCED7] data-[state=checked]:border-[#12AA5B] data-[state=checked]:bg-[#12AA5B]"
+                          />
+                        </TableCell>
+                        <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                          {campaign.id}
+                        </TableCell>
+                        <TableCell className="max-w-[300px] truncate text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                          {campaign.title}
+                        </TableCell>
+                        <TableCell>
+                          <div className="flex items-center gap-10">
+                            <span className="w-30 text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                              {campaign.participants} participants
+                            </span>
+                            <div className="">
+                              {campaign.rsvp === "up" ? (
+                                <ArrowUpIcon size={10} className="text-[#12AA5B]" />
+                              ) : (
+                                <ArrowDownIcon size={10} className="text-[#F04438]" />
+                              )}
+                            </div>
+                          </div>
+                        </TableCell>
+                        <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                          {campaign.lastActivity}
+                        </TableCell>
+                        <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                          {campaign.date}
+                        </TableCell>
+                        <TableCell className="text-sm leading-[150%] tracking-[2%] text-[#0D0D12]">
+                          {campaign.eventType}
+                        </TableCell>
+                        <TableCell>
+                          <StatusBadge status={campaign.status} />
+                        </TableCell>
+                        <TableCell onClick={(e) => e.stopPropagation()}>
+                          <Button variant="ghost" size="icon" className="h-8 w-8 text-[#8B8D98]">
+                            <HugeiconsIcon icon={MoreHorizontalIcon} size={20} color="#666D80" />
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </>
+                )}
+              </>
+            )}
           </TableBody>
         </Table>
       </div>
