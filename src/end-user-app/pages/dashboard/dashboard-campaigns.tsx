@@ -193,7 +193,7 @@ const DashboardCampaigns = () => {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 } */}
           {/* Content */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(0,388px))]">
             {campaignsData?.map((campaign: any) => {
               // const progress =
               //   campaign?.target && campaign?.raised
@@ -209,13 +209,15 @@ const DashboardCampaigns = () => {
                   key={campaign.id}
                   className="flex cursor-pointer gap-3 rounded-[6px] border border-[#E4E4E4] p-3 transition-all duration-300 lg:block lg:max-w-[413px] lg:rounded-[32px] lg:p-3"
                 >
-                  <div className="relative h-30 w-30 overflow-hidden rounded-[12px] bg-gray-100 lg:h-[272px] lg:w-full lg:rounded-[32px]">
-                    <img
-                      src={campaign?.imageUrl}
-                      alt={campaign?.name + "image"}
-                      className="h-full w-full object-cover grayscale"
-                    />
-                    <div className="absolute inset-0 bg-black/30" />
+                  <div>
+                    <div className="relative h-30 w-30 overflow-hidden rounded-[12px] bg-gray-100 lg:h-[272px] lg:w-full lg:rounded-[32px]">
+                      <img
+                        src={campaign?.imageUrl}
+                        alt={campaign?.name + "image"}
+                        className="h-full w-full object-cover grayscale"
+                      />
+                      <div className="absolute inset-0 bg-black/30" />
+                    </div>
                   </div>
 
                   <div className="w-full">
@@ -253,7 +255,7 @@ const DashboardCampaigns = () => {
                     {/* Progress Bar Custom */}
                     <div className="mt-2.5 mb-4 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-5.5">
                       <div
-                        className="h-full bg-[#7CE993] transition-all duration-300"
+                        className="h-full rounded-full bg-[#7CE993] transition-all duration-300"
                         style={{ width: `${progress}%` }}
                       />
                     </div>
