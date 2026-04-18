@@ -67,10 +67,10 @@ const DashboardIndex = () => {
         <nav className="mb-13.75 flex items-center justify-between">
           {!isPending && (
             <div className="space-y-0.75">
-              <p className="text-xl lg:text-[32px] leading-[120%] font-normal tracking-[-2%] text-[#000000]">
+              <p className="text-xl leading-[120%] font-normal tracking-[-2%] text-[#000000] lg:text-[32px]">
                 Good day,
               </p>
-              <p className="text-2xl lg:text-[48px] leading-[120%] font-medium tracking-[-2%] text-[#000000]">
+              <p className="text-2xl leading-[120%] font-medium tracking-[-2%] text-[#000000] lg:text-[48px]">
                 {endUser?.firstName}!
               </p>
             </div>
@@ -125,7 +125,7 @@ const DashboardIndex = () => {
           ]}
           values={TAB_VALUES}
           defaultValue={TAB_VALUES[1]}
-          className="mb-9 max-w-full overflow-x-auto lg:max-w-[650px]"
+          className="mb-6 max-w-full overflow-x-auto lg:max-w-[650px]"
         />
         {activeTab === "home" && <DashboardHome />}
         {activeTab === "community" && <DashboardCommunity />}

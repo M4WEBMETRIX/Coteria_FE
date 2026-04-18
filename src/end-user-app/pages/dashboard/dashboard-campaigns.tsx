@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 // import { Progress } from "@/components/ui/progress";
-import { CaretRightIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, CaretRightIcon } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 // import CAMPAIGN_IMAGE from "@/assets/images/sample-campaign.png";
 // import CAMPAIGN_IMAGE_1 from "@/assets/images/sample-campaign-image-1.png";
@@ -14,9 +14,19 @@ import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { DonationModal } from "@/pages/community/services/donate-modal";
 import ManagePagination from "@/components/Manage-pagination";
 
+const MAX_LENGTH = 72; // tweak this until it visually fits 2 lines
+
+const getTruncatedText = (text: string) => {
+  if (!text) return "";
+
+  if (text.length <= MAX_LENGTH) return text;
+
+  return text.slice(0, MAX_LENGTH) + "...";
+};
+
 const DashboardCampaigns = () => {
   const navigate = useNavigate();
-  const [tab, setTab] = useState<"active" | "completed">("active");
+  // const [tab, setTab] = useState<"active" | "completed">("active");
 
   const [isOpen, setIsOpen] = useState<any | null>(null);
   const [selectedCampaign, setSelectedCampaign] = useState<any | null>(null);
@@ -154,8 +164,8 @@ const DashboardCampaigns = () => {
             </CarouselContent>
           </Carousel>
           {/* Tabs */}
-          <div className="flex items-center gap-7">
-            <button
+          {/* <div className="flex items-center gap-7"> */}
+          {/* <button
               onClick={() => setTab("active")}
               className={`cursor-pointer pb-1 text-sm leading-[155%] tracking-[-2%] transition-all ${
                 tab === "active"
@@ -164,8 +174,8 @@ const DashboardCampaigns = () => {
               }`}
             >
               Active Campaigns
-            </button>
-            {/* <button
+            </button> */}
+          {/* <button
           onClick={() => setTab("completed")}
           className={`cursor-pointer pb-1 text-sm leading-[155%] tracking-[-2%] transition-all ${
             tab === "completed"
@@ -175,7 +185,7 @@ const DashboardCampaigns = () => {
         >
           Completed Campaigns
         </button> */}
-          </div>
+          {/* </div> */}
           {/* {
     border: 1px #e5e5e5 solid;
     padding: 50px;
@@ -183,49 +193,119 @@ const DashboardCampaigns = () => {
     box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
 } */}
           {/* Content */}
-          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {campaignsData?.map((campaign: any) => (
-              <div
-                onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
-                key={campaign.id}
-                className="cursor-pointer space-y-6 rounded-[6px] border border-[#e5e5e5] p-[20px] shadow-[0_10px_25px_rgba(0,0,0,0.1)] transition-all duration-300 hover:scale-[100.2%] lg:rounded-[10px] lg:p-[50px]"
-              >
-                <div className="flex items-center justify-between">
-                  <h2 className="text-[22px] leading-[155%] font-normal tracking-[-2%] text-[#000000]">
-                    {campaign?.name}
-                  </h2>
-                </div>
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-4">
+            {campaignsData?.map((campaign: any) => {
+              // const progress =
+              //   campaign?.target && campaign?.raised
+              //     ? Math.min((campaign.raised / campaign.target) * 100, 100)
+              //     : 0;
+              const progress = Math.min(
+                (campaign.totalRaisedCents / campaign.goalAmountCents) * 100,
+                100
+              );
+              return (
+                <div
+                  onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
+                  key={campaign.id}
+                  className="flex cursor-pointer gap-3 rounded-[6px] border border-[#E4E4E4] p-3 transition-all duration-300 lg:block lg:max-w-[413px] lg:rounded-[32px] lg:p-3"
+                >
+                  <div className="relative h-30 w-30 overflow-hidden rounded-[12px] bg-gray-100 lg:h-[272px] lg:w-full lg:rounded-[32px]">
+                    <img
+                      src={campaign?.imageUrl}
+                      alt={campaign?.name + "image"}
+                      className="h-full w-full object-cover grayscale"
+                    />
+                    <div className="absolute inset-0 bg-black/30" />
+                  </div>
 
-                <div className="flex items-center justify-between gap-4">
-                  <div className="flex w-full items-center gap-3">
-                    <div className="flex items-center leading-[155%] font-normal tracking-[0%]">
-                      <span className="text-lg font-medium text-[#6B6B6B]">
-                        {getCurrencySymbol(campaign?.goalCurrency)}
-                        {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
-                      </span>
-                      <span className="text-[#A3A3A3]">
-                        /{getCurrencySymbol(campaign?.goalCurrency)}
-                        {campaign?.goalAmountCents
-                          ? (campaign?.goalAmountCents / 100)?.toLocaleString()
-                          : "0"}
-                      </span>
+                  <div className="w-full">
+                    <div className="mb-2.5 flex items-center justify-between lg:mt-4">
+                      <h2 className="line-clamp-1 text-base leading-[120%] font-semibold tracking-[-0.5%] text-[#0F0F0F] lg:text-[20px] lg:font-medium">
+                        {campaign?.name}
+                      </h2>
                     </div>
+
+                    <p className="hidden w-full text-base leading-[24px] font-normal tracking-[-0.5%] text-[#404040] lg:inline-block lg:max-h-10">
+                      {getTruncatedText(campaign?.description)}{" "}
+                      {campaign?.description?.length > MAX_LENGTH && (
+                        <span
+                          className="cursor-pointer text-[#12AA5B]"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            // handle expand
+                          }}
+                        >
+                          Learn more
+                        </span>
+                      )}
+                    </p>
+
+                    {/* <p className="hidden w-full text-base leading-[24px] font-normal tracking-[-0.5%] text-[#404040] lg:inline-block lg:min-h-12">
+                      <p className="lg:line-clamp-2">{campaign?.description}</p>
+                      <span
+                        // onClick={() => handleShowMoreDescription(campaign?.description)}
+                        className="cursor-pointer text-[#12AA5B]"
+                      >
+                        Learn more.
+                      </span>
+                    </p> */}
+
                     {/* Progress Bar Custom */}
-                    <div className="h-2 w-full max-w-138.75 overflow-hidden rounded-full bg-[#D9D9D9]">
+                    <div className="mt-2.5 mb-4 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-5.5">
                       <div
-                        className="h-full rounded-full bg-[#12AA5B]"
-                        style={{ width: `${(campaign?.raised / campaign?.target) * 100}%` }}
+                        className="h-full bg-[#7CE993] transition-all duration-300"
+                        style={{ width: `${progress}%` }}
                       />
+                    </div>
+                    {/* <div className="mt-5.5 h-4 w-full rounded-full bg-[#D9D9D9]">
+                  <div
+                    className="h-full rounded-full bg-[#7CE993]"
+                    style={{ width: `${(campaign?.raised / campaign?.target) * 100}%` }}
+                  />
+                </div> */}
+
+                    <div className="flex items-center justify-between gap-4">
+                      <div className="flex w-full items-center gap-3">
+                        <div className="flex flex-col items-start gap-1.5 leading-[155%] font-normal tracking-[0%]">
+                          <span className="text-lg font-semibold text-[#0F0F0F] lg:text-[20px] lg:font-medium">
+                            {getCurrencySymbol(campaign?.goalCurrency)}
+                            {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
+                          </span>
+                          <span className="text-sm font-normal text-[#0F0F0F]">
+                            raised of {getCurrencySymbol(campaign?.goalCurrency)}
+                            {campaign?.goalAmountCents
+                              ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                              : "0"}{" "}
+                            goal
+                          </span>
+                        </div>
+                      </div>
+                      <Button
+                        variant={"outline"}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setSelectedCampaign(campaign);
+                          // console.log(campaign);
+                          setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                        }}
+                        className="hidden h-[56px] w-[157px] rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 text-white lg:flex lg:items-center lg:justify-between"
+                      >
+                        <div className="flex items-center text-base font-medium text-[#0F0F0F]">
+                          Donate
+                        </div>
+                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                          <ArrowRightIcon size={14} weight="bold" className="text-[#0F0F0F]" />
+                        </div>
+                      </Button>
                     </div>
                   </div>
                   <Button
-                    onClick={(e) => {
-                      e.stopPropagation();
+                    onClick={() => {
                       setSelectedCampaign(campaign);
                       // console.log(campaign);
                       setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                     }}
-                    className="hidden h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:block"
+                    className="hidden h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:hidden"
                   >
                     <div className="flex items-center text-sm font-medium">
                       Donate
@@ -233,40 +313,8 @@ const DashboardCampaigns = () => {
                     </div>
                   </Button>
                 </div>
-
-                <p className="line-clamp-4 min-h-24 max-w-149.5 leading-[155%] font-normal text-[#6B6B6B]">
-                  {campaign?.description}{" "}
-                  <span
-                    // onClick={() => handleShowMoreDescription(campaign?.description)}
-                    className="cursor-pointer text-[#12AA5B]"
-                  >
-                    Learn more.
-                  </span>
-                </p>
-
-                <Button
-                  onClick={() => {
-                    setSelectedCampaign(campaign);
-                    // console.log(campaign);
-                    setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
-                  }}
-                  className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:hidden"
-                >
-                  <div className="flex items-center text-sm font-medium">
-                    Donate
-                    <CaretRightIcon size={14} weight="bold" className="text-white" />
-                  </div>
-                </Button>
-
-                <div className="h-26.5 w-full overflow-hidden rounded-[10px] bg-gray-100">
-                  <img
-                    src={campaign?.imageUrl}
-                    alt={campaign?.name + "image"}
-                    className="h-full w-full object-cover"
-                  />
-                </div>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       )}
