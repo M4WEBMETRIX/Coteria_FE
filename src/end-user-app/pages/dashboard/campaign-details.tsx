@@ -21,7 +21,7 @@ import {
 //   // ShareFatIcon,
 //   // Trophy,
 // } from "@phosphor-icons/react";
-import { ArrowRightIcon, CaretRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
+import { ArrowRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useState } from "react";
 // import { campaigns } from "./dashboard-campaigns";
 import { useNavigate, useParams } from "react-router-dom";
