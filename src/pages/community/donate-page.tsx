@@ -76,10 +76,10 @@ const DonatePage = () => {
   } = useCreateDonation(campaignId);
 
   const successUrl = userId
-    ? `${getBaseUrl({ target: "donor" })}/user/donation-success`
+    ? `${getBaseUrl({ target: "donor" })}/user/donation-success?slug=${campaign?.slug}&amount=${amount}`
     : `${getBaseUrl({ target: "donor" })}/campaign/public/donation-success`;
   const cancelUrl = userId
-    ? `${getBaseUrl({ target: "donor" })}/user/dashboard?tab=community`
+    ? `${getBaseUrl({ target: "donor" })}/user/dashboard?tab=community?slug=${campaign?.slug}&amount=${amount}`
     : `${getBaseUrl({ target: "donor" })}/community/public/campaign/${campaignId}`;
 
   const onSubmit = (values: FormValues) => {
