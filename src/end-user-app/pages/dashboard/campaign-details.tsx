@@ -138,7 +138,10 @@ const CampaignDetails = () => {
                 />
               </div>
               <Button
-                onClick={() => setIsOpen(true)}
+                onClick={
+                  // () => setIsOpen(true)
+                  () => navigate(`/user/donate/${campaign?.slug}?userId=${endUser?.id}`)
+                }
                 className="h-[56px] w-full rounded-full bg-[#12AA5B] px-4 text-white lg:flex lg:hidden lg:items-center lg:justify-between"
               >
                 <div className="flex w-full items-center text-center text-sm font-medium text-[#FAFAFA]">
@@ -219,7 +222,10 @@ const CampaignDetails = () => {
             />
           </div>
           <Button
-            onClick={() => setIsOpen(true)}
+            onClick={
+              // () => setIsOpen(true)
+              () => navigate(`/user/donate/${campaign?.slug}?userId=${endUser?.id}`)
+            }
             className="hidden h-[56px] w-full rounded-full bg-[#12AA5B] px-4 text-white lg:flex lg:items-center lg:justify-between"
           >
             <div className="flex w-full items-center justify-center text-center text-base font-medium text-[#FAFAFA]">

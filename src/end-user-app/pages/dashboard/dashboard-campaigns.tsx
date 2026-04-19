@@ -288,7 +288,8 @@ const DashboardCampaigns = () => {
                           e.stopPropagation();
                           setSelectedCampaign(campaign);
                           // console.log(campaign);
-                          setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                          navigate(`/user/donate/${campaign?.slug}?userId=${endUser?.id}`);
+                          // setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                         }}
                         className="hidden h-[56px] w-[157px] rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 text-white lg:flex lg:items-center lg:justify-between"
                       >
@@ -305,7 +306,9 @@ const DashboardCampaigns = () => {
                     onClick={() => {
                       setSelectedCampaign(campaign);
                       // console.log(campaign);
-                      setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                      navigate(`/user/donate/${campaign?.slug}?userId=${endUser?.id}`);
+
+                      // setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                     }}
                     className="hidden h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b] lg:hidden"
                   >
