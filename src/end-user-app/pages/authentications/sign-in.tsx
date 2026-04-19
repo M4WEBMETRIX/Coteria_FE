@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { EyeOff } from "lucide-react";
 
-import { Eye } from "@phosphor-icons/react";
+import { ArrowRightIcon, Eye } from "@phosphor-icons/react";
 import { Link, Navigate, useNavigate, useSearchParams } from "react-router-dom";
 import UserAuthLayout from "@/end-user-app/layout/layout";
 import { useForm } from "react-hook-form";
@@ -14,6 +14,7 @@ import { useLoginUser } from "@/services/users/user-auth";
 import EmailVerificationFlow from "./sign-up-verify-modal";
 import { useUserResendVerificationEmail } from "@/services/auth";
 import { useQueryState } from "nuqs";
+import GoogleAuth from "@/end-user-app/layout/google-auth";
 
 const loginSchema = z.object({
   email: z.string().email("Please enter a valid organization email address"),
@@ -92,14 +93,14 @@ const UserSignIn = () => {
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
           {/* Name Field */}
 
-          <Field className="space-y-1.5">
+          <Field className="!gap-0 space-y-1 !p-0">
             <FieldLabel
               htmlFor="name"
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="!mb-1 !p-0 text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
             >
-              Name/Email<span className="text-red-500">*</span>
+              Email Address<span className="text-red-500">*</span>
             </FieldLabel>
-            <FieldContent>
+            <FieldContent className="!m-0 !bg-transparent !p-0">
               <Input
                 id="name"
                 type="text"
@@ -107,7 +108,7 @@ const UserSignIn = () => {
                 // value={formData.name}
                 {...register("email")}
                 required
-                className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+                className="h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] p-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
               />
 
               <FieldError errors={[errors.email]} />
@@ -116,21 +117,21 @@ const UserSignIn = () => {
 
           {/* Password Field */}
 
-          <Field className="space-y-1.5">
+          <Field className="!gap-0 space-y-1 !p-0">
             <FieldLabel
               htmlFor="password"
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
             >
               Password<span className="text-red-500">*</span>
             </FieldLabel>
-            <FieldContent>
+            <FieldContent className="!m-0 !bg-transparent !p-0">
               <div className="relative">
                 <Input
                   id="password"
                   type={showPassword ? "text" : "password"}
                   placeholder="Enter your password"
                   {...register("password")}
-                  className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 pr-10 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+                  className="h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 pr-10 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
                 />
                 <button
                   type="button"
@@ -150,7 +151,7 @@ const UserSignIn = () => {
 
           <Link
             to="/user/forgot-password"
-            className="flex items-center justify-end text-right text-sm leading-[160%] tracking-[0%] text-[#6F6F6F] hover:text-[#059669] hover:underline"
+            className="mb-[6px] flex items-center justify-center text-center text-sm leading-[160%] font-medium tracking-[0%] text-[#0F0F0F] underline hover:text-[#059669] hover:underline"
           >
             Forgot Password?
           </Link>
@@ -160,20 +161,25 @@ const UserSignIn = () => {
             loading={loading}
             disabled={!isValid}
             type="submit"
-            className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90"
+            className="flex h-12.5 w-full items-center justify-between rounded-full border border-[#E5E5E5] bg-[#079455] px-2 text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90 lg:px-2"
           >
-            {loading ? "Logging in..." : "Log in"}
+            {loading ? "Signing in..." : "Sign In"}
+
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+              <ArrowRightIcon size={14} weight="bold" className="text-[#0F0F0F]" />
+            </div>
           </Button>
+          <GoogleAuth googleText="Continue with Google" />
         </form>
 
         {/* Sign In Link */}
-        <p className="mt-5 text-left text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
-          You don't have an account?{" "}
+        <p className="mt-5 text-center text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
+          Don’t have an account?{" "}
           <Link
             to={`/user/signup${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
-            className="text-[#000000] hover:text-[#059669] hover:underline"
+            className="text-[#000000] underline hover:text-[#059669] hover:underline"
           >
-            Sign Up Here
+            Sign Up
           </Link>
         </p>
         <EmailVerificationFlow

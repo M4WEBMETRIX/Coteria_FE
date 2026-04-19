@@ -5,12 +5,13 @@ import { Label } from "@/components/ui/label";
 import { EyeOff } from "lucide-react";
 
 import UserAuthLayout from "@/end-user-app/layout/layout";
-import { Eye } from "@phosphor-icons/react";
+import { ArrowRightIcon, Eye } from "@phosphor-icons/react";
 import EmailVerificationFlow from "./sign-up-verify-modal";
 import { useQueryState } from "nuqs";
 import ExtendedLineageModal from "./referral-lineage-modal";
 import { useRegisterUser } from "@/services/users/user-auth";
 import { Link, useSearchParams } from "react-router-dom";
+import GoogleAuth from "@/end-user-app/layout/google-auth";
 
 const UserSignUp = () => {
   const [isReferrer] = useQueryState("referral-code");
@@ -139,7 +140,7 @@ const UserSignUp = () => {
           {/* First Name */}
           <div className="space-y-1.5">
             <Label
-              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
               htmlFor="firstName"
             >
               First Name<span className="text-red-500">*</span>
@@ -159,18 +160,17 @@ const UserSignUp = () => {
                   firstName: validateName(value, "First name"),
                 });
               }}
-              className={`h-12.5 w-full rounded-[10px] border px-2 py-3 ${
+              className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 ${
                 errors.firstName ? "border-red-500" : "border-[#DFE1E7]"
               }`}
             />
 
             {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
           </div>
-
           {/* Last Name */}
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <Label
-              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
               htmlFor="lastName"
             >
               Last Name<span className="text-red-500">*</span>
@@ -190,18 +190,17 @@ const UserSignUp = () => {
                   lastName: validateName(value, "Last name"),
                 });
               }}
-              className={`h-12.5 w-full rounded-[10px] border px-2 py-3 ${
+              className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 ${
                 errors.lastName ? "border-red-500" : "border-[#DFE1E7]"
               }`}
             />
 
             {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
           </div>
-
           {/* Email */}
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <Label
-              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
               htmlFor="email"
             >
               Email<span className="text-red-500">*</span>
@@ -221,18 +220,17 @@ const UserSignUp = () => {
                   email: validateEmail(value),
                 });
               }}
-              className={`h-12.5 w-full rounded-[10px] border px-2 py-3 text-base ${
+              className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 text-base ${
                 errors.email ? "border-red-500" : "border-[#DFE1E7]"
               }`}
             />
 
             {errors.email && <p className="text-sm text-red-500">{errors.email}</p>}
           </div>
-
           {/* Password */}
-          <div className="space-y-1.5">
+          <div className="space-y-1">
             <Label
-              className="text-base leading-[155%] font-medium tracking-[0%] text-[#0D0D12]"
+              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
               htmlFor="password"
             >
               Password<span className="text-red-500">*</span>
@@ -244,7 +242,7 @@ const UserSignUp = () => {
                 value={formData.password}
                 onChange={(e) => setFormData({ ...formData, password: e.target.value })}
                 required
-                className="h-12.5 w-full rounded-[10px] border border-[#DFE1E7] px-2 py-3 pr-10 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+                className="h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 pr-10 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
               />
               <button
                 type="button"
@@ -282,43 +280,42 @@ const UserSignUp = () => {
             )}
           </div>
 
-          {/* Terms */}
-          <p className="text-sm leading-[100%] font-light tracking-[1%] text-[#414143]">
-            By creating an account, you agree to Coterie's{" "}
-            <Link
-              to="https://usecoterie.com/terms-of-use"
-              className="text-[#12AA5B] hover:underline"
-            >
-              Terms of Service
-            </Link>{" "}
-            and confirming that you have reviewed and accepted the{" "}
-            <Link
-              to="https://usecoterie.com/privacy-policy"
-              className="text-[#12AA5B] hover:underline"
-            >
-              Privacy Policy
-            </Link>
-            .
-          </p>
-
           {/* Submit */}
           <Button
             type="submit"
             disabled={!isPasswordValid || isPending}
-            className="h-12.5 w-full border border-[#ECEFF3] bg-[#45D884] text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90 disabled:cursor-not-allowed disabled:opacity-50"
+            className="flex h-12.5 w-full items-center justify-between rounded-full border border-[#E5E5E5] bg-[#079455] px-2 text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90 disabled:cursor-not-allowed disabled:opacity-50 lg:px-2"
           >
             {isPending ? "Creating Account..." : "Create Account"}
+
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+              <ArrowRightIcon size={14} weight="bold" className="text-[#0F0F0F]" />
+            </div>
           </Button>
+          <GoogleAuth googleText="Sign Up with Google" />
         </form>
 
-        <p className="mt-5 text-left text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
+        <p className="mt-5 text-center text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
           Already have an account?{" "}
           <a
             href={`/user/login${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
-            className="text-[#000000] hover:text-[#059669] hover:underline"
+            className="text-[#000000] underline hover:text-[#059669] hover:underline"
           >
-            Log In Here
+            Sign in
           </a>
+        </p>
+
+        {/* Terms */}
+        <p className="mt-8 text-center text-sm leading-[100%] font-light font-medium tracking-[1%] text-[#737373]">
+          By clicking the button above, you agree to our{" "}
+          <Link to="https://usecoterie.com/terms-of-use" className="underline">
+            Terms of Service
+          </Link>{" "}
+          and{" "}
+          <Link to="https://usecoterie.com/privacy-policy" className="underline">
+            Privacy Policy
+          </Link>
+          .
         </p>
       </div>
       <EmailVerificationFlow

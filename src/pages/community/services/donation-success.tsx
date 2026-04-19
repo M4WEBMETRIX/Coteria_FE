@@ -227,7 +227,7 @@ const DonationSuccess = () => {
           </div>
           <div className="flex h-full flex-col justify-between text-sm">
             <p className="text-[#000000]">donated to</p>
-            <p className="font-medium text-[#000000]">{campaignName}</p>
+            <p className="line-clamp-1 font-medium text-[#000000]">{campaignName}</p>
           </div>
         </div>
 

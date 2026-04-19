@@ -285,8 +285,8 @@ const CreateCampaignModal = ({
                   <Textarea
                     id="description"
                     placeholder="Please enter description..."
-                    minLength={5}
-                    maxLength={400}
+                    // minLength={5}
+                    // maxLength={in}
                     className="min-h-[120px] resize-none pb-8"
                     value={formData.description}
                     onChange={(e) =>
@@ -296,40 +296,15 @@ const CreateCampaignModal = ({
                       })
                     }
                   />
-                  <div className="absolute right-2 bottom-2 text-xs text-gray-400">
+                  {/* <div className="absolute right-2 bottom-2 text-xs text-gray-400">
                     {formData?.description?.length}/400
-                  </div>
+                  </div> */}
                 </div>
-                <p className="text-sm text-red-500">
+                {/* <p className="text-sm text-red-500">
                   {formData?.description?.length < 250 && formData?.description?.length > 0
                     ? "Minimum of 250 characters required"
                     : ""}
-                </p>
-              </div>
-
-              {/* Goals */}
-              <div className="space-y-2">
-                <Label htmlFor="goal" className="text-sm font-medium text-[#344054]">
-                  Goals <span className="text-red-500">*</span>
-                </Label>
-                <Input
-                  id="goal"
-                  placeholder="$1,500.00"
-                  type="text" // Keep text for currency formatting flexibility
-                  value={formData.goal}
-                  onChange={(e) => {
-                    let value = e.target.value.replace(/[^0-9.]/g, "");
-
-                    const parts = value.split(".");
-                    if (parts.length > 2) {
-                      value = parts[0] + "." + parts[1];
-                    }
-                    setFormData({
-                      ...formData,
-                      goal: value,
-                    });
-                  }}
-                />
+                </p> */}
               </div>
 
               {/* Goal Type */}
@@ -355,6 +330,33 @@ const CreateCampaignModal = ({
                   </SelectContent>
                 </Select>
               </div>
+
+              {/* Goals */}
+              {formData.campaignType === "Amount" && (
+                <div className="space-y-2">
+                  <Label htmlFor="goal" className="text-sm font-medium text-[#344054]">
+                    Goals <span className="text-red-500">*</span>
+                  </Label>
+                  <Input
+                    id="goal"
+                    placeholder="$1,500.00"
+                    type="text" // Keep text for currency formatting flexibility
+                    value={formData.goal}
+                    onChange={(e) => {
+                      let value = e.target.value.replace(/[^0-9.]/g, "");
+
+                      const parts = value.split(".");
+                      if (parts.length > 2) {
+                        value = parts[0] + "." + parts[1];
+                      }
+                      setFormData({
+                        ...formData,
+                        goal: value,
+                      });
+                    }}
+                  />
+                </div>
+              )}
 
               {/* Thumbnail */}
               <div className="space-y-2">
@@ -486,61 +488,63 @@ const CreateCampaignModal = ({
               </div> */}
 
               {/* Duration */}
-              <div className="space-y-2">
-                <Label className="text-sm font-medium text-[#344054]">
-                  Campaign Duration <span className="text-red-500">*</span>
-                </Label>
-                <div className="flex flex-col gap-4 rounded-lg border p-3">
-                  <div className="flex items-center gap-2">
-                    <Input
-                      type="date"
-                      min={today}
-                      placeholder="Start date"
-                      value={formData.startDate}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          startDate: e.target.value,
-                        })
-                      }
-                      className="flex-1"
-                    />
-                    <span className="text-gray-400">/</span>
-                    <Input
-                      type="date"
-                      min={formData.startDate || today}
-                      placeholder="End date (optional)"
-                      value={formData.endDate}
-                      onChange={(e) =>
-                        setFormData({
-                          ...formData,
-                          endDate: e.target.value,
-                        })
-                      }
-                      disabled={formData.isOngoing}
-                      className="flex-1"
-                    />
-                  </div>
-                  <div className="flex items-center gap-2">
-                    <Switch
-                      id="ongoing"
-                      checked={formData.isOngoing}
-                      onCheckedChange={(checked) =>
-                        setFormData({
-                          ...formData,
-                          isOngoing: checked,
-                        })
-                      }
-                    />
-                    <Label
-                      htmlFor="ongoing"
-                      className="cursor-pointer text-sm font-normal text-gray-600"
-                    >
-                      Ongoing campaign
-                    </Label>
+              {formData.campaignType === "Time" && (
+                <div className="space-y-2">
+                  <Label className="text-sm font-medium text-[#344054]">
+                    Campaign Duration <span className="text-red-500">*</span>
+                  </Label>
+                  <div className="flex flex-col gap-4 rounded-lg border p-3">
+                    <div className="flex items-center gap-2">
+                      <Input
+                        type="date"
+                        min={today}
+                        placeholder="Start date"
+                        value={formData.startDate}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            startDate: e.target.value,
+                          })
+                        }
+                        className="flex-1"
+                      />
+                      <span className="text-gray-400">/</span>
+                      <Input
+                        type="date"
+                        min={formData.startDate || today}
+                        placeholder="End date (optional)"
+                        value={formData.endDate}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            endDate: e.target.value,
+                          })
+                        }
+                        disabled={formData.isOngoing}
+                        className="flex-1"
+                      />
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Switch
+                        id="ongoing"
+                        checked={formData.isOngoing}
+                        onCheckedChange={(checked) =>
+                          setFormData({
+                            ...formData,
+                            isOngoing: checked,
+                          })
+                        }
+                      />
+                      <Label
+                        htmlFor="ongoing"
+                        className="cursor-pointer text-sm font-normal text-gray-600"
+                      >
+                        Ongoing campaign
+                      </Label>
+                    </div>
                   </div>
                 </div>
-              </div>
+              )}
 
               {/* Visibility */}
               <div className="space-y-2">
@@ -648,11 +652,7 @@ const CreateCampaignModal = ({
               </Button>
               <Button
                 disabled={
-                  isUploading ||
-                  isDeletingUpload ||
-                  !formData.title ||
-                  !formData.description ||
-                  !formData.goal
+                  isUploading || isDeletingUpload || !formData.title || !formData.description
                 }
                 onClick={handleNext}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
@@ -666,12 +666,7 @@ const CreateCampaignModal = ({
                 Back
               </Button>
               <Button
-                disabled={
-                  isCreatingCampaign ||
-                  !formData.category ||
-                  !formData.communityId ||
-                  !formData.visibility
-                }
+                disabled={isCreatingCampaign || !formData.category || !formData.visibility}
                 onClick={handleSubmit}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"
               >
