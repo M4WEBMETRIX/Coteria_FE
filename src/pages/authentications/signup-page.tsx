@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Eye, EyeOff, HelpCircle } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CheckCircle } from "@phosphor-icons/react";
+import { CheckCircle, SpinnerGap } from "@phosphor-icons/react";
 import AuthLayout from "./auth-layout";
 import { Link, useNavigate } from "react-router-dom";
 import { useForm, Controller } from "react-hook-form";
@@ -14,6 +14,8 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { useRegisterOrganisation } from "@/services/auth";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 import { Checkbox } from "@/components/ui/checkbox";
+import { useCanadaCharityLookup } from "@/services/generics/external-hooks";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const signupSchema = z
   .object({
@@ -22,7 +24,7 @@ const signupSchema = z
       .min(1, "Please enter organization name")
       .max(200, "Organization name must be 200 characters or less"),
     email: z.string().email("Please enter a valid organization email address"),
-    businessNumber: z.string().min(1, "Business number is required"),
+    businessNumber: z.string().min(9, "Minimum of 9 character standard BN"),
     password: z
       .string()
       .min(8, "8 characters minimum")
@@ -44,13 +46,13 @@ const SignupPage = () => {
   const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  // const [loading, setLoading] = useState(false);
 
   const {
     register,
     handleSubmit,
     watch,
     getValues,
+    setValue,
     control,
     formState: { errors, isValid },
     reset,
@@ -70,6 +72,38 @@ const SignupPage = () => {
   const { mutate: registerMutate, isPending: loading, isSuccess } = useRegisterOrganisation();
 
   const password = watch("password", "");
+  const businessNumber = watch("businessNumber", "");
+  const debouncedBN = useDebounce(businessNumber, 600);
+
+  const {
+    data: charityData,
+    isFetching: charityFetching,
+    isError: charityError,
+    refetch: retryCharityLookup,
+  } = useCanadaCharityLookup(debouncedBN);
+
+  // Auto-populate org name from first matching record, clear if not found
+  useEffect(() => {
+    if (!charityData?.result?.records?.length) {
+      setValue("name", "", { shouldValidate: false });
+      return;
+    }
+    const match =
+      charityData.result.records.find(
+        (r) =>
+          r.BN?.replace(/\s/g, "").toLowerCase() === debouncedBN.replace(/\s/g, "").toLowerCase()
+      ) ?? charityData.result.records[0];
+    if (match?.["Legal Name"]) {
+      setValue("name", match["Legal Name"], { shouldValidate: true });
+    }
+  }, [charityData]);
+
+  // Clear name when BN is cleared or too short to trigger a lookup
+  useEffect(() => {
+    if (debouncedBN.trim().length < 9) {
+      setValue("name", "", { shouldValidate: false });
+    }
+  }, [debouncedBN]);
 
   const passwordRequirements = [
     { text: "One lowercase character", met: /[a-z]/.test(password) },
@@ -118,29 +152,90 @@ const SignupPage = () => {
               Get started with a free trial. No credit card required.
             </p>
 
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-3 px-2">
-              {/* Email */}
-              <Field>
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 px-2">
+              {/* Business Number */}
+              <Field className="gap-0.5">
+                <FieldLabel
+                  htmlFor="business-number"
+                  className="flex items-center gap-1 text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
+                >
+                  Organization / Charity Business Number*
+                  <WhyTooltip
+                    content="To verify your organization’s legitimacy, we ask for your Charity Business Number (BN)
+          issued by the Canada Revenue Agency (CRA). This helps ensure that organizations on Coterie
+          are properly registered and trusted by donors."
+                  />
+                </FieldLabel>
+                <FieldContent>
+                  <div className="relative">
+                    <Input
+                      id="business-number"
+                      type="text"
+                      placeholder="Registered charity number"
+                      {...register("businessNumber")}
+                      className="h-11 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5 pr-10"
+                    />
+                    <div className="absolute top-1/2 right-3 -translate-y-1/2">
+                      {charityFetching ? (
+                        <SpinnerGap className="h-4 w-4 animate-spin text-[#12AA5B]" />
+                      ) : charityData?.result?.records?.length ? (
+                        <CheckCircle weight="fill" className="h-4 w-4 text-[#12AA5B]" />
+                      ) : (
+                        <HelpCircle className="h-4 w-4 text-gray-400" />
+                      )}
+                    </div>
+                  </div>
+                  {/* Lookup feedback */}
+                  {debouncedBN.length >= 9 &&
+                    !charityFetching &&
+                    (charityData?.result?.records?.length ? null : charityError ? ( // </p> //     `, ${charityData.result.records[0].Province}`} //   {charityData.result.records[0].Province && //     ` · ${charityData.result.records[0].City}`} //   {charityData.result.records[0].City && //   ✓ Found: {charityData.result.records[0]["Legal Name"]} // <p className="mt-1 text-xs text-[#12AA5B]">
+                      <div className="mt-1 flex items-center gap-2">
+                        <p className="text-xs text-red-500">Could not reach charity registry.</p>
+                        <button
+                          type="button"
+                          onClick={() => retryCharityLookup()}
+                          className="text-xs font-medium text-[#12AA5B] underline hover:text-[#0da055]"
+                        >
+                          Retry
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="mt-1 text-xs text-amber-500">
+                        No registered charity found with this number.
+                      </p>
+                    ))}
+                  <FieldError errors={[errors.businessNumber]} />
+                </FieldContent>
+              </Field>
+
+              {/* Organization Name */}
+              <Field className="gap-0.5">
                 <FieldLabel
                   htmlFor="name"
-                  className="text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
+                  className="flex items-center gap-1 text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
                 >
                   Organization Name
+                  {/* {(charityData?.result?.records?.length && !charityFetching) ? ( */}
+                  <span className="text-sm font-normal text-[#414143]">(auto-filled)</span>
+                  {/* ): null} */}
+                  <WhyTooltip content="To ensure your charity number matches your registered organization’s name" />
                 </FieldLabel>
                 <FieldContent>
                   <Input
+                    disabled
                     id="name"
                     type="text"
                     placeholder="e.g, Coterie"
                     {...register("name")}
-                    className="h-11 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5"
+                    value={watch("name")}
+                    className="h-11 rounded-lg border-0 px-2.5 py-5 disabled:bg-[#F6F6F6]"
                   />
                   <FieldError errors={[errors.name]} />
                 </FieldContent>
               </Field>
 
               {/* Email */}
-              <Field>
+              <Field className="gap-0.5">
                 <FieldLabel
                   htmlFor="email"
                   className="text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
@@ -159,32 +254,8 @@ const SignupPage = () => {
                 </FieldContent>
               </Field>
 
-              {/* Business Number */}
-              <Field>
-                <FieldLabel
-                  htmlFor="business-number"
-                  className="flex items-center gap-1 text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
-                >
-                  Organization / Charity Business Number*
-                  <WhyTooltip />
-                </FieldLabel>
-                <FieldContent>
-                  <div className="relative">
-                    <Input
-                      id="business-number"
-                      type="text"
-                      placeholder="Registered charity number"
-                      {...register("businessNumber")}
-                      className="h-11 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5"
-                    />
-                    <HelpCircle className="absolute top-1/2 right-3 h-4 w-4 -translate-y-1/2 text-gray-400" />
-                  </div>
-                  <FieldError errors={[errors.businessNumber]} />
-                </FieldContent>
-              </Field>
-
               {/* Password */}
-              <Field>
+              <Field className="gap-0.5">
                 <FieldLabel
                   htmlFor="password"
                   className="text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
@@ -213,7 +284,7 @@ const SignupPage = () => {
               </Field>
 
               {/* Confirm Password */}
-              <Field>
+              <Field className="gap-0.5">
                 <FieldLabel
                   htmlFor="confirm-password"
                   className="text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
@@ -353,7 +424,7 @@ const SignupPage = () => {
   );
 };
 
-function WhyTooltip() {
+function WhyTooltip({ content }: { content?: string }) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>
@@ -362,11 +433,7 @@ function WhyTooltip() {
         </span>
       </TooltipTrigger>
       <TooltipContent className="bg-white shadow" side="right">
-        <p className="max-w-[300px] text-sm text-[#1E1F24]">
-          To verify your organization’s legitimacy, we ask for your Charity Business Number (BN)
-          issued by the Canada Revenue Agency (CRA). This helps ensure that organizations on Coterie
-          are properly registered and trusted by donors.
-        </p>
+        <p className="max-w-[300px] text-sm text-[#1E1F24]">{content}</p>
       </TooltipContent>
     </Tooltip>
   );
