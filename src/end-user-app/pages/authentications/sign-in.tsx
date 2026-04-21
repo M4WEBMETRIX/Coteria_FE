@@ -158,7 +158,7 @@ const UserSignIn = () => {
 
           {/* Submit Button */}
           <Button
-            loading={loading}
+            // loading={loading}
             disabled={!isValid}
             type="submit"
             className="flex h-12.5 w-full items-center justify-between rounded-full border border-[#E5E5E5] bg-[#079455] px-2 text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90 lg:px-2"

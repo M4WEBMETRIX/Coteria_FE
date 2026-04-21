@@ -202,9 +202,11 @@ const CreateCampaignModal = ({
       communityId: formData.communityId || null,
       categoryId: formData.category || null,
       goalAmountCents: Number(formData.goal) * 100,
-      startDate: formData.startDate,
       imageUrl: formData.imageUrl,
-      endDate: formData.endDate || null,
+      ...(formData.campaignType?.toLowerCase() !== "amount" && {
+        startDate: formData.startDate || null,
+        endDate: formData.endDate || null,
+      }),
     };
 
     createCampaign(payload as any);
@@ -652,7 +654,11 @@ const CreateCampaignModal = ({
               </Button>
               <Button
                 disabled={
-                  isUploading || isDeletingUpload || !formData.title || !formData.description
+                  isUploading ||
+                  isDeletingUpload ||
+                  !formData.thumbnail ||
+                  !formData.title ||
+                  !formData.description
                 }
                 onClick={handleNext}
                 className="bg-[#079455] px-6 text-white hover:bg-[#0E8A4A]"

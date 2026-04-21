@@ -76,8 +76,8 @@ const DonatePage = () => {
   } = useCreateDonation(campaignId);
 
   const successUrl = userId
-    ? `${getBaseUrl({ target: "donor" })}/user/donation-success?slug=${campaign?.slug}&amount=${amount}`
-    : `${getBaseUrl({ target: "donor" })}/campaign/public/donation-success?slug=${campaign?.slug}&amount=${amount}`;
+    ? `${getBaseUrl({ target: "donor" })}/user/donation-success?slug=${campaignId}&amount=${amount}`
+    : `${getBaseUrl({ target: "donor" })}/campaign/public/donation-success?slug=${campaignId}&amount=${amount}`;
   const cancelUrl = userId
     ? `${getBaseUrl({ target: "donor" })}/user/dashboard?tab=community`
     : `${getBaseUrl({ target: "donor" })}/community/public/campaign/${campaignId}`;
@@ -91,6 +91,7 @@ const DonatePage = () => {
       ...(userId ? { donorUserId: userId } : { donorEmail: values.donorEmail }),
       successUrl,
       cancelUrl,
+      isAnonymous,
     };
     createDonation(payload);
   };
