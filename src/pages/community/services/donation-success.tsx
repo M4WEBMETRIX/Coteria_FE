@@ -170,7 +170,7 @@ const DonationSuccess = () => {
   const currency = searchParams.get("currency") || "CA$";
   const impactText =
     searchParams.get("impact") ||
-    `Your donation of ${amount} contributes to ${(Number(amount) / campaign?.totalRaisedCents) * 100}% of fund raised by this campaign`;
+    `Your donation of ${currency}${amount} contributes to ${((Number(amount) / campaign?.totalRaisedCents) * 100).toFixed(2)}% of fund raised by this campaign`;
   const impactHighlight = searchParams.get("highlight") || "";
   const topPercentage = searchParams.get("topPercent") || "0.29%";
 
@@ -269,7 +269,7 @@ const DonationSuccess = () => {
           </button>
 
           <Button
-            onClick={() => navigate(-1)}
+            onClick={() => navigate(isLoggedIn ? "/user/dashboard?tab=campaigns" : "/")}
             className="h-11 w-full rounded-full bg-[#079455] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#0da055] lg:w-max"
           >
             Explore Campaign
