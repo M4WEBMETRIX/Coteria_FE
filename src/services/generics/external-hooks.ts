@@ -1,68 +1,51 @@
 import { useQuery } from "@tanstack/react-query";
+import { api } from "../api";
+import axios from "axios";
 
-const CANADA_CHARITY_API = "https://open.canada.ca/data/en/api/3/action/datastore_search";
-const RESOURCE_ID = "694fdc72-eae4-4ee0-83eb-832ab7b230e3";
-
-export interface CanadaCharityRecord {
-  BN: string;
-  "Legal Name": string;
-  "Account Name": string;
-  City: string;
-  Province: string;
-  "Postal Code": string;
-  Designation: string;
-  Category: string;
-  "Sub Category": string;
-  "Address Line 1": string;
-  "Address Line 2": string | null;
-  Country: string;
+export interface BusinessNumberValidationResponse {
+  isValid: boolean;
+  businessNumber: string;
+  legalName: string;
 }
 
-interface CharitySearchResponse {
-  success: boolean;
-  result: {
-    total: number;
-    records: CanadaCharityRecord[];
-  };
+export class CharityValidationError extends Error {
+  code: string;
+  isFormatError: boolean;
+
+  constructor(code: string, message: string) {
+    super(message);
+    this.code = code;
+    this.isFormatError = code === "CRA_BN_INVALID_FORMAT";
+  }
 }
 
-// JSONP fetch — required because the API doesn't send CORS headers
-const fetchCharityByNumberJSONP = (charityNumber: string): Promise<CharitySearchResponse> => {
-  return new Promise((resolve, reject) => {
-    const callbackName = `_charityCallback_${Date.now()}`;
-    const script = document.createElement("script");
-
-    const params = new URLSearchParams({
-      resource_id: RESOURCE_ID,
-      q: charityNumber,
-      limit: "5",
-      callback: callbackName,
+const validateBusinessNumber = async (
+  businessNumber: string
+): Promise<BusinessNumberValidationResponse> => {
+  try {
+    const response = await api.get("/org/auth/business-number/validate", {
+      params: { businessNumber },
     });
-
-    const timeout = setTimeout(() => {
-      cleanup();
-      reject(new Error("Charity lookup timed out"));
-    }, 8000);
-
-    const cleanup = () => {
-      clearTimeout(timeout);
-      delete (window as any)[callbackName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-
-    (window as any)[callbackName] = (data: CharitySearchResponse) => {
-      cleanup();
-      resolve(data);
-    };
-
-    script.src = `${CANADA_CHARITY_API}?${params.toString()}`;
-    script.onerror = () => {
-      cleanup();
-      reject(new Error("Failed to load charity registry script"));
-    };
-
-    document.head.appendChild(script);
-  });
+    // 2xx with success:false (shouldn't happen but guard anyway)
+    const body = response.data;
+    if (!body.success) {
+      throw new CharityValidationError(
+        body.error?.code || "UNKNOWN",
+        body.error?.message || "Invalid business number"
+      );
+    }
+    return body.data as BusinessNumberValidationResponse;
+  } catch (err) {
+    // Axios 4xx/5xx — extract the API error body
+    if (axios.isAxiosError(err) && err.response?.data) {
+      const body = err.response.data;
+      throw new CharityValidationError(
+        body.error?.code || "UNKNOWN",
+        body.error?.message || "Validation failed"
+      );
+    }
+    throw err;
+  }
 };
 
 export const useCanadaCharityLookup = (charityNumber: string) => {
@@ -70,9 +53,9 @@ export const useCanadaCharityLookup = (charityNumber: string) => {
 
   return useQuery({
     queryKey: ["canada-charity-lookup", charityNumber],
-    queryFn: () => fetchCharityByNumberJSONP(charityNumber.trim()),
+    queryFn: () => validateBusinessNumber(charityNumber.trim()),
     enabled,
     staleTime: 1000 * 60 * 10,
-    retry: 1,
+    retry: false,
   });
 };

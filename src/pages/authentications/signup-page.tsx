@@ -79,23 +79,17 @@ const SignupPage = () => {
     data: charityData,
     isFetching: charityFetching,
     isError: charityError,
+    error: charityErrorObj,
     refetch: retryCharityLookup,
   } = useCanadaCharityLookup(debouncedBN);
 
-  // Auto-populate org name from first matching record, clear if not found
+  // Auto-populate org name, clear if not found or invalid
   useEffect(() => {
-    if (!charityData?.result?.records?.length) {
+    if (!charityData?.isValid || !charityData?.legalName) {
       setValue("name", "", { shouldValidate: false });
       return;
     }
-    const match =
-      charityData.result.records.find(
-        (r) =>
-          r.BN?.replace(/\s/g, "").toLowerCase() === debouncedBN.replace(/\s/g, "").toLowerCase()
-      ) ?? charityData.result.records[0];
-    if (match?.["Legal Name"]) {
-      setValue("name", match["Legal Name"], { shouldValidate: true });
-    }
+    setValue("name", charityData.legalName, { shouldValidate: true });
   }, [charityData]);
 
   // Clear name when BN is cleared or too short to trigger a lookup
@@ -178,7 +172,7 @@ const SignupPage = () => {
                     <div className="absolute top-1/2 right-3 -translate-y-1/2">
                       {charityFetching ? (
                         <SpinnerGap className="h-4 w-4 animate-spin text-[#12AA5B]" />
-                      ) : charityData?.result?.records?.length ? (
+                      ) : charityData?.isValid ? (
                         <CheckCircle weight="fill" className="h-4 w-4 text-[#12AA5B]" />
                       ) : (
                         <HelpCircle className="h-4 w-4 text-gray-400" />
@@ -188,22 +182,24 @@ const SignupPage = () => {
                   {/* Lookup feedback */}
                   {debouncedBN.length >= 9 &&
                     !charityFetching &&
-                    (charityData?.result?.records?.length ? null : charityError ? ( // </p> //     `, ${charityData.result.records[0].Province}`} //   {charityData.result.records[0].Province && //     ` · ${charityData.result.records[0].City}`} //   {charityData.result.records[0].City && //   ✓ Found: {charityData.result.records[0]["Legal Name"]} // <p className="mt-1 text-xs text-[#12AA5B]">
+                    (charityData?.isValid ? null : charityError ? (
                       <div className="mt-1 flex items-center gap-2">
-                        <p className="text-xs text-red-500">Could not reach charity registry.</p>
-                        <button
-                          type="button"
-                          onClick={() => retryCharityLookup()}
-                          className="text-xs font-medium text-[#12AA5B] underline hover:text-[#0da055]"
-                        >
-                          Retry
-                        </button>
+                        <p className="text-xs text-red-500">
+                          {(charityErrorObj as Error)?.message ||
+                            "Could not reach charity registry."}
+                        </p>
+                        {!(charityErrorObj as any)?.isFormatError && (
+                          <button
+                            type="button"
+                            onClick={() => retryCharityLookup()}
+                            className="text-xs font-medium text-[#12AA5B] underline hover:text-[#0da055]"
+                          >
+                            Retry
+                          </button>
+                        )}
                       </div>
-                    ) : (
-                      <p className="mt-1 text-xs text-amber-500">
-                        No registered charity found with this number.
-                      </p>
-                    ))}
+                    ) : null)}
+                  {/* ))} */}
                   <FieldError errors={[errors.businessNumber]} />
                 </FieldContent>
               </Field>
@@ -215,9 +211,9 @@ const SignupPage = () => {
                   className="flex items-center gap-1 text-sm leading-5.5 font-bold tracking-[0%] text-[#414143]"
                 >
                   Organization Name
-                  {/* {(charityData?.result?.records?.length && !charityFetching) ? ( */}
-                  <span className="text-sm font-normal text-[#414143]">(auto-filled)</span>
-                  {/* ): null} */}
+                  {charityData?.isValid && !charityFetching && (
+                    <span className="text-sm font-normal text-[#414143]">(auto-filled)</span>
+                  )}
                   <WhyTooltip content="To ensure your charity number matches your registered organization’s name" />
                 </FieldLabel>
                 <FieldContent>
