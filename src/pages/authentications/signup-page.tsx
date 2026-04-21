@@ -212,7 +212,7 @@ const SignupPage = () => {
                 >
                   Organization Name
                   {charityData?.isValid && !charityFetching && (
-                    <span className="text-sm font-normal text-[#414143]">(auto-filled)</span>
+                    <span className="text-sm font-normal text-[#414143]">(auto-fill)</span>
                   )}
                   <WhyTooltip content="To ensure your charity number matches your registered organization’s name" />
                 </FieldLabel>
