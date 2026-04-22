@@ -33,7 +33,15 @@ import {
 import { toast } from "sonner";
 import { getBaseUrl } from "@/lib/utils";
 
-export function ActionPopover({ id, slug }: { id: string | number; slug?: string }) {
+export function ActionPopover({
+  visibility,
+  id,
+  slug,
+}: {
+  visibility: string;
+  id: string | number;
+  slug?: string;
+}) {
   const navigate = useNavigate();
 
   const PUBLIC_URL = `${getBaseUrl({ target: "donor" })}/community/public/${slug}/${id}`;
@@ -56,19 +64,21 @@ export function ActionPopover({ id, slug }: { id: string | number; slug?: string
       <PopoverContent className="w-max">
         <div className="grid gap-4">
           <div
-            onClick={() => navigate(`/community/${id}`)}
+            onClick={() => navigate(`/community/${slug}`)}
             className="flex cursor-pointer items-center gap-2 text-sm"
           >
             <EyeIcon size={18} />
             View
           </div>
-          <div
-            onClick={handlePublicLinkCopy}
-            className="flex cursor-pointer items-center gap-2 text-sm"
-          >
-            <CopyIcon size={18} />
-            Copy public link
-          </div>
+          {visibility?.toLocaleLowerCase() !== "private" && (
+            <div
+              onClick={handlePublicLinkCopy}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <CopyIcon size={18} />
+              Copy public link
+            </div>
+          )}
           {/* <div className="flex items-center gap-2 text-sm text-[red]">
             <TrashIcon size={18} />
             Delete
@@ -251,7 +261,7 @@ const CommunityTableList = ({
                   {communityData?.map((community: any, index: number) => (
                     <TableRow
                       key={community?.id}
-                      onClick={() => navigate(`/community/${community?.id}`)}
+                      onClick={() => navigate(`/community/${community?.slug}`)}
                       className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
                     >
                       <TableCell className="py-4 pl-4">
@@ -286,7 +296,11 @@ const CommunityTableList = ({
                         <StatusBadge status={community?.isActive ? "Active" : "Draft"} />
                       </TableCell>
                       <TableCell onClick={(e) => e.stopPropagation()}>
-                        <ActionPopover id={community?.id} slug={community?.slug} />
+                        <ActionPopover
+                          visibility={community?.visibility}
+                          id={community?.id}
+                          slug={community?.slug}
+                        />
                       </TableCell>
                     </TableRow>
                   ))}

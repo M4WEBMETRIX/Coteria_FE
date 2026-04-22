@@ -7,7 +7,7 @@ import {
   Tooltip,
   ResponsiveContainer,
 } from "recharts";
-import { RefreshCcw } from "lucide-react";
+// import { RefreshCcw } from "lucide-react";
 import {
   Select,
   SelectContent,
@@ -95,9 +95,9 @@ const GrowthTrendsWidget = () => {
               ))}
             </SelectContent>
           </Select>
-          <button className="rounded-lg border border-[#E0E1E6] p-1.5 text-[#5E606A]">
+          {/* <button className="rounded-lg border border-[#E0E1E6] p-1.5 text-[#5E606A]">
             <RefreshCcw className="h-3.5 w-3.5" />
-          </button>
+          </button> */}
         </div>
       </div>
 

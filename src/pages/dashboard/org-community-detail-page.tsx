@@ -6,7 +6,7 @@ import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 // import CommunityInsightsWidget from "@/components/community/community-insights-widget";
 import CommunityStats, { StatCardSkeleton } from "@/components/community/community-stats";
 import GrowthTrendsWidget from "@/components/community/growth-trends-widget";
-import { useCommunityDetailsStats } from "@/services/generics/hooks";
+import { useCommunityDetails, useCommunityDetailsStats } from "@/services/generics/hooks";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { ArrowUpRightIcon } from "@phosphor-icons/react";
@@ -16,12 +16,13 @@ import { useState } from "react";
 const OrgCommunityDetailPage = () => {
   const { id } = useParams();
   const [inviteOpen, setInviteOpen] = useState<boolean>(false);
+  const { data } = useCommunityDetails(id);
 
   useBreadcrumb({
     items: [
       { label: "Home", href: "/dashboard" },
       { label: "Community", href: "/dashboard" },
-      { label: "Community detail", href: "/dashboard", isCurrentPage: true },
+      { label: data?.data?.name, href: "/dashboard", isCurrentPage: true },
     ],
   });
 

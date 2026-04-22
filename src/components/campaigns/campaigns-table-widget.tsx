@@ -187,7 +187,7 @@ const CampaignsTableWidget = ({
               {campaignsData?.map((campaign, index) => (
                 <TableRow
                   key={campaign?.id}
-                  onClick={() => navigate(`/campaigns/${campaign?.id}`)}
+                  onClick={() => navigate(`/campaigns/${campaign?.slug}`)}
                   className="group cursor-pointer border-b border-[#E0E1E6] last:border-0 hover:bg-gray-50"
                 >
                   <TableCell className="py-4 pl-4">
@@ -294,7 +294,7 @@ export function ActionPopover({
       <PopoverContent className="w-max">
         <div className="grid gap-4">
           <div
-            onClick={() => navigate(`/campaigns/${id}`)}
+            onClick={() => navigate(`/campaigns/${slug}`)}
             className="flex cursor-pointer items-center gap-2 text-sm"
           >
             <EyeIcon size={18} />
@@ -314,13 +314,16 @@ export function ActionPopover({
                 )}
               </div>
             )}
-          <div
-            onClick={handlePublicLinkCopy}
-            className="flex cursor-pointer items-center gap-2 text-sm"
-          >
-            <CopyIcon size={18} />
-            Copy public link
-          </div>
+          {(status?.toLocaleLowerCase() === "active" ||
+            status?.toLocaleLowerCase() === "completed") && (
+            <div
+              onClick={handlePublicLinkCopy}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <CopyIcon size={18} />
+              Copy public link
+            </div>
+          )}
         </div>
       </PopoverContent>
     </Popover>

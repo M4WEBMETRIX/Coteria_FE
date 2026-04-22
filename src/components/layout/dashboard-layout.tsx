@@ -1,4 +1,4 @@
-import React, { useState, type ReactNode, createContext } from "react";
+import React, { useState, type ReactNode, createContext, useEffect } from "react";
 import Navbar from "../navbar";
 import Sidebar from "./sidebar";
 import { Button } from "../ui/button";
@@ -23,7 +23,7 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
 
   const { mutate: connectStripeMutate, isPending } = useConnectStripe();
 
-  const { data: userData } = useGetOrganisationProfile();
+  const { data: userData, refetch } = useGetOrganisationProfile();
   const orgUser = userData?.data;
 
   const handleConnectStripe = () => {
@@ -32,6 +32,10 @@ const DashboardLayout = ({ children }: DashboardLayoutProps) => {
       refreshUrl: `${getBaseUrl({ target: "org" })}/community`,
     });
   };
+
+  useEffect(() => {
+    refetch();
+  }, []);
 
   return (
     <LayoutContext.Provider value={{ setBreadcrumbComponent }}>

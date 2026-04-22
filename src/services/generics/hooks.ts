@@ -20,6 +20,7 @@ const USE_GET_ORGANISATION_DONATIONS_API = "USE_GET_ORGANISATION_DONATIONS_API";
 const USE_GET_ORGANISATION_DONATION_DETAILS_API = "USE_GET_ORGANISATION_DONATION_DETAILS_API";
 const USE_GET_CAMPAIGN_ENGAGEMENT_API = "USE_GET_CAMPAIGN_ENGAGEMENT_API";
 const USE_GET_ORGANISATION_EVENTS_API = "USE_GET_ORGANISATION_EVENTS_API";
+const USE_GET_ORG_COMMUNITIES_DETAILS = "USE_GET_ORG_COMMUNITIES_DETAILS";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -195,6 +196,10 @@ export const useCreateCommunity = () => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_COMMUNITIES_STATS_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_ORG_COMMUNITIES_DETAILS],
+      });
       toast.success("community created successfully");
     },
     onError: (err: any) =>
@@ -247,6 +252,15 @@ export const useGetOrganisationDonationDetails = (id: string | number | undefine
   const URL = `/org/donations/${id}`;
   return useQuery({
     queryKey: [USE_GET_ORGANISATION_DONATION_DETAILS_API, id],
+    queryFn: () => getFunction(URL),
+    enabled: !!id,
+  });
+};
+
+export const useCommunityDetails = (id: string | number | undefined) => {
+  const URL = `/org/communities/${id}`;
+  return useQuery({
+    queryKey: [USE_GET_ORG_COMMUNITIES_DETAILS, id],
     queryFn: () => getFunction(URL),
     enabled: !!id,
   });

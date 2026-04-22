@@ -18,6 +18,7 @@ import ActivityFeedWidget from "@/components/campaigns/details/activity-feed-wid
 import AiInsightWidget from "@/components/campaigns/details/ai-insight-widget";
 
 const CommandCenter = ({ data }: { data: any }) => {
+  console.log(data);
   return (
     <div>
       {" "}
@@ -48,13 +49,14 @@ const CommandCenter = ({ data }: { data: any }) => {
                 <span className="text-xs text-[#8B8D98]">{data?.description}</span>
               </div>
             </div>
-
-            <ShareCampaign
-              communitySlug={data?.community?.slug}
-              campaignSlug={data?.slug}
-              communityId={data?.communityId}
-              campaign={data}
-            />
+            {data?.status?.toLowerCase() !== "completed" && (
+              <ShareCampaign
+                communitySlug={data?.community?.slug}
+                campaignSlug={data?.slug}
+                communityId={data?.communityId}
+                campaign={data}
+              />
+            )}
           </div>
 
           {/* Pulse Stats Widgets */}

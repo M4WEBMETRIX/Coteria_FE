@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button";
 import CoterieLogoSvg from "@/assets/icons/coterie.svg";
 import { useQueryState } from "nuqs";
 import { useGetPublicCampaign } from ".";
+import { toast } from "sonner";
 
 // ─── Share Impact Modal ───────────────────────────────────────────────────────
 
@@ -30,6 +31,7 @@ function ShareImpactModal({
 
   const copyLink = () => {
     navigator.clipboard.writeText(`${shareText} ${shareUrl}`);
+    toast.success("Link copied to your clipboard");
   };
 
   const shareWhatsApp = () => {

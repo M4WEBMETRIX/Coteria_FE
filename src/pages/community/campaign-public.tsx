@@ -8,7 +8,7 @@ import {
   ChartLineUpIcon,
   CalendarIcon,
 } from "@phosphor-icons/react";
-import { useNavigate, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import PUBLIC_COMMUNITY_IMAGE_2 from "@/assets/images/public-community-image-2.png";
 import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
 import { useGetPublicCampaign } from "./services";
@@ -66,7 +66,7 @@ During his formative years, young Bill spent many happy days wandering through N
 
 const CampaignPublic = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const { campaignId } = useParams();
 
   const { data: publicCampaignData, isPending: publicCampaignPending } =
@@ -90,7 +90,7 @@ const CampaignPublic = () => {
 
       <div className="min-h-screen bg-white">
         {/* Header */}
-        <div className="border-b border-gray-100 bg-white">
+        {/* <div className="border-b border-gray-100 bg-white">
           <div className="container mx-auto max-w-7xl px-4 py-4 lg:px-8">
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-4">
@@ -104,7 +104,6 @@ const CampaignPublic = () => {
                   onClick={() => navigate(-1)}
                   className="flex cursor-pointer items-center gap-2 text-sm text-nowrap text-[#969294] hover:text-[#12AA5B]"
                 >
-                  {/* <ArrowLeftIcon size={16} /> */}
                   Switch back
                 </button>
                 <Button
@@ -116,7 +115,7 @@ const CampaignPublic = () => {
               </div>
             </div>
           </div>
-        </div>
+        </div> */}
 
         {/* Campaign Hero */}
         <div className="relative h-[350px] w-full overflow-hidden">
