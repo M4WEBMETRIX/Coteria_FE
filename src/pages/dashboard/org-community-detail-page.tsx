@@ -85,58 +85,60 @@ const OrgCommunityDetailPage = () => {
           </Link>
         </div>
 
-        <div className="items-center justify-between lg:flex">
-          <div className="flex items-start gap-3 lg:gap-6">
-            <div>
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F2E6FF]">
-                <svg
-                  width="24"
-                  height="24"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M20 3L22 7V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V7.00353L4 3H20ZM20 9H4V19H20V9ZM12 10L16 14H13V18H11V14H8L12 10ZM18.764 5H5.236L4.237 7H19.764L18.764 5Z"
-                    fill="#5C12A7"
-                  />
-                </svg>
+        {data?.data?.visibility?.toLocaleLowerCase() !== "private" && (
+          <div className="items-center justify-between lg:flex">
+            <div className="flex items-start gap-3 lg:gap-6">
+              <div>
+                <div className="flex h-10 w-10 items-center justify-center rounded-full bg-[#F2E6FF]">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      d="M20 3L22 7V20C22 20.5523 21.5523 21 21 21H3C2.44772 21 2 20.5523 2 20V7.00353L4 3H20ZM20 9H4V19H20V9ZM12 10L16 14H13V18H11V14H8L12 10ZM18.764 5H5.236L4.237 7H19.764L18.764 5Z"
+                      fill="#5C12A7"
+                    />
+                  </svg>
+                </div>
               </div>
-            </div>
-            <div className="flex flex-col gap-1">
-              <p className="text-lg leading-[140%] font-medium tracking-[0%] text-[#09090B]">
-                Invite Members to Your Community
-              </p>
-              <p className="text-base leading-3.75 font-normal tracking-[-0.28px] text-[#52525B]">
-                Bring people in & grow participation across your community
-              </p>
-              <div
-                className="mt-1 flex h-12 w-50 cursor-pointer items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center lg:hidden"
-                onClick={() => setInviteOpen(true)}
-              >
-                <div className="flex items-center gap-1.5">
-                  <p>Invite Members</p>
-                  <div>
-                    <ArrowUpRightIcon color="#0A0A0A" size={20} />
+              <div className="flex flex-col gap-1">
+                <p className="text-lg leading-[140%] font-medium tracking-[0%] text-[#09090B]">
+                  Invite Members to Your Community
+                </p>
+                <p className="text-base leading-3.75 font-normal tracking-[-0.28px] text-[#52525B]">
+                  Bring people in & grow participation across your community
+                </p>
+                <div
+                  className="mt-1 flex h-12 w-50 cursor-pointer items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center lg:hidden"
+                  onClick={() => setInviteOpen(true)}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <p>Invite Members</p>
+                    <div>
+                      <ArrowUpRightIcon color="#0A0A0A" size={20} />
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <div
-            className="hidden h-12 w-50 cursor-pointer items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center lg:flex"
-            onClick={() => setInviteOpen(true)}
-          >
-            <div className="flex items-center gap-1.5">
-              <p>Invite Members</p>
-              <div>
-                <ArrowUpRightIcon color="#0A0A0A" size={20} />
+            <div
+              className="hidden h-12 w-50 cursor-pointer items-center justify-center rounded-[10px] border border-[#E2E2E2] px-4 text-center lg:flex"
+              onClick={() => setInviteOpen(true)}
+            >
+              <div className="flex items-center gap-1.5">
+                <p>Invite Members</p>
+                <div>
+                  <ArrowUpRightIcon color="#0A0A0A" size={20} />
+                </div>
               </div>
             </div>
+            <InviteMembersModal open={inviteOpen} onOpenChange={setInviteOpen} />
           </div>
-          <InviteMembersModal open={inviteOpen} onOpenChange={setInviteOpen} />
-        </div>
+        )}
       </div>
 
       {isFetchingStats ? (

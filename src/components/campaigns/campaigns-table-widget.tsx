@@ -28,6 +28,8 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { useUpdateCampaignStatus } from "@/services/generics/hooks";
 import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
+import { QRCodeModal } from "@/end-user-app/pages/dashboard/share-modal";
+import { useState } from "react";
 
 // const campaignsData = [
 //   {
@@ -272,10 +274,12 @@ export function ActionPopover({
   slug: string;
 }) {
   const navigate = useNavigate();
+  const [isOpen, setIsOpen] = useState(false);
   const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
     useUpdateCampaignStatus(id);
 
   const PUBLIC_URL = `${getBaseUrl({ target: "donor" })}/community/public/campaign/${slug}`;
+  const PUBLIC_DONATION_URL = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${slug}`;
   const handlePublicLinkCopy = async () => {
     try {
       await navigator.clipboard.writeText(PUBLIC_URL);
@@ -284,6 +288,11 @@ export function ActionPopover({
       toast.error("Failed to copy link");
     }
   };
+
+  const handleQRCodeOpen = () => {
+    setIsOpen(true);
+  };
+
   return (
     <Popover>
       <PopoverTrigger asChild>
@@ -324,6 +333,23 @@ export function ActionPopover({
               Copy public link
             </div>
           )}
+
+          {status?.toLocaleLowerCase() === "active" && (
+            <div
+              onClick={handleQRCodeOpen}
+              className="flex cursor-pointer items-center gap-2 text-sm"
+            >
+              <CopyIcon size={18} />
+              Donation QR code
+            </div>
+          )}
+
+          <QRCodeModal
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            isCustom={true}
+            url={PUBLIC_DONATION_URL}
+          />
         </div>
       </PopoverContent>
     </Popover>

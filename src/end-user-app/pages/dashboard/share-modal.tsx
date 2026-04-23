@@ -167,7 +167,17 @@ export function ShareDialog({ url }: ShareDialogProps) {
   );
 }
 
-const QRCodeModal = ({ url }: { url: string }) => {
+export const QRCodeModal = ({
+  url,
+  isOpen,
+  setIsOpen,
+  isCustom,
+}: {
+  url: string;
+  isOpen?: boolean;
+  isCustom?: boolean;
+  setIsOpen?: (value: boolean) => void;
+}) => {
   const qrRef = useRef<HTMLDivElement>(null);
 
   const handleDownload = () => {
@@ -183,13 +193,15 @@ const QRCodeModal = ({ url }: { url: string }) => {
   };
 
   return (
-    <Dialog>
-      <DialogTrigger asChild>
-        <button className="hover:bg-muted flex cursor-pointer items-center gap-3 rounded-xl p-3 transition">
-          <QrCodeIcon className="h-5 w-5 text-gray-600" />
-          <span>QR Code</span>
-        </button>
-      </DialogTrigger>
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      {!isCustom && (
+        <DialogTrigger asChild>
+          <button className="hover:bg-muted flex cursor-pointer items-center gap-3 rounded-xl p-3 transition">
+            <QrCodeIcon className="h-5 w-5 text-gray-600" />
+            <span>QR Code</span>
+          </button>
+        </DialogTrigger>
+      )}
 
       <DialogContent className="rounded-xl sm:max-w-[400px]">
         <div ref={qrRef} className="mt-4 flex flex-col items-center gap-2">
