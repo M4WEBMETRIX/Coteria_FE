@@ -6,7 +6,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQueryState } from "nuqs";
 import {
   ArrowRightIcon,
-  CreditCardIcon,
+  // CreditCardIcon,
   CheckCircleIcon,
   XIcon,
   ArrowUpRightIcon,
@@ -37,6 +37,7 @@ const DonatePage = () => {
   const { campaignId } = useParams();
   const [userId] = useQueryState("userId");
   const [referralCode] = useQueryState("referral-code");
+  const isAuthenticated = !!localStorage.getItem("userAccessToken");
 
   const endUser = useMemo(() => {
     return getEndUserFromLocalStorage();
@@ -63,12 +64,25 @@ const DonatePage = () => {
   }, [endUser]);
 
   const donorEmail = useWatch({ control, name: "donorEmail" });
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(donorEmail as string);
   const debouncedEmail = useDebounce(donorEmail ?? "", 600);
   const [accountBannerDismissed, setAccountBannerDismissed] = useState(false);
   const amount = useWatch({ control, name: "amount" });
   const { data: emailCheckData } = useCheckEmailExists(debouncedEmail);
-  const emailExists = emailCheckData?.data?.exists === true;
-  const showAccountBanner = !emailExists || !userId || !accountBannerDismissed;
+  // const emailExists = emailCheckData?.data?.exists;
+  const emailExists = emailCheckData?.data?.exists ?? false;
+
+  // console.log(emailExists, isAuthenticated, accountBannerDismissed);
+
+  const isCheckingEmail = debouncedEmail && emailExists === undefined;
+
+  const showAccountBanner =
+    isValidEmail &&
+    emailExists === true &&
+    !isAuthenticated &&
+    !accountBannerDismissed &&
+    !isCheckingEmail;
+  // const showAccountBanner = !emailExists || !isAuthenticated || !accountBannerDismissed;
   const isAnonymous = useWatch({ control, name: "isAnonymous" });
   const joinCoterie = useWatch({ control, name: "joinCoterie" });
 
@@ -107,6 +121,7 @@ const DonatePage = () => {
       successUrl,
       cancelUrl,
       isAnonymous,
+      optInToCoterie: joinCoterie,
     };
     createDonation(payload);
   };
@@ -246,8 +261,8 @@ const DonatePage = () => {
             )}
 
             {/* Account found banner */}
-            {showAccountBanner && (
-              <div className="relative mt-6 rounded-[16px] border border-[#FFD4D4] bg-[#FFFAF8] px-5 py-4">
+            {showAccountBanner && isValidEmail && (
+              <div className="relative mt-6 rounded-[16px] border border-[#FFD4D4] bg-[#FFFAF8] px-2 py-4 lg:px-5">
                 <button
                   type="button"
                   onClick={() => setAccountBannerDismissed(true)}
@@ -261,21 +276,21 @@ const DonatePage = () => {
                 <p className="mb-4 text-xs font-medium text-[#6F6F6F]">
                   Want to record this donation and track your impact?
                 </p>
-                <div className="flex flex-wrap gap-3">
+                <div className="flex gap-2.5 lg:gap-3">
                   <Link
                     to={`/user/login?returnUrl=${encodeURIComponent(window.location.href)}`}
-                    className="flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-sm font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+                    className="flex w-full items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-xs font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B] lg:w-max lg:text-sm"
                   >
                     Log in to connect
-                    <ArrowUpRightIcon size={15} weight="bold" />
+                    <ArrowUpRightIcon className="hidden lg:block" size={15} weight="bold" />
                   </Link>
                   <button
                     type="button"
                     onClick={() => setAccountBannerDismissed(true)}
-                    className="flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-sm font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+                    className="flex w-full items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-xs font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B] lg:w-max lg:text-sm"
                   >
                     Continue as guest
-                    <ArrowUpRightIcon size={15} weight="bold" />
+                    <ArrowUpRightIcon className="hidden lg:block" size={15} weight="bold" />
                   </button>
                 </div>
               </div>
@@ -284,7 +299,7 @@ const DonatePage = () => {
           {/* )} */}
 
           {/* Payment Method */}
-          <div>
+          {/* <div>
             <label className="mb-2 block text-sm font-medium text-[#0F0F0F]">Payment Method</label>
             <div className="flex items-center justify-between rounded-full border border-[#E5E5E5] bg-[#FFFFFF] p-3">
               <div className="flex items-center gap-3">
@@ -295,7 +310,7 @@ const DonatePage = () => {
               </div>
               <div className="h-5 w-5 rounded-full border-2 border-[#E5E5E5] bg-white" />
             </div>
-          </div>
+          </div> */}
 
           {/* Summary */}
           <div className="mt-5">
@@ -338,7 +353,7 @@ const DonatePage = () => {
             </label>
 
             {/* Join Coterie */}
-            {!userId && (
+            {!showAccountBanner && (
               <label className="flex cursor-pointer items-start gap-3">
                 <button
                   type="button"
@@ -365,7 +380,7 @@ const DonatePage = () => {
           {/* CTA */}
           <Button
             type="submit"
-            disabled={createDonationPending || !amount || amount <= 0}
+            disabled={createDonationPending || !isValidEmail || !amount || amount <= 0}
             className="flex h-[56px] w-full items-center justify-between rounded-full bg-[#12AA5B] px-[14px] text-white hover:bg-[#0da055] disabled:opacity-50"
           >
             <span className="flex-1 text-center text-base font-medium">

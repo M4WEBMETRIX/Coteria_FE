@@ -77,7 +77,7 @@ const CommunityPublic = () => {
 
   const isAuthenticated = !!localStorage.getItem("userAccessToken");
 
-  console.log(isAuthenticated);
+  // console.log(isAuthenticated);
   const { data: publicCommunityCampaignsData, isPending: publicCommunityCampaignsPending } =
     useGetPublicCommunityCampaigns(communityId);
   const { data: publicCommunityData, isPending: publicCommunityPending } =
