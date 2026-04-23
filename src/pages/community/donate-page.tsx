@@ -1,16 +1,23 @@
-import { useEffect, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useForm, useWatch, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useQueryState } from "nuqs";
-import { ArrowRightIcon, CreditCardIcon, CheckCircleIcon, XIcon } from "@phosphor-icons/react";
+import {
+  ArrowRightIcon,
+  CreditCardIcon,
+  CheckCircleIcon,
+  XIcon,
+  ArrowUpRightIcon,
+} from "@phosphor-icons/react";
 import Logo from "@/assets/icons/coterie.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { useGetPublicCampaign, useCreateDonation } from "./services";
+import { useGetPublicCampaign, useCreateDonation, useCheckEmailExists } from "./services";
 import { getCurrencySymbol, getBaseUrl } from "@/lib/utils";
 import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
+import { useDebounce } from "@/hooks/use-debounce";
 
 const PRESET_AMOUNTS = [50, 100, 150, 500, 800, 1000];
 
@@ -55,7 +62,13 @@ const DonatePage = () => {
     }
   }, [endUser]);
 
+  const donorEmail = useWatch({ control, name: "donorEmail" });
+  const debouncedEmail = useDebounce(donorEmail ?? "", 600);
+  const [accountBannerDismissed, setAccountBannerDismissed] = useState(false);
   const amount = useWatch({ control, name: "amount" });
+  const { data: emailCheckData } = useCheckEmailExists(debouncedEmail);
+  const emailExists = emailCheckData?.data?.exists === true;
+  const showAccountBanner = !emailExists || !userId || !accountBannerDismissed;
   const isAnonymous = useWatch({ control, name: "isAnonymous" });
   const joinCoterie = useWatch({ control, name: "joinCoterie" });
 
@@ -74,6 +87,8 @@ const DonatePage = () => {
     isSuccess,
     data,
   } = useCreateDonation(campaignId);
+
+  // console.log(emailCheckData);
 
   const successUrl = userId
     ? `${getBaseUrl({ target: "donor" })}/user/donation-success?slug=${campaignId}&amount=${amount}`
@@ -228,6 +243,42 @@ const DonatePage = () => {
             />
             {errors.donorEmail && (
               <p className="mt-1 text-xs text-red-500">{errors.donorEmail.message}</p>
+            )}
+
+            {/* Account found banner */}
+            {showAccountBanner && (
+              <div className="relative mt-6 rounded-[16px] border border-[#FFD4D4] bg-[#FFFAF8] px-5 py-4">
+                <button
+                  type="button"
+                  onClick={() => setAccountBannerDismissed(true)}
+                  className="absolute top-3 right-4 text-[#6B6B6B] hover:text-[#0F0F0F]"
+                >
+                  <XIcon size={16} />
+                </button>
+                <p className="mb-1 text-sm font-normal text-[#0F0F0F]">
+                  Looks like you have a Coterie account.
+                </p>
+                <p className="mb-4 text-xs font-medium text-[#6F6F6F]">
+                  Want to record this donation and track your impact?
+                </p>
+                <div className="flex flex-wrap gap-3">
+                  <Link
+                    to={`/user/login?returnUrl=${encodeURIComponent(window.location.href)}`}
+                    className="flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-sm font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+                  >
+                    Log in to connect
+                    <ArrowUpRightIcon size={15} weight="bold" />
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={() => setAccountBannerDismissed(true)}
+                    className="flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-sm font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+                  >
+                    Continue as guest
+                    <ArrowUpRightIcon size={15} weight="bold" />
+                  </button>
+                </div>
+              </div>
             )}
           </div>
           {/* )} */}

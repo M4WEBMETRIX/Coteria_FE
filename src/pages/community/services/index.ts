@@ -47,3 +47,14 @@ export const useCreateDonation = (slug: string | undefined) => {
       toast.error(err?.message || "Error creating donation, please try again.!"),
   });
 };
+
+export const useCheckEmailExists = (email: string) => {
+  const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+  return useQuery({
+    queryKey: ["email-exists", email],
+    queryFn: () => publicGetFunction(`/email/exists?email=${encodeURIComponent(email)}`),
+    enabled: isValidEmail,
+    staleTime: 1000 * 60 * 5,
+    retry: false,
+  });
+};
