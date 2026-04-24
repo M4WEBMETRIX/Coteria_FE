@@ -28,7 +28,7 @@ const SETTINGS_TABS = [
   // { id: "time-language", label: "Time & Language" },
   // { id: "notifications", label: "Notifications" },
   // { id: "password", label: "Password" },
-  // { id: "danger-zone", label: "Danger Zone" },
+  { id: "danger-zone", label: "Danger Zone" },
 ];
 
 const SettingsPage = () => {
