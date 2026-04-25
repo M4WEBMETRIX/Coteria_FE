@@ -220,23 +220,22 @@ const CampaignQRCodePage = () => {
                       placeholder="Search campaign..."
                       className="h-auto rounded-none border-b py-4 text-sm shadow-none focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     />
-                    {campaignList?.length > 0 ? (
-                      <ComboboxList className="mt-1 max-h-[200px]">
-                        {campaignList?.map((campaign: any) => (
-                          <ComboboxItem
-                            className={"cursor-pointer px-4 py-3"}
-                            key={campaign.slug}
-                            value={campaign.slug}
-                          >
-                            {campaign.name}
-                          </ComboboxItem>
-                        ))}
-                      </ComboboxList>
-                    ) : (
-                      <ComboboxEmpty className="px-4 py-4 text-sm text-gray-500">
+                    {(!campaignList || campaignList.length === 0) && (
+                      <div className="px-4 py-4 text-sm text-gray-500 text-center">
                         No campaigns found.
-                      </ComboboxEmpty>
+                      </div>
                     )}
+                    <ComboboxList className="mt-1 max-h-[200px]">
+                      {campaignList?.map((campaign: any) => (
+                        <ComboboxItem
+                          className={"cursor-pointer px-4 py-3"}
+                          key={campaign.slug}
+                          value={campaign.slug}
+                        >
+                          {campaign.name}
+                        </ComboboxItem>
+                      ))}
+                    </ComboboxList>
                   </ComboboxContent>
                 </Combobox>
               </div>
