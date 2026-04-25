@@ -59,28 +59,30 @@ const Campaigndetails = () => {
     <div className="font-inter mx-auto flex w-full max-w-[1600px] flex-col gap-6">
       {/* Header / Tabs */}
       <Tabs value={activeTab} onValueChange={setActiveTab} className="">
-        <TabsList className="flex gap-2 bg-transparent">
-          {tabs.map((tab) => (
-            <TabsTrigger
-              key={tab.value}
-              value={tab.value}
-              className={cn(
-                "h-[34px] rounded-[5px] border border-[#DFE1E7] px-[9.5px] py-2.5 text-xs",
-                activeTab === tab.value ? "bg-[#EFF0F3] text-[#000000]" : "text-[#666D80]"
-              )}
-            >
-              {tab.label}
-            </TabsTrigger>
-          ))}
+        <div className="flex items-center justify-between">
+          <TabsList className="flex gap-2 bg-transparent">
+            {tabs.map((tab) => (
+              <TabsTrigger
+                key={tab.value}
+                value={tab.value}
+                className={cn(
+                  "h-[34px] rounded-[5px] border border-[#DFE1E7] px-[9.5px] py-2.5 text-xs",
+                  activeTab === tab.value ? "bg-[#EFF0F3] text-[#000000]" : "text-[#666D80]"
+                )}
+              >
+                {tab.label}
+              </TabsTrigger>
+            ))}
+          </TabsList>
           {/* QR Code button */}
           <button
             onClick={() => navigate(`/campaigns/${id}/qr-code`)}
-            className="ml-auto flex h-[34px] items-center gap-1.5 rounded-[5px] border border-[#DFE1E7] px-[9.5px] py-2.5 text-xs text-[#666D80] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+            className="ml-auto flex h-[34px] cursor-pointer items-center gap-1.5 rounded-[5px] border border-[#DFE1E7] px-[9.5px] py-2.5 text-sm text-[#0D0D12] hover:border-[#12AA5B] hover:text-[#12AA5B]"
           >
             <QrCodeIcon size={14} />
-            QR Code
+            Generate QR Code
           </button>
-        </TabsList>
+        </div>
         {/* <div className="-mt-2 w-full border-b border-[#DFE1E7]"></div> */}
         {tabs.map((tab) => (
           <TabsContent key={tab.value} value={tab.value} className="pt-[40px]">

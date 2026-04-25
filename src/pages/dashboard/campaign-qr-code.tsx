@@ -400,13 +400,13 @@ const CampaignQRCodePage = () => {
 
                 {/* Scan CTA */}
                 <button
-                  className="flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-medium"
+                  className="flex items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-medium"
                   style={{ borderColor: brandColor, color: brandColor }}
                 >
-                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                  <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="currentColor" style={{ verticalAlign: 'middle' }}>
                     <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
                   </svg>
-                  Scan to donate
+                  <span style={{ lineHeight: '1', verticalAlign: 'middle' }}>Scan to donate</span>
                 </button>
               </div>
             </div>
