@@ -129,10 +129,15 @@ export const useCampaignDetails = (id: string | number | undefined) => {
   });
 };
 
-export const useGetCampaignBasic = () => {
-  const URL = `/org/campaigns/basic`;
+export const useGetCampaignBasic = (params?: { search?: string; page?: number; limit?: number }) => {
+  const queryParams = new URLSearchParams();
+  if (params?.page) queryParams.append("page", params.page.toString());
+  if (params?.limit) queryParams.append("limit", params.limit.toString());
+  if (params?.search) queryParams.append("q", params.search);
+
+  const URL = `/org/campaigns/basic${queryParams.toString() ? `?${queryParams.toString()}` : ""}`;
   return useQuery({
-    queryKey: [USE_GET_CAMPAIGN_BASIC_API],
+    queryKey: [USE_GET_CAMPAIGN_BASIC_API, params?.page, params?.limit, params?.search],
     queryFn: () => getFunction(URL),
   });
 };

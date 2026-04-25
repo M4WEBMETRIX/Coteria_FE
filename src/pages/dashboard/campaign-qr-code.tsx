@@ -13,6 +13,17 @@ import { getBaseUrl } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CoteriePlaceholderLogo from "./coterie-placeholder-logo";
+import { useDebounce } from "@/hooks/use-debounce";
+import {
+  Combobox,
+  ComboboxContent,
+  ComboboxEmpty,
+  ComboboxInput,
+  ComboboxItem,
+  ComboboxList,
+  ComboboxTrigger,
+  ComboboxValue,
+} from "@/components/ui/combobox";
 
 const SIZES = [
   { label: "512 × 512 px", value: 512 },
@@ -37,8 +48,11 @@ const CampaignQRCodePage = () => {
   const [size, setSize] = useState(1024);
   const [generated, setGenerated] = useState(false);
 
-  const { data } = useGetCampaignBasic();
-  const campaignList = data?.data?.items;
+  const [searchQuery, setSearchQuery] = useState("");
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  const { data } = useGetCampaignBasic({ search: debouncedSearchQuery });
+  const campaignList = data?.data?.items || [];
 
   const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id}`;
   const orgName = campaign?.community?.name || "<Org Name>";
@@ -191,20 +205,40 @@ const CampaignQRCodePage = () => {
                 <label className="mb-1.5 block text-sm font-medium text-[#404040]">
                   Select Campaign
                 </label>
-                <div className="relative">
-                  <select
-                    value={selectedCampaignId}
-                    onChange={(e) => setSelectedCampaignId(e.target.value)}
-                    className="h-11 w-full rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-12 text-sm"
-                  >
-                    <option value="">Select Campaign</option>
-                    {campaignList?.map((campaign: any) => (
-                      <option key={campaign.slug} value={campaign.slug}>
-                        {campaign.name}
-                      </option>
-                    ))}
-                  </select>
-                </div>
+                <Combobox
+                  value={selectedCampaignId}
+                  onValueChange={setSelectedCampaignId}
+                  inputValue={searchQuery}
+                  onInputValueChange={setSearchQuery}
+                >
+                  <ComboboxTrigger className="flex h-11 w-full cursor-pointer items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-4 text-sm font-normal text-[#0F0F0F] shadow-none hover:bg-gray-100">
+                    <ComboboxValue placeholder="Select Campaign" />
+                  </ComboboxTrigger>
+                  <ComboboxContent className="z-[9999] w-(--anchor-width) min-w-(--anchor-width) p-0">
+                    <ComboboxInput
+                      showTrigger={false}
+                      placeholder="Search campaign..."
+                      className="h-auto rounded-none border-b py-4 text-sm shadow-none focus:ring-0 focus:ring-offset-0 focus:outline-none"
+                    />
+                    {campaignList?.length > 0 ? (
+                      <ComboboxList className="mt-1 max-h-[200px]">
+                        {campaignList?.map((campaign: any) => (
+                          <ComboboxItem
+                            className={"cursor-pointer px-4 py-3"}
+                            key={campaign.slug}
+                            value={campaign.slug}
+                          >
+                            {campaign.name}
+                          </ComboboxItem>
+                        ))}
+                      </ComboboxList>
+                    ) : (
+                      <ComboboxEmpty className="px-4 py-4 text-sm text-gray-500">
+                        No campaigns found.
+                      </ComboboxEmpty>
+                    )}
+                  </ComboboxContent>
+                </Combobox>
               </div>
             )}
 
