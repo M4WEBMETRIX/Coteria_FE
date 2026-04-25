@@ -8,7 +8,7 @@ import {
   ImageIcon,
   QrCodeIcon,
 } from "@phosphor-icons/react";
-import { useCampaignDetails } from "@/services/generics/hooks";
+import { useCampaignDetails, useGetCampaignBasic } from "@/services/generics/hooks";
 import { getBaseUrl } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -22,8 +22,9 @@ const SIZES = [
 
 const CampaignQRCodePage = () => {
   const { id } = useParams();
+  const [selectedCampaignId, setSelectedCampaignId] = useState<any | null>(null);
   // const navigate = useNavigate();
-  const { data: campaignDetails } = useCampaignDetails(id);
+  const { data: campaignDetails } = useCampaignDetails(id || selectedCampaignId);
   const campaign = campaignDetails?.data;
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -35,6 +36,9 @@ const CampaignQRCodePage = () => {
   const [format, setFormat] = useState<"PNG" | "JPG" | "SVG">("PNG");
   const [size, setSize] = useState(1024);
   const [generated, setGenerated] = useState(false);
+
+  const { data } = useGetCampaignBasic();
+  const campaignList = data?.data?.items;
 
   const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id}`;
   const orgName = campaign?.community?.name || "<Org Name>";
@@ -180,6 +184,29 @@ const CampaignQRCodePage = () => {
         <div className="w-full space-y-6 lg:max-w-[399px]">
           <div>
             <h2 className="mb-4 text-lg font-semibold text-[#424448]">Customize (optional)</h2>
+
+            {/* Campaign selector */}
+            {!id && (
+              <div className="mb-4">
+                <label className="mb-1.5 block text-sm font-medium text-[#404040]">
+                  Select Campaign
+                </label>
+                <div className="relative">
+                  <select
+                    value={selectedCampaignId}
+                    onChange={(e) => setSelectedCampaignId(e.target.value)}
+                    className="h-11 w-full rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-12 text-sm"
+                  >
+                    <option value="">Select Campaign</option>
+                    {campaignList?.map((campaign: any) => (
+                      <option key={campaign.slug} value={campaign.slug}>
+                        {campaign.name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            )}
 
             {/* Message */}
             <div className="mb-4">
@@ -403,10 +430,15 @@ const CampaignQRCodePage = () => {
                   className="flex items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-medium"
                   style={{ borderColor: brandColor, color: brandColor }}
                 >
-                  <svg viewBox="0 0 24 24" className="h-4 w-4 flex-shrink-0" fill="currentColor" style={{ verticalAlign: 'middle' }}>
+                  <svg
+                    viewBox="0 0 24 24"
+                    className="h-4 w-4 flex-shrink-0"
+                    fill="currentColor"
+                    style={{ verticalAlign: "middle" }}
+                  >
                     <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
                   </svg>
-                  <span style={{ lineHeight: '1', verticalAlign: 'middle' }}>Scan to donate</span>
+                  <span style={{ lineHeight: "1", verticalAlign: "middle" }}>Scan to donate</span>
                 </button>
               </div>
             </div>

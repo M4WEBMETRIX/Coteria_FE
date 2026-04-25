@@ -12,6 +12,7 @@ import {
   // GearIcon,
   // HandHeartIcon,
   PackageIcon,
+  QrCodeIcon,
   // QuestionIcon,
   ReceiptIcon,
   SquaresFourIcon,
@@ -69,6 +70,11 @@ export const sidebarLinks: NavLinkSection[] = [
         name: "Campaigns",
         icon: <PackageIcon size={20} weight="duotone" />,
         path: "/campaigns",
+      },
+      {
+        name: "Generate QR Code",
+        icon: <QrCodeIcon size={20} weight="duotone" />,
+        path: "/generate-qr-code",
       },
       {
         name: "Donations",

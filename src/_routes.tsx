@@ -70,6 +70,7 @@ const AllRoutes = () => {
           <Route path="campaigns/:id" element={<CampaignsPageDetail />} />
           <Route path="campaigns/:id/qr-code" element={<CampaignQRCodePage />} />
           <Route path="campaigns/:id/create-event" element={<CreateEventFlow />} />
+          <Route path="generate-qr-code" element={<CampaignQRCodePage />} />
 
           <Route path="insights" element={<InsightsPage />} />
           <Route path="donors" element={<DonorsPage />} />

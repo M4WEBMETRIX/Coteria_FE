@@ -21,6 +21,7 @@ const USE_GET_ORGANISATION_DONATION_DETAILS_API = "USE_GET_ORGANISATION_DONATION
 const USE_GET_CAMPAIGN_ENGAGEMENT_API = "USE_GET_CAMPAIGN_ENGAGEMENT_API";
 const USE_GET_ORGANISATION_EVENTS_API = "USE_GET_ORGANISATION_EVENTS_API";
 const USE_GET_ORG_COMMUNITIES_DETAILS = "USE_GET_ORG_COMMUNITIES_DETAILS";
+const USE_GET_CAMPAIGN_BASIC_API = "USE_GET_CAMPAIGN_BASIC_API";
 
 export const useCreateCampaign = () => {
   const queryClient = useQueryClient();
@@ -43,6 +44,10 @@ export const useCreateCampaign = () => {
 
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API],
+      });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_BASIC_API],
       });
       toast.success("campaign created successfully");
     },
@@ -72,6 +77,10 @@ export const useUpdateCampaign = (id: string | number | undefined) => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_BASIC_API],
+      });
       toast.success("campaign updated successfully");
     },
     onError: (err: any) => showErrorToast(err, "Error updating campaign, please try again.!"),
@@ -100,6 +109,10 @@ export const useUpdateCampaignStatus = (id: string | number | undefined) => {
       queryClient.invalidateQueries({
         queryKey: [USE_GET_CAMPAIGN_ENGAGEMENT_API],
       });
+
+      queryClient.invalidateQueries({
+        queryKey: [USE_GET_CAMPAIGN_BASIC_API],
+      });
       toast.success("campaign status updated successfully");
     },
     onError: (err: any) =>
@@ -113,6 +126,14 @@ export const useCampaignDetails = (id: string | number | undefined) => {
     queryKey: [USE_GET_CAMPAIGN_DETAILS_API, id],
     queryFn: () => getFunction(URL),
     enabled: !!id,
+  });
+};
+
+export const useGetCampaignBasic = () => {
+  const URL = `/org/campaigns/basic`;
+  return useQuery({
+    queryKey: [USE_GET_CAMPAIGN_BASIC_API],
+    queryFn: () => getFunction(URL),
   });
 };
 
