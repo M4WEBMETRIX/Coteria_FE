@@ -54,6 +54,9 @@ const CampaignQRCodePage = () => {
   const { data } = useGetCampaignBasic({ search: debouncedSearchQuery });
   const campaignList = data?.data?.items || [];
 
+  // Find selected campaign name for display
+  const selectedCampaignName = campaignList.find((c: any) => c.slug === selectedCampaignId)?.name;
+
   const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id}`;
   const orgName = campaign?.community?.name || "<Org Name>";
   const campaignName = campaign?.name || "<Campaign Name>";
@@ -212,7 +215,9 @@ const CampaignQRCodePage = () => {
                   onInputValueChange={setSearchQuery}
                 >
                   <ComboboxTrigger className="flex h-11 w-full cursor-pointer items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-4 text-sm font-normal text-[#0F0F0F] shadow-none hover:bg-gray-100">
-                    <ComboboxValue placeholder="Select Campaign" />
+                    <ComboboxValue placeholder="Select Campaign">
+                      {selectedCampaignName || "Select Campaign"}
+                    </ComboboxValue>
                   </ComboboxTrigger>
                   <ComboboxContent className="z-[9999] w-(--anchor-width) min-w-(--anchor-width) p-0">
                     <ComboboxInput
