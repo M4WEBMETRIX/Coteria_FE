@@ -49,30 +49,105 @@ const CampaignQRCodePage = () => {
     reader.readAsDataURL(file);
   };
 
+  const convertOklchColors = (element: HTMLElement) => {
+    console.log(element);
+    // Create a temporary style element to override CSS variables
+    const styleEl = document.createElement("style");
+    styleEl.id = "temp-oklch-override";
+
+    // Convert CSS variables from oklch to rgb
+    const cssVarOverrides = `
+      * {
+        --background: rgb(255, 255, 255) !important;
+        --foreground: rgb(15, 15, 15) !important;
+        --card: rgb(255, 255, 255) !important;
+        --card-foreground: rgb(15, 15, 15) !important;
+        --popover: rgb(255, 255, 255) !important;
+        --popover-foreground: rgb(15, 15, 15) !important;
+        --primary-foreground: rgb(255, 255, 255) !important;
+        --secondary: rgb(245, 245, 245) !important;
+        --secondary-foreground: rgb(23, 23, 23) !important;
+        --muted: rgb(245, 245, 245) !important;
+        --muted-foreground: rgb(115, 115, 115) !important;
+        --accent: rgb(245, 245, 245) !important;
+        --accent-foreground: rgb(23, 23, 23) !important;
+        --destructive: rgb(239, 68, 68) !important;
+        --border: rgb(229, 229, 229) !important;
+        --input: rgb(229, 229, 229) !important;
+        --ring: rgb(163, 163, 163) !important;
+        --flex-direction: column !important;
+        --flex-wrap: wrap !important;
+        --flex-gap: 1rem !important;
+        --flex-justify-content: center !important;
+        --flex-align-items: center !important;
+        --flex-justify-content: center !important;
+        --flex-align-items: center !important;
+        --flex-justify-content: center !important;
+        --flex-align-items: center !important;
+      }
+    `;
+
+    styleEl.textContent = cssVarOverrides;
+    document.head.appendChild(styleEl);
+
+    return styleEl;
+  };
+
+  const restoreStyles = (styleEl: HTMLStyleElement) => {
+    styleEl.remove();
+  };
+
   const downloadPNG = useCallback(async () => {
     if (!previewRef.current) return;
-    const canvas = await html2canvas(previewRef.current, {
-      scale: size / previewRef.current.offsetWidth,
-      useCORS: true,
-      backgroundColor: "#ffffff",
-    });
-    const link = document.createElement("a");
-    link.download = `${campaignName}-qr-code.png`;
-    link.href = canvas.toDataURL("image/png");
-    link.click();
-  }, [size, campaignName]);
+    const styleEl = convertOklchColors(previewRef.current);
 
-  const downloadSVG = useCallback(() => {
-    const svgEl = qrCanvasRef.current?.querySelector("svg");
-    if (!svgEl) return;
-    const serializer = new XMLSerializer();
-    const svgStr = serializer.serializeToString(svgEl);
-    const blob = new Blob([svgStr], { type: "image/svg+xml" });
-    const link = document.createElement("a");
-    link.download = `${campaignName}-qr-code.svg`;
-    link.href = URL.createObjectURL(blob);
-    link.click();
-  }, [campaignName]);
+    try {
+      // Small delay to let styles apply
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const canvas = await html2canvas(previewRef.current, {
+        scale: size / previewRef.current.offsetWidth,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+      const link = document.createElement("a");
+      const fileFormat = format === "JPG" ? "jpeg" : "png";
+      link.download = `${campaignName}-qr-code.${fileFormat === "jpeg" ? "jpg" : "png"}`;
+      link.href = canvas.toDataURL(`image/${fileFormat}`);
+      link.click();
+    } finally {
+      restoreStyles(styleEl);
+    }
+  }, [size, campaignName, format]);
+
+  const downloadSVG = useCallback(async () => {
+    if (!previewRef.current) return;
+    const styleEl = convertOklchColors(previewRef.current);
+
+    try {
+      // Small delay to let styles apply
+      await new Promise((resolve) => setTimeout(resolve, 100));
+
+      const canvas = await html2canvas(previewRef.current, {
+        scale: size / previewRef.current.offsetWidth,
+        useCORS: true,
+        backgroundColor: "#ffffff",
+        logging: false,
+      });
+      const dataUrl = canvas.toDataURL("image/png");
+      const svgContent = `<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="${size}" height="${size}">
+  <image href="${dataUrl}" width="${size}" height="${size}" />
+</svg>`;
+      const blob = new Blob([svgContent], { type: "image/svg+xml" });
+      const link = document.createElement("a");
+      link.download = `${campaignName}-qr-code.svg`;
+      link.href = URL.createObjectURL(blob);
+      link.click();
+    } finally {
+      restoreStyles(styleEl);
+    }
+  }, [size, campaignName]);
 
   const handleDownload = () => {
     if (format === "SVG") downloadSVG();
@@ -318,7 +393,7 @@ const CampaignQRCodePage = () => {
 
                 {/* Custom message */}
                 <div className="mt-2 mb-4 flex w-full items-center justify-center border-t border-[#E5E5E5] pt-4 text-center text-sm font-medium text-[#6B6B6B]">
-                  <p className="max-w-[350px] break-words">
+                  <p className="max-w-[350px] px-2 break-words">
                     {message || "Every contribution makes a difference."}
                   </p>
                 </div>
