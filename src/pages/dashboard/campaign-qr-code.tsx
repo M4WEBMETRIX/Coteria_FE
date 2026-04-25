@@ -1,0 +1,364 @@
+import { useRef, useState, useCallback } from "react";
+import { useParams } from "react-router-dom";
+import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
+import html2canvas from "html2canvas";
+import {
+  ArrowSquareOutIcon,
+  DownloadSimpleIcon,
+  ImageIcon,
+  QrCodeIcon,
+} from "@phosphor-icons/react";
+import { useCampaignDetails } from "@/services/generics/hooks";
+import { getBaseUrl } from "@/lib/utils";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import CoteriePlaceholderLogo from "./coterie-placeholder-logo";
+
+const SIZES = [
+  { label: "512 × 512 px", value: 512 },
+  { label: "1024 × 1024 px", value: 1024 },
+  { label: "2048 × 2048 px", value: 2048 },
+];
+
+const CampaignQRCodePage = () => {
+  const { id } = useParams();
+  // const navigate = useNavigate();
+  const { data: campaignDetails } = useCampaignDetails(id);
+  const campaign = campaignDetails?.data;
+
+  const previewRef = useRef<HTMLDivElement>(null);
+  const qrCanvasRef = useRef<HTMLDivElement>(null);
+
+  const [message, setMessage] = useState("");
+  const [brandColor, setBrandColor] = useState("#12AA5B");
+  const [logoFile, setLogoFile] = useState<string | null>(null);
+  const [format, setFormat] = useState<"PNG" | "JPG" | "SVG">("PNG");
+  const [size, setSize] = useState(1024);
+  const [generated, setGenerated] = useState(false);
+
+  const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id}`;
+  const orgName = campaign?.community?.name || "<Org Name>";
+  const campaignName = campaign?.name || "<Campaign Name>";
+
+  const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) return;
+    const reader = new FileReader();
+    reader.onload = (ev) => setLogoFile(ev.target?.result as string);
+    reader.readAsDataURL(file);
+  };
+
+  const downloadPNG = useCallback(async () => {
+    if (!previewRef.current) return;
+    const canvas = await html2canvas(previewRef.current, {
+      scale: size / previewRef.current.offsetWidth,
+      useCORS: true,
+      backgroundColor: "#ffffff",
+    });
+    const link = document.createElement("a");
+    link.download = `${campaignName}-qr-code.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  }, [size, campaignName]);
+
+  const downloadSVG = useCallback(() => {
+    const svgEl = qrCanvasRef.current?.querySelector("svg");
+    if (!svgEl) return;
+    const serializer = new XMLSerializer();
+    const svgStr = serializer.serializeToString(svgEl);
+    const blob = new Blob([svgStr], { type: "image/svg+xml" });
+    const link = document.createElement("a");
+    link.download = `${campaignName}-qr-code.svg`;
+    link.href = URL.createObjectURL(blob);
+    link.click();
+  }, [campaignName]);
+
+  const handleDownload = () => {
+    if (format === "SVG") downloadSVG();
+    else downloadPNG();
+  };
+
+  const handleShare = async () => {
+    if (navigator.share) {
+      await navigator.share({ title: campaignName, url: donateUrl });
+    } else {
+      navigator.clipboard.writeText(donateUrl);
+    }
+  };
+
+  return (
+    <div className="mx-auto w-full py-3">
+      {/* Back nav */}
+      {/* <button
+        onClick={() => navigate(`/campaigns/${id}`)}
+        className="mb-6 flex items-center gap-2 text-sm text-[#6B6B6B] hover:text-[#0F0F0F]"
+      >
+        <ArrowLeftIcon size={16} />
+        Back to campaign
+      </button> */}
+
+      {/* <h1 className="mb-8 text-2xl font-bold text-[#0F0F0F]">Generate QR Code</h1> */}
+
+      <div className="flex flex-col gap-8 lg:flex-row">
+        {/* ── Left panel ── */}
+        <div className="w-full space-y-6 lg:max-w-[399px]">
+          <div>
+            <h2 className="mb-4 text-lg font-semibold text-[#424448]">Customize (optional)</h2>
+
+            {/* Message */}
+            <div className="mb-4">
+              <label className="mb-1.5 block text-sm font-medium text-[#404040]">
+                Message (show under the QR code)
+              </label>
+              <div className="relative">
+                <Input
+                  maxLength={60}
+                  placeholder="e.g every contributions make a different"
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  className="h-11 rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-12 text-sm"
+                />
+                <span className="absolute top-1/2 right-4 -translate-y-1/2 text-xs text-[#9B9B9B]">
+                  {message.length}/60
+                </span>
+              </div>
+            </div>
+
+            {/* Brand color */}
+            <div className="mb-4">
+              <label className="mb-1.5 block text-sm font-medium text-[#404040]">Brand color</label>
+              <div className="relative flex items-center">
+                <Input
+                  placeholder="e.g #39966d9d1"
+                  value={brandColor}
+                  onChange={(e) => setBrandColor(e.target.value)}
+                  className="h-11 rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-14 text-sm"
+                />
+                <label className="absolute right-3 cursor-pointer">
+                  <input
+                    type="color"
+                    value={brandColor}
+                    onChange={(e) => setBrandColor(e.target.value)}
+                    className="sr-only"
+                  />
+                  <span
+                    className="block h-7 w-7 rounded-md border border-[#E5E5E5]"
+                    style={{ backgroundColor: brandColor }}
+                  />
+                </label>
+              </div>
+            </div>
+
+            {/* Logo upload */}
+            <div className="mb-6">
+              <label className="mb-1.5 block text-sm font-medium text-[#404040]">
+                Add logo (optional)
+              </label>
+              <label className="flex h-[107px] cursor-pointer flex-col items-center justify-center gap-1 rounded-[20px] border border-[#E5E5E5] bg-[#FAFAFA] py-5 hover:border-[#12AA5B]">
+                <input
+                  type="file"
+                  accept="image/png,image/jpeg,image/svg+xml"
+                  className="sr-only"
+                  onChange={handleLogoUpload}
+                />
+                {logoFile ? (
+                  <img src={logoFile} alt="logo" className="h-10 w-10 object-contain" />
+                ) : (
+                  <>
+                    <p className="flex items-center gap-2">
+                      <ImageIcon weight="bold" size={20} className="text-[#818898]" />
+                      <span className="text-sm font-medium text-[#818898]">Upload logo</span>
+                    </p>
+                    <span className="text-sm font-medium text-[#818898]">
+                      PNG, JPG, SVG (Max, 2MB)
+                    </span>
+                  </>
+                )}
+              </label>
+            </div>
+          </div>
+
+          {/* Format & Size */}
+          <div>
+            <h2 className="mb-4 text-base font-semibold text-[#424448]">Choose format % Size</h2>
+            <div className="mb-4 flex items-center justify-between gap-4">
+              <div>
+                <p className="mb-2 text-sm font-semibold text-[#000000]">Format</p>
+                <div className="flex gap-2">
+                  {(["PNG", "JPG", "SVG"] as const).map((f) => (
+                    <button
+                      key={f}
+                      onClick={() => setFormat(f)}
+                      className={`cursor-pointer rounded-[7px] border px-5 py-2.5 text-sm font-medium transition-all ${
+                        format === f
+                          ? "border-[#12AA5B] bg-white text-[#12AA5B]"
+                          : "border-[#E5E5E5] bg-white text-[#6B6B6B] hover:border-[#12AA5B]"
+                      }`}
+                    >
+                      {f}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="mb-2 text-sm font-semibold text-[#000000]">Size</p>
+                <select
+                  value={size}
+                  onChange={(e) => setSize(Number(e.target.value))}
+                  className="cursor-pointer rounded-[7px] border border-[#E5E5E5] bg-white px-2 py-2.5 text-sm text-[#0F0F0F] outline-none"
+                >
+                  {SIZES.map((s) => (
+                    <option key={s.value} value={s.value}>
+                      {s.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </div>
+
+            {/* Generate button */}
+            <Button
+              onClick={() => setGenerated(true)}
+              className="flex h-12 w-full items-center justify-between rounded-full bg-[#12AA5B] px-2 text-white hover:bg-[#0da055]"
+            >
+              <span className="flex-1 text-center text-sm font-medium">Generate QR code</span>
+              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                <QrCodeIcon size={16} className="text-[#0F0F0F]" />
+              </div>
+            </Button>
+          </div>
+        </div>
+
+        {/* ── Right panel ── */}
+        <div className="flex-1 space-y-6">
+          {/* Preview */}
+          <div className="rounded-[10px] bg-[#FAFAFA] px-7.5 py-4.5">
+            <p className="mb-1 text-sm font-semibold text-[#000000]">Preview</p>
+            <p className="mb-4 text-xs font-medium text-[#666D80]">
+              This is how your QR code will look.
+            </p>
+
+            <div className="">
+              {/* Printable card */}
+              <div
+                ref={previewRef}
+                className="relative mx-auto flex w-full max-w-[499px] flex-col items-center rounded-[16px] bg-white px-8 py-8"
+              >
+                {/* Dot decorations */}
+                <div className="pointer-events-none absolute top-4 left-4 grid grid-cols-4 gap-1 opacity-30">
+                  {Array.from({ length: 16 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: brandColor }}
+                    />
+                  ))}
+                </div>
+                <div className="pointer-events-none absolute right-4 bottom-4 grid grid-cols-4 gap-1 opacity-30">
+                  {Array.from({ length: 16 }).map((_, i) => (
+                    <div
+                      key={i}
+                      className="h-1.5 w-1.5 rounded-full"
+                      style={{ backgroundColor: brandColor }}
+                    />
+                  ))}
+                </div>
+
+                {/* Logo / icon */}
+                {logoFile ? (
+                  <img src={logoFile} alt="logo" className="h-14 w-14 object-contain" />
+                ) : (
+                  <CoteriePlaceholderLogo color={brandColor} />
+                )}
+
+                <p className="mt-2 mb-0.5 text-lg font-bold" style={{ color: brandColor }}>
+                  {orgName}
+                </p>
+                <p className="mb-1 text-sm text-[#6B6B6B]">Support our mission</p>
+                <p className="mb-4 text-base font-bold text-[#0F0F0F]">{campaignName}</p>
+
+                {/* QR Code */}
+                <div ref={qrCanvasRef} className="mb-4">
+                  {format === "SVG" ? (
+                    <QRCodeSVG
+                      value={donateUrl}
+                      size={180}
+                      fgColor="#000000"
+                      bgColor="#ffffff"
+                      level="H"
+                      imageSettings={
+                        logoFile
+                          ? { src: logoFile, height: 36, width: 36, excavate: true }
+                          : undefined
+                      }
+                    />
+                  ) : (
+                    <QRCodeCanvas
+                      value={donateUrl}
+                      size={180}
+                      fgColor="#000000"
+                      bgColor="#ffffff"
+                      level="H"
+                      imageSettings={
+                        logoFile
+                          ? { src: logoFile, height: 36, width: 36, excavate: true }
+                          : undefined
+                      }
+                    />
+                  )}
+                </div>
+
+                {/* Custom message */}
+                <div className="mt-2 mb-4 flex w-full items-center justify-center border-t border-[#E5E5E5] pt-4 text-center text-sm font-medium text-[#6B6B6B]">
+                  <p className="max-w-[350px] text-wrap">
+                    {message || "Every contribution makes a difference."}
+                  </p>
+                </div>
+
+                {/* Scan CTA */}
+                <button
+                  className="flex items-center gap-2 rounded-full border px-5 py-2 text-sm font-medium"
+                  style={{ borderColor: brandColor, color: brandColor }}
+                >
+                  <svg viewBox="0 0 24 24" className="h-4 w-4" fill="currentColor">
+                    <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
+                  </svg>
+                  Scan to donate
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Download & Share */}
+          {generated && (
+            <div className="rounded-[10px] bg-[#FAFAFA] px-7.5 py-4.5">
+              <p className="mb-1 text-sm font-semibold text-[#000000]">Download and share</p>
+              <p className="mb-4 text-xs text-[#666D80]">
+                Download your QR code or share it with your team or friends.
+              </p>
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={handleDownload}
+                  className="flex cursor-pointer items-center gap-2 rounded-[8px] border border-[#DFE1E7] bg-white px-4 py-3 text-sm font-medium text-[#0D0D12] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+                >
+                  Download {format}
+                  <DownloadSimpleIcon size={16} />
+                </button>
+                <button
+                  onClick={handleShare}
+                  className="flex cursor-pointer items-center gap-2 rounded-[8px] border border-[#DFE1E7] bg-white px-4 py-3 text-sm font-medium text-[#0D0D12] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+                >
+                  Share
+                  <ArrowSquareOutIcon size={16} />
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default CampaignQRCodePage;

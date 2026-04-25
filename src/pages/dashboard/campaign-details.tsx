@@ -2,19 +2,17 @@ import { useBreadcrumb } from "@/components/breadcrumb-navigation";
 import { useQueryState, parseAsString } from "nuqs";
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-// import Story from "@/components/campaigns/details/story";
 import CommandCenter from "@/components/campaigns/details/command-center";
-// import ActivateInfluencer from "@/components/campaigns/details/activate-influencer";
 import Settings from "@/components/campaigns/details/settings";
 import { cn } from "@/lib/utils";
 import { useCampaignDetails } from "@/services/generics/hooks";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import CampaignsEvents from "@/components/campaigns/campaign-events";
-// import CampaignsEvents from "@/components/campaigns/campaign-events";
-// import CampaignResources from "@/components/campaigns/campaign-resources";
+import { QrCodeIcon } from "@phosphor-icons/react";
 
 const Campaigndetails = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
 
   const [activeTab, setActiveTab] = useQueryState(
     "view",
@@ -74,6 +72,14 @@ const Campaigndetails = () => {
               {tab.label}
             </TabsTrigger>
           ))}
+          {/* QR Code button */}
+          <button
+            onClick={() => navigate(`/campaigns/${id}/qr-code`)}
+            className="ml-auto flex h-[34px] items-center gap-1.5 rounded-[5px] border border-[#DFE1E7] px-[9.5px] py-2.5 text-xs text-[#666D80] hover:border-[#12AA5B] hover:text-[#12AA5B]"
+          >
+            <QrCodeIcon size={14} />
+            QR Code
+          </button>
         </TabsList>
         {/* <div className="-mt-2 w-full border-b border-[#DFE1E7]"></div> */}
         {tabs.map((tab) => (

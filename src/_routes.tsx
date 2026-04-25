@@ -28,6 +28,7 @@ import DonationSuccess from "./pages/community/services/donation-success";
 const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-detail-page"));
 const VerifyEmailPage = lazy(() => import("./pages/authentications/verify-email-page"));
 const OrgCommunityDetailPage = lazy(() => import("./pages/dashboard/org-community-detail-page"));
+const CampaignQRCodePage = lazy(() => import("./pages/dashboard/campaign-qr-code"));
 const CreateEventFlow = lazy(
   () => import("./components/campaigns/events/create-flow/CreateEventFlow")
 );
@@ -67,6 +68,7 @@ const AllRoutes = () => {
           <Route path="community/:id" element={<OrgCommunityDetailPage />} />
           <Route path="campaigns" element={<CampaignsPage />} />
           <Route path="campaigns/:id" element={<CampaignsPageDetail />} />
+          <Route path="campaigns/:id/qr-code" element={<CampaignQRCodePage />} />
           <Route path="campaigns/:id/create-event" element={<CreateEventFlow />} />
 
           <Route path="insights" element={<InsightsPage />} />
