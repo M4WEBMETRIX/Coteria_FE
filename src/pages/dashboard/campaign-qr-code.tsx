@@ -272,11 +272,18 @@ const CampaignQRCodePage = () => {
                   <CoteriePlaceholderLogo color={brandColor} />
                 )}
 
-                <p className="mt-2 mb-0.5 text-lg font-bold" style={{ color: brandColor }}>
+                <p
+                  className="mt-2 mb-0.5 max-w-full text-center text-lg font-bold break-words"
+                  style={{ color: brandColor }}
+                >
                   {orgName}
                 </p>
-                <p className="mb-1 text-sm text-[#6B6B6B]">Support our mission</p>
-                <p className="mb-4 text-base font-bold text-[#0F0F0F]">{campaignName}</p>
+                <p className="mb-1 max-w-full text-center text-sm break-words text-[#6B6B6B]">
+                  Support our mission
+                </p>
+                <p className="mb-4 max-w-full text-center text-base font-bold break-words text-[#0F0F0F]">
+                  {campaignName}
+                </p>
 
                 {/* QR Code */}
                 <div ref={qrCanvasRef} className="mb-4">
@@ -311,7 +318,7 @@ const CampaignQRCodePage = () => {
 
                 {/* Custom message */}
                 <div className="mt-2 mb-4 flex w-full items-center justify-center border-t border-[#E5E5E5] pt-4 text-center text-sm font-medium text-[#6B6B6B]">
-                  <p className="max-w-[350px] text-wrap">
+                  <p className="max-w-[350px] break-words">
                     {message || "Every contribution makes a difference."}
                   </p>
                 </div>
