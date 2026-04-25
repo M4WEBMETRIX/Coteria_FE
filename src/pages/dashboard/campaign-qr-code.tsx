@@ -9,7 +9,7 @@ import {
   QrCodeIcon,
 } from "@phosphor-icons/react";
 import { useCampaignDetails, useGetCampaignBasic } from "@/services/generics/hooks";
-import { getBaseUrl } from "@/lib/utils";
+import { cn, getBaseUrl } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import CoteriePlaceholderLogo from "./coterie-placeholder-logo";
@@ -17,7 +17,7 @@ import { useDebounce } from "@/hooks/use-debounce";
 import {
   Combobox,
   ComboboxContent,
-  ComboboxEmpty,
+  // ComboboxEmpty,
   ComboboxInput,
   ComboboxItem,
   ComboboxList,
@@ -214,9 +214,14 @@ const CampaignQRCodePage = () => {
                   inputValue={searchQuery}
                   onInputValueChange={setSearchQuery}
                 >
-                  <ComboboxTrigger className="flex h-11 w-full cursor-pointer items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-4 text-sm font-normal text-[#0F0F0F] shadow-none hover:bg-gray-100">
-                    <ComboboxValue placeholder="Select Campaign">
-                      {selectedCampaignName || "Select Campaign"}
+                  <ComboboxTrigger
+                    className={cn(
+                      "flex h-11 w-full cursor-pointer items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-4 text-sm font-normal text-[#0F0F0F] shadow-none hover:bg-gray-100",
+                      !selectedCampaignId && "text-[#D7D7D7]"
+                    )}
+                  >
+                    <ComboboxValue placeholder={"Select campaign"}>
+                      {selectedCampaignName || "Select campaign"}
                     </ComboboxValue>
                   </ComboboxTrigger>
                   <ComboboxContent className="z-[9999] w-(--anchor-width) min-w-(--anchor-width) p-0">
@@ -226,7 +231,7 @@ const CampaignQRCodePage = () => {
                       className="h-auto rounded-none border-b py-4 text-sm shadow-none focus:ring-0 focus:ring-offset-0 focus:outline-none"
                     />
                     {(!campaignList || campaignList.length === 0) && (
-                      <div className="px-4 py-4 text-sm text-gray-500 text-center">
+                      <div className="px-4 py-4 text-center text-sm text-gray-500">
                         No campaigns found.
                       </div>
                     )}
@@ -257,7 +262,7 @@ const CampaignQRCodePage = () => {
                   placeholder="e.g every contributions make a different"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="h-11 rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-12 text-sm"
+                  className="h-11 rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-12 text-sm placeholder:font-medium placeholder:text-[#D7D7D7]"
                 />
                 <span className="absolute top-1/2 right-4 -translate-y-1/2 text-xs text-[#9B9B9B]">
                   {message.length}/60
@@ -464,20 +469,43 @@ const CampaignQRCodePage = () => {
                 </div>
 
                 {/* Scan CTA */}
-                <button
-                  className="flex items-center justify-center gap-2 rounded-full border px-5 py-2 text-sm font-medium"
-                  style={{ borderColor: brandColor, color: brandColor }}
+                <svg
+                  width="200"
+                  height="40"
+                  viewBox="0 0 200 40"
+                  xmlns="http://www.w3.org/2000/svg"
                 >
-                  <svg
-                    viewBox="0 0 24 24"
-                    className="h-4 w-4 flex-shrink-0"
-                    fill="currentColor"
-                    style={{ verticalAlign: "middle" }}
+                  {/* Border pill */}
+                  <rect
+                    x="1"
+                    y="1"
+                    width="198"
+                    height="38"
+                    rx="19"
+                    ry="19"
+                    fill="none"
+                    stroke={brandColor}
+                    strokeWidth="1.5"
+                  />
+                  {/* Phone icon */}
+                  <path
+                    d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z"
+                    fill={brandColor}
+                    transform="translate(35, 10) scale(0.85)"
+                  />
+                  {/* Text */}
+                  <text
+                    x="110"
+                    y="26"
+                    textAnchor="middle"
+                    fill={brandColor}
+                    fontSize="14"
+                    fontWeight="500"
+                    fontFamily="inter"
                   >
-                    <path d="M17 1.01L7 1c-1.1 0-2 .9-2 2v18c0 1.1.9 2 2 2h10c1.1 0 2-.9 2-2V3c0-1.1-.9-1.99-2-1.99zM17 19H7V5h10v14z" />
-                  </svg>
-                  <span style={{ lineHeight: "1", verticalAlign: "middle" }}>Scan to donate</span>
-                </button>
+                    Scan to donate
+                  </text>
+                </svg>
               </div>
             </div>
           </div>
