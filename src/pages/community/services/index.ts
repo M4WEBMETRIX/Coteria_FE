@@ -4,11 +4,21 @@ import { toast } from "sonner";
 const USE_GET_PUBLIC_COMMUNITY_API = "USE_GET_PUBLIC_COMMUNITY_API";
 const USE_GET_PUBLIC_COMMUNITY_CAMPAIGNS_API = "USE_GET_PUBLIC_COMMUNITY_CAMPAIGNS_API";
 const USE_GET_PUBLIC_CAMPAIGN_API = "USE_GET_PUBLIC_CAMPAIGN_API";
+const USE_GET_PUBLIC_SIMILAR_CAMPAIGNS_API = "USE_GET_PUBLIC_SIMILAR_CAMPAIGNS_API";
 
 export const useGetPublicCommunityCampaigns = (slug: string | undefined) => {
   const URL = `/communities/${slug}/campaigns`;
   return useQuery({
     queryKey: [USE_GET_PUBLIC_COMMUNITY_CAMPAIGNS_API, slug],
+    queryFn: () => publicGetFunction(URL),
+    enabled: !!slug,
+  });
+};
+
+export const useGetPublicSimilarCampaigns = (slug: string | undefined) => {
+  const URL = `/campaigns/${slug}/similar`;
+  return useQuery({
+    queryKey: [USE_GET_PUBLIC_SIMILAR_CAMPAIGNS_API, slug],
     queryFn: () => publicGetFunction(URL),
     enabled: !!slug,
   });

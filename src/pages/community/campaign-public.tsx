@@ -15,8 +15,9 @@ import { useGetPublicCampaign } from "./services";
 import { getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
 import CampaignPublicSkeleton from "./campaign-public-skeleton";
 import { DonationModal } from "./services/donate-modal";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
+import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 
 // Mock data - would come from API in production
 const campaignData = {
@@ -68,6 +69,10 @@ const CampaignPublic = () => {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { campaignId } = useParams();
+
+  const endUser = useMemo(() => {
+    return getEndUserFromLocalStorage();
+  }, []);
 
   const { data: publicCampaignData, isPending: publicCampaignPending } =
     useGetPublicCampaign(campaignId);
@@ -188,7 +193,7 @@ const CampaignPublic = () => {
 
                 <Button
                   // onClick={() => setIsOpen(true)}
-                  onClick={() => navigate(`/user/donate/${campaignId}`)}
+                  onClick={() => navigate(`/user/donate/${campaignId}?userId=${endUser?.id}`)}
                   className="h-12 w-full rounded-lg bg-[#307941] text-white hover:bg-[#0da055]"
                 >
                   Donate Now <CaretRightIcon className="ml-2" />

@@ -14,9 +14,9 @@ import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { DonationModal } from "@/pages/community/services/donate-modal";
 import ManagePagination from "@/components/Manage-pagination";
 
-const MAX_LENGTH = 68; // tweak this until it visually fits 2 lines
+export const MAX_LENGTH = 68; // tweak this until it visually fits 2 lines
 
-const getTruncatedText = (text: string) => {
+export const getTruncatedText = (text: string) => {
   if (!text) return "";
 
   if (text.length <= MAX_LENGTH) return text;
@@ -24,7 +24,7 @@ const getTruncatedText = (text: string) => {
   return text.slice(0, MAX_LENGTH) + "...";
 };
 
-const getTimeRemaining = (endDate: string) => {
+export const getTimeRemaining = (endDate: string) => {
   const end = new Date(endDate);
   const now = new Date();
   const diffMs = end.getTime() - now.getTime();
@@ -49,7 +49,7 @@ const getTimeRemaining = (endDate: string) => {
   }
 };
 
-const getTimeProgress = (startDate: string, endDate: string) => {
+export const getTimeProgress = (startDate: string, endDate: string) => {
   const start = new Date(startDate);
   const end = new Date(endDate);
   const now = new Date();

@@ -30,6 +30,7 @@ import Logo from "@/assets/icons/coterie.svg";
 import DonationSuccess from "./pages/community/services/donation-success";
 import UserResetPassword from "./end-user-app/pages/authentications/reset-password";
 import ConfirmDeactivation from "./end-user-app/pages/authentications/confirm-deactivation";
+import SimilarCampaigns from "./end-user-app/pages/dashboard/similar-campaigns";
 
 const EndUserRoutes = () => {
   return (
@@ -67,10 +68,12 @@ const EndUserRoutes = () => {
           <Route path="account-settings" element={<AccountSettingsIndex />} />
           <Route path="account-settings/edit" element={<EditProfile />} />
           <Route path="donation-success" element={<DonationSuccess />} />
+          <Route path="donate/:campaignId" element={<DonatePage />} />
+          <Route path="similar-campaign/:campaignId" element={<SimilarCampaigns />} />
         </Route>
-        <Route path="donate/:campaignId" element={<DonatePage />} />
 
         {/* Public routes */}
+        <Route path="similar-campaign/public/:campaignId" element={<SimilarCampaigns />} />
         <Route path="community/public/:slug/:communityId" element={<CommunityPublic />} />
         <Route path="community/public/campaign/:campaignId" element={<CampaignPublic />} />
         <Route path="campaign/public/donate/:campaignId" element={<DonatePage />} />

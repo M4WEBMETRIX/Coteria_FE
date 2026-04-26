@@ -271,7 +271,13 @@ const DonationSuccess = () => {
           </button>
 
           <Button
-            onClick={() => navigate(isLoggedIn ? "/user/dashboard?tab=campaigns" : "/")}
+            onClick={() =>
+              navigate(
+                isLoggedIn
+                  ? `/user/similar-campaign/${slug}`
+                  : `/user/similar-campaign/public/${slug}`
+              )
+            }
             className="h-11 w-full rounded-full bg-[#079455] px-5 py-2.5 text-sm font-medium text-white hover:bg-[#0da055] lg:w-max"
           >
             Explore Campaign
