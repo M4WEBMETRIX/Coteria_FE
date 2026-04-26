@@ -21,10 +21,56 @@ import {
 //   // ShareFatIcon,
 //   // Trophy,
 // } from "@phosphor-icons/react";
-import { ArrowRightIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
+import { ArrowRightIcon, ClockIcon } from "@phosphor-icons/react"; // Import missing icons locally if needed, checking existing imports.
 import { useState } from "react";
 // import { campaigns } from "./dashboard-campaigns";
 import { useNavigate, useParams } from "react-router-dom";
+
+const getTimeRemaining = (endDate: string) => {
+  const end = new Date(endDate);
+  const now = new Date();
+  const diffMs = end.getTime() - now.getTime();
+
+  // If time has passed, return null
+  if (diffMs <= 0) {
+    return { text: "Ended", isUrgent: true };
+  }
+
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  const isUrgent = diffMs < 24 * 60 * 60 * 1000; // Less than 24 hours
+
+  if (days > 0) {
+    return { text: `${days} day${days !== 1 ? "s" : ""} left`, isUrgent: false };
+  } else if (hours > 0) {
+    return { text: `${hours}h ${minutes}m left`, isUrgent };
+  } else {
+    return { text: `${minutes}m left`, isUrgent };
+  }
+};
+
+const getTimeProgress = (startDate: string, endDate: string) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const now = new Date();
+
+  // If campaign hasn't started yet, return 0
+  if (now < start) {
+    return 0;
+  }
+
+  // If campaign has ended, return 100
+  if (now > end) {
+    return 100;
+  }
+
+  const totalDuration = end.getTime() - start.getTime();
+  const elapsed = now.getTime() - start.getTime();
+
+  return Math.min((elapsed / totalDuration) * 100, 100);
+};
 
 const CampaignDetails = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -108,6 +154,33 @@ const CampaignDetails = () => {
             </div>
 
             <div className="h-max w-full rounded-[32px] border border-[#E5E5E5] p-4 lg:block lg:hidden">
+              {/* Time left badge for time-based campaigns */}
+              {campaign?.type?.toLowerCase() === "time" &&
+                campaign?.endDate &&
+                (() => {
+                  const timeInfo = getTimeRemaining(campaign?.endDate);
+                  return (
+                    <div
+                      className={`mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 ${
+                        timeInfo.isUrgent
+                          ? "bg-[#FFF5F5] text-[#DF1C41]"
+                          : "bg-[#F2FFF4] text-[#12AA5B]"
+                      }`}
+                    >
+                      <ClockIcon
+                        size={20}
+                        weight="fill"
+                        className={timeInfo.isUrgent ? "text-[#EF4444]" : "text-[#12AA5B]"}
+                      />
+                      <span
+                        className={`text-sm font-medium ${timeInfo.isUrgent ? "text-[#EF4444]" : "text-[#12AA5B]"}`}
+                      >
+                        {timeInfo.text}
+                      </span>
+                    </div>
+                  );
+                })()}
+
               {/* Content */}
               <div className="flex w-full items-center gap-3">
                 <div>
@@ -118,25 +191,68 @@ const CampaignDetails = () => {
                       {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
                     </span>
                     <span className="text-sm text-nowrap text-[#000000]">
-                      raised of {getCurrencySymbol(campaign?.goalCurrency)}
-                      {""}
-                      {campaign?.goalAmountCents
-                        ? (campaign?.goalAmountCents / 100)?.toLocaleString()
-                        : "0"}{" "}
-                      goal
+                      {campaign?.type?.toLowerCase() === "time" ? (
+                        "raised in the time"
+                      ) : (
+                        <>
+                          raised of {getCurrencySymbol(campaign?.goalCurrency)}
+                          {""}
+                          {campaign?.goalAmountCents
+                            ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                            : "0"}{" "}
+                          goal
+                        </>
+                      )}
                     </span>
                   </div>
                 </div>
               </div>
               {/* Progress Bar Custom */}
-              <div className="mt-1.5 mb-6 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-2.5">
+              <div className="mt-1.5 mb-2 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-2.5">
                 <div
                   className="h-full rounded-full bg-[#7CE993] transition-all duration-300"
                   style={{
-                    width: `${(campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100}%`,
+                    width: `${
+                      campaign?.type?.toLowerCase() === "time"
+                        ? getTimeProgress(campaign?.startDate, campaign?.endDate)
+                        : (campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100
+                    }%`,
                   }}
                 />
               </div>
+
+              {/* Progress indicators for time-based campaigns */}
+              <div className="mb-2.5 flex items-center justify-between text-xs">
+                {campaign?.type?.toLowerCase() === "amount" && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-[#12AA5B]" />
+                    <span className="text-[#6B6B6B]">
+                      {Math.round(
+                        campaign?.goalAmountCents
+                          ? (campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100
+                          : 0
+                      )}
+                      % funded
+                    </span>
+                  </div>
+                )}
+                {campaign?.type?.toLowerCase() === "time" && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="h-2 w-2 rounded-full bg-[#E5E5E5]" />
+                    <span className="text-[#6B6B6B]">
+                      {Math.round(getTimeProgress(campaign?.startDate, campaign?.endDate))}% of time
+                      elapsed
+                    </span>
+                  </div>
+                )}
+              </div>
+
+              {campaign?.donationsCount > 0 && (
+                <p className="mb-4 text-sm text-[#6B6B6B]">
+                  {campaign?.donationsCount} donation{campaign?.donationsCount !== 1 ? "s" : ""}
+                </p>
+              )}
+
               <Button
                 onClick={
                   // () => setIsOpen(true)
@@ -192,6 +308,33 @@ const CampaignDetails = () => {
         </div>
 
         <div className="hidden h-max w-full max-w-[413px] rounded-[32px] border border-[#E5E5E5] p-6 lg:block">
+          {/* Time left badge for time-based campaigns */}
+          {campaign?.type?.toLowerCase() === "time" &&
+            campaign?.endDate &&
+            (() => {
+              const timeInfo = getTimeRemaining(campaign?.endDate);
+              return (
+                <div
+                  className={`mb-4 inline-flex items-center gap-2 rounded-full px-4 py-2 ${
+                    timeInfo.isUrgent
+                      ? "bg-[#FFF5F5] text-[#DF1C41]"
+                      : "bg-[#F2FFF4] text-[#12AA5B]"
+                  }`}
+                >
+                  <ClockIcon
+                    size={20}
+                    weight="fill"
+                    className={timeInfo.isUrgent ? "text-[#EF4444]" : "text-[#12AA5B]"}
+                  />
+                  <span
+                    className={`text-sm font-medium ${timeInfo.isUrgent ? "text-[#EF4444]" : "text-[#12AA5B]"}`}
+                  >
+                    {timeInfo.text}
+                  </span>
+                </div>
+              );
+            })()}
+
           {/* Content */}
           <div className="flex w-full items-center gap-3">
             <div>
@@ -202,25 +345,69 @@ const CampaignDetails = () => {
                   {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
                 </span>
                 <span className="text-sm text-nowrap text-[#000000]">
-                  raised of {getCurrencySymbol(campaign?.goalCurrency)}
-                  {""}
-                  {campaign?.goalAmountCents
-                    ? (campaign?.goalAmountCents / 100)?.toLocaleString()
-                    : "0"}{" "}
-                  goal
+                  {campaign?.type?.toLowerCase() === "time" ? (
+                    "raised in the time"
+                  ) : (
+                    <>
+                      raised of {getCurrencySymbol(campaign?.goalCurrency)}
+                      {""}
+                      {campaign?.goalAmountCents
+                        ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                        : "0"}{" "}
+                      goal
+                    </>
+                  )}
                 </span>
               </div>
             </div>
           </div>
           {/* Progress Bar Custom */}
-          <div className="mt-1.5 mb-8 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-2.5">
+          <div className="mt-1.5 mb-2 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-2.5">
             <div
               className="h-full rounded-full bg-[#7CE993] transition-all duration-300"
               style={{
-                width: `${(campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100}%`,
+                width: `${
+                  campaign?.type?.toLowerCase() === "time"
+                    ? getTimeProgress(campaign?.startDate, campaign?.endDate)
+                    : (campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100
+                }%`,
               }}
             />
           </div>
+
+          {/* Progress indicators for time-based campaigns */}
+          <div className="mb-2.5 flex items-center justify-between text-xs">
+            {campaign?.type?.toLowerCase() === "amount" && (
+              <div className="flex items-center gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-[#12AA5B]" />
+                <span className="text-[#6B6B6B]">
+                  {Math.round(
+                    campaign?.goalAmountCents
+                      ? (campaign?.totalRaisedCents / campaign?.goalAmountCents) * 100
+                      : 0
+                  )}
+                  % funded
+                </span>
+              </div>
+            )}
+
+            {campaign?.type?.toLowerCase() === "time" && (
+              <div className="flex items-center gap-1.5">
+                <div className="h-2 w-2 rounded-full bg-[#E5E5E5]" />
+                <span className="text-[#6B6B6B]">
+                  {Math.round(getTimeProgress(campaign?.startDate, campaign?.endDate))}% of time
+                  elapsed
+                </span>
+              </div>
+            )}
+          </div>
+
+          {campaign?.donationsCount > 0 && (
+            <p className="mb-4 text-sm text-[#6B6B6B]">
+              {campaign?.donationsCount} donation{campaign?.donationsCount !== 1 ? "s" : ""}
+            </p>
+          )}
+
           <Button
             onClick={
               // () => setIsOpen(true)
