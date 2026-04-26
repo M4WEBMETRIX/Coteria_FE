@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react";
 import { Button } from "@/components/ui/button";
 // import { Progress } from "@/components/ui/progress";
-import { ArrowRightIcon, CaretRightIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon, CaretRightIcon, TimerIcon } from "@phosphor-icons/react";
 import { useNavigate } from "react-router-dom";
 // import CAMPAIGN_IMAGE from "@/assets/images/sample-campaign.png";
 // import CAMPAIGN_IMAGE_1 from "@/assets/images/sample-campaign-image-1.png";
@@ -14,7 +14,7 @@ import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { DonationModal } from "@/pages/community/services/donate-modal";
 import ManagePagination from "@/components/Manage-pagination";
 
-const MAX_LENGTH = 72; // tweak this until it visually fits 2 lines
+const MAX_LENGTH = 68; // tweak this until it visually fits 2 lines
 
 const getTruncatedText = (text: string) => {
   if (!text) return "";
@@ -22,6 +22,52 @@ const getTruncatedText = (text: string) => {
   if (text.length <= MAX_LENGTH) return text;
 
   return text.slice(0, MAX_LENGTH) + "...";
+};
+
+const getTimeRemaining = (endDate: string) => {
+  const end = new Date(endDate);
+  const now = new Date();
+  const diffMs = end.getTime() - now.getTime();
+
+  // If time has passed, return null
+  if (diffMs <= 0) {
+    return { text: "Ended", isUrgent: true };
+  }
+
+  const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((diffMs % (1000 * 60 * 60)) / (1000 * 60));
+
+  const isUrgent = diffMs < 24 * 60 * 60 * 1000; // Less than 24 hours
+
+  if (days > 0) {
+    return { text: `${days} day${days !== 1 ? "s" : ""} left`, isUrgent: false };
+  } else if (hours > 0) {
+    return { text: `${hours}h ${minutes}m left`, isUrgent };
+  } else {
+    return { text: `${minutes}m left`, isUrgent };
+  }
+};
+
+const getTimeProgress = (startDate: string, endDate: string) => {
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+  const now = new Date();
+
+  // If campaign hasn't started yet, return 0
+  if (now < start) {
+    return 0;
+  }
+
+  // If campaign has ended, return 100
+  if (now > end) {
+    return 100;
+  }
+
+  const totalDuration = end.getTime() - start.getTime();
+  const elapsed = now.getTime() - start.getTime();
+
+  return Math.min((elapsed / totalDuration) * 100, 100);
 };
 
 const DashboardCampaigns = () => {
@@ -195,14 +241,11 @@ const DashboardCampaigns = () => {
           {/* Content */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(0,388px))]">
             {campaignsData?.map((campaign: any) => {
-              // const progress =
-              //   campaign?.target && campaign?.raised
-              //     ? Math.min((campaign.raised / campaign.target) * 100, 100)
-              //     : 0;
-              const progress = Math.min(
-                (campaign.totalRaisedCents / campaign.goalAmountCents) * 100,
-                100
-              );
+              // Calculate progress based on campaign type
+              const progress =
+                campaign?.type?.toLowerCase() === "time"
+                  ? getTimeProgress(campaign?.startDate, campaign?.endDate)
+                  : Math.min((campaign.totalRaisedCents / campaign.goalAmountCents) * 100, 100);
               return (
                 <div
                   onClick={() => navigate(`/user/dashboard/campaign/${campaign?.id}`)}
@@ -217,12 +260,34 @@ const DashboardCampaigns = () => {
                         className="h-full w-full object-cover grayscale"
                       />
                       <div className="absolute inset-0 bg-black/30" />
+
+                      {/* Time remaining badge for Time campaigns */}
+                      {campaign?.type?.toLowerCase() === "time" &&
+                        campaign?.endDate &&
+                        (() => {
+                          const timeInfo = getTimeRemaining(campaign?.endDate);
+                          return (
+                            <div
+                              className={`absolute bottom-3 left-2 flex items-center gap-1 rounded-full px-4 py-[7px] shadow-sm lg:left-3 ${
+                                timeInfo.isUrgent
+                                  ? "bg-[#FFF5F5] text-[#DF1C41]"
+                                  : "bg-[#F2FFF4] text-[#12AA5B]"
+                              }`}
+                            >
+                              <div>
+                                <TimerIcon className="hidden lg:block" weight="fill" size={16} />
+                              </div>
+
+                              <span className="text-xs font-normal">{timeInfo.text}</span>
+                            </div>
+                          );
+                        })()}
                     </div>
                   </div>
 
                   <div className="w-full">
                     <div className="mb-2.5 flex items-center justify-between lg:mt-4">
-                      <h2 className="line-clamp-1 text-base leading-[120%] font-semibold tracking-[-0.5%] text-[#0F0F0F] lg:text-[20px] lg:font-medium">
+                      <h2 className="line-clamp-1 text-sm leading-[120%] font-semibold tracking-[-0.5%] text-[#0F0F0F] lg:text-base lg:font-medium">
                         {campaign?.name}
                       </h2>
                     </div>
@@ -253,7 +318,7 @@ const DashboardCampaigns = () => {
                     </p> */}
 
                     {/* Progress Bar Custom */}
-                    <div className="mt-2.5 mb-4 h-4 w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-5.5">
+                    <div className="mt-2.5 mb-2.5 h-[9px] w-full overflow-hidden rounded-full bg-[#F3E9D8] lg:mt-3">
                       <div
                         className="h-full rounded-full bg-[#7CE993] transition-all duration-300"
                         style={{ width: `${progress}%` }}
@@ -266,41 +331,54 @@ const DashboardCampaigns = () => {
                   />
                 </div> */}
 
-                    <div className="flex items-center justify-between gap-4">
+                    <div className="mb-2.5 flex items-center justify-between gap-4">
                       <div className="flex w-full items-center gap-3">
-                        <div className="flex flex-col items-start gap-1.5 leading-[155%] font-normal tracking-[0%]">
-                          <span className="text-lg font-semibold text-[#0F0F0F] lg:text-[20px] lg:font-medium">
-                            {getCurrencySymbol(campaign?.goalCurrency)}
-                            {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
-                          </span>
-                          <span className="text-sm font-normal text-[#0F0F0F]">
-                            raised of {getCurrencySymbol(campaign?.goalCurrency)}
-                            {campaign?.goalAmountCents
-                              ? (campaign?.goalAmountCents / 100)?.toLocaleString()
-                              : "0"}{" "}
-                            goal
-                          </span>
-                        </div>
+                        {campaign?.type?.toLowerCase() === "time" ? (
+                          <div className="flex flex-col gap-1 leading-[155%] font-normal tracking-[0%] lg:flex-row lg:items-end">
+                            <span className="text-sm font-semibold text-[#0F0F0F] lg:text-[20px] lg:font-medium">
+                              {getCurrencySymbol(campaign?.goalCurrency)}
+                              {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
+                            </span>
+                            <span className="text-xs font-normal text-[#666D80] lg:mb-1">
+                              raised so far
+                            </span>
+                          </div>
+                        ) : (
+                          <div className="flex flex-col gap-1 leading-[155%] font-normal tracking-[0%] lg:flex-row lg:items-end">
+                            <span className="text-sm font-semibold text-[#0F0F0F] lg:text-[20px] lg:font-medium">
+                              {getCurrencySymbol(campaign?.goalCurrency)}
+                              {(campaign?.totalRaisedCents / 100)?.toLocaleString()}
+                            </span>
+                            <span className="text-xs font-normal text-[#666D80] lg:mb-1">
+                              raised of {getCurrencySymbol(campaign?.goalCurrency)}
+                              {campaign?.goalAmountCents
+                                ? (campaign?.goalAmountCents / 100)?.toLocaleString()
+                                : "0"}{" "}
+                              goal
+                            </span>
+                          </div>
+                        )}
                       </div>
-                      <Button
-                        variant={"outline"}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          setSelectedCampaign(campaign);
-                          // console.log(campaign);
-                          navigate(`/user/donate/${campaign?.slug}?userId=${endUser?.id}`);
-                          // setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
-                        }}
-                        className="hidden h-[56px] w-[157px] rounded-full border border-[#E5E5E5] bg-[#FAFAFA] px-4 text-white lg:flex lg:items-center lg:justify-between"
-                      >
-                        <div className="flex items-center text-base font-medium text-[#0F0F0F]">
-                          Donate
-                        </div>
-                        <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
-                          <ArrowRightIcon size={14} weight="bold" className="text-[#0F0F0F]" />
-                        </div>
-                      </Button>
+                      <p className="text-sm font-medium text-[#12AA5B]">{progress?.toFixed(0)}%</p>
                     </div>
+                    <Button
+                      variant={"outline"}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setSelectedCampaign(campaign);
+                        // console.log(campaign);
+                        navigate(`/user/donate/${campaign?.slug}?userId=${endUser?.id}`);
+                        // setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
+                      }}
+                      className="hidden h-[56px] w-full rounded-full border border-[#E5E5E5] bg-[#12AA5B] px-4 text-white hover:bg-[#12AA5B]/80 lg:flex lg:items-center lg:justify-between"
+                    >
+                      <div className="flex items-center text-base font-medium text-white">
+                        Donate
+                      </div>
+                      <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                        <ArrowRightIcon size={14} weight="bold" className="text-[#0F0F0F]" />
+                      </div>
+                    </Button>
                   </div>
                   <Button
                     onClick={() => {

@@ -58,7 +58,7 @@ const UserSignIn = () => {
         userResendVerificationEmailMutate({});
       } else {
         // Redirect to returnUrl if present, otherwise default dashboard
-        const destination = returnUrl || "/user/dashboard?tab=community";
+        const destination = returnUrl || "/user/dashboard?tab=home";
         if (destination.startsWith("http")) {
           window.location.href = destination;
         } else {
@@ -76,7 +76,7 @@ const UserSignIn = () => {
   };
 
   if (isAuthenticated() && !isSuccess) {
-    return <Navigate to="/user/dashboard?tab=community" replace />;
+    return <Navigate to="/user/dashboard?tab=home" replace />;
   }
   // useEffect(() => {
   //   if (data?.data?.requiresEmailVerification || data?.data?.emailVerified) {

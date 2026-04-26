@@ -28,51 +28,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from ".
 import { useUpdateCampaignStatus } from "@/services/generics/hooks";
 import { Loader2Icon } from "lucide-react";
 import { toast } from "sonner";
-import { QRCodeModal } from "@/end-user-app/pages/dashboard/share-modal";
-import { useState } from "react";
-
-// const campaignsData = [
-//   {
-//     id: "1",
-//     title: "Strength in Unity: Cancer Patient Support Program",
-//     participants: 126,
-//     trend: "up",
-//     lastActivity: "2h ago",
-//     goalAmount: "$500.00",
-//     raised: "-",
-//     status: "Draft",
-//   },
-//   {
-//     id: "2",
-//     title: "Journey of Hope: Empowering Cancer Survivors",
-//     participants: 32,
-//     trend: "down",
-//     lastActivity: "3 days ago",
-//     goalAmount: "$500.00",
-//     raised: "$100.00",
-//     status: "Active",
-//   },
-//   {
-//     id: "3",
-//     title: "Light of Hope: Cancer Awareness and Support",
-//     participants: 126,
-//     trend: "up",
-//     lastActivity: "2h ago",
-//     goalAmount: "$500.00",
-//     raised: "$500.00",
-//     status: "Paused",
-//   },
-//   {
-//     id: "4",
-//     title: "Radiant Futures: A Cancer Support Initiative",
-//     participants: 0,
-//     trend: "down",
-//     lastActivity: "50 days ago",
-//     goalAmount: "$500.00",
-//     raised: "-",
-//     status: "Suspended",
-//   },
-// ];
 
 export const StatusBadge = ({ status }: { status: string }) => {
   let styles = "";
@@ -274,12 +229,10 @@ export function ActionPopover({
   slug: string;
 }) {
   const navigate = useNavigate();
-  const [isOpen, setIsOpen] = useState(false);
   const { mutate: updateCampaignStatus, isPending: updateCampaignStatusPending } =
     useUpdateCampaignStatus(id);
 
   const PUBLIC_URL = `${getBaseUrl({ target: "donor" })}/community/public/campaign/${slug}`;
-  const PUBLIC_DONATION_URL = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${slug}`;
   const handlePublicLinkCopy = async () => {
     try {
       await navigator.clipboard.writeText(PUBLIC_URL);
@@ -287,10 +240,6 @@ export function ActionPopover({
     } catch (err) {
       toast.error("Failed to copy link");
     }
-  };
-
-  const handleQRCodeOpen = () => {
-    setIsOpen(true);
   };
 
   return (
@@ -334,22 +283,12 @@ export function ActionPopover({
             </div>
           )}
 
-          {status?.toLocaleLowerCase() === "active" && (
-            <div
-              onClick={handleQRCodeOpen}
-              className="flex cursor-pointer items-center gap-2 text-sm"
-            >
-              <CopyIcon size={18} />
-              Donation QR code
-            </div>
-          )}
-
-          <QRCodeModal
+          {/* <QRCodeModal
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             isCustom={true}
             url={PUBLIC_DONATION_URL}
-          />
+          /> */}
         </div>
       </PopoverContent>
     </Popover>

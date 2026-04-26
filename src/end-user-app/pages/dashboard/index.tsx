@@ -39,7 +39,7 @@ const DashboardIndex = () => {
   const navigate = useNavigate();
   // const user = getOrgUserFromLocalStorage();
   const [activeTab] = useQueryState("tab", {
-    defaultValue: "community",
+    defaultValue: "home",
   });
 
   const { data, isPending } = useGetEndUserProfile();
@@ -116,7 +116,7 @@ const DashboardIndex = () => {
         </nav>
         <ButtonTabs
           tabs={[
-            // { label: "Home", value: "home" },
+            { label: "Home", value: "home" },
             { label: "Community", value: "community" },
             { label: "Campaigns", value: "campaigns" },
             // { label: "Resources ", value: "resources" },
@@ -124,7 +124,7 @@ const DashboardIndex = () => {
             // { label: "Member", value: "member" },
           ]}
           values={TAB_VALUES}
-          defaultValue={TAB_VALUES[1]}
+          defaultValue={TAB_VALUES[0]}
           className="mb-6 max-w-full overflow-x-auto lg:max-w-[650px]"
         />
         {activeTab === "home" && <DashboardHome />}
@@ -249,9 +249,10 @@ const DashboardIndex = () => {
             classNames={{
               today: "rounded-full data-[selected=true]:rounded-full",
               week: "flex w-full mt-3 gap-2",
-              day_button: "data-[selected-single=true]:rounded-full",
+              day_button: "data-[selected-single=true]:rounded-full rounded-full",
+              day: "flex-1",
             }}
-            className="w-full rounded-lg border text-sm! font-normal! text-[#6F6F6F]!"
+            className="w-full overflow-visible! rounded-lg border text-sm! font-normal! text-[#6F6F6F]!"
           />
           {/* 
           <div className="mt-4 mb-3 flex items-center justify-between">

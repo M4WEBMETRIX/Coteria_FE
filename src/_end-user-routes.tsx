@@ -29,6 +29,7 @@ const DonatePage = lazy(() => import("./pages/community/donate-page"));
 import Logo from "@/assets/icons/coterie.svg";
 import DonationSuccess from "./pages/community/services/donation-success";
 import UserResetPassword from "./end-user-app/pages/authentications/reset-password";
+import ConfirmDeactivation from "./end-user-app/pages/authentications/confirm-deactivation";
 
 const EndUserRoutes = () => {
   return (
@@ -53,6 +54,7 @@ const EndUserRoutes = () => {
           <Route path="login" element={<UserSignIn />} />
           <Route path="forgot-password" element={<UserForgotPassword />} />
           <Route path="reset-password" element={<UserResetPassword />} />
+          <Route path="confirm-deactivation" element={<ConfirmDeactivation isDonor={true} />} />
         </Route>
 
         {/* Protected routes */}

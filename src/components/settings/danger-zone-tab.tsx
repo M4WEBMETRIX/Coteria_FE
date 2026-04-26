@@ -46,12 +46,16 @@ const DangerZoneTab = () =>
               type="button"
               onClick={() => setIsDeleteModalOpen(true)}
             >
-              End
+              Deactivate
             </Button>
           </div>
         </div>
         <Separator />
-        <DeleteAccountModal open={isDeleteModalOpen} onOpenChange={setIsDeleteModalOpen} />
+        <DeleteAccountModal
+          open={isDeleteModalOpen}
+          onOpenChange={setIsDeleteModalOpen}
+          isDonor={false}
+        />
       </div>
     );
   };

@@ -353,7 +353,7 @@ const DonatePage = () => {
             </label>
 
             {/* Join Coterie */}
-            {!showAccountBanner && (
+            {!emailExists && (
               <label className="flex cursor-pointer items-start gap-3">
                 <button
                   type="button"

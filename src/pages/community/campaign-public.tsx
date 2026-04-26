@@ -8,7 +8,7 @@ import {
   ChartLineUpIcon,
   CalendarIcon,
 } from "@phosphor-icons/react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import PUBLIC_COMMUNITY_IMAGE_2 from "@/assets/images/public-community-image-2.png";
 import ATLANTIC_LOGO from "@/assets/images/atlantic-salmon.png";
 import { useGetPublicCampaign } from "./services";
@@ -66,7 +66,7 @@ During his formative years, young Bill spent many happy days wandering through N
 
 const CampaignPublic = () => {
   const [isOpen, setIsOpen] = useState(false);
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
   const { campaignId } = useParams();
 
   const { data: publicCampaignData, isPending: publicCampaignPending } =
@@ -187,7 +187,8 @@ const CampaignPublic = () => {
                 </div>
 
                 <Button
-                  onClick={() => setIsOpen(true)}
+                  // onClick={() => setIsOpen(true)}
+                  onClick={() => navigate(`/user/donate/${campaignId}`)}
                   className="h-12 w-full rounded-lg bg-[#307941] text-white hover:bg-[#0da055]"
                 >
                   Donate Now <CaretRightIcon className="ml-2" />

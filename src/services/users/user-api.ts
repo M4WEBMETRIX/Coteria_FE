@@ -65,7 +65,9 @@ userApi.interceptors.response.use(
         processQueue(err, null);
 
         localStorage.clear();
-        // window.location.href = "/auth/login";
+        
+        // Redirect to donor login page for end users
+        window.location.href = "/user/login";
 
         if (!err.response) {
           return Promise.reject({ message: "Network error" });

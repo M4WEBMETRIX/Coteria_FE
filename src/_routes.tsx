@@ -25,6 +25,7 @@ const DonorDetailsPage = lazy(() => import("./pages/dashboard/donation-details")
 const NotFoundPage = lazy(() => import("./pages/not-found-page"));
 import Logo from "@/assets/icons/coterie.svg";
 import DonationSuccess from "./pages/community/services/donation-success";
+import ConfirmDeactivation from "./end-user-app/pages/authentications/confirm-deactivation";
 const DonationDetailsPage = lazy(() => import("./pages/dashboard/donation-detail-page"));
 const VerifyEmailPage = lazy(() => import("./pages/authentications/verify-email-page"));
 const OrgCommunityDetailPage = lazy(() => import("./pages/dashboard/org-community-detail-page"));
@@ -60,6 +61,7 @@ const AllRoutes = () => {
         <Route path="auth/check-email" element={<CheckEmailPage />} />
         <Route path="auth/verify-email" element={<VerifyEmailPage />} />
         <Route path="auth/reset-password" element={<ResetPasswordPage />} />
+        <Route path="auth/confirm-deactivation" element={<ConfirmDeactivation isDonor={false} />} />
 
         {/* Protected routes */}
         <Route element={<ProtectedRoute />}>
