@@ -193,7 +193,9 @@ const CampaignPublic = () => {
 
                 <Button
                   // onClick={() => setIsOpen(true)}
-                  onClick={() => navigate(`/user/donate/${campaignId}?userId=${endUser?.id}`)}
+                  onClick={() =>
+                    navigate(`/user/campaign/public/donate/${campaignId}?userId=${endUser?.id}`)
+                  }
                   className="h-12 w-full rounded-lg bg-[#307941] text-white hover:bg-[#0da055]"
                 >
                   Donate Now <CaretRightIcon className="ml-2" />
