@@ -125,11 +125,15 @@ export const useCampaignDetails = (id: string | number | undefined) => {
   return useQuery({
     queryKey: [USE_GET_CAMPAIGN_DETAILS_API, id],
     queryFn: () => getFunction(URL),
-    enabled: !!id,
+    enabled: !!id && id !== "undefined",
   });
 };
 
-export const useGetCampaignBasic = (params?: { search?: string; page?: number; limit?: number }) => {
+export const useGetCampaignBasic = (params?: {
+  search?: string;
+  page?: number;
+  limit?: number;
+}) => {
   const queryParams = new URLSearchParams();
   if (params?.page) queryParams.append("page", params.page.toString());
   if (params?.limit) queryParams.append("limit", params.limit.toString());

@@ -8,7 +8,11 @@ import {
   ImageIcon,
   QrCodeIcon,
 } from "@phosphor-icons/react";
-import { useCampaignDetails, useGetCampaignBasic } from "@/services/generics/hooks";
+import {
+  useCampaignDetails,
+  useGetCampaignBasic,
+  useGetOrganisationProfile,
+} from "@/services/generics/hooks";
 import { cn, getBaseUrl } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -35,7 +39,9 @@ const CampaignQRCodePage = () => {
   const { id } = useParams();
   const [selectedCampaignId, setSelectedCampaignId] = useState<any | null>(null);
   // const navigate = useNavigate();
-  const { data: campaignDetails } = useCampaignDetails(id || selectedCampaignId);
+
+  const fetchId = id && id !== "undefined" ? id : selectedCampaignId;
+  const { data: campaignDetails, isPending } = useCampaignDetails(fetchId);
   const campaign = campaignDetails?.data;
 
   const previewRef = useRef<HTMLDivElement>(null);
@@ -51,14 +57,21 @@ const CampaignQRCodePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const debouncedSearchQuery = useDebounce(searchQuery, 300);
 
-  const { data } = useGetCampaignBasic({ search: debouncedSearchQuery });
+  const { data: userData } = useGetOrganisationProfile();
+  const orgUser = userData?.data;
+
+  const { data, isPending: isCampaignListPending } = useGetCampaignBasic({
+    search: debouncedSearchQuery,
+  });
   const campaignList = data?.data?.items || [];
 
   // Find selected campaign name for display
-  const selectedCampaignName = campaignList.find((c: any) => c.slug === selectedCampaignId)?.name;
+  const selectedCampaign = campaignList.find((c: any) => c.slug === selectedCampaignId);
 
-  const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id}`;
-  const orgName = campaign?.community?.name || "<Org Name>";
+  const selectedCampaignName = selectedCampaign?.name;
+
+  const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id || selectedCampaign?.slug}`;
+  const orgName = orgUser?.name || "<Org Name>";
   const campaignName = campaign?.name || "<Campaign Name>";
 
   const handleLogoUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -209,6 +222,7 @@ const CampaignQRCodePage = () => {
                   Select Campaign
                 </label>
                 <Combobox
+                  disabled={isCampaignListPending}
                   value={selectedCampaignId}
                   onValueChange={setSelectedCampaignId}
                   inputValue={searchQuery}
@@ -221,7 +235,11 @@ const CampaignQRCodePage = () => {
                     )}
                   >
                     <ComboboxValue placeholder={"Select campaign"}>
-                      {selectedCampaignName || "Select campaign"}
+                      {isCampaignListPending ? (
+                        "Loading..."
+                      ) : (
+                        <>{selectedCampaignName || "Select campaign"}</>
+                      )}
                     </ComboboxValue>
                   </ComboboxTrigger>
                   <ComboboxContent className="z-[9999] w-(--anchor-width) min-w-(--anchor-width) p-0">
@@ -426,9 +444,15 @@ const CampaignQRCodePage = () => {
                 <p className="mb-1 max-w-full text-center text-sm break-words text-[#6B6B6B]">
                   Support our mission
                 </p>
-                <p className="mb-4 max-w-full text-center text-base font-bold break-words text-[#0F0F0F]">
-                  {campaignName}
-                </p>
+                {isPending && selectedCampaign ? (
+                  <div className="mb-4 flex justify-center">
+                    <div className="h-[16px] w-[60%] max-w-[260px] animate-pulse rounded bg-gray-200" />
+                  </div>
+                ) : (
+                  <p className="mb-4 max-w-full text-center text-base font-bold break-words text-[#0F0F0F]">
+                    {campaignName || "<Campaign Name>"}
+                  </p>
+                )}
 
                 {/* QR Code */}
                 <div ref={qrCanvasRef} className="mb-4">
