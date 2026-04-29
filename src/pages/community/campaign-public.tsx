@@ -15,7 +15,7 @@ import { useGetPublicCampaign } from "./services";
 import { getCurrencySymbol, getDaysBetweenDates } from "@/lib/utils";
 import CampaignPublicSkeleton from "./campaign-public-skeleton";
 import { DonationModal } from "./services/donate-modal";
-import { useMemo, useState } from "react";
+import { useMemo, useState, useEffect } from "react";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { getEndUserFromLocalStorage } from "@/end-user-app/services/local-storage";
 
@@ -74,8 +74,27 @@ const CampaignPublic = () => {
     return getEndUserFromLocalStorage();
   }, []);
 
-  const { data: publicCampaignData, isPending: publicCampaignPending } =
+  const { data: publicCampaignData, isPending: publicCampaignPending, isError, error } =
     useGetPublicCampaign(campaignId);
+
+  // Redirect to 404 if campaign not found
+  useEffect(() => {
+    if (isError && error) {
+      const errorResponse = error as any;
+      // Check for 404 status in the response object
+      const status = errorResponse?.response?.status || errorResponse?.status;
+      const errorCode = errorResponse?.response?.data?.error?.code || errorResponse?.error?.code;
+      const errorMessage = errorResponse?.response?.data?.error?.message || errorResponse?.message || "";
+      
+      if (
+        status === 404 ||
+        errorCode === "ERROR" ||
+        errorMessage.toLowerCase().includes("not found")
+      ) {
+        navigate("/404", { replace: true });
+      }
+    }
+  }, [isError, error, navigate]);
 
   // console.log("publicCampaignData", publicCampaignData);
 
