@@ -49,7 +49,7 @@ const CommandCenter = ({ data }: { data: any }) => {
                 <span className="text-xs text-[#8B8D98]">{data?.description}</span>
               </div>
             </div>
-            {data?.status?.toLowerCase() !== "completed" && (
+            {data?.status?.toLowerCase() === "active" && (
               <ShareCampaign
                 communitySlug={data?.community?.slug}
                 campaignSlug={data?.slug}
