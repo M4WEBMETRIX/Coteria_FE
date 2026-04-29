@@ -62,7 +62,14 @@ const UserSignIn = () => {
         userResendVerificationEmailMutate({});
       } else {
         // Redirect to returnUrl if present, otherwise default dashboard
-        const destination = returnUrl || "/user/dashboard?tab=home";
+        let destination = returnUrl || "/user/dashboard?tab=home";
+        
+        // If we have an email parameter and the destination doesn't already have it, add it
+        if (emailParam && destination && !destination.includes("email=")) {
+          const separator = destination.includes("?") ? "&" : "?";
+          destination = `${destination}${separator}email=${encodeURIComponent(emailParam)}`;
+        }
+        
         if (destination.startsWith("http")) {
           window.location.href = destination;
         } else {
@@ -70,7 +77,7 @@ const UserSignIn = () => {
         }
       }
     }
-  }, [isSuccess]);
+  }, [isSuccess, returnUrl, emailParam, navigate, data, userResendVerificationEmailMutate]);
 
   const onSubmit = (data: LoginFormValues) => {
     // console.log(data);

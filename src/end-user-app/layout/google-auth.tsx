@@ -13,6 +13,7 @@ type Props = {
 const GoogleAuth = ({ googleText }: Props) => {
   const navigate = useNavigate();
   const [returnUrl] = useQueryState("returnUrl");
+  const [emailParam] = useQueryState("email");
   const { mutate: userGoogleAuthMutate } = useUserGoogleAuth();
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
@@ -33,7 +34,14 @@ const GoogleAuth = ({ googleText }: Props) => {
               {
                 onSuccess: () => {
                   // Redirect to returnUrl if present, otherwise default dashboard
-                  const destination = returnUrl || "/user/dashboard?tab=home";
+                  let destination = returnUrl || "/user/dashboard?tab=home";
+                  
+                  // If we have an email parameter and the destination doesn't already have it, add it
+                  if (emailParam && destination && !destination.includes("email=")) {
+                    const separator = destination.includes("?") ? "&" : "?";
+                    destination = `${destination}${separator}email=${encodeURIComponent(emailParam)}`;
+                  }
+                  
                   if (destination.startsWith("http")) {
                     window.location.href = destination;
                   } else {
