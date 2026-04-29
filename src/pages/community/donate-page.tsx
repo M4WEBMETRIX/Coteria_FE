@@ -25,7 +25,48 @@ const formSchema = z.object({
   amount: z
     .number({ required_error: "Amount is required", invalid_type_error: "Amount must be a number" })
     .min(1, "Amount must be greater than 0"),
-  donorEmail: z.string().email("Invalid email").optional().or(z.literal("")),
+  donorEmail: z
+    .string()
+    .min(1, "Email is required")
+    .email("Please enter a valid email address")
+    .refine(
+      (email) => {
+        // Check for common typos in email domains
+        // const commonDomains = [
+        //   "gmail.com",
+        //   "yahoo.com",
+        //   "hotmail.com",
+        //   "outlook.com",
+        //   "icloud.com",
+        //   "aol.com",
+        //   "protonmail.com",
+        //   "mail.com",
+        // ];
+        const domain = email.split("@")[1]?.toLowerCase();
+
+        // Basic validation: must have @ and domain with at least one dot
+        if (!email.includes("@") || !domain || !domain.includes(".")) {
+          return false;
+        }
+
+        // Check for common typos
+        const typos = ["gmial.com", "gmai.com", "yahooo.com", "hotmial.com", "outlok.com"];
+        if (typos.includes(domain)) {
+          return false;
+        }
+
+        // Domain must have at least 2 characters before and after the dot
+        const domainParts = domain.split(".");
+        if (domainParts.some((part) => part.length < 2)) {
+          return false;
+        }
+
+        return true;
+      },
+      {
+        message: "Please enter a valid email address",
+      }
+    ),
   isAnonymous: z.boolean().default(false),
   joinCoterie: z.boolean().default(true),
 });
@@ -37,6 +78,7 @@ const DonatePage = () => {
   const { campaignId } = useParams();
   const [userId] = useQueryState("userId");
   const [referralCode] = useQueryState("referral-code");
+  const [emailFromUrl] = useQueryState("email");
   const isAuthenticated = !!localStorage.getItem("userAccessToken");
 
   const endUser = useMemo(() => {
@@ -54,14 +96,19 @@ const DonatePage = () => {
     formState: { errors },
   } = useForm<FormValues>({
     resolver: zodResolver(formSchema as any),
+    mode: "onChange", // Enable real-time validation
+    reValidateMode: "onChange", // Re-validate on every change
     defaultValues: { amount: 0, donorEmail: "", isAnonymous: false, joinCoterie: true },
   });
 
+  // Set email from endUser or URL parameter
   useEffect(() => {
-    if (endUser) {
-      setValue("donorEmail", endUser?.email);
+    if (endUser?.email) {
+      setValue("donorEmail", endUser.email);
+    } else if (emailFromUrl) {
+      setValue("donorEmail", emailFromUrl);
     }
-  }, [endUser]);
+  }, [endUser, emailFromUrl, setValue]);
 
   const donorEmail = useWatch({ control, name: "donorEmail" });
   const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(donorEmail as string);
@@ -71,6 +118,32 @@ const DonatePage = () => {
   const { data: emailCheckData } = useCheckEmailExists(debouncedEmail);
   // const emailExists = emailCheckData?.data?.exists;
   const emailExists = emailCheckData?.data?.exists ?? false;
+
+  // Suggest corrections for common email typos
+  const getEmailSuggestion = (email: string) => {
+    if (!email || !email.includes("@")) return null;
+
+    const domain = email.split("@")[1]?.toLowerCase();
+    const typoMap: Record<string, string> = {
+      "gmial.com": "gmail.com",
+      "gmai.com": "gmail.com",
+      "gmil.com": "gmail.com",
+      "yahooo.com": "yahoo.com",
+      "yaho.com": "yahoo.com",
+      "hotmial.com": "hotmail.com",
+      "hotmil.com": "hotmail.com",
+      "outlok.com": "outlook.com",
+      "outloo.com": "outlook.com",
+    };
+
+    if (domain && typoMap[domain]) {
+      return email.replace(domain, typoMap[domain]);
+    }
+
+    return null;
+  };
+
+  const emailSuggestion = donorEmail ? getEmailSuggestion(donorEmail as string) : null;
 
   // console.log(emailExists, isAuthenticated, accountBannerDismissed);
 
@@ -185,6 +258,10 @@ const DonatePage = () => {
             <h1 className="mb-2.5 text-[22px] leading-[130%] font-semibold text-[#0F0F0F]">
               {campaign?.campaignName}
             </h1>
+            <h1 className="mb-2.5 text-sm leading-[130%] font-semibold text-[#525252]">
+              {campaign?.organizationName}
+            </h1>
+
             <p className="text-sm text-[#525252]">{campaign?.community?.name}</p>
             {campaign?.charityNumber && (
               <p className="text-sm text-[#525252]">{campaign.charityNumber}</p>
@@ -260,6 +337,17 @@ const DonatePage = () => {
               <p className="mt-1 text-xs text-red-500">{errors.donorEmail.message}</p>
             )}
 
+            {/* Email suggestion for typos */}
+            {emailSuggestion && !errors.donorEmail && (
+              <button
+                type="button"
+                onClick={() => setValue("donorEmail", emailSuggestion)}
+                className="mt-2 text-xs text-[#12AA5B] hover:underline"
+              >
+                Did you mean <span className="font-semibold">{emailSuggestion}</span>?
+              </button>
+            )}
+
             {/* Account found banner */}
             {showAccountBanner && isValidEmail && (
               <div className="relative mt-6 rounded-[16px] border border-[#FFD4D4] bg-[#FFFAF8] px-2 py-4 lg:px-5">
@@ -278,10 +366,10 @@ const DonatePage = () => {
                 </p>
                 <div className="flex gap-2.5 lg:gap-3">
                   <Link
-                    to={`/user/login?returnUrl=${encodeURIComponent(window.location.href)}`}
+                    to={`/user/login?returnUrl=${encodeURIComponent(window.location.href)}&email=${encodeURIComponent(donorEmail as string)}`}
                     className="flex w-full items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-xs font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B] lg:w-max lg:text-sm"
                   >
-                    Log in to connect
+                    Log in to continue
                     <ArrowUpRightIcon className="hidden lg:block" size={15} weight="bold" />
                   </Link>
                   <button
@@ -380,7 +468,9 @@ const DonatePage = () => {
           {/* CTA */}
           <Button
             type="submit"
-            disabled={createDonationPending || !isValidEmail || !amount || amount <= 0}
+            disabled={
+              createDonationPending || !!errors.donorEmail || !donorEmail || !amount || amount <= 0
+            }
             className="flex h-[56px] w-full items-center justify-between rounded-full bg-[#12AA5B] px-[14px] text-white hover:bg-[#0da055] disabled:opacity-50"
           >
             <span className="flex-1 text-center text-base font-medium">

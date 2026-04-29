@@ -16,10 +16,11 @@ const DeleteAccountModal = ({ open, onOpenChange, isDonor }: DeleteAccountModalP
   const navigate = useNavigate();
 
   const handleDelete = () => {
+    const URL = isDonor ? "/user/confirm-deactivation" : "/auth/confirm-deactivation";
     // Handle account deletion logic here
     // Clear auth tokens, session data, etc.
     onOpenChange(false);
-    navigate("/auth/login");
+    navigate(URL);
   };
 
   const handleCancel = () => {

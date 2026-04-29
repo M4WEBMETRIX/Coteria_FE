@@ -3,12 +3,16 @@ import { Button } from "@/components/ui/button";
 import { GoogleLogin } from "@react-oauth/google";
 import { useUserGoogleAuth } from "@/services/users/user-auth";
 import { toast } from "sonner";
+import { useQueryState } from "nuqs";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   googleText: string;
 };
 
 const GoogleAuth = ({ googleText }: Props) => {
+  const navigate = useNavigate();
+  const [returnUrl] = useQueryState("returnUrl");
   const { mutate: userGoogleAuthMutate } = useUserGoogleAuth();
   const googleButtonRef = useRef<HTMLDivElement>(null);
 
@@ -24,7 +28,20 @@ const GoogleAuth = ({ googleText }: Props) => {
       <div ref={googleButtonRef} className="hidden">
         <GoogleLogin
           onSuccess={(credentialResponse) => {
-            userGoogleAuthMutate({ idToken: credentialResponse.credential });
+            userGoogleAuthMutate(
+              { idToken: credentialResponse.credential },
+              {
+                onSuccess: () => {
+                  // Redirect to returnUrl if present, otherwise default dashboard
+                  const destination = returnUrl || "/user/dashboard?tab=home";
+                  if (destination.startsWith("http")) {
+                    window.location.href = destination;
+                  } else {
+                    navigate(destination, { replace: true });
+                  }
+                },
+              }
+            );
           }}
           onError={() => {
             toast.error("Login Failed, try again");
@@ -50,7 +67,7 @@ const GoogleAuth = ({ googleText }: Props) => {
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
         >
-          <g clip-path="url(#clip0_2688_29167)">
+          <g clipPath="url(#clip0_2688_29167)">
             <path
               d="M25.5395 14.3279C25.6271 14.3279 25.6981 14.3989 25.6981 14.4864V16.151C25.6981 16.7741 25.6402 17.3832 25.5292 17.9742C24.6706 22.5643 20.6267 26.0332 15.7796 25.9998C10.3407 25.9623 5.98798 21.5678 6.00002 16.1288C6.01199 10.6997 10.417 6.302 15.849 6.302C18.5103 6.302 20.9249 7.35777 22.6977 9.07273C22.7617 9.13464 22.7634 9.23667 22.7004 9.29961L20.3454 11.6546C20.2848 11.7152 20.1869 11.7168 20.1247 11.6576C19.0121 10.5985 17.5066 9.9483 15.849 9.9483C12.4261 9.9483 9.66967 12.6851 9.64644 16.108C9.62308 19.5533 12.4091 22.3537 15.849 22.3537C18.64 22.3537 21.0006 20.51 21.7791 17.9742H16.0076C15.92 17.9742 15.849 17.9032 15.849 17.8156V14.4864C15.849 14.3988 15.92 14.3278 16.0076 14.3278H25.5395V14.3279Z"
               fill="#2196F3"

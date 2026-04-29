@@ -100,6 +100,11 @@ const ConfirmDeactivation = ({ isDonor }: { isDonor?: boolean }) => {
                 Enter your password to confirm deactivation.
               </p>
 
+              <div className="mb-10 bg-[#FFFBEC] px-6 py-4.5 text-center text-sm font-medium text-[#515151]">
+                Your account will be deactivated. If you change your mind, you can log back in
+                within 30 days to restore it. After that, your data will be permanently deleted.
+              </div>
+
               <div className="mb-7.5 text-left">
                 <Label className="mb-1 !p-0 text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]">
                   Confirm Password
@@ -133,6 +138,17 @@ const ConfirmDeactivation = ({ isDonor }: { isDonor?: boolean }) => {
                 <p className="mb-12.5 px-8 text-center text-sm leading-[140%] tracking-[0%] text-[#414143]">
                   Enter your password to confirm deactivation.
                 </p>
+
+                <div className="mb-10 bg-[#FFFBEC] px-6 py-4.5 text-center text-sm font-medium text-[#515151]">
+                  Your account will be deactivated. You can log in anytime within the next{" "}
+                  <span className="font-bold">90 days</span> to restore it. After{" "}
+                  <span className="font-bold">90 days</span>, your account and all associated data
+                  will be permanently deleted.
+                  <p className="mt-2 text-center">
+                    To keep your data beyond this period, you can choose to archive your account for
+                    as low as <span className="font-bold">$299 annually</span>
+                  </p>
+                </div>
 
                 <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                   {/* Email */}

@@ -33,6 +33,10 @@ const UserSignIn = () => {
   // const [loading, setLoading] = useState<boolean>(false);
   const [showPassword, setShowPassword] = useState(false);
 
+  const [returnUrl] = useQueryState("returnUrl");
+  const [emailParam] = useQueryState("email");
+  const [searchParams] = useSearchParams();
+
   const {
     register,
     handleSubmit,
@@ -41,15 +45,15 @@ const UserSignIn = () => {
     mode: "onChange",
     resolver: zodResolver(loginSchema),
     defaultValues: {
-      email: "",
+      email: emailParam || "",
       password: "",
     },
   });
 
   const { mutate: userLoginMutate, isPending: loading, isSuccess, data } = useLoginUser();
   const { mutate: userResendVerificationEmailMutate } = useUserResendVerificationEmail();
-  const [returnUrl] = useQueryState("returnUrl");
-  const [searchParams] = useSearchParams();
+
+  const isEmailFromUrl = !!emailParam;
 
   useEffect(() => {
     if (isSuccess) {
@@ -107,8 +111,9 @@ const UserSignIn = () => {
                 placeholder="Enter your name or email"
                 // value={formData.name}
                 {...register("email")}
+                disabled={isEmailFromUrl}
                 required
-                className="h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] p-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12]"
+                className="h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] p-3 text-base leading-[160%] tracking-[0%] text-[#0D0D12] disabled:cursor-not-allowed disabled:opacity-60"
               />
 
               <FieldError errors={[errors.email]} />
