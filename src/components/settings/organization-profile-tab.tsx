@@ -147,6 +147,7 @@ const OrganizationProfileTab = ({ formData, setFormData }: OrganizationProfileTa
               Organization Name <span className="text-sm text-[#DF1C41]">*</span>
             </Label>
             <Input
+              disabled
               id="organizationName"
               value={formData.organizationName}
               onChange={(e) => handleChange("organizationName", e.target.value)}

@@ -119,7 +119,7 @@ const ReceiptModal = ({ isOpen, onClose, id }: ReceiptModalProps) => {
                 <img
                   src={receiptSpecificData?.organizationImageUrl}
                   alt="Organization Logo"
-                  className="mb-2 h-10 w-85.75 object-cover object-center"
+                  className="mb-2 h-20 w-20 object-cover object-center"
                 />
               </div>
             </div>

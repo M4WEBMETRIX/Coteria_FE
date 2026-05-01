@@ -32,14 +32,6 @@ const DangerZoneTab = () =>
             </p>
           </div>
           <div className="flex items-center justify-between">
-            <div className="grid h-[43px] min-w-[532px] space-y-1">
-              <p className="text-sm leading-[150%] font-medium tracking-[2%] text-[#0D0D12]">
-                Delete Account
-              </p>
-              <p className="text-xs text-[#666D80]">
-                End this campaign permanently. No new donations.
-              </p>
-            </div>
             <Button
               variant={"outline"}
               className="border-[#F3654A] text-[#F3654A]"

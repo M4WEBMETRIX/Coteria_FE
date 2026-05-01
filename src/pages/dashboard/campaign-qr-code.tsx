@@ -1,8 +1,9 @@
 import { useRef, useState, useCallback } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas";
 import {
+  ArrowLeftIcon,
   ArrowSquareOutIcon,
   DownloadSimpleIcon,
   ImageIcon,
@@ -37,9 +38,10 @@ const SIZES = [
 
 const CampaignQRCodePage = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
   const [selectedCampaignId, setSelectedCampaignId] = useState<any | null>(null);
   // const navigate = useNavigate();
-
+  const isCampaignRoute = location.pathname.includes("/campaigns/");
   const fetchId = id && id !== "undefined" ? id : selectedCampaignId;
   const { data: campaignDetails, isPending } = useCampaignDetails(fetchId);
   const campaign = campaignDetails?.data;
@@ -390,6 +392,18 @@ const CampaignQRCodePage = () => {
                 <QrCodeIcon size={16} className="text-[#0F0F0F]" />
               </div>
             </Button>
+
+            {isCampaignRoute && (
+              <Button
+                onClick={() => navigate(-1)}
+                className="mt-4 flex h-12 w-full items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-2 hover:bg-transparent"
+              >
+                <span className="flex-1 text-center text-sm font-medium text-[#666D80]">Back</span>
+                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                  <ArrowLeftIcon size={16} className="text-[#0F0F0F]" />
+                </div>
+              </Button>
+            )}
           </div>
         </div>
 
@@ -432,7 +446,7 @@ const CampaignQRCodePage = () => {
                 {logoFile ? (
                   <img src={logoFile} alt="logo" className="h-14 w-14 object-contain" />
                 ) : (
-                  <CoteriePlaceholderLogo color={brandColor} />
+                  <CoteriePlaceholderLogo color={"#12AA5B"} />
                 )}
 
                 <p

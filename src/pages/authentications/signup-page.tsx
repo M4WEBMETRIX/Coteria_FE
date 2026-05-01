@@ -21,7 +21,7 @@ const signupSchema = z
   .object({
     name: z
       .string()
-      .min(1, "Please enter organization name")
+      .min(1, "Organization name is required")
       .max(200, "Organization name must be 200 characters or less"),
     email: z.string().email("Please enter a valid organization email address"),
     businessNumber: z.string().min(9, "Minimum of 9 character standard BN"),
@@ -188,7 +188,7 @@ const SignupPage = () => {
                           {(charityErrorObj as Error)?.message ||
                             "Could not reach charity registry."}
                         </p>
-                        {!(charityErrorObj as any)?.isFormatError && (
+                        {/* {!(charityErrorObj as any)?.isFormatError && (
                           <button
                             type="button"
                             onClick={() => retryCharityLookup()}
@@ -196,7 +196,7 @@ const SignupPage = () => {
                           >
                             Retry
                           </button>
-                        )}
+                        )} */}
                       </div>
                     ) : null)}
                   {/* ))} */}

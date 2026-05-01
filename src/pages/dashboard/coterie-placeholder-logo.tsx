@@ -1,9 +1,9 @@
-const CoteriePlaceholderLogo = ({ color }: { color: string }) => {
+const CoteriePlaceholderLogo = ({ color }: { color?: string }) => {
   return (
-    <div>
+    <div className="mb-2">
       <svg
         width="148"
-        height="35"
+        height="27"
         viewBox="0 0 148 35"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
