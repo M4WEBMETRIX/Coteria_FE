@@ -80,7 +80,7 @@ const SignupPage = () => {
     isFetching: charityFetching,
     isError: charityError,
     error: charityErrorObj,
-    refetch: retryCharityLookup,
+    // refetch: retryCharityLookup,
   } = useCanadaCharityLookup(debouncedBN);
 
   // Auto-populate org name, clear if not found or invalid
