@@ -133,8 +133,10 @@ export const useGetCampaignBasic = (params?: {
   search?: string;
   page?: number;
   limit?: number;
+  status?: string
 }) => {
   const queryParams = new URLSearchParams();
+  queryParams.append("status", params?.status || "Active");
   if (params?.page) queryParams.append("page", params.page.toString());
   if (params?.limit) queryParams.append("limit", params.limit.toString());
   if (params?.search) queryParams.append("q", params.search);
