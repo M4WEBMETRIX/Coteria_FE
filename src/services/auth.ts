@@ -219,3 +219,20 @@ export const useConnectStripe = () => {
     },
   });
 };
+
+export const useDeactivateOrganisation = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (payload: { currentPassword: string; reason: string }) =>
+      postFunction(payload, "/auth/account/deactivate"),
+    onSuccess: () => {
+      removeTokens();
+      removeOrgUserFromLocalStorage();
+      toast.success("Your account has been deactivated successfully");
+      navigate("/auth/login");
+    },
+    onError: (error) => {
+      showErrorToast(error);
+    },
+  });
+};

@@ -9,10 +9,16 @@ import {
   type UserLoginProps,
   type UserRegisterProps,
 } from "./user-index";
-import { getFunctionUserEnd } from "../generics/user-generics/user-generic-index";
+import {
+  getFunctionUserEnd,
+  postFunctionUserEnd,
+} from "../generics/user-generics/user-generic-index";
 import { showErrorToast } from "@/lib/utils";
 import { useNavigate } from "react-router-dom";
-// import { useNavigate } from "react-router-dom";
+import {
+  removeEndUserFromLocalStorage,
+  removeUserTokens,
+} from "@/end-user-app/services/local-storage";
 
 export const useRegisterUser = () => {
   return useMutation({
@@ -103,5 +109,22 @@ export const useGetReferralDetails = (code: string | null) => {
     queryKey: ["referral-details"],
     queryFn: () => getFunctionUserEnd(URL),
     enabled: !!code,
+  });
+};
+
+export const useDeactivateUser = () => {
+  const navigate = useNavigate();
+  return useMutation({
+    mutationFn: (payload: { currentPassword: string; reason: string }) =>
+      postFunctionUserEnd(payload, "/auth/account/deactivate"),
+    onSuccess: () => {
+      removeUserTokens();
+      removeEndUserFromLocalStorage();
+      toast.success("Your account has been deactivated successfully");
+      navigate("/user/login");
+    },
+    onError: (error) => {
+      showErrorToast(error);
+    },
   });
 };

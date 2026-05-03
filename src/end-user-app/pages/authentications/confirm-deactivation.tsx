@@ -6,6 +6,9 @@ import * as z from "zod";
 import { Field, FieldLabel, FieldContent, FieldError } from "@/components/ui/field";
 import { ArrowRightIcon } from "@phosphor-icons/react";
 import { Label } from "@/components/ui/label";
+import { useLocation } from "react-router-dom";
+import { useDeactivateUser } from "@/services/users/user-auth";
+import { useDeactivateOrganisation } from "@/services/auth";
 
 const confirmDeactivationSchema = z.object({
   password: z.string().min(1, "Password is required"),
@@ -14,15 +17,18 @@ const confirmDeactivationSchema = z.object({
 type ConfirmDeactivationValues = z.infer<typeof confirmDeactivationSchema>;
 
 const ConfirmDeactivation = ({ isDonor }: { isDonor?: boolean }) => {
-  // const navigate = useNavigate();
+  const location = useLocation();
+  const reason = location.state?.reason || "";
+
+  const { mutate: deactivateUser, isPending: isDeactivatingUser } = useDeactivateUser();
+  const { mutate: deactivateOrg, isPending: isDeactivatingOrg } = useDeactivateOrganisation();
+
+  const isPending = isDonor ? isDeactivatingUser : isDeactivatingOrg;
 
   const {
     register,
     handleSubmit,
-    formState: {
-      errors,
-      // isValid
-    },
+    formState: { errors, isValid },
   } = useForm<ConfirmDeactivationValues>({
     mode: "onChange",
     resolver: zodResolver(confirmDeactivationSchema),
@@ -31,11 +37,17 @@ const ConfirmDeactivation = ({ isDonor }: { isDonor?: boolean }) => {
     },
   });
 
-  const isPending = false;
-
   const onSubmit = (data: ConfirmDeactivationValues) => {
-    console.log(data);
-    //   forgotPasswordMutate(data);
+    const payload = {
+      currentPassword: data.password,
+      reason: reason,
+    };
+
+    if (isDonor) {
+      deactivateUser(payload);
+    } else {
+      deactivateOrg(payload);
+    }
   };
 
   return (
@@ -119,8 +131,8 @@ const ConfirmDeactivation = ({ isDonor }: { isDonor?: boolean }) => {
               </div>
 
               <Button
-                // disabled={!pw || !confirm}
-                // onClick={onSubmit}
+                disabled={!isValid || isPending}
+                onClick={handleSubmit(onSubmit)}
                 className="flex h-12.5 w-full items-center justify-between rounded-full border border-[#E5E5E5] bg-[#079455] px-2 text-center leading-[160%] font-medium tracking-[0%] text-white hover:bg-[#45D884]/90 lg:px-2 lg:pl-4"
               >
                 {isPending ? "Deactivating..." : "Deactivate"}
@@ -173,7 +185,7 @@ const ConfirmDeactivation = ({ isDonor }: { isDonor?: boolean }) => {
 
                   {/* Submit Button */}
                   <Button
-                    //   disabled={!isValid || isPending}
+                    disabled={!isValid || isPending}
                     type="submit"
                     className="w-full rounded-full bg-[#12AA5B] py-6 text-lg font-semibold text-white hover:bg-green-600"
                   >

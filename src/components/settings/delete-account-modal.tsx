@@ -16,11 +16,15 @@ const DeleteAccountModal = ({ open, onOpenChange, isDonor }: DeleteAccountModalP
   const navigate = useNavigate();
 
   const handleDelete = () => {
+    // Combine selected reasons with other reason if provided
+    const reasonText =
+      reasons.includes("others") && otherReason
+        ? [...reasons.filter((r) => r !== "others"), otherReason].join(", ")
+        : reasons.join(", ");
+
     const URL = isDonor ? "/user/confirm-deactivation" : "/auth/confirm-deactivation";
-    // Handle account deletion logic here
-    // Clear auth tokens, session data, etc.
     onOpenChange(false);
-    navigate(URL);
+    navigate(URL, { state: { reason: reasonText } });
   };
 
   const handleCancel = () => {
@@ -28,6 +32,10 @@ const DeleteAccountModal = ({ open, onOpenChange, isDonor }: DeleteAccountModalP
   };
 
   const [reasons, setReasons] = useState<string[]>([]);
+  const [otherReason, setOtherReason] = useState<string>("");
+
+  const isProceedDisabled =
+    reasons.length === 0 || (reasons.includes("others") && otherReason.trim() === "");
 
   const ORGSREASONS = [
     { id: "not_actively_donating", label: "I’m not actively donating / fundraising right now" },
@@ -168,8 +176,13 @@ const DeleteAccountModal = ({ open, onOpenChange, isDonor }: DeleteAccountModalP
               </>
             ))}
             {reasons.includes("others") && (
-              <div className="flex flex-col items-center gap-1.5">
-                <Textarea placeholder="Please provide a reason" className="border-[#193CB8]" />
+              <div className="mt-2 flex flex-col items-center gap-1.5">
+                <Textarea
+                  placeholder="Please provide a reason"
+                  className="border-[#193CB8]"
+                  value={otherReason}
+                  onChange={(e) => setOtherReason(e.target.value)}
+                />
               </div>
             )}
           </div>
@@ -185,6 +198,7 @@ const DeleteAccountModal = ({ open, onOpenChange, isDonor }: DeleteAccountModalP
             Cancel
           </Button>
           <Button
+            disabled={isProceedDisabled}
             onClick={handleDelete}
             className="flex-1 rounded-lg bg-[#DF1C41] py-2.5 text-sm font-medium text-white hover:bg-[#C91839]"
           >
