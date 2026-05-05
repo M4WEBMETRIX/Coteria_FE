@@ -134,7 +134,7 @@ function ShareImpactModal({
         {/* Share Actions */}
         <div className="flex flex-wrap gap-2">
           {[
-            { label: "Copy link", action: copyLink },
+            { label: "Copy text", action: copyLink },
             { label: "Share to WhatsApp", action: shareWhatsApp },
             { label: "Post on X", action: shareX },
             { label: "Download Image", action: downloadImage },
