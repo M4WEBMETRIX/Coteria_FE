@@ -103,12 +103,14 @@ const DashboardHome = () => {
     <div className="flex w-full flex-col items-start gap-4 lg:flex-row">
       <div className="w-full space-y-3 lg:w-[55%]">
         <div className="no-scrollbar h-[421px] overflow-y-auto rounded-[10px] bg-[#F6FAF9] p-6">
-          <p className="mb-6 text-lg leading-[155%] font-medium tracking-[0%] text-[#000000]">
+          <p className="mb-6 text-base leading-[155%] font-medium tracking-[0%] text-[#000000]">
             Your Impact
           </p>
           {sampleImpactData?.length === 0 ? (
             <EmptyState
               className="h-[85%]"
+              titleClassName="!text-base"
+              descriptionClassName="!text-sm !font-normal !max-w-[299px]"
               title="No Impact Yet"
               description="Once you have supported a campaign, your impact will appear here."
             />
@@ -150,13 +152,15 @@ const DashboardHome = () => {
           )}
         </div>
         <div className="no-scrollbar h-[421px] overflow-y-auto rounded-[10px] bg-[#F6FAF9] p-6">
-          <p className="mb-3 text-lg leading-[155%] font-medium tracking-[0%] text-[#000000]">
+          <p className="mb-3 text-base leading-[155%] font-medium tracking-[0%] text-[#000000]">
             What’s Happening?
           </p>
 
           {happeningData?.length === 0 ? (
             <EmptyState
               className="h-[85%]"
+              titleClassName="!text-base"
+              descriptionClassName="!text-sm !font-normal !max-w-[299px]"
               title="No Activity"
               description="No activities are currently available based on your interests."
             />
@@ -199,13 +203,15 @@ const DashboardHome = () => {
       </div>
       <div className="w-full space-y-3 lg:w-[45%]">
         <div className="h-[445px] rounded-[10px] bg-[#F6FAF9] p-4.5">
-          <p className="mb-4 text-lg leading-[155%] font-medium tracking-[0%] text-[#000000]">
+          <p className="mb-4 text-base leading-[155%] font-medium tracking-[0%] text-[#000000]">
             Campaigns based on your interest
           </p>
 
           {activeCampaignsData?.length === 0 ? (
             <EmptyState
               className="h-[85%]"
+              titleClassName="!text-base"
+              descriptionClassName="!text-sm !font-normal !max-w-[299px]"
               title="No Campaigns"
               description="No campaigns are currently available based on your interests."
             />
@@ -256,6 +262,8 @@ const DashboardHome = () => {
             <EmptyState
               className="h-[85%]"
               title="No Action Yet"
+              titleClassName="!text-base"
+              descriptionClassName="!text-sm !font-normal !max-w-[299px]"
               description="Once you have supported a campaign, your next steps will appear here."
             />
           ) : (

@@ -14,69 +14,7 @@ import { useNavigate } from "react-router-dom";
 import EmptyCampaigns from "@/assets/icons/empty-campaigns.svg";
 import { useState } from "react";
 import ManagePagination from "@/components/Manage-pagination";
-
-// const communities = [
-//   {
-//     id: 1,
-//     name: "Larkden Community",
-//     role: "Champion",
-//     joined: "March 10",
-//     members: "1,240",
-//     campaigns: 4,
-//     roleColor: "bg-[#E0F8FF] text-[#009BC2]",
-//     roleIcon: <Trophy size={20} weight="fill" className="mr-1 text-[#009BC2]" />,
-//   },
-//   {
-//     id: 2,
-//     name: "Social Club Community",
-//     role: "Amplifier",
-//     joined: "March 10",
-//     members: "1,240",
-//     campaigns: 60,
-//     roleColor: "bg-[#F4E6FF] text-[#A838D6]",
-//     roleIcon: <Sparkle size={20} weight="fill" className="mr-1 text-[#A838D6]" />,
-//   },
-//   {
-//     id: 3,
-//     name: "Church Community",
-//     role: "Completed",
-//     joined: "March 10",
-//     members: "1,240",
-//     campaigns: 60,
-//     roleColor: "bg-[#DFFFF2] text-[#00C48C]",
-//     roleIcon: <CheckCircle size={20} weight="fill" className="mr-1 text-[#00C48C]" />,
-//   },
-//   {
-//     id: 4,
-//     name: "WOFBEC Community",
-//     role: "Joined",
-//     joined: "March 10",
-//     members: "1,240",
-//     campaigns: 60,
-//     roleColor: "bg-[#FFF4D6] text-[#D9A300]",
-//     roleIcon: <BookmarkSimple size={20} weight="fill" className="mr-1 text-[#D9A300]" />,
-//   },
-//   {
-//     id: 5,
-//     name: "Women of Dignity Community",
-//     role: "Amplifier",
-//     joined: "March 10",
-//     members: "1,240",
-//     campaigns: 60,
-//     roleColor: "bg-[#F4E6FF] text-[#A838D6]",
-//     roleIcon: <Sparkle size={20} weight="fill" className="mr-1 text-[#A838D6]" />,
-//   },
-//   {
-//     id: 6,
-//     name: "Men of Valor Community",
-//     role: "Joined",
-//     joined: "March 10",
-//     members: "1,240",
-//     campaigns: 60,
-//     roleColor: "bg-[#FFF4D6] text-[#D9A300]",
-//     roleIcon: <BookmarkSimple size={20} weight="fill" className="mr-1 text-[#D9A300]" />,
-//   },
-// ];
+import { cn } from "@/lib/utils";
 
 const DashboardCommunity = () => {
   const navigate = useNavigate();
@@ -217,29 +155,29 @@ const DashboardCommunity = () => {
         )}
       </div>
       <div className="hidden w-full overflow-x-auto lg:block">
-        <div className="min-w-[800px] lg:min-w-full">
+        <div className="min-w-[800px] rounded-[10px] border border-[#ECEFF3] bg-white lg:min-w-full">
           <Table>
-            <TableHeader className="rounded-t-[10px]! border border-[#EBEBEB] bg-[#FCFCFC]">
+            <TableHeader className="bg-[#FCFCFC]">
               <TableRow className="">
-                <TableHead className="w-[50px] px-[29px]! py-6! text-lg leading-[155%] font-normal text-[#000000]">
+                <TableHead className="w-[50px] rounded-tl-[10px]! px-[29px]! py-[8.24px]! text-base leading-[155%] font-medium text-[#000000]">
                   No
                 </TableHead>
-                <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
+                <TableHead className="text-base leading-[155%] font-medium text-[#000000]">
                   Community
                 </TableHead>
-                <TableHead className="w-max text-lg leading-[155%] font-normal text-[#000000]">
+                <TableHead className="w-max text-base leading-[155%] font-medium text-[#000000]">
                   Description
                 </TableHead>
                 {/* <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
                 Joined
               </TableHead> */}
-                <TableHead className="text-right text-lg leading-[155%] font-normal text-[#000000]">
+                <TableHead className="text-right text-base leading-[155%] font-medium text-[#000000]">
                   Visibility
                 </TableHead>
-                <TableHead className="text-center text-lg leading-[155%] font-normal text-[#000000]">
+                <TableHead className="text-center text-base leading-[155%] font-medium text-[#000000]">
                   Campaigns
                 </TableHead>
-                <TableHead className="text-right"></TableHead>
+                <TableHead className="rounded-tr-[12px]! text-right"></TableHead>
               </TableRow>
             </TableHeader>
 
@@ -270,40 +208,45 @@ const DashboardCommunity = () => {
                   <TableBody>
                     {communities?.map((community: any, index: number) => (
                       <TableRow key={community?.id}>
-                        <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
+                        <TableCell className="py-[8.24px]! text-center text-sm leading-[155%] font-normal text-[#000000]">
                           {index + 1}
                         </TableCell>
-                        <TableCell className="py-6 text-base leading-[155%] font-normal text-[#000000]">
+                        <TableCell className="py-[8.24px]! text-sm leading-[155%] font-medium text-[#000000]">
                           <p className="line-clamp-1 max-w-[200px]">{community?.name}</p>
                         </TableCell>
-                        <TableCell className="max-w-[200px] overflow-hidden py-6 text-left text-base leading-[155%] font-normal text-wrap text-[#000000]">
-                          <p className="truncate">
-                            {community?.description?.length > 50
-                              ? community.description.slice(0, 50) + "..."
+                        <TableCell className="max-w-[200px] overflow-hidden py-[8.24px]! text-left text-sm leading-[155%] font-normal text-wrap text-[#666D80]">
+                          <p className="line-clamp-2">
+                            {community?.description?.length > 120
+                              ? community.description.slice(0, 120) + "..."
                               : community?.description}
                           </p>
-                          {/* <Badge
-                    className={`hover:bg-opacity-80 rounded-full border-0 px-3.5 py-1.5 text-base leading-[155%] font-normal ${community.roleColor}`}
-                  >
-                    {community.roleIcon}
-                    {community.role}
-                  </Badge> */}
                         </TableCell>
-                        {/* <TableCell className="py-6 text-sm leading-[155%] font-normal">
-                  {community.joined}
-                </TableCell> */}
-                        <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
-                          {community?.visibility}
+
+                        <TableCell
+                          className={cn(
+                            "py-[8.24px]! text-right text-sm leading-[155%] font-normal"
+                          )}
+                        >
+                          <p
+                            className={cn(
+                              "w-max rounded-[20px] px-2.5 py-1.5",
+                              community?.visibility?.toLowerCase() === "public"
+                                ? "bg-[#EFFFF8] text-[#12AA5B]"
+                                : "bg-[#F6F6F6] text-[#000000]"
+                            )}
+                          >
+                            {community?.visibility}
+                          </p>
                         </TableCell>
-                        <TableCell className="py-6 text-center text-sm leading-[155%] font-normal">
+                        <TableCell className="py-[8.24px]! text-center text-sm leading-[155%] font-normal text-[#000000]">
                           {community?.totalCampaigns ? community?.totalCampaigns : 0}
                         </TableCell>
-                        <TableCell className="py-6 text-right text-sm leading-[155%] font-normal">
+                        <TableCell className="py-[8.24px]! text-right text-sm leading-[155%] font-normal">
                           <Button
                             onClick={() => navigate(`/user/dashboard/community/${community?.id}`)}
                             className="h-10 rounded-full bg-[#12AA5B] px-4 text-white hover:bg-[#00b05b]"
                           >
-                            <div className="flex items-center">
+                            <div className="flex items-center gap-2 text-sm">
                               View <CaretRightIcon size={14} weight="bold" className="text-white" />
                             </div>
                           </Button>

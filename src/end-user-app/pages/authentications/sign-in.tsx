@@ -63,13 +63,13 @@ const UserSignIn = () => {
       } else {
         // Redirect to returnUrl if present, otherwise default dashboard
         let destination = returnUrl || "/user/dashboard?tab=home";
-        
+
         // If we have an email parameter and the destination doesn't already have it, add it
         if (emailParam && destination && !destination.includes("email=")) {
           const separator = destination.includes("?") ? "&" : "?";
           destination = `${destination}${separator}email=${encodeURIComponent(emailParam)}`;
         }
-        
+
         if (destination.startsWith("http")) {
           window.location.href = destination;
         } else {
@@ -100,6 +100,9 @@ const UserSignIn = () => {
   return (
     <UserAuthLayout title="" subTitle="">
       <div className="w-full">
+        <p className="mb-4 text-xl leading-[100%] font-semibold tracking-[0%] text-[#0F0F0F] lg:mb-5 lg:text-2xl lg:leading-[100%]">
+          Log in
+        </p>
         {/* Form */}
         <form onSubmit={handleSubmit(onSubmit)} className="w-full space-y-5">
           {/* Name Field */}
@@ -107,9 +110,9 @@ const UserSignIn = () => {
           <Field className="!gap-0 space-y-1 !p-0">
             <FieldLabel
               htmlFor="name"
-              className="!mb-1 !p-0 text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
+              className="!mb-1 !p-0 text-sm leading-[155%] font-normal tracking-[0%] text-[#404040]"
             >
-              Email Address<span className="text-red-500">*</span>
+              Email Address
             </FieldLabel>
             <FieldContent className="!m-0 !bg-transparent !p-0">
               <Input
@@ -132,9 +135,9 @@ const UserSignIn = () => {
           <Field className="!gap-0 space-y-1 !p-0">
             <FieldLabel
               htmlFor="password"
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
+              className="text-sm leading-[155%] font-normal tracking-[0%] text-[#404040]"
             >
-              Password<span className="text-red-500">*</span>
+              Password
             </FieldLabel>
             <FieldContent className="!m-0 !bg-transparent !p-0">
               <div className="relative">
@@ -185,7 +188,7 @@ const UserSignIn = () => {
         </form>
 
         {/* Sign In Link */}
-        <p className="mt-5 text-center text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
+        <p className="mt-5 text-center text-sm leading-[160%] font-medium tracking-[0%] text-[#0F0F0F]">
           Don’t have an account?{" "}
           <Link
             to={`/user/signup${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}

@@ -64,13 +64,13 @@ const DashboardIndex = () => {
             : "w-full"
         )}
       >
-        <nav className="mb-13.75 flex items-center justify-between">
+        <nav className="mb-4 flex items-center justify-between">
           {!isPending && (
             <div className="space-y-0.75">
-              <p className="text-xl leading-[120%] font-normal tracking-[-2%] text-[#000000] lg:text-[32px]">
+              <p className="text-base leading-[120%] font-medium tracking-[-2%] text-[#666D80] lg:text-base">
                 Good day,
               </p>
-              <p className="text-2xl leading-[120%] font-medium tracking-[-2%] text-[#000000] lg:text-[48px]">
+              <p className="text-[24px] leading-[120%] font-semibold tracking-[-2%] text-[#000000] lg:text-[25px]">
                 {endUser?.firstName}!
               </p>
             </div>
@@ -125,6 +125,7 @@ const DashboardIndex = () => {
           ]}
           values={TAB_VALUES}
           defaultValue={TAB_VALUES[0]}
+          btnClassName="!font-normal"
           className="mb-6 max-w-full overflow-x-auto lg:max-w-[650px]"
         />
         {activeTab === "home" && <DashboardHome />}
@@ -136,10 +137,10 @@ const DashboardIndex = () => {
       </div>
 
       {(activeTab === "home" || activeTab === "community") && (
-        <div className="hidden w-full border-l border-l-[#ECEFF3] pt-[89.58px] pl-5 lg:block lg:max-w-[324px]">
+        <div className="hidden w-full border-l border-l-[#ECEFF3] pt-8.5 pl-5 lg:block lg:max-w-[324px]">
           <div className="mb-5 flex items-start gap-5">
             <div className="">
-              <Avatar className="h-[104.55px] w-[104.55px] cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+              <Avatar className="h-[71px] w-[71px] cursor-pointer border transition-all hover:border-gray-200">
                 <AvatarImage src={endUser?.profileImageUrl || ""} className="object-cover" />
                 <AvatarFallback>{getNameAbbrev(endUser?.firstName as any)}</AvatarFallback>
               </Avatar>
@@ -150,30 +151,30 @@ const DashboardIndex = () => {
 
             <div className="w-full space-y-0.5">
               <div className="flex items-center justify-between">
-                <p className="text-sm leading-[155%] font-normal tracking-[0%] text-[#6F6F6F]">
+                <p className="text-xs leading-[155%] font-normal tracking-[0%] text-[#6F6F6F]">
                   Level
                 </p>
-                <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
+                <p className="text-xs leading-[140%] font-normal tracking-[-2%] text-[#000000]">
                   0
                 </p>
               </div>
               <div className="flex items-center justify-between">
-                <p className="text-sm leading-[155%] font-normal tracking-[0%] text-[#6F6F6F]">
+                <p className="text-xs leading-[155%] font-normal tracking-[0%] text-[#000000]">
                   Total XP
                 </p>
-                <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
+                <p className="text-xs leading-[140%] font-normal tracking-[-2%] text-[#000000]">
                   0
                 </p>
               </div>
               <button
                 onClick={() => navigate("/user/account-settings/edit")}
-                className="mt-3 flex h-11 w-full cursor-pointer items-center justify-center gap-3 rounded-[100px] bg-[#EFFFF8] text-base leading-[155%] font-normal tracking-[0%] text-[#000000]"
+                className="mt-3 flex h-11 w-full cursor-pointer items-center justify-center gap-3 rounded-[100px] bg-[#EFFFF8] text-xs leading-[155%] font-normal tracking-[0%] text-[#000000]"
               >
                 Edit Profile
                 <div>
                   <svg
-                    width="18"
-                    height="18"
+                    width="16"
+                    height="16"
                     viewBox="0 0 18 18"
                     fill="none"
                     xmlns="http://www.w3.org/2000/svg"

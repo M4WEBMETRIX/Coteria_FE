@@ -12,6 +12,7 @@ type ButtonTabsProps<T extends readonly string[]> = {
   defaultValue: T[number];
   queryKey?: string;
   className?: string;
+  btnClassName?: string;
 };
 
 export function ButtonTabs<T extends readonly string[]>({
@@ -20,6 +21,7 @@ export function ButtonTabs<T extends readonly string[]>({
   defaultValue,
   queryKey = "tab",
   className = "",
+  btnClassName = "",
 }: ButtonTabsProps<T>) {
   const [activeTab, setActiveTab] = useQueryState(
     queryKey,
@@ -36,7 +38,7 @@ export function ButtonTabs<T extends readonly string[]>({
             type="button"
             key={tab.value}
             onClick={() => setActiveTab(tab.value)}
-            className={`flex h-10 w-max cursor-pointer items-center justify-center rounded-[10px] px-4 text-sm font-medium transition-all ${
+            className={`flex h-10 w-max cursor-pointer items-center justify-center rounded-[10px] px-4 text-sm font-medium transition-all ${btnClassName} ${
               isActive
                 ? "bg-[#12AA5B] text-[#FFFFFF]"
                 : "bg-transparent text-[#818898] hover:text-[#111827]"

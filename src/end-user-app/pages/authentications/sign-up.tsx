@@ -136,74 +136,79 @@ const UserSignUp = () => {
         )} */}
         <ExtendedLineageModal isOpen={isExtendedLineageOpen} setIsOpen={setIsExtendedLineageOpen} />
 
-        <form onSubmit={handleSubmit} className="space-y-5">
+        <p className="mb-4 text-xl leading-[100%] font-semibold tracking-[0%] text-[#0F0F0F] lg:mb-5 lg:text-2xl lg:leading-[100%]">
+          Sign up
+        </p>
+        <form onSubmit={handleSubmit} className="space-y-4">
           {/* First Name */}
-          <div className="space-y-1.5">
-            <Label
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
-              htmlFor="firstName"
-            >
-              First Name<span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="firstName"
-              type="text"
-              value={formData.firstName}
-              maxLength={50}
-              onChange={(e) => {
-                const value = e.target.value;
+          <div className="flex gap-4">
+            <div className="w-full space-y-1.5">
+              <Label
+                className="text-sm leading-[155%] font-normal tracking-[0%] text-[#404040]"
+                htmlFor="firstName"
+              >
+                First Name
+              </Label>
+              <Input
+                id="firstName"
+                type="text"
+                value={formData.firstName}
+                maxLength={50}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-                setFormData({ ...formData, firstName: value });
+                  setFormData({ ...formData, firstName: value });
 
-                setErrors({
-                  ...errors,
-                  firstName: validateName(value, "First name"),
-                });
-              }}
-              className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 ${
-                errors.firstName ? "border-red-500" : "border-[#DFE1E7]"
-              }`}
-            />
+                  setErrors({
+                    ...errors,
+                    firstName: validateName(value, "First name"),
+                  });
+                }}
+                className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 ${
+                  errors.firstName ? "border-red-500" : "border-[#DFE1E7]"
+                }`}
+              />
 
-            {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
-          </div>
-          {/* Last Name */}
-          <div className="space-y-1">
-            <Label
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
-              htmlFor="lastName"
-            >
-              Last Name<span className="text-red-500">*</span>
-            </Label>
-            <Input
-              id="lastName"
-              type="text"
-              value={formData.lastName}
-              maxLength={50}
-              onChange={(e) => {
-                const value = e.target.value;
+              {errors.firstName && <p className="text-sm text-red-500">{errors.firstName}</p>}
+            </div>
+            {/* Last Name */}
+            <div className="w-full space-y-1">
+              <Label
+                className="text-sm leading-[155%] font-normal tracking-[0%] text-[#404040]"
+                htmlFor="lastName"
+              >
+                Last Name
+              </Label>
+              <Input
+                id="lastName"
+                type="text"
+                value={formData.lastName}
+                maxLength={50}
+                onChange={(e) => {
+                  const value = e.target.value;
 
-                setFormData({ ...formData, lastName: value });
+                  setFormData({ ...formData, lastName: value });
 
-                setErrors({
-                  ...errors,
-                  lastName: validateName(value, "Last name"),
-                });
-              }}
-              className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 ${
-                errors.lastName ? "border-red-500" : "border-[#DFE1E7]"
-              }`}
-            />
+                  setErrors({
+                    ...errors,
+                    lastName: validateName(value, "Last name"),
+                  });
+                }}
+                className={`h-12.5 w-full rounded-full border border-[#E5E5E5] !bg-[#FAFAFA] px-2 py-3 ${
+                  errors.lastName ? "border-red-500" : "border-[#DFE1E7]"
+                }`}
+              />
 
-            {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
+              {errors.lastName && <p className="text-sm text-red-500">{errors.lastName}</p>}
+            </div>
           </div>
           {/* Email */}
           <div className="space-y-1">
             <Label
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
+              className="text-sm leading-[155%] font-normal tracking-[0%] text-[#404040]"
               htmlFor="email"
             >
-              Email<span className="text-red-500">*</span>
+              Email
             </Label>
 
             <Input
@@ -230,10 +235,10 @@ const UserSignUp = () => {
           {/* Password */}
           <div className="space-y-1">
             <Label
-              className="text-sm leading-[155%] font-medium tracking-[0%] text-[#404040]"
+              className="text-sm leading-[155%] font-normal tracking-[0%] text-[#404040]"
               htmlFor="password"
             >
-              Password<span className="text-red-500">*</span>
+              Password
             </Label>
             <div className="relative">
               <Input
@@ -295,11 +300,11 @@ const UserSignUp = () => {
           <GoogleAuth googleText="Sign Up with Google" />
         </form>
 
-        <p className="mt-5 text-center text-sm leading-[160%] font-medium tracking-[0%] text-[#6F6F6F]">
+        <p className="mt-5 text-center text-sm leading-[160%] font-normal tracking-[0%] text-[#6F6F6F]">
           Already have an account?{" "}
           <a
             href={`/user/login${searchParams.toString() ? `?${searchParams.toString()}` : ""}`}
-            className="text-[#000000] underline hover:text-[#059669] hover:underline"
+            className="font-medium text-[#000000] underline hover:text-[#059669] hover:underline"
           >
             Sign in
           </a>
@@ -308,11 +313,17 @@ const UserSignUp = () => {
         {/* Terms */}
         <p className="mt-8 text-center text-sm leading-[100%] font-light font-medium tracking-[1%] text-[#737373]">
           By clicking the button above, you agree to our{" "}
-          <Link to="https://usecoterie.com/terms-of-use" className="underline">
+          <Link
+            to="https://usecoterie.com/terms-of-use"
+            className="font-semibold text-[#000000] underline"
+          >
             Terms of Service
           </Link>{" "}
           and{" "}
-          <Link to="https://usecoterie.com/privacy-policy" className="underline">
+          <Link
+            to="https://usecoterie.com/privacy-policy"
+            className="font-semibold text-[#000000] underline"
+          >
             Privacy Policy
           </Link>
           .
