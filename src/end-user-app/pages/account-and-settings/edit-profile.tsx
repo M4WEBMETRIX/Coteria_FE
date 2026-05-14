@@ -103,10 +103,10 @@ const EditProfile = () => {
       <div className="mx-auto w-full space-y-8 pb-10">
         {/* Change Avatar */}
         <div className="h-[307px] w-[357px] space-y-4 rounded-[10px] border border-[#ECEFF3] bg-white p-5">
-          <h3 className="text-xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+          <h3 className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#000000]">
             Change Avatar
           </h3>
-          <div className="relative mx-auto h-42 w-42">
+          <div className="relative mx-auto h-36 w-36">
             <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-pink-100">
               {isUploading ? (
                 <CircleNotch className="h-10 w-10 animate-spin text-gray-400" />
@@ -171,9 +171,9 @@ const EditProfile = () => {
         </div> */}
 
         {/* Detailed Information */}
-        <div className="space-y-6 rounded-[10px] border border-[#ECEFF3] bg-white px-5 py-4">
+        <div className="space-y-5 rounded-[10px] border border-[#ECEFF3] bg-white px-5 py-4">
           <div className="flex items-center justify-between">
-            <h3 className="text-xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+            <h3 className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#000000]">
               Detailed Information
             </h3>
             <Button
@@ -191,53 +191,53 @@ const EditProfile = () => {
             </Button>
           </div>
 
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
+          <div className="grid grid-cols-1 gap-5 md:grid-cols-2">
             <div className="space-y-2">
-              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                First Name<span className="text-red-500">*</span>
+              <label className="text-sm leading-[155%] font-medium tracking-[0%] text-[#000000]">
+                First Name
               </label>
               <Input
                 value={formData.firstName}
                 maxLength={70}
                 onChange={(e) => handleChange("firstName", e.target.value)}
                 placeholder="Enter your name"
-                className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
+                className="h-12 rounded-[20px] border border-[#E5E5E5] bg-[#FAFAFA]"
               />
             </div>
             <div className="space-y-2">
-              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Last Name<span className="text-red-500">*</span>
+              <label className="text-sm leading-[155%] font-medium tracking-[0%] text-[#000000]">
+                Last Name
               </label>
               <Input
                 value={formData.lastName}
                 maxLength={70}
                 onChange={(e) => handleChange("lastName", e.target.value)}
                 placeholder="Enter your name"
-                className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
+                className="h-12 rounded-[20px] border border-[#E5E5E5] bg-[#FAFAFA]"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
-                Email<span className="text-red-500">*</span>
+              <label className="text-sm leading-[155%] font-medium tracking-[0%] text-[#000000]">
+                Email
               </label>
               <Input
                 disabled
                 value={user?.email || ""}
                 placeholder="Enter your email"
-                className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
+                className="h-12 rounded-[20px] border border-[#E5E5E5] bg-[#FAFAFA]"
               />
             </div>
 
             <div className="space-y-2">
-              <label className="text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
+              <label className="text-sm leading-[155%] font-medium tracking-[0%] text-[#000000]">
                 Address (For tax receipts etc)
               </label>
               <Input
                 value={formData.address}
                 onChange={(e) => handleChange("address", e.target.value)}
                 placeholder="Enter your address"
-                className="h-12 rounded-[10px] border-[#DFE1E7] bg-white"
+                className="h-12 rounded-[20px] border border-[#E5E5E5] bg-[#FAFAFA]"
               />
             </div>
           </div>

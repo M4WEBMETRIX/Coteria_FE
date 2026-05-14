@@ -134,10 +134,8 @@ const DashboardCommunity = () => {
                   </div>
 
                   {/* Description */}
-                  <p className="mb-4 text-sm leading-[150%] text-[#404040]">
-                    {community?.description?.length > 100
-                      ? community.description.slice(0, 100) + "..."
-                      : community?.description || "No description available"}
+                  <p className="mb-4 line-clamp-2 text-sm leading-[150%] text-[#404040]">
+                    {community?.description || "No description available"}
                   </p>
 
                   {/* View button */}
@@ -156,28 +154,28 @@ const DashboardCommunity = () => {
       </div>
       <div className="hidden w-full overflow-x-auto lg:block">
         <div className="min-w-[800px] rounded-[10px] border border-[#ECEFF3] bg-white lg:min-w-full">
-          <Table>
+          <Table className="w-full table-fixed">
             <TableHeader className="bg-[#FCFCFC]">
               <TableRow className="">
-                <TableHead className="w-[50px] rounded-tl-[10px]! px-[29px]! py-[8.24px]! text-base leading-[155%] font-medium text-[#000000]">
+                <TableHead className="w-[60px] rounded-tl-[10px]! px-[29px]! py-[8.24px]! text-sm leading-[155%] font-bold text-[#000000]">
                   No
                 </TableHead>
-                <TableHead className="text-base leading-[155%] font-medium text-[#000000]">
+                <TableHead className="w-[220px] text-sm leading-[155%] font-bold text-[#000000]">
                   Community
                 </TableHead>
-                <TableHead className="w-max text-base leading-[155%] font-medium text-[#000000]">
+                <TableHead className="text-sm leading-[155%] font-bold text-[#000000]">
                   Description
                 </TableHead>
                 {/* <TableHead className="text-lg leading-[155%] font-normal text-[#000000]">
                 Joined
               </TableHead> */}
-                <TableHead className="text-right text-base leading-[155%] font-medium text-[#000000]">
+                <TableHead className="w-[120px] text-sm leading-[155%] font-bold text-[#000000]">
                   Visibility
                 </TableHead>
-                <TableHead className="text-center text-base leading-[155%] font-medium text-[#000000]">
+                <TableHead className="w-[120px] text-center text-sm leading-[155%] font-bold text-[#000000]">
                   Campaigns
                 </TableHead>
-                <TableHead className="rounded-tr-[12px]! text-right"></TableHead>
+                <TableHead className="w-[120px] rounded-tr-[12px]! text-right"></TableHead>
               </TableRow>
             </TableHeader>
 
@@ -212,31 +210,23 @@ const DashboardCommunity = () => {
                           {index + 1}
                         </TableCell>
                         <TableCell className="py-[8.24px]! text-sm leading-[155%] font-medium text-[#000000]">
-                          <p className="line-clamp-1 max-w-[200px]">{community?.name}</p>
+                          <p className="line-clamp-1">{community?.name}</p>
                         </TableCell>
-                        <TableCell className="max-w-[200px] overflow-hidden py-[8.24px]! text-left text-sm leading-[155%] font-normal text-wrap text-[#666D80]">
-                          <p className="line-clamp-2">
-                            {community?.description?.length > 120
-                              ? community.description.slice(0, 120) + "..."
-                              : community?.description}
-                          </p>
+                        <TableCell className="py-[8.24px]! text-left text-sm leading-[155%] font-normal whitespace-normal text-[#666D80]">
+                          <p className="line-clamp-2">{community?.description}</p>
                         </TableCell>
 
-                        <TableCell
-                          className={cn(
-                            "py-[8.24px]! text-right text-sm leading-[155%] font-normal"
-                          )}
-                        >
-                          <p
+                        <TableCell className="py-[8.24px]! text-left text-sm leading-[155%] font-normal">
+                          <span
                             className={cn(
-                              "w-max rounded-[20px] px-2.5 py-1.5",
+                              "inline-block rounded-[20px] px-2.5 py-1.5 text-sm",
                               community?.visibility?.toLowerCase() === "public"
                                 ? "bg-[#EFFFF8] text-[#12AA5B]"
                                 : "bg-[#F6F6F6] text-[#000000]"
                             )}
                           >
                             {community?.visibility}
-                          </p>
+                          </span>
                         </TableCell>
                         <TableCell className="py-[8.24px]! text-center text-sm leading-[155%] font-normal text-[#000000]">
                           {community?.totalCampaigns ? community?.totalCampaigns : 0}

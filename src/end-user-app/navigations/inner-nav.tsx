@@ -20,7 +20,7 @@ const InnerNav = ({
   const { data } = useGetEndUserProfile();
   const user = data?.data;
   return (
-    <div className="flex items-center justify-between py-10">
+    <div className="flex items-center justify-between py-6">
       <div onClick={onClick} className="flex cursor-pointer items-center gap-3">
         <svg
           width="24"
@@ -36,7 +36,7 @@ const InnerNav = ({
             fill="#1C274C"
           />
         </svg>
-        <p>{text}</p>
+        <p className="text-sm font-medium">{text}</p>
       </div>
 
       {/* Right Section: Search, Notifications, Profile */}
@@ -88,7 +88,7 @@ const InnerNav = ({
         <div className="">
           <Avatar
             onClick={() => navigate("/user/account-settings/edit")}
-            className="h-14 w-14 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200"
+            className="h-14 w-14 cursor-pointer border transition-all hover:border-gray-200"
           >
             <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
             <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>

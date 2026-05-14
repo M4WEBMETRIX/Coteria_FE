@@ -86,19 +86,19 @@ const CommunityFeed = () => {
                 </div>
               </div>
             ) : (
-              <div className="flex items-center gap-3">
+              <div className="flex items-center">
                 {/* mb-14.5 */}
 
-                <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+                <Avatar className="h-[71px] w-[71px] cursor-pointer border transition-all hover:border-gray-200">
                   <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
                   <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
                 </Avatar>
 
                 <div>
-                  <h3 className="ml-4 line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                  <h3 className="ml-4 line-clamp-1 text-left text-base leading-[155%] font-medium tracking-[0%] text-[#000000]">
                     {user?.firstName} {user?.lastName}
                   </h3>
-                  <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
+                  <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-2 py-0.5 text-sm leading-[155%] font-normal tracking-[0%] text-[#067884]">
                     {user?.isFullyVerified ? "Verified" : "Not Verified"}
                   </div>
                 </div>
@@ -156,7 +156,7 @@ const CommunityFeed = () => {
           {/* Impact Score */}
           <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-4">
             <div className="flex items-center justify-between border-b pb-4">
-              <h4 className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#1E1F24]">
+              <h4 className="text-base leading-[140%] font-medium tracking-[-2%] text-[#1E1F24]">
                 Your Impact Score
               </h4>
               <CaretRightIcon className="text-gray-400" />
@@ -192,9 +192,11 @@ const CommunityFeed = () => {
 
         <div className="block w-full items-start gap-4 rounded-[10px] lg:flex lg:border lg:border-[#F6F6F6] lg:bg-[#FCFCFC] lg:px-4 lg:py-3.5">
           {/* Main Feed */}
-          <div className="flex-1 space-y-6">
+          <div className="flex-1 space-y-2.5">
             {communityLoading ? null : (
-              <h2 className="text-2xl font-bold text-[#1E1F24]">{community?.data?.name}'s Feed</h2>
+              <h2 className="text-[20px] font-bold text-[#1E1F24]">
+                {community?.data?.name}'s Feed
+              </h2>
             )}
 
             {/* Post Mock */}
@@ -220,16 +222,16 @@ const CommunityFeed = () => {
                     CA
                   </div>
                   <div>
-                    <h3 className="text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                    <h3 className="text-base leading-[155%] font-medium tracking-[0%] text-[#000000]">
                       {community?.data?.name}
                     </h3>
-                    <p className="text-lg leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
+                    <p className="text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
                       Created: {formatFullDate(community?.data?.createdAt)}
                     </p>
                   </div>
                 </div>
 
-                <p className="pb-2 text-lg leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                <p className="pb-2 text-base leading-[155%] font-normal tracking-[0%] text-[#000000]">
                   {community?.data?.description}
                 </p>
 
@@ -295,7 +297,7 @@ const CommunityFeed = () => {
                   showActiveCampaigns && "border-b border-b-[#EFEFEF] pb-4"
                 )}
               >
-                <h3 className="text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                <h3 className="text-base leading-[155%] font-medium tracking-[0%] text-[#000000]">
                   Active Campaigns
                 </h3>
                 <CaretDownIcon
@@ -362,17 +364,17 @@ const CommunityFeed = () => {
                                 )}
                                 <div className="flex-1">
                                   <div className="flex items-start justify-between">
-                                    <h4 className="line-clamp-1 text-[15px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                                    <h4 className="line-clamp-1 text-sm leading-[155%] font-normal tracking-[0%] text-[#000000]">
                                       {campaign?.name}
                                     </h4>
                                     {/* <span className="text-[17px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
                             40%
                           </span> */}
                                   </div>
-                                  <div className="mt-1 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
-                                    <span>{timeAgo(campaign?.createdAt)}</span>
+                                  <div className="mt-0.5 flex items-center justify-between text-sm leading-[155%] font-normal tracking-[0%] text-[#6B6B6B]">
+                                    <span className="text-xs">{timeAgo(campaign?.createdAt)}</span>
                                     {campaign?.goalAmountCents && (
-                                      <span className="text-[#12AA5B]">
+                                      <span className="font-medium text-[#12AA5B]">
                                         {getCurrencySymbol(campaign?.goalCurrency || "")}
                                         {(campaign?.goalAmountCents / 100)?.toLocaleString()}
                                       </span>
@@ -385,7 +387,7 @@ const CommunityFeed = () => {
                                   setSelectedCampaign(campaign);
                                   setIsOpen(campaign?.id === isOpen ? null : campaign?.id);
                                 }}
-                                className="h-11 w-full rounded-full border border-[#FFF2D5] bg-[#ECA50D] text-white hover:bg-[#c98d00]"
+                                className="h-11 w-full rounded-full border border-[#FFF2D5] bg-[#12AA5B] text-white hover:bg-[#12AA5B]/80"
                               >
                                 Donate <ArrowUpRight className="ml-2 h-4 w-4 -rotate-45" />
                               </Button>

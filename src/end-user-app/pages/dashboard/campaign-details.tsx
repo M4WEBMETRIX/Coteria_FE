@@ -123,15 +123,15 @@ const CampaignDetails = () => {
         text={"Back to campaigns"}
         onClick={() => navigate("/user/dashboard?tab=campaigns")}
       />
-      <div className="flex w-full gap-10">
+      <div className="flex w-full gap-6">
         <div className="w-full items-start gap-4 rounded-[32px] lg:border lg:border-[#E5E5E5] lg:p-6">
           <div className="flex items-center gap-3.5">
             <div className="">
-              <h1 className="line-clamp-1 text-[20px] leading-[140%] font-medium tracking-[-2%] text-[#0F0F0F] lg:text-[48px]">
+              <h1 className="line-clamp-1 text-lg leading-[140%] font-bold tracking-[-2%] text-[#0F0F0F] lg:text-[24px]">
                 {campaign?.name}
               </h1>
-              <div className="mt-1.5 mb-3 flex flex-col gap-[2px] lg:mt-3 lg:mb-6">
-                <p className="text-base font-semibold text-[#0F0F0F] lg:text-lg">
+              <div className="mt-1.5 mb-3 flex flex-col gap-[2px] lg:mt-2 lg:mb-4">
+                <p className="text-sm font-semibold text-[#0F0F0F] lg:text-lg">
                   {campaign?.community?.name}
                 </p>
                 <p className="text-sm leading-[150%] font-normal tracking-[-2%] text-[#525252] lg:text-base">
@@ -284,7 +284,7 @@ const CampaignDetails = () => {
             </div>
 
             <div className="max-w-176.75">
-              <p className="mb-2 text-lg leading-[155%] font-medium tracking-[0%] text-[#000000]">
+              <p className="mb-2 text-base leading-[155%] font-normal tracking-[0%] text-[#000000]">
                 {campaign?.description}
               </p>
 

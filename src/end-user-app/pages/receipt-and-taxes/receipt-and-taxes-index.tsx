@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { useUserAppBreadcrumb } from "@/components/user-app-breadcrumb";
-import { CaretRightIcon } from "@phosphor-icons/react";
+import { ArrowRightIcon } from "@phosphor-icons/react";
 import { useState } from "react";
 import ReceiptModal from "@/components/receipts/receipt-modal";
 import { FaqTab } from "@/pages/dashboard/components/help-support/faq-tab";
@@ -106,10 +106,10 @@ const ReceiptAndTaxesIndex = () => {
                   className="flex flex-col justify-between gap-6 rounded-[10px] border border-[#ECEFF3] bg-white px-4 py-7 md:flex-row md:items-center"
                 >
                   <div className="space-y-3">
-                    <h3 className="text-2xl leading-[150%] tracking-[0%] text-[#000000]">
+                    <h3 className="text-base leading-[150%] tracking-[0%] text-[#000000]">
                       {receipt?.campaignName}
                     </h3>
-                    <div className="space-y-1 text-base leading-[150%] tracking-[0%] text-[#6B6B6B]">
+                    <div className="space-y-1 text-sm leading-[150%] tracking-[0%] text-[#6B6B6B]">
                       <p>Receipt #: {receipt?.paymentReference}</p>
                       <p>
                         Amount: {getCurrencySymbol(receipt?.currency)}
@@ -123,9 +123,12 @@ const ReceiptAndTaxesIndex = () => {
                       setSelectedReceipt(receipt);
                       setIsModalOpen(true);
                     }}
-                    className="h-12 min-w-54.25 rounded-full bg-[#DCFFE3] px-7.5 py-4 text-base leading-[150%] font-medium tracking-[0%] text-[#02B128] hover:bg-[#d0fbe4]"
+                    className="flex h-12 min-w-54.25 items-center justify-between rounded-full bg-[#079455] py-3 pr-2 pl-3 text-base leading-[150%] font-medium tracking-[0%] text-[#FAFAFA] hover:bg-[#079455]"
                   >
-                    Generate Receipt <CaretRightIcon className="ml-2 h-4 w-4" />
+                    Generate Receipt
+                    <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                      <ArrowRightIcon color="#0F0F0F" className="h-4 w-4" />
+                    </div>
                   </Button>
                 </div>
               ))

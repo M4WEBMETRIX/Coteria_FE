@@ -230,9 +230,6 @@ const DashboardIndex = () => {
           </div> */}
 
           <div className="mb-4 flex items-center justify-between">
-            <p className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
-              Calendar
-            </p>
             {/* <p className="text-xs leading-[155%] font-normal tracking-[0%] text-[#818898]">
               See all
             </p> */}

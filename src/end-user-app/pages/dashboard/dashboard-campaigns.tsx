@@ -193,7 +193,7 @@ const DashboardCampaigns = () => {
                         </div>
                       </div>
                       <div className="text-white">
-                        <h1 className="line-clamp-1 text-[22px] leading-[140%] font-medium tracking-[-2%]">
+                        <h1 className="line-clamp-1 text-lg leading-[140%] font-medium tracking-[-2%]">
                           {banner?.name}
                         </h1>
                         <p
@@ -287,12 +287,12 @@ const DashboardCampaigns = () => {
 
                   <div className="w-full">
                     <div className="mb-2.5 flex items-center justify-between lg:mt-4">
-                      <h2 className="line-clamp-1 text-sm leading-[120%] font-semibold tracking-[-0.5%] text-[#0F0F0F] lg:text-base lg:font-medium">
+                      <h2 className="line-clamp-1 text-base leading-[120%] font-medium tracking-[-0.5%] text-[#0F0F0F] lg:text-base lg:font-medium">
                         {campaign?.name}
                       </h2>
                     </div>
 
-                    <p className="hidden w-full text-base leading-[24px] font-normal tracking-[-0.5%] text-[#404040] lg:inline-block lg:max-h-10">
+                    <p className="hidden w-full text-sm leading-[150%] font-normal tracking-[-0.5%] text-[#404040] lg:inline-block lg:max-h-10">
                       {getTruncatedText(campaign?.description)}{" "}
                       {campaign?.description?.length > MAX_LENGTH && (
                         <span

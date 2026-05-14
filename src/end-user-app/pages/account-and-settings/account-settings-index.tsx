@@ -42,15 +42,15 @@ const AccountSettingsIndex = () => {
             <div className="space-y-6">
               <div className="space-y-4 rounded-[16px] border border-[#ECEFF3] bg-white p-6 text-center">
                 <div className="flex items-center gap-3">
-                  <Avatar className="h-20 w-20 cursor-pointer border-2 border-transparent transition-all hover:border-gray-200">
+                  <Avatar className="h-15 w-15 cursor-pointer border border-[#ECEFF3] hover:border-gray-200">
                     <AvatarImage src={user?.profileImageUrl || ""} className="object-cover" />
                     <AvatarFallback>{getNameAbbrev(user?.firstName as any)}</AvatarFallback>
                   </Avatar>
                   <div className="flex flex-col items-start">
-                    <h3 className="line-clamp-1 text-left text-[22px] leading-[155%] font-normal tracking-[0%] text-[#000000]">
+                    <h3 className="line-clamp-1 text-left text-base leading-[155%] font-normal tracking-[0%] text-[#000000]">
                       {user?.firstName} {user?.lastName}
                     </h3>
-                    <div className="mt-2 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-base leading-[155%] font-normal tracking-[0%] text-[#067884]">
+                    <div className="mt-1 inline-flex items-center gap-1 rounded-full bg-[#D5FBFF] px-3 py-1 text-sm leading-[155%] font-normal tracking-[0%] text-[#067884]">
                       {user?.isFullyVerified ? "Verified" : "Not Verified"}
                     </div>
                     {/* <div className="mt-2 flex items-center justify-center gap-1 text-sm text-gray-500">
@@ -61,7 +61,7 @@ const AccountSettingsIndex = () => {
 
                 <Button
                   onClick={() => navigate("/user/account-settings/edit")}
-                  className="h-10 w-full rounded-full bg-[#12AA5B] font-medium text-white hover:bg-[#0da055]"
+                  className="h-10 w-full rounded-full bg-[#12AA5B] text-sm font-medium text-white hover:bg-[#0da055]"
                 >
                   Edit Profile <CaretRightIcon weight="bold" className="ml-1" />
                 </Button>
@@ -112,7 +112,7 @@ const AccountSettingsIndex = () => {
                     <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#E7FDF3] text-[#12AA5B]">
                       <Leaf weight="fill" />
                     </div>
-                    <span className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
+                    <span className="text-base leading-[140%] font-normal tracking-[-2%] text-[#000000]">
                       Discover
                     </span>
                   </div>
@@ -138,7 +138,7 @@ const AccountSettingsIndex = () => {
                   <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-[#DF1C411A] text-[#DF1C41]">
                     <TrashIcon weight="fill" />
                   </div>
-                  <span className="text-lg leading-[140%] font-normal tracking-[-2%] text-[#000000]">
+                  <span className="text-base leading-[140%] font-normal tracking-[-2%] text-[#000000]">
                     Account Deletion
                   </span>
                 </div>
@@ -147,7 +147,7 @@ const AccountSettingsIndex = () => {
               <div className="space-y-3">
                 <Button
                   onClick={() => setIsDeleteModalOpen(true)}
-                  className="h-10 w-full rounded-full bg-[#DF1C41] font-medium text-white hover:bg-[#0da055]"
+                  className="h-10 w-full rounded-full bg-[#DF1C41] text-sm font-medium text-white hover:bg-[#0da055]"
                 >
                   Deactivate Account
                 </Button>
@@ -164,10 +164,10 @@ const AccountSettingsIndex = () => {
                   <Leaf weight="fill" size={20} />
                 </div>
                 <div className="space-y-1">
-                  <h3 className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+                  <h3 className="text-base leading-[155%] font-normal tracking-[-2%] text-[#000000]">
                     Your donations are tax-deductible.
                   </h3>
-                  <p className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                  <p className="text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <span
                       onClick={() => navigate("/user/receipt-taxes")}
                       className="cursor-pointer font-bold underline"
@@ -188,7 +188,7 @@ const AccountSettingsIndex = () => {
                   <div className="flex h-8 w-8 items-center justify-center rounded bg-[#E7FDF3] text-[#12AA5B]">
                     <ChartBar weight="fill" />
                   </div>
-                  <h3 className="text-2xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+                  <h3 className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#000000]">
                     How Your Impact Will Be Tracked
                   </h3>
                 </div>
@@ -196,19 +196,19 @@ const AccountSettingsIndex = () => {
                   As you participate and donate, Coterie helps you understand where your
                   contributions go and how they create real outcomes over time.
                 </p>
-                <ul className="mb-6 space-y-3">
-                  <li className="flex items-center gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                <ul className="mb-6 space-y-2">
+                  <li className="flex items-center gap-3 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <div className="h-2 w-2 rounded-full bg-gray-500" />
                     See how funds are allocated by campaign and purpose
                   </li>
-                  <li className="flex items-center gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                  <li className="flex items-center gap-3 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <div className="h-2 w-2 rounded-full bg-gray-500" />
                     Track community participation and shared effort
                   </li>
                 </ul>
                 <Button
                   onClick={() => navigate("/user/dashboard?tab=impact")}
-                  className="h-12 w-78 rounded-full bg-[#12AA5B] px-6 text-base text-white hover:bg-[#0da055]"
+                  className="h-12 w-78 rounded-full bg-[#12AA5B] px-6 text-sm text-white hover:bg-[#0da055]"
                 >
                   Learn how impact works <CaretRightIcon className="ml-2" />
                 </Button>
@@ -234,15 +234,15 @@ const AccountSettingsIndex = () => {
                   <div className="flex h-8 w-8 items-center justify-center rounded bg-[#E7FDF3] text-[#12AA5B]">
                     <div className="h-2 w-2 rounded-sm bg-[#12AA5B]" />
                   </div>
-                  <h3 className="text-2xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+                  <h3 className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#000000]">
                     Platform Guidelines
                   </h3>
                 </div>
-                <h4 className="mb-4 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                <h4 className="mt-3 mb-2 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                   Rules of Engagement
                 </h4>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-3 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gray-500" />
                     <span>
                       Understand our principles for{" "}
@@ -254,7 +254,7 @@ const AccountSettingsIndex = () => {
                       </Link>
                     </span>
                   </li>
-                  <li className="flex items-start gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                  <li className="flex items-start gap-3 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gray-500" />
                     <span>
                       Stay informed of new{" "}
@@ -275,19 +275,19 @@ const AccountSettingsIndex = () => {
                   <div className="serif flex h-8 w-8 items-center justify-center rounded bg-[#E7FDF3] font-bold text-[#12AA5B]">
                     i
                   </div>
-                  <h3 className="text-2xl leading-[155%] font-normal tracking-[-2%] text-[#000000]">
+                  <h3 className="text-lg leading-[155%] font-normal tracking-[-2%] text-[#000000]">
                     Still need help?
                   </h3>
                 </div>
-                <h4 className="mb-4 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                <h4 className="mt-3 mb-2 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                   Contact Support
                 </h4>
-                <ul className="space-y-4">
-                  <li className="flex items-start gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                <ul className="space-y-2">
+                  <li className="flex items-start gap-3 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gray-500" />
                     <span>Get in touch with our support team</span>
                   </li>
-                  <li className="flex items-start gap-3 text-lg leading-[155%] font-normal tracking-[-2%] text-[#515151]">
+                  <li className="flex items-start gap-3 text-base leading-[155%] font-normal tracking-[-2%] text-[#515151]">
                     <div className="mt-1.5 h-2 w-2 shrink-0 rounded-full bg-gray-500" />
                     <span>24/7 customer agent</span>
                   </li>
