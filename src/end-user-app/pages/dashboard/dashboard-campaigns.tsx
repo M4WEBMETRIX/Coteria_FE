@@ -102,39 +102,49 @@ const DashboardCampaigns = () => {
   return (
     <>
       {isLoading ? (
-        <div className="w-full animate-pulse space-y-8">
-          {/* Banner Skeleton */}
-          <div className="h-52 w-full rounded-[10px] bg-gray-200" />
+        <div className="w-full animate-pulse space-y-6">
+          {/* Banner Skeleton — matches h-51.75 carousel */}
+          <div className="h-[207px] w-full rounded-[10px] bg-gray-200" />
 
-          {/* Tabs Skeleton */}
-          <div className="flex gap-6">
-            <div className="h-5 w-32 rounded bg-gray-200" />
-            <div className="h-5 w-40 rounded bg-gray-200" />
-          </div>
+          {/* Cards grid skeleton — matches the real grid layout */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-[repeat(auto-fill,minmax(0,388px))]">
+            {[1, 2, 3, 4, 5, 6].map((item) => (
+              <div
+                key={item}
+                className="flex gap-3 rounded-[6px] border border-[#E4E4E4] p-3 lg:block lg:max-w-[413px] lg:rounded-[32px]"
+              >
+                {/* Image — small square on mobile, tall on desktop */}
+                <div className="relative h-30 w-30 shrink-0 overflow-hidden rounded-[12px] bg-gray-200 lg:h-[272px] lg:w-full lg:rounded-[32px]" />
 
-          {/* Campaign List Skeleton */}
-          {[1, 2].map((item) => (
-            <div key={item} className="space-y-6">
-              {/* Title */}
-              <div className="h-6 w-64 rounded bg-gray-200" />
+                {/* Content */}
+                <div className="flex w-full flex-col justify-between">
+                  {/* Title */}
+                  <div className="mb-2 h-5 w-3/4 rounded bg-gray-200 lg:mt-4" />
 
-              {/* Amount + Progress + Button */}
-              <div className="flex items-center justify-between gap-4">
-                <div className="flex w-full items-center gap-3">
-                  <div className="h-5 w-40 rounded bg-gray-200" />
-                  <div className="h-2 w-full max-w-[500px] rounded-full bg-gray-200" />
+                  {/* Description — desktop only */}
+                  <div className="mb-2 hidden space-y-1.5 lg:block">
+                    <div className="h-3.5 w-full rounded bg-gray-200" />
+                    <div className="h-3.5 w-2/3 rounded bg-gray-200" />
+                  </div>
+
+                  {/* Progress bar */}
+                  <div className="my-2.5 h-[9px] w-full rounded-full bg-gray-200" />
+
+                  {/* Amount row */}
+                  <div className="mb-2.5 flex items-center justify-between">
+                    <div className="space-y-1">
+                      <div className="h-4 w-24 rounded bg-gray-200" />
+                      <div className="h-3 w-32 rounded bg-gray-200" />
+                    </div>
+                    <div className="h-4 w-8 rounded bg-gray-200" />
+                  </div>
+
+                  {/* Donate button — desktop only */}
+                  <div className="hidden h-[56px] w-full rounded-full bg-gray-200 lg:block" />
                 </div>
-                <div className="h-10 w-28 rounded-full bg-gray-200" />
               </div>
-
-              {/* Description */}
-              <div className="h-4 w-3/4 rounded bg-gray-200" />
-              <div className="h-4 w-1/2 rounded bg-gray-200" />
-
-              {/* Image */}
-              <div className="h-28 w-full rounded-[10px] bg-gray-200" />
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
       ) : campaignsData?.length === 0 ? (
         <div className="mt-6 flex flex-col items-center justify-center">

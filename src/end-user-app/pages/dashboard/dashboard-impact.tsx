@@ -66,20 +66,20 @@ const DashboardImpact = () => {
         {/* ── LEFT COLUMN ── */}
         <div className="space-y-6">
           {/* Hero card */}
-          <div className="relative overflow-hidden rounded-[10px] bg-[#F6FAF9] p-5">
-            <div className="flex w-full items-center justify-between">
-              <div>
-                <p className="mb-2 flex items-center gap-1.5 text-base font-semibold text-[#656A6B]">
+          <div className="relative overflow-hidden rounded-[10px] bg-[#F6FAF9] p-4 sm:p-5">
+            <div className="flex w-full items-start justify-between gap-2">
+              <div className="min-w-0 flex-1">
+                <p className="mb-2 flex items-center gap-1.5 text-sm font-semibold text-[#656A6B] sm:text-base">
                   Your impact is making a real difference
                   <span>
-                    <HeartIcon weight="fill" className="text-[#12AA5B]" size={24} />
+                    <HeartIcon weight="fill" className="text-[#12AA5B]" size={20} />
                   </span>
                 </p>
 
-                <h1 className="mb-2 text-[42px] leading-[110%] font-bold text-[#22AB64]">
+                <h1 className="mb-2 text-[28px] leading-[110%] font-bold text-[#22AB64] sm:text-[42px]">
                   {currency}${totalInfluenced.toLocaleString()}
                 </h1>
-                <p className="mb-6 text-sm text-[#6F6F6F]">Donations driven by your influence</p>
+                <p className="mb-4 text-xs text-[#6F6F6F] sm:mb-6 sm:text-sm">Donations driven by your influence</p>
               </div>
               {/* Star badge */}
               <div className="flex flex-col items-center justify-center">
@@ -154,41 +154,41 @@ const DashboardImpact = () => {
               </div>
             </div>
             {/* Stats row */}
-            <div className="mt-6 grid grid-cols-3 gap-3">
-              <div className="space-y-2.5 rounded-[10px] border border-[#ECEFF3] bg-white p-4">
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-6 sm:grid-cols-3 sm:gap-3">
+              <div className="space-y-2 rounded-[10px] border border-[#ECEFF3] bg-white p-3">
                 <div className="flex h-[42px] w-[42px] items-center justify-center rounded-full bg-[#F0FFF8]">
                   <UsersThreeIcon size={16} weight="fill" className="text-[#12AA5B]" />
                 </div>
-                <p className="text-2xl font-medium text-[#4C4F55]">{peopleInspired}</p>
-                <p className="text-sm font-normal text-[#666D80]">People You've Inspired</p>
-                <p className="text-xs text-[#818898] italic">Direct referrals</p>
+                <p className="text-lg font-medium text-[#4C4F55] sm:text-2xl">{peopleInspired}</p>
+                <p className="text-xs font-normal text-[#666D80]">People You've Inspired</p>
+                <p className="text-[10px] text-[#818898] italic">Direct referrals</p>
               </div>
-              <div className="space-y-2.5 rounded-[10px] border border-[#ECEFF3] bg-white p-4">
+              <div className="space-y-2 rounded-[10px] border border-[#ECEFF3] bg-white p-3">
                 <div className="flex h-[42px] w-[42px] items-center justify-center rounded-full bg-[#EFF6FF]">
                   <ChartLineUpIcon size={16} weight="fill" className="text-[#3B82F6]" />
                 </div>
-                <p className="text-2xl font-medium text-[#4C4F55]">{communitiesReached}</p>
-                <p className="text-sm font-normal text-[#666D80]">Communities Reached</p>
-                <p className="text-xs text-[#818898] italic">Through your ripple</p>
+                <p className="text-lg font-medium text-[#4C4F55] sm:text-2xl">{communitiesReached}</p>
+                <p className="text-xs font-normal text-[#666D80]">Communities Reached</p>
+                <p className="text-[10px] text-[#818898] italic">Through your ripple</p>
               </div>
-              <div className="space-y-2.5 rounded-[10px] border border-[#ECEFF3] bg-white p-4">
+              <div className="col-span-2 space-y-2 rounded-[10px] border border-[#ECEFF3] bg-white p-3 sm:col-span-1">
                 <div className="flex h-[42px] w-[42px] items-center justify-center rounded-full bg-[#F5F3FF]">
                   <ChartLineUpIcon size={16} weight="fill" className="text-[#8B5CF6]" />
                 </div>
-                <p className="text-2xl font-medium text-[#4C4F55]">
+                <p className="text-lg font-medium text-[#4C4F55] sm:text-2xl">
                   {impactScoreValue.toLocaleString()}
                 </p>
-                <p className="text-sm font-normal text-[#666D80]">Impact Score</p>
-                <p className="text-xs text-[#818898] italic">Top 10% of contributors</p>
+                <p className="text-xs font-normal text-[#666D80]">Impact Score</p>
+                <p className="text-[10px] text-[#818898] italic">Top 10% of contributors</p>
               </div>
             </div>
           </div>
 
           {/* Keep the ripple going */}
-          <div className="relative overflow-hidden rounded-[20px] border border-[#E6EEE9] bg-[#F5FAF5] p-6">
+          <div className="relative overflow-hidden rounded-[20px] border border-[#E6EEE9] bg-[#F5FAF5] p-4 sm:p-6">
             {/* Megaphone illustration placeholder */}
-            <div className="flex items-start gap-4.5">
-              <div className="">
+            <div className="flex items-start gap-3 sm:gap-4.5">
+              <div className="hidden shrink-0 sm:block">
                 <svg
                   width="133"
                   height="115"
@@ -252,9 +252,9 @@ const DashboardImpact = () => {
         {/* ── RIGHT COLUMN ── */}
         <div className="space-y-6">
           {/* People You've Inspired */}
-          <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-5">
+          <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 sm:p-5">
             <div className="mb-4 flex items-center justify-between">
-              <h3 className="text-base font-semibold text-[#000000]">People You've Inspired</h3>
+              <h3 className="text-sm font-semibold text-[#000000] sm:text-base">People You've Inspired</h3>
               {/* <button
                 onClick={() => setPage(1)}
                 className="text-sm font-medium text-[#12AA5B] hover:underline"
@@ -276,7 +276,7 @@ const DashboardImpact = () => {
                 {directReferrals.slice(0, 3).map((referral: any, idx: number) => (
                   <div key={referral?.id ?? idx} className="flex items-center gap-3 py-3">
                     {/* Avatar */}
-                    <Avatar className="h-16 w-16 shrink-0">
+                    <Avatar className="h-10 w-10 shrink-0 sm:h-16 sm:w-16">
                       <AvatarImage src={referral?.imageUrl} />
                       <AvatarFallback
                         className="text-sm font-semibold text-white"
@@ -327,8 +327,8 @@ const DashboardImpact = () => {
           </div>
 
           {/* Your Impact Breakdown */}
-          <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-5">
-            <h3 className="mb-4 text-base font-semibold text-[#1E1F24]">Your impact Breakdown</h3>
+          <div className="rounded-[10px] border border-[#ECEFF3] bg-white p-4 sm:p-5">
+            <h3 className="mb-4 text-sm font-semibold text-[#1E1F24] sm:text-base">Your impact Breakdown</h3>
 
             <div className="space-y-3">
               {/* Direct Giving */}
