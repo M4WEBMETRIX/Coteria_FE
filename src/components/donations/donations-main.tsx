@@ -182,9 +182,15 @@ export function DonationsMainTable({
                   <TableCell>
                     <Badge
                       variant="outline"
-                      className={`rounded-full border border-[#339D88] px-3 py-0.5 font-normal text-[#339D88]`}
+                      className={`rounded-full border px-3 py-0.5 font-normal ${
+                        donation?.status?.toLowerCase() === "succeeded"
+                          ? "border-[#339D88] text-[#339D88]"
+                          : "border-[#D86458] text-[#D86458]"
+                      }`}
                     >
-                      {donation?.status}
+                      {donation?.status?.toLowerCase() === "succeeded"
+                        ? "Successful"
+                        : donation?.status}
                     </Badge>
                   </TableCell>
                   <TableCell onClick={(e) => e.stopPropagation()}>

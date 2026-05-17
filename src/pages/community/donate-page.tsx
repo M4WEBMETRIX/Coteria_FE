@@ -79,6 +79,7 @@ const DonatePage = () => {
   const [userId] = useQueryState("userId");
   const [referralCode] = useQueryState("referral-code");
   const [emailFromUrl] = useQueryState("email");
+  const [source] = useQueryState("source");
   const isAuthenticated = !!localStorage.getItem("userAccessToken");
 
   const endUser = useMemo(() => {
@@ -195,6 +196,7 @@ const DonatePage = () => {
       cancelUrl,
       isAnonymous,
       optInToCoterie: joinCoterie,
+      source: source,
     };
     createDonation(payload);
   };
@@ -366,7 +368,7 @@ const DonatePage = () => {
                 </p>
                 <div className="flex gap-2.5 lg:gap-3">
                   <Link
-                    to={`/user/login?returnUrl=${encodeURIComponent(`${window.location.pathname}${window.location.search}${window.location.search ? '&' : '?'}email=${encodeURIComponent(donorEmail as string)}`)}&email=${encodeURIComponent(donorEmail as string)}`}
+                    to={`/user/login?returnUrl=${encodeURIComponent(`${window.location.pathname}${window.location.search}${window.location.search ? "&" : "?"}email=${encodeURIComponent(donorEmail as string)}`)}&email=${encodeURIComponent(donorEmail as string)}`}
                     className="flex w-full items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-3 py-2.5 text-xs font-semibold text-[#0F0F0F] hover:border-[#12AA5B] hover:text-[#12AA5B] lg:w-max lg:text-sm"
                   >
                     Log in to continue

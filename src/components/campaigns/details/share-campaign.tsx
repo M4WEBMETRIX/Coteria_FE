@@ -12,12 +12,22 @@ import {
 } from "@phosphor-icons/react";
 import { getBaseUrl } from "@/lib/utils";
 
-const ShareCampaign = ({ communitySlug, communityId, campaignSlug, campaign }: any) => {
+const ShareCampaign = ({
+  // communitySlug,
+  // communityId,
+  campaignSlug,
+  campaign,
+}: {
+  communitySlug?: string;
+  communityId?: string;
+  campaignSlug: string;
+  campaign: any;
+}) => {
   const [isOpen, setIsOpen] = useState(false);
   const [copied, setCopied] = useState(false);
   const menuRef = useRef<any>(null);
 
-  console.log(communitySlug, communityId);
+  // console.log(communitySlug, communityId);
   // const communityUrl = `${getBaseUrl()}/community/public/${communitySlug}/${communityId}`;
   // const shareUrl = communityId ? communityUrl : campaignUrl;
   const campaignUrl = `${getBaseUrl({ target: "donor" })}/community/public/campaign/${campaignSlug}`;

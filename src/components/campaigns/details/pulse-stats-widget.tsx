@@ -8,7 +8,7 @@ import { HelpCircle } from "lucide-react";
 const PulseStatsWidget = ({ id }: { id: string | number | undefined }) => {
   const { data: engagementData } = useGetCampaignEngagement(id);
 
-  console.log(engagementData, "engagementData");
+  // console.log(engagementData, "engagementData");
 
   //   {
   //     "success": true,

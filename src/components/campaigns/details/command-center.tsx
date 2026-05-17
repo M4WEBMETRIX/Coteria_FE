@@ -18,7 +18,7 @@ import ActivityFeedWidget from "@/components/campaigns/details/activity-feed-wid
 import AiInsightWidget from "@/components/campaigns/details/ai-insight-widget";
 
 const CommandCenter = ({ data }: { data: any }) => {
-  console.log(data);
+  // console.log(data);
   return (
     <div>
       {" "}

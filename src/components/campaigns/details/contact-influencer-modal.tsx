@@ -21,7 +21,7 @@ export default function ContactInfluencerModal({
   open: boolean;
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
 }) {
-  console.log(influencer);
+  // console.log(influencer);
   //   const [open, setOpen] = useState(true);
   const [formData, setFormData] = useState({
     influencerName: "",
@@ -47,7 +47,7 @@ export default function ContactInfluencerModal({
   ];
 
   const handleSubmit = () => {
-    console.log("Form submitted:", formData);
+    // console.log("Form submitted:", formData);
     // Handle form submission
     setOpen(false);
   };

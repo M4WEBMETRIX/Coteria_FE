@@ -66,7 +66,10 @@ const DonationDetailPage = () => {
         { label: "Date", value: date },
         { label: "Time", value: time },
         { label: "Reference", value: reference },
-        { label: "Status", value: "Completed" },
+        {
+          label: "Status",
+          value: d?.status?.toLowerCase() === "succeeded" ? "Successful" : d?.status,
+        },
       ];
 
       let y = 70;
@@ -110,7 +113,7 @@ const DonationDetailPage = () => {
       const filename = `receipt-${reference}.pdf`;
       pdf.save(filename);
     } catch (error) {
-      console.error("Error generating receipt:", error);
+      // console.error("Error generating receipt:", error);
       alert("Failed to generate receipt. Please try again.");
     } finally {
       button.disabled = false;
@@ -237,8 +240,16 @@ const DonationDetailPage = () => {
           <div className="flex items-center justify-between">
             <div className="ml-5 flex items-center gap-10.5">
               <p className="text-sm text-[#666D80]">Status</p>
-              <span className="inline-flex items-center rounded-full bg-[#EAFFFB] px-3 py-1 text-sm font-medium text-[#339D88]">
-                Completed
+              <span
+                className={`inline-flex items-center rounded-full px-3 py-1 text-sm font-medium ${
+                  donationDetails?.data?.status?.toLowerCase() === "succeeded"
+                    ? "bg-[#EAFFFB] text-[#339D88]"
+                    : "bg-[#FFEDEB] text-[#D86458]"
+                }`}
+              >
+                {donationDetails?.data?.status?.toLowerCase() === "succeeded"
+                  ? "Successful"
+                  : donationDetails?.data?.status}
               </span>
             </div>
             <Button

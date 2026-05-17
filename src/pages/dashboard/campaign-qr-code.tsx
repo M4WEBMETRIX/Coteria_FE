@@ -72,7 +72,7 @@ const CampaignQRCodePage = () => {
 
   const selectedCampaignName = selectedCampaign?.name;
 
-  const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id || selectedCampaign?.slug}`;
+  const donateUrl = `${getBaseUrl({ target: "donor" })}/campaign/public/donate/${id || selectedCampaign?.slug}?source=qr`;
   const orgName = orgUser?.name || "<Org Name>";
   const campaignName = campaign?.name || "<Campaign Name>";
 
