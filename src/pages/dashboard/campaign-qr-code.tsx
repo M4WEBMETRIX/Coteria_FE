@@ -3,11 +3,11 @@ import { useNavigate, useParams } from "react-router-dom";
 import { QRCodeCanvas, QRCodeSVG } from "qrcode.react";
 import html2canvas from "html2canvas";
 import {
-  ArrowLeftIcon,
+  // ArrowLeftIcon,
   ArrowSquareOutIcon,
   DownloadSimpleIcon,
   ImageIcon,
-  QrCodeIcon,
+  // QrCodeIcon,
 } from "@phosphor-icons/react";
 import {
   useCampaignDetails,
@@ -215,12 +215,12 @@ const CampaignQRCodePage = () => {
         {/* ── Left panel ── */}
         <div className="w-full space-y-6 lg:max-w-[399px]">
           <div>
-            <h2 className="mb-4 text-lg font-semibold text-[#424448]">Customize (optional)</h2>
+            <h2 className="mb-4 text-base font-bold text-[#424448]">Customize (optional)</h2>
 
             {/* Campaign selector */}
             {!id && (
               <div className="mb-4">
-                <label className="mb-1.5 block text-sm font-medium text-[#404040]">
+                <label className="mb-1.5 block text-sm font-medium text-[#414143]">
                   Select Campaign
                 </label>
                 <Combobox
@@ -232,7 +232,7 @@ const CampaignQRCodePage = () => {
                 >
                   <ComboboxTrigger
                     className={cn(
-                      "flex h-11 w-full cursor-pointer items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-4 text-sm font-normal text-[#0F0F0F] shadow-none hover:bg-gray-100",
+                      "flex h-12 w-full cursor-pointer items-center justify-between rounded-[8px] border border-[#DFE1E7] bg-white px-4 text-sm font-normal text-[#0F0F0F] shadow-none hover:bg-gray-100",
                       !selectedCampaignId && "text-[#D7D7D7]"
                     )}
                   >
@@ -273,7 +273,7 @@ const CampaignQRCodePage = () => {
 
             {/* Message */}
             <div className="mb-4">
-              <label className="mb-1.5 block text-sm font-medium text-[#404040]">
+              <label className="mb-1.5 block text-sm font-medium text-[#414143]">
                 Message (show under the QR code)
               </label>
               <div className="relative">
@@ -282,7 +282,7 @@ const CampaignQRCodePage = () => {
                   placeholder="e.g every contributions make a different"
                   value={message}
                   onChange={(e) => setMessage(e.target.value)}
-                  className="h-11 rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-12 text-sm placeholder:font-medium placeholder:text-[#D7D7D7]"
+                  className="h-12 rounded-[8px] border-[#DFE1E7] bg-white pr-12 text-sm placeholder:font-medium placeholder:text-[#D7D7D7]"
                 />
                 <span className="absolute top-1/2 right-4 -translate-y-1/2 text-xs text-[#9B9B9B]">
                   {message.length}/60
@@ -292,13 +292,13 @@ const CampaignQRCodePage = () => {
 
             {/* Brand color */}
             <div className="mb-4">
-              <label className="mb-1.5 block text-sm font-medium text-[#404040]">Brand color</label>
+              <label className="mb-1.5 block text-sm font-medium text-[#414143]">Brand color</label>
               <div className="relative flex items-center">
                 <Input
                   placeholder="e.g #39966d9d1"
                   value={brandColor}
                   onChange={(e) => setBrandColor(e.target.value)}
-                  className="h-11 rounded-full border-[#E5E5E5] bg-[#F9F9F9] pr-14 text-sm"
+                  className="h-12 rounded-[8px] border-[#DFE1E7] bg-white pr-14 text-sm"
                 />
                 <label className="absolute right-3 cursor-pointer">
                   <input
@@ -317,10 +317,10 @@ const CampaignQRCodePage = () => {
 
             {/* Logo upload */}
             <div className="mb-6">
-              <label className="mb-1.5 block text-sm font-medium text-[#404040]">
+              <label className="mb-1.5 block text-sm font-medium text-[#414143]">
                 Add logo (optional)
               </label>
-              <label className="flex h-[107px] cursor-pointer flex-col items-center justify-center gap-1 rounded-[20px] border border-[#E5E5E5] bg-[#FAFAFA] py-5 hover:border-[#12AA5B]">
+              <label className="flex h-[107px] cursor-pointer flex-col items-center justify-center gap-1 rounded-[10px] border border-[#DFE1E7] bg-white py-5 hover:border-[#12AA5B]">
                 <input
                   type="file"
                   accept="image/png,image/jpeg,image/svg+xml"
@@ -346,7 +346,7 @@ const CampaignQRCodePage = () => {
 
           {/* Format & Size */}
           <div>
-            <h2 className="mb-4 text-base font-semibold text-[#424448]">Choose format % Size</h2>
+            <h2 className="mb-4 text-sm font-semibold text-[#414143]">Choose format % Size</h2>
             <div className="mb-4 flex items-center justify-between gap-4">
               <div>
                 <p className="mb-2 text-sm font-semibold text-[#000000]">Format</p>
@@ -384,24 +384,25 @@ const CampaignQRCodePage = () => {
 
             {/* Generate button */}
             <Button
+              disabled={!id ? !selectedCampaign : false}
               onClick={() => setGenerated(true)}
-              className="flex h-12 w-full items-center justify-between rounded-full bg-[#12AA5B] px-2 text-white hover:bg-[#0da055]"
+              className="flex h-12 w-full items-center justify-between rounded-[8px] bg-[#12AA5B] px-2 text-white hover:bg-[#0da055]"
             >
               <span className="flex-1 text-center text-sm font-medium">Generate QR code</span>
-              <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+              {/* <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
                 <QrCodeIcon size={16} className="text-[#0F0F0F]" />
-              </div>
+              </div> */}
             </Button>
 
             {isCampaignRoute && (
               <Button
                 onClick={() => navigate(-1)}
-                className="mt-4 flex h-12 w-full items-center justify-between rounded-full border border-[#E5E5E5] bg-[#F9F9F9] px-2 hover:bg-transparent"
+                className="mt-4 flex h-12 w-full items-center justify-between rounded-[8px] border border-[#E5E5E5] bg-white px-2 hover:bg-transparent"
               >
                 <span className="flex-1 text-center text-sm font-medium text-[#666D80]">Back</span>
-                <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
+                {/* <div className="flex h-8 w-8 items-center justify-center rounded-full bg-white">
                   <ArrowLeftIcon size={16} className="text-[#0F0F0F]" />
-                </div>
+                </div> */}
               </Button>
             )}
           </div>
@@ -410,8 +411,8 @@ const CampaignQRCodePage = () => {
         {/* ── Right panel ── */}
         <div className="flex-1 space-y-6">
           {/* Preview */}
-          <div className="rounded-[10px] bg-[#FAFAFA] px-7.5 py-4.5">
-            <p className="mb-1 text-sm font-semibold text-[#000000]">Preview</p>
+          <div className="rounded-[10px] border border-[#E5E5E5] bg-[#FAFAFA] px-7.5 py-4.5">
+            <p className="mb-1 text-sm font-medium text-[#414143]">Preview</p>
             <p className="mb-4 text-xs font-medium text-[#666D80]">
               This is how your QR code will look.
             </p>
@@ -420,7 +421,7 @@ const CampaignQRCodePage = () => {
               {/* Printable card */}
               <div
                 ref={previewRef}
-                className="relative mx-auto flex w-full max-w-[499px] flex-col items-center rounded-[16px] bg-white px-8 py-8"
+                className="relative mx-auto flex w-full max-w-[499px] flex-col items-center rounded-[16px] bg-white px-8 py-8 shadow-[12px_12px_24px_0px_rgba(0,_0,_0,_0.05)]"
               >
                 {/* Dot decorations */}
                 <div className="pointer-events-none absolute top-4 left-4 grid grid-cols-4 gap-1 opacity-30">
@@ -550,8 +551,8 @@ const CampaignQRCodePage = () => {
 
           {/* Download & Share */}
           {generated && (
-            <div className="rounded-[10px] bg-[#FAFAFA] px-7.5 py-4.5">
-              <p className="mb-1 text-sm font-semibold text-[#000000]">Download and share</p>
+            <div className="rounded-[10px] border border-[#E5E5E5] bg-[#FAFAFA] px-7.5 py-4.5">
+              <p className="mb-1 text-sm font-medium text-[#414143]">Download and share</p>
               <p className="mb-4 text-xs text-[#666D80]">
                 Download your QR code or share it with your team or friends.
               </p>
