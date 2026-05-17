@@ -14,20 +14,29 @@ import {
   WhatsappLogoIcon,
   XLogoIcon,
 } from "@phosphor-icons/react";
-import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { useEffect, useRef, useState } from "react";
 import { QRCodeCanvas } from "qrcode.react";
 import { useCreateShortenedUrlUserEnd } from "@/services/generics/hooks";
-// import { FaWhatsapp, FaXTwitter } from "react-icons/fa6";
 
 interface ShareDialogProps {
   url: string;
+  /** Controlled open state — when provided the dialog is controlled externally */
+  open?: boolean;
+  onOpenChange?: (open: boolean) => void;
 }
 
-export function ShareDialog({ url }: ShareDialogProps) {
-  const [open, setOpen] = useState(false);
+export function ShareDialog({ url, open: controlledOpen, onOpenChange }: ShareDialogProps) {
+  const [internalOpen, setInternalOpen] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [activeTab, setActiveTab] = useState<"link" | "qr">("link");
+
+  // Support both controlled and uncontrolled usage
+  const isControlled = controlledOpen !== undefined;
+  const open = isControlled ? controlledOpen : internalOpen;
+  const setOpen = isControlled
+    ? (v: boolean) => onOpenChange?.(v)
+    : setInternalOpen;
 
   const {
     mutate: generateShortenedReferral,
@@ -37,33 +46,28 @@ export function ShareDialog({ url }: ShareDialogProps) {
 
   useEffect(() => {
     if (url && open) {
-      generateShortenedReferral({
-        Url: `${url}`,
-      });
+      generateShortenedReferral({ Url: `${url}` });
     }
   }, [url, open]);
 
   const encodedUrl = encodeURIComponent(dataShortened?.data?.short_url || url);
-
   const rawUrl = dataShortened?.data?.short_url || url;
 
   const handleShareWhatsApp = () => {
-    const message = `Join Coterie through my referral link.\nHere's the link: ${encodedUrl}`;
+    const message = `Join Coterie through my referral link.\nHere's the link: ${rawUrl}`;
     window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   const shareOnX = () => {
     const text = `Join Coterie through my referral link`;
-    const url = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(encodedUrl)}`;
-    window.open(url, "_blank");
+    const twitterUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodedUrl}`;
+    window.open(twitterUrl, "_blank");
   };
 
   const handleShareEmail = () => {
     const subject = "Join Coterie";
-    const body = `Join Coterie through my referral link.\nHere's the link: ${encodedUrl}`;
-    window.location.href = `mailto:?subject=${encodeURIComponent(
-      subject
-    )}&body=${encodeURIComponent(body)}`;
+    const body = `Join Coterie through my referral link.\nHere's the link: ${rawUrl}`;
+    window.location.href = `mailto:?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
   };
 
   const copyToClipboard = () => {
@@ -72,6 +76,105 @@ export function ShareDialog({ url }: ShareDialogProps) {
     setTimeout(() => setCopied(false), 2000);
   };
 
+  const dialogContent = (
+    <DialogContent className="rounded-2xl sm:max-w-[480px]">
+      <DialogHeader>
+        <DialogTitle className="text-lg font-semibold text-[#1E1F24]">Quick Share</DialogTitle>
+      </DialogHeader>
+
+      {/* Tab switcher */}
+      <div className="flex gap-2">
+        <button
+          onClick={() => setActiveTab("link")}
+          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            activeTab === "link"
+              ? "bg-[#12AA5B] text-white"
+              : "border border-[#E5E5E5] bg-white text-[#6F6F6F] hover:border-[#12AA5B]"
+          }`}
+        >
+          Copy link
+        </button>
+        <button
+          onClick={() => setActiveTab("qr")}
+          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+            activeTab === "qr"
+              ? "bg-[#12AA5B] text-white"
+              : "border border-[#E5E5E5] bg-white text-[#6F6F6F] hover:border-[#12AA5B]"
+          }`}
+        >
+          QR Code
+        </button>
+      </div>
+
+      {activeTab === "link" ? (
+        <>
+          {/* URL + copy button */}
+          <div className="flex overflow-hidden rounded-[10px] border border-[#E5E5E5]">
+            {isPendingShortened ? (
+              <div className="h-12 flex-1 animate-pulse bg-gray-100" />
+            ) : (
+              <Input
+                value={rawUrl}
+                readOnly
+                className="h-12 min-w-0 flex-1 rounded-none border-0 bg-white text-sm text-[#6F6F6F] focus-visible:ring-0"
+              />
+            )}
+            <Button
+              onClick={copyToClipboard}
+              className="h-12 shrink-0 rounded-none rounded-r-[10px] bg-[#12AA5B] px-4 text-sm font-medium text-white hover:bg-[#0da055]"
+            >
+              <span className="flex items-center gap-1.5">
+                {copied ? <CheckIcon size={14} /> : <Copy size={14} />}
+                Copy link
+              </span>
+            </Button>
+          </div>
+
+          <p className="text-xs text-[#8B8D98]">
+            Anyone with this link can join coterie with your referral.
+          </p>
+
+          {/* Social share buttons */}
+          <div className="flex flex-wrap gap-3 pt-1">
+            <button
+              onClick={handleShareWhatsApp}
+              className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            >
+              <WhatsappLogoIcon size={16} />
+              WhatsApp
+            </button>
+            <button
+              onClick={handleShareEmail}
+              className="flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-4 py-2 text-sm font-medium text-[#1E1F24] hover:border-[#12AA5B]"
+            >
+              <Mail size={14} />
+              Mail
+            </button>
+            <button
+              onClick={shareOnX}
+              className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+            >
+              <XLogoIcon size={14} />
+              X
+            </button>
+          </div>
+        </>
+      ) : (
+        <QRCodeSection url={rawUrl} />
+      )}
+    </DialogContent>
+  );
+
+  // Controlled mode — no trigger needed
+  if (isControlled) {
+    return (
+      <Dialog open={open} onOpenChange={setOpen}>
+        {dialogContent}
+      </Dialog>
+    );
+  }
+
+  // Uncontrolled mode — renders its own trigger button
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
@@ -79,93 +182,37 @@ export function ShareDialog({ url }: ShareDialogProps) {
           Refer others
           <CaretRightIcon className="ml-1 h-6 w-6" />
         </Button>
-        {/* <Button>Share</Button> */}
       </DialogTrigger>
-
-      <DialogContent className="h-[450px] rounded-2xl sm:max-w-[650px]">
-        <DialogHeader>
-          <DialogTitle className="text-lg font-semibold">Quick Share</DialogTitle>
-        </DialogHeader>
-
-        {/* Link + Copy */}
-        {/* <div className="flex items-center gap-2 rounded-lg border p-2">
-          <input value={url} readOnly className="flex-1 bg-transparent text-sm outline-none" />
-          <Button size="sm" variant="secondary" onClick={copyToClipboard}>
-            <Copy className="mr-1 h-4 w-4" />
-            Copy
-          </Button>
-        </div> */}
-
-        <div className="space-y-2">
-          <Label className="text-base text-[#64646E]">Invite link</Label>
-
-          <div className="flex">
-            {isPendingShortened ? (
-              <div className="h-12 flex-1 animate-pulse rounded bg-gray-200" />
-            ) : (
-              <Input
-                value={rawUrl}
-                readOnly
-                className="h-12 min-w-0 flex-1 rounded-r-none border border-[#F0EEF4] bg-[#F7F5F9] pr-0"
-              />
-            )}
-
-            <Button
-              onClick={copyToClipboard}
-              className="flex h-12 w-[140px] shrink-0 items-center justify-between rounded-l-none sm:w-[156px]"
-            >
-              <span className="flex items-center gap-2">
-                {copied ? <CheckIcon size={16} /> : <Copy size={16} />}
-                Copy link
-              </span>
-              <CaretRightIcon size={16} />
-            </Button>
-          </div>
-
-          <p className="text-sm text-[#878691]">
-            Anyone with this link can join coterie with your referral.
-          </p>
-        </div>
-
-        {/* Share Options */}
-        <div className="mt-3 grid grid-cols-2 gap-4">
-          <button
-            onClick={handleShareWhatsApp}
-            className="hover:bg-muted flex cursor-pointer items-center gap-3 rounded-xl p-3 transition"
-          >
-            <WhatsappLogoIcon className="text-xl text-green-500" />
-            <span>WhatsApp</span>
-          </button>
-
-          <button
-            onClick={shareOnX}
-            className="hover:bg-muted flex cursor-pointer items-center gap-3 rounded-xl p-3 transition"
-          >
-            <XLogoIcon className="text-xl text-black" />
-            <span>X</span>
-          </button>
-
-          <button
-            onClick={handleShareEmail}
-            className="hover:bg-muted flex cursor-pointer items-center gap-3 rounded-xl p-3 transition"
-          >
-            <Mail className="h-5 w-5 text-gray-600" />
-            <span>Email</span>
-          </button>
-
-          <QRCodeModal url={url} />
-          {/* <button
-            onClick={() => alert("QR code modal or generator here")}
-            className="hover:bg-muted flex items-center gap-3 rounded-xl p-3 transition"
-          >
-            <QrCode className="h-5 w-5 text-gray-600" />
-            <span>QR Code</span>
-          </button> */}
-        </div>
-      </DialogContent>
+      {dialogContent}
     </Dialog>
   );
 }
+
+const QRCodeSection = ({ url }: { url: string }) => {
+  const qrRef = useRef<HTMLDivElement>(null);
+
+  const handleDownload = () => {
+    const canvas = qrRef.current?.querySelector("canvas");
+    if (!canvas) return;
+    const pngUrl = canvas.toDataURL("image/png");
+    const link = document.createElement("a");
+    link.href = pngUrl;
+    link.download = "referral-qrcode.png";
+    link.click();
+  };
+
+  return (
+    <div ref={qrRef} className="flex flex-col items-center gap-4 py-2">
+      <QRCodeCanvas value={url} size={200} />
+      <button
+        onClick={handleDownload}
+        className="text-sm font-medium text-[#12AA5B] underline hover:opacity-80"
+      >
+        Download QR Code
+      </button>
+    </div>
+  );
+};
 
 export const QRCodeModal = ({
   url,
@@ -178,20 +225,6 @@ export const QRCodeModal = ({
   isCustom?: boolean;
   setIsOpen?: (value: boolean) => void;
 }) => {
-  const qrRef = useRef<HTMLDivElement>(null);
-
-  const handleDownload = () => {
-    const canvas = qrRef.current?.querySelector("canvas");
-    if (!canvas) return;
-
-    const pngUrl = canvas.toDataURL("image/png");
-
-    const link = document.createElement("a");
-    link.href = pngUrl;
-    link.download = "qrcode.png";
-    link.click();
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       {!isCustom && (
@@ -202,18 +235,8 @@ export const QRCodeModal = ({
           </button>
         </DialogTrigger>
       )}
-
       <DialogContent className="rounded-xl sm:max-w-[400px]">
-        <div ref={qrRef} className="mt-4 flex flex-col items-center gap-2">
-          <QRCodeCanvas value={url} size={220} />
-
-          <button
-            onClick={handleDownload}
-            className="text-muted-foreground mt-4 cursor-pointer text-base underline"
-          >
-            Download QR-Code
-          </button>
-        </div>
+        <QRCodeSection url={url} />
       </DialogContent>
     </Dialog>
   );
