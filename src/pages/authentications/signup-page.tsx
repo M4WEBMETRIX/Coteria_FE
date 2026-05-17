@@ -139,10 +139,10 @@ const SignupPage = () => {
       <ScrollArea className="flex max-h-[95vh] min-h-0 flex-1 items-center justify-center overflow-auto py-5">
         <div className="grid h-full w-full place-content-center">
           <div className="">
-            <h2 className="mb-3.5 text-center text-[20px] leading-[100%] font-bold tracking-[1%] text-[#0A0A0C]">
+            <h2 className="mb-3.5 text-center text-2xl leading-[100%] font-bold tracking-[1%] text-[#0A0A0C]">
               Create your Organization account
             </h2>
-            <p className="mb-6 text-center leading-[100%] tracking-[0%] text-[#414143]">
+            <p className="mb-6 text-center text-sm leading-[100%] tracking-[0%] text-[#414143]">
               Get started with a free trial. No credit card required.
             </p>
 

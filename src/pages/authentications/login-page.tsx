@@ -80,20 +80,20 @@ const LoginPage = () => {
         <div className="flex h-screen flex-1 items-center justify-center overflow-auto">
           <div className="grid h-full w-full place-content-center">
             <div className="w-full">
-              <h2 className="mb-3.5 text-center text-[32px] leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
+              <h2 className="mb-3.5 text-center text-2xl leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
                 Sign in to your account
               </h2>
-              <p className="mb-12.5 px-4 text-center text-base leading-[140%] tracking-[0%] text-[#414143]">
+              <p className="mb-12.5 px-4 text-center text-sm leading-[140%] tracking-[0%] text-[#414143]">
                 Sign in to manage your campaigns, track community engagement, and view impact
                 insights.
               </p>
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6 px-2">
                 {/* Email */}
-                <Field className="grid grid-cols-1">
+                <Field className="grid grid-cols-1 gap-1.5">
                   <FieldLabel
                     htmlFor="email"
-                    className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
+                    className="text-sm leading-5.5 font-medium tracking-[0%] text-[#414143]"
                   >
                     Use your organization email address
                   </FieldLabel>
@@ -103,17 +103,17 @@ const LoginPage = () => {
                       type="email"
                       placeholder="you@organization.org"
                       {...register("email")}
-                      className="h-12 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5"
+                      className="h-12 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5 text-sm"
                     />
                     <FieldError errors={[errors.email]} />
                   </FieldContent>
                 </Field>
 
                 {/* Password */}
-                <Field className="">
+                <Field className="gap-1.5">
                   <FieldLabel
                     htmlFor="password"
-                    className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
+                    className="text-sm leading-5.5 font-medium tracking-[0%] text-[#414143]"
                   >
                     Password*
                   </FieldLabel>
@@ -143,7 +143,7 @@ const LoginPage = () => {
                 </Field>
 
                 {/* Forgot Password */}
-                <div className="flex justify-start text-base font-normal">
+                <div className="flex justify-start text-sm font-normal">
                   <p className="text-[#414143]">
                     Forgot your password?{" "}
                     <Link
@@ -160,13 +160,13 @@ const LoginPage = () => {
                   loading={loading}
                   disabled={!isValid}
                   type="submit"
-                  className="w-full rounded-full bg-[#12AA5B] py-6 text-base font-semibold text-white hover:bg-green-600"
+                  className="w-full rounded-full bg-[#12AA5B] py-6 text-sm font-semibold text-white hover:bg-green-600"
                 >
                   {loading ? "Logging in..." : "Log in"}
                 </Button>
 
                 {/* Signup Link */}
-                <p className="text-center text-base text-[#414143]">
+                <p className="text-center text-sm text-[#414143]">
                   Don't have an account?{" "}
                   <Link to="/auth/signup" className="font-normal text-[#12AA5B] hover:underline">
                     Create an account

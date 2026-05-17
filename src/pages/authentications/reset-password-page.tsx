@@ -86,7 +86,7 @@ const ResetPasswordPage = () => {
         <div className="flex h-screen flex-1 items-center justify-center overflow-auto">
           <div className="grid h-full w-full max-w-130 place-content-center">
             <div className="">
-              <h2 className="mb-3.5 text-center text-[32px] leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
+              <h2 className="mb-3.5 text-center text-2xl leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
                 Reset your password
               </h2>
               <p className="mb-12.5 text-center text-sm leading-[140%] tracking-[0%] text-[#414143]">
@@ -114,10 +114,10 @@ const ResetPasswordPage = () => {
                 </Field> */}
 
                 {/* Password */}
-                <Field>
+                <Field className="gap-1.5">
                   <FieldLabel
                     htmlFor="password"
-                    className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
+                    className="text-sm leading-5.5 font-medium tracking-[0%] text-[#414143]"
                   >
                     Password*
                   </FieldLabel>
@@ -147,10 +147,10 @@ const ResetPasswordPage = () => {
                 </Field>
 
                 {/* Confirm Password */}
-                <Field>
+                <Field className="gap-1.5">
                   <FieldLabel
                     htmlFor="confirm-password"
-                    className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
+                    className="text-sm leading-5.5 font-medium tracking-[0%] text-[#414143]"
                   >
                     Confirm Password*
                   </FieldLabel>
@@ -200,7 +200,7 @@ const ResetPasswordPage = () => {
                   loading={isPending}
                   disabled={!isValid || isPending}
                   type="submit"
-                  className="w-full rounded-full bg-[#12AA5B] py-6 text-lg font-semibold text-white hover:bg-green-600"
+                  className="w-full rounded-full bg-[#12AA5B] py-6 text-sm font-semibold text-white hover:bg-green-600"
                 >
                   Reset Password
                 </Button>

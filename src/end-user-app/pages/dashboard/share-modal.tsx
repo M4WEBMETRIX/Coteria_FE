@@ -34,9 +34,7 @@ export function ShareDialog({ url, open: controlledOpen, onOpenChange }: ShareDi
   // Support both controlled and uncontrolled usage
   const isControlled = controlledOpen !== undefined;
   const open = isControlled ? controlledOpen : internalOpen;
-  const setOpen = isControlled
-    ? (v: boolean) => onOpenChange?.(v)
-    : setInternalOpen;
+  const setOpen = isControlled ? (v: boolean) => onOpenChange?.(v) : setInternalOpen;
 
   const {
     mutate: generateShortenedReferral,
@@ -86,20 +84,20 @@ export function ShareDialog({ url, open: controlledOpen, onOpenChange }: ShareDi
       <div className="flex gap-2">
         <button
           onClick={() => setActiveTab("link")}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+          className={`cursor-pointer rounded-[10px] px-4 py-2 text-sm font-medium transition-colors ${
             activeTab === "link"
               ? "bg-[#12AA5B] text-white"
-              : "border border-[#E5E5E5] bg-white text-[#6F6F6F] hover:border-[#12AA5B]"
+              : "border border-[#F6F6F6] bg-[#F6F6F6] text-[#6F6F6F]"
           }`}
         >
           Copy link
         </button>
         <button
           onClick={() => setActiveTab("qr")}
-          className={`rounded-full px-4 py-1.5 text-sm font-medium transition-colors ${
+          className={`cursor-pointer rounded-[10px] px-4 py-2 text-sm font-medium transition-colors ${
             activeTab === "qr"
               ? "bg-[#12AA5B] text-white"
-              : "border border-[#E5E5E5] bg-white text-[#6F6F6F] hover:border-[#12AA5B]"
+              : "border border-[#F6F6F6] bg-[#F6F6F6] text-[#6F6F6F]"
           }`}
         >
           QR Code
@@ -138,24 +136,23 @@ export function ShareDialog({ url, open: controlledOpen, onOpenChange }: ShareDi
           <div className="flex flex-wrap gap-3 pt-1">
             <button
               onClick={handleShareWhatsApp}
-              className="flex items-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+              className="flex min-w-[99px] cursor-pointer items-center justify-center gap-2 rounded-full bg-[#25D366] px-4 py-2 text-sm font-medium text-white hover:opacity-90"
             >
               <WhatsappLogoIcon size={16} />
               WhatsApp
             </button>
             <button
               onClick={handleShareEmail}
-              className="flex items-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-4 py-2 text-sm font-medium text-[#1E1F24] hover:border-[#12AA5B]"
+              className="flex min-w-[99px] cursor-pointer items-center justify-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-4 py-2 text-sm font-medium text-[#1E1F24] hover:border-[#12AA5B]"
             >
               <Mail size={14} />
               Mail
             </button>
             <button
               onClick={shareOnX}
-              className="flex items-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white hover:opacity-90"
+              className="flex min-w-[99px] cursor-pointer items-center justify-center gap-2 rounded-full bg-black px-4 py-2 text-sm font-medium text-white hover:opacity-90"
             >
               <XLogoIcon size={14} />
-              X
             </button>
           </div>
         </>
@@ -204,12 +201,22 @@ const QRCodeSection = ({ url }: { url: string }) => {
   return (
     <div ref={qrRef} className="flex flex-col items-center gap-4 py-2">
       <QRCodeCanvas value={url} size={200} />
-      <button
-        onClick={handleDownload}
-        className="text-sm font-medium text-[#12AA5B] underline hover:opacity-80"
-      >
-        Download QR Code
-      </button>
+
+      <p className="text-xs text-[#8B8D98]">
+        Anyone with this QR code can join coterie with your referral.
+      </p>
+
+      {/* Social share buttons */}
+      <div className="flex flex-wrap gap-3 pt-1">
+        <button
+          onClick={handleDownload}
+          className="flex min-w-[99px] cursor-pointer items-center justify-center gap-2 rounded-full border border-[#E5E5E5] bg-white px-4 py-2 text-sm font-medium text-[#1E1F24] hover:border-[#12AA5B]"
+
+          // className="text-sm font-medium text-[#12AA5B] underline hover:opacity-80"
+        >
+          Download QR Code
+        </button>
+      </div>
     </div>
   );
 };

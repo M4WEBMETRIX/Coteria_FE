@@ -15,11 +15,11 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
         />
         <div className="flex h-[90vh] min-h-0 flex-col justify-between">
           <div className="px-12.5">
-            <div className="mb-16 flex w-max items-center justify-center rounded-full bg-white px-7.5 py-4.5">
+            <div className="mb-16 flex w-max items-center justify-center rounded-full bg-white px-6 py-3">
               <img src={LOGO} className="h-7.25 w-31.25" alt="coterie_logo" />
             </div>
 
-            <h1 className="mb-6 text-[44px] leading-11 font-semibold tracking-[0%]">
+            <h1 className="mb-6 text-[36px] leading-11 font-semibold tracking-[0%]">
               Turn one-time
               <br />
               donations into lasting
@@ -27,7 +27,7 @@ const AuthLayout = ({ children }: { children: React.ReactNode }) => {
               community support
             </h1>
 
-            <p className="text-lg leading-5.5 font-normal tracking-[0%] text-white opacity-80">
+            <p className="text-base leading-5.5 font-normal tracking-[0%] text-white opacity-80">
               Coterie helps organizations retain donors, activate their
               <br />
               community, and understand what actually drives repeat

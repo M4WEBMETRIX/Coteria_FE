@@ -48,7 +48,7 @@ const ForgotPasswordPage = () => {
         <div className="flex h-screen flex-1 items-center justify-center overflow-auto">
           <div className="grid h-full w-full max-w-130 place-content-center">
             <div className="w-[448px]">
-              <h2 className="mb-3.5 text-center text-[32px] leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
+              <h2 className="mb-3.5 text-center text-2xl leading-[100%] font-semibold tracking-[1%] text-[#0A0A0C]">
                 Reset your password
               </h2>
               <p className="mb-12.5 px-8 text-center text-sm leading-[140%] tracking-[0%] text-[#414143]">
@@ -58,10 +58,10 @@ const ForgotPasswordPage = () => {
 
               <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
                 {/* Email */}
-                <Field>
+                <Field className="gap-0.5">
                   <FieldLabel
                     htmlFor="email"
-                    className="text-base leading-5.5 font-medium tracking-[0%] text-[#414143]"
+                    className="text-sm leading-5.5 font-medium tracking-[0%] text-[#414143]"
                   >
                     Use your organization email address
                   </FieldLabel>
@@ -71,7 +71,7 @@ const ForgotPasswordPage = () => {
                       type="email"
                       placeholder="you@organization.org"
                       {...register("email")}
-                      className="mt-2 h-12 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5"
+                      className="mt-2 h-12 rounded-lg border-0 bg-[#F6F6F6] px-2.5 py-5 text-sm"
                     />
                     <FieldError errors={[errors.email]} />
                   </FieldContent>
@@ -81,7 +81,7 @@ const ForgotPasswordPage = () => {
                 <Button
                   disabled={!isValid || isPending}
                   type="submit"
-                  className="w-full rounded-full bg-[#12AA5B] py-6 text-lg font-semibold text-white hover:bg-green-600"
+                  className="w-full rounded-full bg-[#12AA5B] py-6 text-lg text-sm font-semibold text-white hover:bg-green-600"
                 >
                   {isPending ? "Sending Reset Link..." : "Send Reset Link"}
                 </Button>
